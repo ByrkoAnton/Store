@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Interfaces\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Models\Authors\" />
+    <Folder Include="Models\Base\" />
+    <Folder Include="Models\Enums\" />
+    <Folder Include="Models\PrintingEdition\" />
+    <Folder Include="Models\Payments\" />
+    <Folder Include="Models\Orders\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Store.DataAccessLayer\Store.DataAccessLayer.csproj" />
+  </ItemGroup>
+
+</Project>
