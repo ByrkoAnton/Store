@@ -29,8 +29,7 @@ namespace Store.PresentationLayer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IAccountService, AccountService>();
-
-
+           
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("Store.DataAccessLayer")));
@@ -38,6 +37,8 @@ namespace Store.PresentationLayer
             services.AddIdentity<User, IdentityRole<long>>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
+            services.AddTransient<IAccountService, AccountService>();
+        
             services.AddControllersWithViews();
 
             services.InitialazerAsync().Wait();

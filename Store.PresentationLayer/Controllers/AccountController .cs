@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using Store.DataAccessLayer.Entities;
+using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.BusinessLogicLayer.Models;
 
 namespace Store.PresentationLayer.Controllers
 {
@@ -9,19 +9,27 @@ namespace Store.PresentationLayer.Controllers
     [ApiController]
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly IAccountService _accountService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(IAccountService accountService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _accountService = accountService;
         }
 
         [HttpGet("register")]
         public async Task<IActionResult> Register()
         {
             return Ok("*ok*");
+        }
+
+        [HttpPost("signIn")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> SignIn([FromBody]SignInModel signInModel)
+        {
+
+           var res = await _accountService.SignInAsync(signInModel);
+
+            return Ok(res);
         }
     }
 }

@@ -33,11 +33,11 @@ namespace Store.PresentationLayer.Controllers
             return Ok("auth");
         }
 
-        [HttpGet("signin")]
-        public async Task<IActionResult> SignIn()
-        {
-            var result = await _accountService.SignInAsync(new BusinessLogicLayer.Models.Users.UserModel());
-            return Ok(result);
-        }
+        //[HttpGet("signin")]
+        //public async Task<IActionResult> SignIn()
+        //{
+        //    //var result = await _accountService.SignInAsync(new BusinessLogicLayer.Models.Users.UserModel());
+        //    //return Ok(result);
+        //}
     }
 }

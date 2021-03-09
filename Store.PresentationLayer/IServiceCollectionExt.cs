@@ -15,8 +15,7 @@ namespace Store.PresentationLayer
 
             string adminEmail = "admin@gmail.com";
             string password = "_Aa123456";
-            long id = 1;
-
+        
             try
             {
                 var a = await rolesManager.FindByNameAsync("admin");
@@ -28,7 +27,6 @@ namespace Store.PresentationLayer
             catch (System.Exception ex)
             {
                 var excec = ex;
-               
             }
 
             if (await userManager.FindByNameAsync(adminEmail) == null)
