@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Store.DataAccessLayer;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.BusinessLogicLayer.Servises;
-
+using Store.PresentationLayer.Middlewares;
 
 namespace Store.PresentationLayer
 {
@@ -42,22 +42,22 @@ namespace Store.PresentationLayer
             services.AddControllersWithViews();
 
             services.InitialazerAsync().Wait();
-            
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options =>
-                    {
-                        options.RequireHttpsMetadata = false;
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateIssuer = true,
-                            ValidIssuer = AuthOptions.ISSUER,
-                            ValidateAudience = true,
-                            ValidAudience = AuthOptions.AUDIENCE,
-                            ValidateLifetime = true,
-                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                            ValidateIssuerSigningKey = true,
-                        };
-                    });
+
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //        .AddJwtBearer(options =>
+            //        {
+            //            options.RequireHttpsMetadata = false;
+            //            options.TokenValidationParameters = new TokenValidationParameters
+            //            {
+            //                ValidateIssuer = true,
+            //                ValidIssuer = AuthOptions.ISSUER,
+            //                ValidateAudience = true,
+            //                ValidAudience = AuthOptions.AUDIENCE,
+            //                ValidateLifetime = true,
+            //                IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            //                ValidateIssuerSigningKey = true,
+            //            };
+            //        });
             services.AddControllersWithViews();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +74,7 @@ namespace Store.PresentationLayer
                 app.UseHsts();
             }
 
+            app.UseMiddleware<ErrorHandingMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -81,6 +82,7 @@ namespace Store.PresentationLayer
 
             app.UseAuthentication();
             app.UseAuthorization();
+           
 
             app.UseEndpoints(endpoints =>
             {

@@ -8,7 +8,6 @@
     <Folder Include="Common\" />
     <Folder Include="Filters\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Middlewares\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
 

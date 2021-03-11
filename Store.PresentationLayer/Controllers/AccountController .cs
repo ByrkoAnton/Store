@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.BusinessLogicLayer.Models;
+using Store.BusinessLogicLayer;
 
 namespace Store.PresentationLayer.Controllers
 {
@@ -23,12 +24,9 @@ namespace Store.PresentationLayer.Controllers
         }
 
         [HttpPost("signIn")]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignIn([FromBody]SignInModel signInModel)
+        public async Task<IActionResult> SignIn([FromBody] SignInModel signInModel)
         {
-
-           var res = await _accountService.SignInAsync(signInModel);
-
+            var res = await _accountService.SignInAsync(signInModel);
             return Ok(res);
         }
     }
