@@ -9,8 +9,7 @@ namespace Store.BusinessLogicLayer
 {
     public static class FileLoggerExtention
     {
-        public static ILoggerFactory AddFile(this ILoggerFactory factory,
-                                        string filePath)
+        public static ILoggerFactory AddFile(this ILoggerFactory factory, string filePath)
         {
             factory.AddProvider(new FileLoggerProvider(filePath));
             return factory;

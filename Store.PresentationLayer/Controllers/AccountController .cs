@@ -27,6 +27,7 @@ namespace Store.PresentationLayer.Controllers
         public async Task<IActionResult> SignIn([FromBody] SignInModel signInModel)
         {
             var res = await _accountService.SignInAsync(signInModel);
+
             return Ok(res);
         }
     }

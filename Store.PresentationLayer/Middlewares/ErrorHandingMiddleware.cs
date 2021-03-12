@@ -12,7 +12,7 @@ namespace Store.PresentationLayer.Middlewares
     {
         private RequestDelegate _next;
 
-         public ILoggerFactory _loggerFactory;
+        public ILoggerFactory _loggerFactory;
 
         public ErrorHandingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
@@ -29,14 +29,16 @@ namespace Store.PresentationLayer.Middlewares
             {
                 string jsonString = JsonSerializer.Serialize(customExeption.ErrorList) + customExeption.StatusCode;
                 await context.Response.WriteAsync(jsonString);
+
             }
 
             catch (Exception exeption)
             {
                 _loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
                 var logger = _loggerFactory.CreateLogger("FileLogger");
-                logger.LogInformation("Processing request {0}", context.Request.Path);
-                await context.Response.WriteAsync(JsonSerializer.Serialize(exeption));
+                string log = $"{DateTime.Now.ToString()}\n{exeption.StackTrace}\n{new string ('*',100)}";
+                logger.LogError(log);
+                //await context.Response.WriteAsync(log);
             }
         }
     }

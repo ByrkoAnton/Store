@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.Identity;
 using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Store.DataAccessLayer;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.BusinessLogicLayer.Servises;
 using Store.PresentationLayer.Middlewares;
+using Microsoft.Extensions.Logging;
+using Store.BusinessLogicLayer.JWT;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Store.PresentationLayer
 {
@@ -43,21 +44,22 @@ namespace Store.PresentationLayer
 
             services.InitialazerAsync().Wait();
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //        .AddJwtBearer(options =>
-            //        {
-            //            options.RequireHttpsMetadata = false;
-            //            options.TokenValidationParameters = new TokenValidationParameters
-            //            {
-            //                ValidateIssuer = true,
-            //                ValidIssuer = AuthOptions.ISSUER,
-            //                ValidateAudience = true,
-            //                ValidAudience = AuthOptions.AUDIENCE,
-            //                ValidateLifetime = true,
-            //                IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-            //                ValidateIssuerSigningKey = true,
-            //            };
-            //        });
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidIssuer = AuthOptions.ISSUER,
+                            ValidateAudience = true,
+                            ValidAudience = AuthOptions.AUDIENCE,
+                            ValidateLifetime = true,
+                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                            ValidateIssuerSigningKey = true,
+                        };
+                    });
+
             services.AddControllersWithViews();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,7 +84,6 @@ namespace Store.PresentationLayer
 
             app.UseAuthentication();
             app.UseAuthorization();
-           
 
             app.UseEndpoints(endpoints =>
             {

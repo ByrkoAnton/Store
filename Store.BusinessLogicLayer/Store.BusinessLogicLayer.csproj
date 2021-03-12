@@ -6,13 +6,16 @@
 
   <ItemGroup>
     <Folder Include="Common\Interfaces\" />
-    <Folder Include="Helpers\" />
     <Folder Include="Models\Authors\" />
     <Folder Include="Models\Base\" />
     <Folder Include="Models\Enums\" />
     <Folder Include="Models\PrintingEdition\" />
     <Folder Include="Models\Payments\" />
     <Folder Include="Models\Orders\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
   </ItemGroup>
 
   <ItemGroup>
