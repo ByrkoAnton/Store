@@ -14,6 +14,8 @@ using Store.PresentationLayer.Middlewares;
 using Microsoft.Extensions.Logging;
 using Store.BusinessLogicLayer.JWT;
 using Microsoft.IdentityModel.Tokens;
+using Store.BusinessLogicLayer.Providers.Interfaces;
+using Store.BusinessLogicLayer.Providers;
 
 namespace Store.PresentationLayer
 {
@@ -39,6 +41,7 @@ namespace Store.PresentationLayer
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IJwtProvider, JwtProvider>();
         
             services.AddControllersWithViews();
 

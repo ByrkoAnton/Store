@@ -11,11 +11,6 @@ namespace Store.BusinessLogicLayer.Providers
 {
     public class JwtProvider : IJwtProvider
     {
-        public string jwt;
-        public JwtProvider(string name, string role)
-        {
-            jwt = GenerateJwt(name, role);
-        }
         public string GenerateJwt(string name, string role)
         {
             var claims = new List<Claim>
