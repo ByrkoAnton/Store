@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Store.DataAccessLayer.Entities
 {
@@ -11,5 +8,16 @@ namespace Store.DataAccessLayer.Entities
     {
         public long Id { get; set; }
         public string Name { get; set; }
+
+        public List<PrintingEdition> PrintingEditions { get; set; }
+
+        public List<AuthorPrintingEdition> AuthorPrintingEditions { get; set; }
+
+        public Author()
+        {
+            AuthorPrintingEditions = new List<AuthorPrintingEdition>();
+            //PrintingEditions = new List<PrintingEdition>();
+        }
+
     }
 }

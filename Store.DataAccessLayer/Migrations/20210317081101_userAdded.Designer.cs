@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210317081101_userAdded")]
+    partial class userAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -398,42 +400,14 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
+                            Id = 2L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e34fca3c-93da-4ba2-9fea-e83a92955d88",
+                            ConcurrencyStamp = "8a616c34-533b-4a81-849f-e206ecc83823",
                             Email = "123@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "Ivan",
                             IsBlocked = false,
                             LastName = "Ivanov",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            TwoFactorEnabled = false
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "4678e80f-0816-4484-835a-9c263ae456a0",
-                            Email = "1235@gmail.com",
-                            EmailConfirmed = false,
-                            FirstName = "Petr",
-                            IsBlocked = false,
-                            LastName = "Petrov",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            TwoFactorEnabled = false
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "67651afb-c3b6-41bd-b78c-d4c9c34c5862",
-                            Email = "123555@gmail.com",
-                            EmailConfirmed = false,
-                            FirstName = "Vova",
-                            IsBlocked = false,
-                            LastName = "Sidorov",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false

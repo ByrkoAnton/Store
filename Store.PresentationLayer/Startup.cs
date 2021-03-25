@@ -11,11 +11,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.BusinessLogicLayer.Servises;
 using Store.PresentationLayer.Middlewares;
-using Microsoft.Extensions.Logging;
-using Store.BusinessLogicLayer.JWT;
 using Microsoft.IdentityModel.Tokens;
 using Store.BusinessLogicLayer.Providers.Interfaces;
 using Store.BusinessLogicLayer.Providers;
+using Store.BusinessLogicLayer.Mappings;
+using AutoMapper;
+using Store.BusinessLogicLayer.Models.Users;
+using System.Text;
+using System;
 
 namespace Store.PresentationLayer
 {
@@ -32,21 +35,24 @@ namespace Store.PresentationLayer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IAccountService, AccountService>();
-           
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IJwtProvider, JwtProvider>();
+            services.AddTransient<IEmailServices, EmailServises>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IJwtProvider, JwtProvider>();
+
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("Store.DataAccessLayer")));
 
             services.AddIdentity<User, IdentityRole<long>>()
-                .AddEntityFrameworkStores<ApplicationContext>();
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
 
-            services.AddTransient<IAccountService, AccountService>();
-            services.AddTransient<IJwtProvider, JwtProvider>();
-        
             services.AddControllersWithViews();
 
             services.InitialazerAsync().Wait();
-
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -54,16 +60,26 @@ namespace Store.PresentationLayer
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuer = true,
-                            ValidIssuer = AuthOptions.ISSUER,
+                            ValidIssuer = Configuration["Jwt:Issuer"],
                             ValidateAudience = true,
-                            ValidAudience = AuthOptions.AUDIENCE,
+                            ValidAudience = Configuration["Jwt:AUDIENCE"],
                             ValidateLifetime = true,
-                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                            //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Jwt:Key"])),
                             ValidateIssuerSigningKey = true,
                         };
                     });
 
             services.AddControllersWithViews();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddMvc();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

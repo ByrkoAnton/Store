@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.BusinessLogicLayer.Models;
+using Store.BusinessLogicLayer.Models.Users;
+using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer;
 
 namespace Store.PresentationLayer.Controllers
@@ -12,23 +14,33 @@ namespace Store.PresentationLayer.Controllers
     {
         private readonly IAccountService _accountService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IEmailServices emailServices)
         {
             _accountService = accountService;
         }
 
-        [HttpGet("register")]
-        public async Task<IActionResult> Register()
+        [HttpPost("signUp")]
+        public async Task<IActionResult> SignUp([FromBody] UserModel signUpModel)
         {
-            return Ok("*ok*");
+            var result = await _accountService.SignUpAsync(signUpModel);
+            return Ok(result);
+            
         }
 
         [HttpPost("signIn")]
-        public async Task<IActionResult> SignIn([FromBody] SignInModel signInModel)
+        public async Task<IActionResult> SignIn([FromBody] UserSignInModel signInModel)
         {
-            var res = await _accountService.SignInAsync(signInModel);
+            var result = await _accountService.SignInAsync(signInModel);
 
-            return Ok(res);
+            return Ok(result);
+
+        }
+
+        [HttpGet("confirmEmail")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] EmailConfirmationModel emailConfirmationModel)
+        {
+            var result = await _accountService.ConfirmEmailAsync(emailConfirmationModel);
+            return Ok(result);
         }
     }
 }

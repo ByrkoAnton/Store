@@ -27,7 +27,8 @@ namespace Store.PresentationLayer.Middlewares
             }
             catch (CustomExeption customExeption)
             {
-                string jsonString = JsonSerializer.Serialize(customExeption.ErrorList) + customExeption.StatusCode;
+                string jsonString = JsonSerializer.Serialize(customExeption.ErrorList);
+                context.Response.StatusCode = customExeption.StatusCode;
                 await context.Response.WriteAsync(jsonString);
 
             }
@@ -38,7 +39,6 @@ namespace Store.PresentationLayer.Middlewares
                 var logger = _loggerFactory.CreateLogger("FileLogger");
                 string log = $"{DateTime.Now.ToString()}\n{exeption.StackTrace}\n{new string ('*',100)}";
                 logger.LogError(log);
-                //await context.Response.WriteAsync(log);
             }
         }
     }

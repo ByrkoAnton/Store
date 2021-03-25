@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="Entities\Base\" />
     <Folder Include="Entities\Enums\" />
-    <Folder Include="Initialization\" />
     <Folder Include="DapperRepositories\" />
     <Folder Include="EFRepositories\" />
     <Folder Include="Interfaces\" />
