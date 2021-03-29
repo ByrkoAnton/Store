@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using System.Threading.Tasks;
@@ -29,8 +30,8 @@ namespace Store.PresentationLayer.Controllers
             return Ok();
         }
 
-        [HttpPost("UserBlock")]
-        public async Task<IActionResult> UserBlock(UserUpdateModel updateModel)
+        [HttpPost("UserBlockUnblok")]
+        public async Task<IActionResult> UserBlockUnblok(UserUpdateModel updateModel)
         {
             await _userService.UserBlockStatusChangingAsync(updateModel);
             return Ok();
@@ -48,6 +49,20 @@ namespace Store.PresentationLayer.Controllers
         {
             await _userService.AddUserToRoleAsync(updateModel);
             return Ok();
+        }
+        
+        [HttpGet("DeleteAllBlockedUser")]
+        public async Task<IActionResult> DeleteAllBlockedUser()
+        {
+            await _userService.DeleteAllBlockedUserAsync();
+            return Ok();
+        }
+
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordModel forgotPasswordModel)
+        {
+            var result = await _userService.ForgotPasswordAsync(forgotPasswordModel);
+            return Ok(result);
         }
     }
 }

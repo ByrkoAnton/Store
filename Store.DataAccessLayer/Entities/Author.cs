@@ -16,7 +16,6 @@ namespace Store.DataAccessLayer.Entities
         public Author()
         {
             AuthorPrintingEditions = new List<AuthorPrintingEdition>();
-            //PrintingEditions = new List<PrintingEdition>();
         }
 
     }

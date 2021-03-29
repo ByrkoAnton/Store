@@ -10,6 +10,8 @@ namespace Store.BusinessLogicLayer.Constants
     {
         public class Error
         {
+            public const string PASSWORD_RESET_FAILD_CONTACT_ADMIN = "password reset faild contact admin";
+            public const string PASSWORD_RESET_FAILD_NO_USER_WITH_THIS_EMAIL = "password reset faild no user with this email";
             public const string LOGIN_FAILD_MODELI_IS_NULL = "login faild - model is NULL";
             public const string LOGIN_FAILD_MODEL_IS_NOT_CORECT = "login faild - model is not corect";
             public const string PASSWORD_FAILD_MODEL_IS_NOT_CORECT = "password faild - model is not corect";

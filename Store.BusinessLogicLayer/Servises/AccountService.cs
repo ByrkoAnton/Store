@@ -33,16 +33,11 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<string> SignUpAsync(UserModel signUpModel)
         {
-            List<string> extentionsList = new List<string>();
             var EmailCheck = await _userManager.FindByEmailAsync(signUpModel.Email);
             if (EmailCheck != null)
             {
-                extentionsList.Add(Constants.Constants.Error.REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE);
-            }
-
-            if (extentionsList.Any())
-            {
-                throw new CustomExeption(extentionsList, StatusCodes.Status400BadRequest);
+                throw new CustomExeption(Constants.Constants.Error.REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE,
+                    StatusCodes.Status400BadRequest);
             }
 
             User user = new User
@@ -71,7 +66,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            var callbackUrl = new UriBuilder("https://localhost:5001/api/Account/ConfirmEmail");
+            var callbackUrl = new UriBuilder(Constants.Constants.URLs.URL_CONFIRMEMAIL);
             var parameters = HttpUtility.ParseQueryString(string.Empty);
             parameters.Add("email", user.Email);
             parameters.Add("code", code);

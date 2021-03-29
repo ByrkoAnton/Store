@@ -16,9 +16,10 @@ using Store.BusinessLogicLayer.Providers.Interfaces;
 using Store.BusinessLogicLayer.Providers;
 using Store.BusinessLogicLayer.Mappings;
 using AutoMapper;
-using Store.BusinessLogicLayer.Models.Users;
-using System.Text;
-using System;
+using Store.DataAccessLayer.Repositories.Base;
+using System.Collections.Generic;
+using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.DataAccessLayer.Repositories;
 
 namespace Store.PresentationLayer
 {
@@ -36,16 +37,27 @@ namespace Store.PresentationLayer
         {
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<IJwtProvider, JwtProvider>();
             services.AddTransient<IEmailServices, EmailServises>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IJwtProvider, JwtProvider>();
-
+            services.AddTransient<IRandomPasswordGenerator, RandomPasswordGenerator>();
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddTransient<IAuhorServise, AuthorService>();
+            services.AddTransient<IAuthorRepository, AuthorRepository>();
+            
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("Store.DataAccessLayer")));
 
-            services.AddIdentity<User, IdentityRole<long>>()
+            services.AddIdentity<User, IdentityRole<long>>(
+                opts =>
+                {
+                    opts.Password.RequireDigit = true;
+                    opts.Password.RequireLowercase = true;
+                    opts.Password.RequireUppercase = true;
+                    opts.Password.RequireNonAlphanumeric = true;
+                    opts.Password.RequiredLength = 8;
+                })
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
@@ -64,7 +76,6 @@ namespace Store.PresentationLayer
                             ValidateAudience = true,
                             ValidAudience = Configuration["Jwt:AUDIENCE"],
                             ValidateLifetime = true,
-                            //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Jwt:Key"])),
                             ValidateIssuerSigningKey = true,
                         };
                     });

@@ -10,8 +10,6 @@
     <Folder Include="DapperRepositories\" />
     <Folder Include="EFRepositories\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Repositories\Base\" />
-    <Folder Include="Servises\" />
   </ItemGroup>
 
   <ItemGroup>
