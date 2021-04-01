@@ -52,6 +52,37 @@ namespace Store.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Authors",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Authors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PrintingEditions",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Prise = table.Column<double>(type: "float", nullable: false),
+                    IsRemoved = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Currency = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PrintingEditions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -157,6 +188,70 @@ namespace Store.DataAccessLayer.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "AuthorPrintingEdition",
+                columns: table => new
+                {
+                    AuthorsId = table.Column<long>(type: "bigint", nullable: false),
+                    PrintingEditionsId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuthorPrintingEdition", x => new { x.AuthorsId, x.PrintingEditionsId });
+                    table.ForeignKey(
+                        name: "FK_AuthorPrintingEdition_Authors_AuthorsId",
+                        column: x => x.AuthorsId,
+                        principalTable: "Authors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AuthorPrintingEdition_PrintingEditions_PrintingEditionsId",
+                        column: x => x.PrintingEditionsId,
+                        principalTable: "PrintingEditions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsBlocked", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { 1L, 0, "8d22e2af-ab93-44a0-94bb-ba89a6b84ae8", "123@gmail.com", false, "Ivan", false, "Ivanov", false, null, null, null, null, null, false, null, false, null },
+                    { 2L, 0, "3d1b3ae9-ec00-490c-9267-566d794d251d", "1235@gmail.com", false, "Petr", false, "Petrov", false, null, null, null, null, null, false, null, false, null },
+                    { 3L, 0, "d5835f60-9f8b-48be-a723-a69f64f3ad6e", "123555@gmail.com", false, "Vova", false, "Sidorov", false, null, null, null, null, null, false, null, false, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Authors",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "TestAuthor" },
+                    { 9L, "Tolstoy" },
+                    { 10L, "Gogol" },
+                    { 11L, "Pushkin" },
+                    { 12L, "Gorkiy" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PrintingEditions",
+                columns: new[] { "Id", "Currency", "Description", "IsRemoved", "Prise", "Status", "Type" },
+                values: new object[,]
+                {
+                    { 1L, 6, "init desc", false, 5.0, "Avalible", 1 },
+                    { 6L, 6, "Anna Karenina", false, 5.0, "Avalible", 1 },
+                    { 7L, 6, "Kosaks", false, 5.0, "Avalible", 1 },
+                    { 8L, 6, "Diablo", false, 4.0, "Avalible", 1 },
+                    { 9L, 5, "The Captain's Daughter", false, 5.0, "Avalible", 1 },
+                    { 10L, 6, "Eugene Onegin", false, 5.0, "Avalible", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AuthorPrintingEdition",
+                columns: new[] { "AuthorsId", "PrintingEditionsId" },
+                values: new object[] { 9L, 6L });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -195,6 +290,11 @@ namespace Store.DataAccessLayer.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AuthorPrintingEdition_PrintingEditionsId",
+                table: "AuthorPrintingEdition",
+                column: "PrintingEditionsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -215,10 +315,19 @@ namespace Store.DataAccessLayer.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "AuthorPrintingEdition");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Authors");
+
+            migrationBuilder.DropTable(
+                name: "PrintingEditions");
         }
     }
 }

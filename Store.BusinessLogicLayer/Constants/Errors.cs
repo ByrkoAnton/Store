@@ -10,6 +10,11 @@ namespace Store.BusinessLogicLayer.Constants
     {
         public class Error
         {
+            public const string NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS= "no any author in db with this conditions";
+            public const string NO_ANY_AUTHOR_IN_DB = "no any author in db";
+            public const string NO_AUTHOR_WITH_THIS_ID_DB = "no author with this id db";
+            public const string AUTHOR_REMOVE_FAILD_NO_AUTHOR_IN_DB = "author remove faild - no in db";
+            public const string AUTHOR_CREATE_FAILD_AUTHOR_ALREDY_EXISTS_IN_DB = "author creation faild - author alredy exists in db";
             public const string PASSWORD_RESET_FAILD_CONTACT_ADMIN = "password reset faild contact admin";
             public const string PASSWORD_RESET_FAILD_NO_USER_WITH_THIS_EMAIL = "password reset faild no user with this email";
             public const string LOGIN_FAILD_MODELI_IS_NULL = "login faild - model is NULL";

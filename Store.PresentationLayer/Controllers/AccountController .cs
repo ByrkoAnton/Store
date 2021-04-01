@@ -14,7 +14,7 @@ namespace Store.PresentationLayer.Controllers
     {
         private readonly IAccountService _accountService;
 
-        public AccountController(IAccountService accountService, IEmailServices emailServices)
+        public AccountController(IAccountService accountService, IEmailProvider emailServices)
         {
             _accountService = accountService;
         }

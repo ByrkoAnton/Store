@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Providers.Interfaces
 {
-    public interface IRandomPasswordGenerator
+    public interface IRandomPasswordGeneratorProvider
     {
         public string GenerateRandomPassword ();
     }

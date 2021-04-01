@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Common\Interfaces\" />
-    <Folder Include="Models\Authors\" />
     <Folder Include="Models\Base\" />
     <Folder Include="Models\Enums\" />
     <Folder Include="Models\PrintingEdition\" />

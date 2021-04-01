@@ -35,15 +35,17 @@ namespace Store.PresentationLayer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddTransient<IAuthorRepository, AuthorRepository>();
+
+
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<IEmailServices, EmailServises>();
+            services.AddTransient<IEmailProvider, EmailProvider>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IJwtProvider, JwtProvider>();
-            services.AddTransient<IRandomPasswordGenerator, RandomPasswordGenerator>();
-            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddTransient<IAuhorServise, AuthorService>();
-            services.AddTransient<IAuthorRepository, AuthorRepository>();
+            services.AddTransient<IRandomPasswordGeneratorProvider, RandomPasswordGeneratorProvider>();
+            services.AddTransient<IAuthorServise, AuthorService>();
             
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
@@ -63,8 +65,8 @@ namespace Store.PresentationLayer
 
             services.AddControllersWithViews();
 
-            services.InitialazerAsync().Wait();
-            
+            //services.InitialazerAsync().Wait();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -121,6 +123,6 @@ namespace Store.PresentationLayer
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-        }   
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Servises
 {
-    public class EmailServises : IEmailServices
+    public class EmailProvider : IEmailProvider
     {
         public async Task SendEmailAsync(string email, string subject, string message)
         {

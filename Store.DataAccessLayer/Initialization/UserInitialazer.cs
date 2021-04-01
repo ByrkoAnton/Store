@@ -19,7 +19,6 @@ namespace Store.PresentationLayer
             string password = "1_Aa123456";
             string firstName = "Anton2";
             string lastName = "Byrko2";
-            string name = "AB2";
         
             try
             {
@@ -44,38 +43,6 @@ namespace Store.PresentationLayer
                     await userManager.AddToRoleAsync(admin, "admin");
                 }
             }
-        }
-        public static async Task<ActionResult> LockOut(this IServiceCollection services, string userName)
-        {
-            var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
-
-            User user = await userManager.FindByNameAsync(userName);
-            if (user is null)
-            {
-                return new ObjectResult("user not found"); 
-            }
-
-            user.LockoutEnabled = true;
-            user.LockoutEnd = DateTime.UtcNow.AddYears(100);
-            await userManager.UpdateAsync(user);
-
-            return new ObjectResult("user locked out");
-        }
-
-        public static async Task<ActionResult> ChangeUserName(this IServiceCollection services, string userName, string newUserName)
-        {
-            var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
-
-            User user = await userManager.FindByNameAsync(userName);
-            if (user is null)
-            {
-                return new ObjectResult("user not found");
-            }
-
-            user.UserName = newUserName;
-            await userManager.UpdateAsync(user);
-
-            return new ObjectResult("user name changed");
         }
     }
 }

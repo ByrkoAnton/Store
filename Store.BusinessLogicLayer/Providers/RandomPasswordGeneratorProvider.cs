@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Providers
 {
-    public class RandomPasswordGenerator : IRandomPasswordGenerator
+    public class RandomPasswordGeneratorProvider : IRandomPasswordGeneratorProvider
     {
-        PasswordOptions opts;
-        public RandomPasswordGenerator()
+        public RandomPasswordGeneratorProvider()
         {
             
         }

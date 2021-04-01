@@ -20,11 +20,11 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly IJwtProvider _jwtProvider;
-        private readonly IEmailServices _emailService;
+        private readonly IEmailProvider _emailService;
 
 
         public AccountService(SignInManager<User> signInManager, UserManager<User> userManager, IJwtProvider jwtProvider,
-            IEmailServices emailService)
+            IEmailProvider emailService)
         {
             _signInManager = signInManager;
             _userManager = userManager;

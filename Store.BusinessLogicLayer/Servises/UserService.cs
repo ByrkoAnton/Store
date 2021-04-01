@@ -18,10 +18,10 @@ namespace Store.BusinessLogicLayer.Servises
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
-        private readonly IEmailServices _emailService;
-        private readonly IRandomPasswordGenerator _randomPasswordGenerator;
+        private readonly IEmailProvider _emailService;
+        private readonly IRandomPasswordGeneratorProvider _randomPasswordGenerator;
 
-        public UserService(UserManager<User> userManager, IEmailServices emailService, IRandomPasswordGenerator randomPasswordGenerator)
+        public UserService(UserManager<User> userManager, IEmailProvider emailService, IRandomPasswordGeneratorProvider randomPasswordGenerator)
         {
             _userManager = userManager;
             _emailService = emailService;

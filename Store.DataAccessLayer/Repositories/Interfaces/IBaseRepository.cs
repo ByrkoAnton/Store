@@ -8,7 +8,7 @@ namespace Store.DataAccessLayer.Repositories.Base
     public interface IBaseRepository<TEntity> where TEntity : class
     {
         public Task CreateAsync(TEntity item);
-        public Task<TEntity> FindByIdAsync(long id);
+        public Task<TEntity> GetByIdAsync(long id);
         public Task<IEnumerable<TEntity>> GetAllAsync();
         public Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
         public Task RemoveAsync(TEntity item);

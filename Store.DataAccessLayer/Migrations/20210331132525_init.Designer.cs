@@ -10,8 +10,8 @@ using Store.DataAccessLayer.AppContext;
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210317084122_user4Added")]
-    partial class user4Added
+    [Migration("20210331132525_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,28 @@ namespace Store.DataAccessLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("AuthorPrintingEdition", b =>
+                {
+                    b.Property<long>("AuthorsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PrintingEditionsId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("AuthorsId", "PrintingEditionsId");
+
+                    b.HasIndex("PrintingEditionsId");
+
+                    b.ToTable("AuthorPrintingEdition");
+
+                    b.HasData(
+                        new
+                        {
+                            AuthorsId = 9L,
+                            PrintingEditionsId = 6L
+                        });
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<long>", b =>
                 {
@@ -169,69 +191,27 @@ namespace Store.DataAccessLayer.Migrations
                         new
                         {
                             Id = 1L,
+                            Name = "TestAuthor"
+                        },
+                        new
+                        {
+                            Id = 9L,
                             Name = "Tolstoy"
                         },
                         new
                         {
-                            Id = 2L,
+                            Id = 10L,
                             Name = "Gogol"
                         },
                         new
                         {
-                            Id = 3L,
+                            Id = 11L,
                             Name = "Pushkin"
                         },
                         new
                         {
-                            Id = 4L,
+                            Id = 12L,
                             Name = "Gorkiy"
-                        });
-                });
-
-            modelBuilder.Entity("Store.DataAccessLayer.Entities.AuthorPrintingEdition", b =>
-                {
-                    b.Property<long>("AuthorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PrintingEditionId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("AuthorId", "PrintingEditionId");
-
-                    b.HasIndex("PrintingEditionId");
-
-                    b.ToTable("AuthorPrintingEditions");
-
-                    b.HasData(
-                        new
-                        {
-                            AuthorId = 1L,
-                            PrintingEditionId = 1L
-                        },
-                        new
-                        {
-                            AuthorId = 1L,
-                            PrintingEditionId = 2L
-                        },
-                        new
-                        {
-                            AuthorId = 1L,
-                            PrintingEditionId = 3L
-                        },
-                        new
-                        {
-                            AuthorId = 3L,
-                            PrintingEditionId = 4L
-                        },
-                        new
-                        {
-                            AuthorId = 3L,
-                            PrintingEditionId = 5L
-                        },
-                        new
-                        {
-                            AuthorId = 2L,
-                            PrintingEditionId = 1L
                         });
                 });
 
@@ -241,9 +221,6 @@ namespace Store.DataAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long?>("AuthorId")
-                        .HasColumnType("bigint");
 
                     b.Property<int>("Currency")
                         .HasColumnType("int");
@@ -265,14 +242,22 @@ namespace Store.DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.ToTable("PrintingEditions");
 
                     b.HasData(
                         new
                         {
                             Id = 1L,
+                            Currency = 6,
+                            Description = "init desc",
+                            IsRemoved = false,
+                            Prise = 5.0,
+                            Status = "Avalible",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 6L,
                             Currency = 6,
                             Description = "Anna Karenina",
                             IsRemoved = false,
@@ -282,7 +267,7 @@ namespace Store.DataAccessLayer.Migrations
                         },
                         new
                         {
-                            Id = 2L,
+                            Id = 7L,
                             Currency = 6,
                             Description = "Kosaks",
                             IsRemoved = false,
@@ -292,7 +277,7 @@ namespace Store.DataAccessLayer.Migrations
                         },
                         new
                         {
-                            Id = 3L,
+                            Id = 8L,
                             Currency = 6,
                             Description = "Diablo",
                             IsRemoved = false,
@@ -302,7 +287,7 @@ namespace Store.DataAccessLayer.Migrations
                         },
                         new
                         {
-                            Id = 4L,
+                            Id = 9L,
                             Currency = 5,
                             Description = "The Captain's Daughter",
                             IsRemoved = false,
@@ -312,7 +297,7 @@ namespace Store.DataAccessLayer.Migrations
                         },
                         new
                         {
-                            Id = 5L,
+                            Id = 10L,
                             Currency = 6,
                             Description = "Eugene Onegin",
                             IsRemoved = false,
@@ -400,9 +385,9 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 2L,
+                            Id = 1L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "112821fe-a4ca-4886-aadd-c242493e9666",
+                            ConcurrencyStamp = "8d22e2af-ab93-44a0-94bb-ba89a6b84ae8",
                             Email = "123@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "Ivan",
@@ -414,9 +399,9 @@ namespace Store.DataAccessLayer.Migrations
                         },
                         new
                         {
-                            Id = 4L,
+                            Id = 2L,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "96987178-fffb-42c5-b496-89d0cfb53bee",
+                            ConcurrencyStamp = "3d1b3ae9-ec00-490c-9267-566d794d251d",
                             Email = "1235@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "Petr",
@@ -425,7 +410,36 @@ namespace Store.DataAccessLayer.Migrations
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "d5835f60-9f8b-48be-a723-a69f64f3ad6e",
+                            Email = "123555@gmail.com",
+                            EmailConfirmed = false,
+                            FirstName = "Vova",
+                            IsBlocked = false,
+                            LastName = "Sidorov",
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false
                         });
+                });
+
+            modelBuilder.Entity("AuthorPrintingEdition", b =>
+                {
+                    b.HasOne("Store.DataAccessLayer.Entities.Author", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Store.DataAccessLayer.Entities.PrintingEdition", null)
+                        .WithMany()
+                        .HasForeignKey("PrintingEditionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -477,44 +491,6 @@ namespace Store.DataAccessLayer.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Store.DataAccessLayer.Entities.AuthorPrintingEdition", b =>
-                {
-                    b.HasOne("Store.DataAccessLayer.Entities.Author", "Author")
-                        .WithMany("AuthorPrintingEditions")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Store.DataAccessLayer.Entities.PrintingEdition", "PrintingEdition")
-                        .WithMany("AuthorPrintingEditions")
-                        .HasForeignKey("PrintingEditionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("PrintingEdition");
-                });
-
-            modelBuilder.Entity("Store.DataAccessLayer.Entities.PrintingEdition", b =>
-                {
-                    b.HasOne("Store.DataAccessLayer.Entities.Author", null)
-                        .WithMany("PrintingEditions")
-                        .HasForeignKey("AuthorId");
-                });
-
-            modelBuilder.Entity("Store.DataAccessLayer.Entities.Author", b =>
-                {
-                    b.Navigation("AuthorPrintingEditions");
-
-                    b.Navigation("PrintingEditions");
-                });
-
-            modelBuilder.Entity("Store.DataAccessLayer.Entities.PrintingEdition", b =>
-                {
-                    b.Navigation("AuthorPrintingEditions");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Store.DataAccessLayer.AppContext;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace Store.DataAccessLayer.Repositories.Base
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
         private DbContext _context;
-        private DbSet<TEntity> _dbSet;
+        protected DbSet<TEntity> _dbSet;
 
-        public BaseRepository(DbContext context)
+        public BaseRepository(ApplicationContext context)
         {
             _context = context;
             _dbSet = context.Set<TEntity>();
@@ -24,17 +25,18 @@ namespace Store.DataAccessLayer.Repositories.Base
          await _context.SaveChangesAsync();
         }
 
-        public async Task<TEntity> FindByIdAsync(long id)
+        public virtual async Task<TEntity> GetByIdAsync(long id)
         {
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+ 
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)////////////////
+        public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();
         }

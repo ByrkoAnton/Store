@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Store.DataAccessLayer.Entities;
+using System;
 using static Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums;
+using Type = Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums.Type;
 
 namespace Store.DataAccessLayer.AppContext
 {
@@ -11,36 +13,41 @@ namespace Store.DataAccessLayer.AppContext
 
         public DbSet<PrintingEdition> PrintingEditions { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<AuthorPrintingEdition> AuthorPrintingEditions { get; set; }
+        
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
 
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AuthorPrintingEdition>()
-            .HasKey(t => new { t.AuthorId, t.PrintingEditionId });
+            modelBuilder.Entity<Author>()
+            .HasData(
+            new Author
+            {
+                Id = 1L,
+                Name = "TestAuthor"
+            });
+            modelBuilder.Entity<PrintingEdition>()
+            .HasData(
+            new PrintingEdition
+            {
+                Id = 1L,
+                Description = "init desc",
+                Currency = Currency.UAH,
+                Prise = 5,
+                Status = "Avalible",
+                Type = Type.Book,
 
-            modelBuilder.Entity<AuthorPrintingEdition>()
-                .HasOne(sc => sc.Author)
-                .WithMany(s => s.AuthorPrintingEditions)
-                .HasForeignKey(sc => sc.AuthorId);
-
-            modelBuilder.Entity<AuthorPrintingEdition>()
-                .HasOne(sc => sc.PrintingEdition)
-                .WithMany(c => c.AuthorPrintingEditions)
-                .HasForeignKey(sc => sc.PrintingEditionId);
-
-            var author1 = new Author { Id = 1, Name = "Tolstoy" };
-            var author2 = new Author { Id = 2, Name = "Gogol" };
-            var author3 = new Author { Id = 3, Name = "Pushkin" };
-            var author4 = new Author { Id = 4, Name = "Gorkiy" };
+            });
+           
+        
+            var author1 = new Author { Id = 9, Name = "Tolstoy" };
+            var author2 = new Author { Id = 10, Name = "Gogol" };
+            var author3 = new Author { Id = 11, Name = "Pushkin" };
+            var author4 = new Author { Id = 12, Name = "Gorkiy" };
 
             modelBuilder.Entity<Author>().HasData(author1);
             modelBuilder.Entity<Author>().HasData(author2);
@@ -57,7 +64,7 @@ namespace Store.DataAccessLayer.AppContext
 
             var pe1 = new PrintingEdition
             {
-                Id = 1,
+                Id = 6,
                 Description = "Anna Karenina",
                 Prise = 5,
                 IsRemoved = false,
@@ -67,7 +74,7 @@ namespace Store.DataAccessLayer.AppContext
             };
             var pe2 = new PrintingEdition
             {
-                Id = 2,
+                Id = 7,
                 Description = "Kosaks",
                 Prise = 5,
                 IsRemoved = false,
@@ -77,7 +84,7 @@ namespace Store.DataAccessLayer.AppContext
             };
             var pe3 = new PrintingEdition
             {
-                Id = 3,
+                Id = 8,
                 Description = "Diablo",
                 Prise = 4,
                 IsRemoved = false,
@@ -87,7 +94,7 @@ namespace Store.DataAccessLayer.AppContext
             };
             var pe4 = new PrintingEdition
             {
-                Id = 4,
+                Id = 9,
                 Description = "The Captain's Daughter",
                 Prise = 5,
                 IsRemoved = false,
@@ -97,7 +104,7 @@ namespace Store.DataAccessLayer.AppContext
             };
             var pe5 = new PrintingEdition
             {
-                Id = 5,
+                Id = 10,
                 Description = "Eugene Onegin",
                 Prise = 5,
                 IsRemoved = false,
@@ -106,18 +113,28 @@ namespace Store.DataAccessLayer.AppContext
                 Type = Type.Book
             };
 
+            var pe6 = new PrintingEdition
+            {
+                Id = 11,
+                Description = "Boris Godynov",
+                Prise = 50,
+                IsRemoved = false,
+                Status = "Avalible",
+                Currency = Currency.GBP,
+                Type = Type.Book
+            };
+
             modelBuilder.Entity<PrintingEdition>().HasData(pe1);
             modelBuilder.Entity<PrintingEdition>().HasData(pe2);
             modelBuilder.Entity<PrintingEdition>().HasData(pe3);
             modelBuilder.Entity<PrintingEdition>().HasData(pe4);
             modelBuilder.Entity<PrintingEdition>().HasData(pe5);
+            modelBuilder.Entity<PrintingEdition>().HasData(pe6);
 
-            modelBuilder.Entity<AuthorPrintingEdition>().HasData(new AuthorPrintingEdition { PrintingEditionId = pe1.Id, AuthorId = author1.Id });
-            modelBuilder.Entity<AuthorPrintingEdition>().HasData(new AuthorPrintingEdition { PrintingEditionId = pe2.Id, AuthorId = author1.Id });
-            modelBuilder.Entity<AuthorPrintingEdition>().HasData(new AuthorPrintingEdition { PrintingEditionId = pe3.Id, AuthorId = author1.Id });
-            modelBuilder.Entity<AuthorPrintingEdition>().HasData(new AuthorPrintingEdition { PrintingEditionId = pe4.Id, AuthorId = author3.Id });
-            modelBuilder.Entity<AuthorPrintingEdition>().HasData(new AuthorPrintingEdition { PrintingEditionId = pe5.Id, AuthorId = author3.Id });
-            modelBuilder.Entity<AuthorPrintingEdition>().HasData(new AuthorPrintingEdition { PrintingEditionId = pe1.Id, AuthorId = author2.Id });
+            modelBuilder.Entity<Author>()
+           .HasMany(author => author.PrintingEditions)
+           .WithMany(edition => edition.Authors)
+           .UsingEntity(join => join.HasData(new { AuthorsId = 9L, PrintingEditionsId = 6L }));
 
             base.OnModelCreating(modelBuilder);
         }
