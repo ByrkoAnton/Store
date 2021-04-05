@@ -37,7 +37,7 @@ namespace Store.PresentationLayer
         {
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IAuthorRepository, AuthorRepository>();
-
+            services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
 
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IRoleService, RoleService>();
@@ -63,7 +63,6 @@ namespace Store.PresentationLayer
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddControllersWithViews();
 
             //services.InitialazerAsync().Wait();
 

@@ -21,16 +21,16 @@ namespace Store.DataAccessLayer.Repositories.Base
 
         public async Task CreateAsync(TEntity item)
         {
-         await _dbSet.AddAsync(item);
-         await _context.SaveChangesAsync();
+            await _dbSet.AddAsync(item);
+            await _context.SaveChangesAsync();
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(long id)
+        public virtual async Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _dbSet.FindAsync(id);
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
         }
 
- 
+
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
@@ -43,13 +43,13 @@ namespace Store.DataAccessLayer.Repositories.Base
 
         public async Task RemoveAsync(TEntity item)
         {
-           _dbSet.Remove(item);
-           await _context.SaveChangesAsync();
+            _dbSet.Remove(item);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(TEntity item)
         {
-           _context.Entry(item).State = EntityState.Modified;
+            _context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }

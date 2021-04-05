@@ -23,6 +23,11 @@ namespace Store.DataAccessLayer.AppContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<PrintingEdition>()
+                .HasMany(c => c.Authors)
+                .WithMany(s => s.PrintingEditions)
+                .UsingEntity(j => j.ToTable("AuthorPrintingEdition"));
+
             modelBuilder.Entity<Author>()
             .HasData(
             new Author

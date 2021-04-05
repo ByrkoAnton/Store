@@ -16,9 +16,9 @@ namespace Store.DataAccessLayer.Repositories
         public AuthorRepository(ApplicationContext context) : base(context)
         {
         }
-        public override  async Task<Author> GetByIdAsync(long id)
+        public override  async Task<Author> GetByIdAsync(Expression<Func<Author, bool>> predicate)
         {
-            var result=await _dbSet.Include(author => author.PrintingEditions).FirstOrDefaultAsync(x => x.Id == id);
+            var result=await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(predicate);
             return result;
 
         }

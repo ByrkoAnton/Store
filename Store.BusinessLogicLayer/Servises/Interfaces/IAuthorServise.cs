@@ -14,7 +14,7 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
         public Task CreateAsync(AuthorModel model);
         public Task<AuthorModel> GetByIdAsync(long id);
   
-        public Task<IEnumerable<AuthorModel>> GetAllAsync();
+        public Task<List<AuthorModel>> GetAllAsync();
         public Task<AuthorModel> GetByNameAsync(AuthorModel model);
         public Task RemoveAsync(AuthorModel model);
         public Task UpdateAsync(AuthorModel model);

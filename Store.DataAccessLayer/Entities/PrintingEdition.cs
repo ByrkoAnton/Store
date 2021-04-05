@@ -13,6 +13,11 @@ namespace Store.DataAccessLayer.Entities
         public Currency Currency { get; set; }
         public Type Type { get; set; }
 
-        public List<Author> Authors { get; set; } = new();
+        public List<Author> Authors { get; set; }
+
+        public PrintingEdition()
+        {
+            Authors = new();
+        }
     }
 }

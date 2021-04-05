@@ -3,6 +3,7 @@ using Store.BusinessLogicLayer.Models.Authors;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -36,8 +37,8 @@ namespace Store.PresentationLayer.Controllers
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
-            await _authorService.GetAllAsync();
-            return Ok();
+            var result = await _authorService.GetAllAsync();
+            return Ok(result);
         }
 
         [HttpGet("GetByName")]

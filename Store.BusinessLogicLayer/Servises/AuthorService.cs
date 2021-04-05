@@ -13,11 +13,13 @@ namespace Store.BusinessLogicLayer.Servises
     public class AuthorService : IAuthorServise
     {
         private readonly IAuthorRepository _authorRepository;
+        private readonly IPrintingEditionRepository _peRepository;
         private readonly IMapper _mapper;
         
-        public AuthorService(IAuthorRepository authorRepository, IMapper mapper)
+        public AuthorService(IAuthorRepository authorRepository, IPrintingEditionRepository peRepository, IMapper mapper)
         {
             _authorRepository = authorRepository;
+            _peRepository = peRepository;
             _mapper = mapper;  
         }
 
@@ -36,7 +38,7 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task<AuthorModel> GetByIdAsync(long id)
         {
-            var author = await _authorRepository.GetByIdAsync(id);
+            var author = await _authorRepository.GetByIdAsync(Authors => Authors.Id == id);
             if (author is null)
             {
                 throw new CustomExeption(Constants.Constants.Error.NO_AUTHOR_WITH_THIS_ID_DB,
@@ -46,7 +48,7 @@ namespace Store.BusinessLogicLayer.Servises
             return authorModel;
         }
 
-        public async Task<IEnumerable<AuthorModel>> GetAllAsync()
+        public async Task<List<AuthorModel>> GetAllAsync()
         {
             var authors = await _authorRepository.GetAllAsync();
             if (!authors.Any())
@@ -55,9 +57,9 @@ namespace Store.BusinessLogicLayer.Servises
                    StatusCodes.Status400BadRequest);
             }
 
-            var authorModels = _mapper.Map<IEnumerable <Author>, List<AuthorModel>>(authors);
+            var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authors);
             
-            return authorModels;
+            return authorModels.ToList();
         }
 
         public async Task<AuthorModel> GetByNameAsync(AuthorModel model)
@@ -86,14 +88,18 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task UpdateAsync(AuthorModel model)
         {
-            var authors = await _authorRepository.GetByIdAsync(model.Id);
-            if (authors is null)
+            var author = await _authorRepository.GetByIdAsync(Authors => Authors.Id == model.Id);
+            //var edition = await _peRepository.GetByIdAsync(PrintingEditions => PrintingEditions.Id == 8);
+            if (author is null)
             {
                 throw new CustomExeption(Constants.Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
                     StatusCodes.Status400BadRequest);
             }
 
-            var author = _mapper.Map<Author>(model);
+            author = _mapper.Map<Author>(model);
+            //author.PrintingEditions.Clear();
+            //author.PrintingEditions.AddRange(model.PrintingEditionModels);
+            
             await _authorRepository.UpdateAsync(author);
         }
     }
