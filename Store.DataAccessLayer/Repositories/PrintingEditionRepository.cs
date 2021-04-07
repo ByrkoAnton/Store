@@ -20,9 +20,15 @@ namespace Store.DataAccessLayer.Repositories
 
         public override async Task<PrintingEdition> GetByIdAsync(Expression<Func<PrintingEdition, bool>> predicate)
         {
-            var result = await _dbSet.Include( pe => pe.Authors).FirstOrDefaultAsync(predicate);
+            var result = await _dbSet.Include(pe => pe.Authors).FirstOrDefaultAsync(predicate);
             return result;
 
         }
+
+        //public override async Task<IEnumerable<PrintingEdition>> GetAsync(Expression<Func<PrintingEdition, bool>> predicate)
+        //{
+        //    var result = await _dbSet.Where(pe => pe.Authors).Include(au).ToListAsync();
+        //    return result;
+        //}
     }
 }

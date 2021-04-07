@@ -10,7 +10,7 @@ namespace Store.DataAccessLayer.Repositories.Base
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        private DbContext _context;
+        protected DbContext _context;
         protected DbSet<TEntity> _dbSet;
 
         public BaseRepository(ApplicationContext context)
@@ -47,7 +47,7 @@ namespace Store.DataAccessLayer.Repositories.Base
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(TEntity item)
+        public virtual async Task UpdateAsync(TEntity item)
         {
             _context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();

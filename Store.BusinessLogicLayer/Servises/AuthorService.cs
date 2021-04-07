@@ -89,17 +89,15 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task UpdateAsync(AuthorModel model)
         {
             var author = await _authorRepository.GetByIdAsync(Authors => Authors.Id == model.Id);
-            //var edition = await _peRepository.GetByIdAsync(PrintingEditions => PrintingEditions.Id == 8);
             if (author is null)
             {
                 throw new CustomExeption(Constants.Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
                     StatusCodes.Status400BadRequest);
             }
-
+           
             author = _mapper.Map<Author>(model);
-            //author.PrintingEditions.Clear();
-            //author.PrintingEditions.AddRange(model.PrintingEditionModels);
-            
+            //var editions = _mapper.Map<IEnumerable<PrintingEdition>>(model.PrintingEditionModels);
+
             await _authorRepository.UpdateAsync(author);
         }
     }

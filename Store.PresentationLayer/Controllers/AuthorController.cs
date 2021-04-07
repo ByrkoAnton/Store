@@ -30,8 +30,8 @@ namespace Store.PresentationLayer.Controllers
         [HttpGet("FindById")]
         public async Task<IActionResult> FindById([FromBody] AuthorModel model)
         {
-            await _authorService.GetByIdAsync(model.Id);
-            return Ok();
+           var result = await _authorService.GetByIdAsync(model.Id);
+            return Ok(result);
         }
 
         [HttpGet("GetAll")]
@@ -44,8 +44,8 @@ namespace Store.PresentationLayer.Controllers
         [HttpGet("GetByName")]
         public async Task<IActionResult> GetByName(AuthorModel model)
         {
-            await _authorService.GetByNameAsync(model);
-            return Ok();
+            var result = await _authorService.GetByNameAsync(model);
+            return Ok(result);
         }
 
         [HttpPost("Remove")]

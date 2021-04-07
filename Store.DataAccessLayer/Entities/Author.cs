@@ -8,7 +8,11 @@ namespace Store.DataAccessLayer.Entities
         public long Id { get; set; }
         public string Name { get; set; }
 
-        public List<PrintingEdition> PrintingEditions { get; set; } = new List<PrintingEdition>();
+        public List<PrintingEdition> PrintingEditions { get; set; }
+        public Author()
+        {
+            PrintingEditions = new List<PrintingEdition>();
+        }
   
     }
 }

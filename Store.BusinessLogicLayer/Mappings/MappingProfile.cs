@@ -12,12 +12,30 @@ namespace Store.BusinessLogicLayer.Mappings
         public MappingProfile()
         {
             CreateMap<User, UserUpdateModel>().ReverseMap();
-            //CreateMap<PrintingEditionModel, PrintingEdition>().ReverseMap().MaxDepth(2);
-            CreateMap<PrintingEditionModel, PrintingEdition>().ForMember(x => x.Authors, opt => opt.MapFrom(src=>src.AuthorModels));
-            CreateMap<PrintingEdition, PrintingEditionModel>().ForMember(x => x.AuthorModels, opt => opt.Ignore());
-            //CreateMap<AuthorModel, Author>().ReverseMap().MaxDepth(2);
-            CreateMap<AuthorModel, Author>().ForMember(x => x.PrintingEditions, opt => opt.Ignore());
+
+            //CreateMap<PrintingEditionModel, PrintingEdition>()
+            //    .ForMember(x => x.Authors, opt => opt
+            //    .MapFrom(src => src.AuthorModels));
+
+            //CreateMap<PrintingEdition, PrintingEditionModel>()
+            //    .ForMember(x => x.AuthorModels, opt => opt.Ignore());
+
+            //CreateMap<AuthorModel, Author>()
+            //    .ForMember(x => x.PrintingEditions, opt => opt.Ignore());
+
+            //CreateMap<Author, AuthorModel>()
+            //    .ForMember(x => x.PrintingEditionModels, opt => opt
+            //    .MapFrom(src => src.PrintingEditions));
+
+
+
+            CreateMap<PrintingEditionModel, PrintingEdition>().ForMember(x => x.Authors, opt => opt.MapFrom(src => src.AuthorModels));
+            CreateMap<PrintingEdition, PrintingEditionModel>();
+
+            CreateMap<AuthorModel, Author>().ForMember(x => x.PrintingEditions, opt => opt.MapFrom(src => src.PrintingEditionModels));
             CreateMap<Author, AuthorModel>().ForMember(x => x.PrintingEditionModels, opt => opt.MapFrom(src => src.PrintingEditions));
+
+
             //CreateMap<PrintingEdition, PrintingEditionModel>().ReverseMap();
             //CreateMap<PrintingEdition, PrintingEditionModel>().ForMember(i => i.AuthorModels, opt => opt
             //.MapFrom(src => src.Authors));
