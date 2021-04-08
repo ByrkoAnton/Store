@@ -13,14 +13,13 @@ namespace Store.BusinessLogicLayer.Servises
     public class AuthorService : IAuthorServise
     {
         private readonly IAuthorRepository _authorRepository;
-        private readonly IPrintingEditionRepository _peRepository;
         private readonly IMapper _mapper;
-        
-        public AuthorService(IAuthorRepository authorRepository, IPrintingEditionRepository peRepository, IMapper mapper)
+        private readonly IPrintingEditionRepository _printingEdition;
+        public AuthorService(IAuthorRepository authorRepository, IMapper mapper, IPrintingEditionRepository printingEdition)
         {
             _authorRepository = authorRepository;
-            _peRepository = peRepository;
-            _mapper = mapper;  
+            _mapper = mapper;
+            _printingEdition = printingEdition;
         }
 
         public async Task CreateAsync(AuthorModel model)
@@ -58,7 +57,7 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authors);
-            
+
             return authorModels.ToList();
         }
 
@@ -94,9 +93,8 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomExeption(Constants.Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
                     StatusCodes.Status400BadRequest);
             }
-           
+
             author = _mapper.Map<Author>(model);
-            //var editions = _mapper.Map<IEnumerable<PrintingEdition>>(model.PrintingEditionModels);
 
             await _authorRepository.UpdateAsync(author);
         }

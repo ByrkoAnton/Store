@@ -19,7 +19,7 @@ namespace Store.DataAccessLayer.Repositories
         }
         public override  async Task<Author> GetByIdAsync(Expression<Func<Author, bool>> predicate)
         {
-            var result=await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(predicate);
+            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(predicate);
             return result;
         }
 
@@ -34,37 +34,16 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
-        public override async Task UpdateAsync(Author autor)
+        public override async Task UpdateAsync(Author author)
         {
-            /////////////// это последний относительно рабочий вариант
-            //var printingEditions = new List<PrintingEdition>(autor.PrintingEditions);
-            //autor.PrintingEditions.Clear();
-            //_dbSet.Update(autor).State = EntityState.Modified;
-            //var author = _dbSet.Include(autor => autor.PrintingEditions).FirstOrDefault(Authors => Authors.Id == autor.Id);
-            //author.PrintingEditions.AddRange(printingEditions);
-            //await _context.SaveChangesAsync();
-            //////////////////////////////////////////////// 
-            var printingEditions = new List<PrintingEdition>(autor.PrintingEditions);
-            autor.PrintingEditions.Clear();
-            _dbSet.Update(autor);
-            var result = await _dbSet.Include(autor => autor.PrintingEditions).FirstOrDefaultAsync(x => x.Id == autor.Id);
-            result.PrintingEditions = printingEditions;
-            await _context.SaveChangesAsync();
+            var authorForUpdate = _dbSet.Include(author => author.PrintingEditions).
+                FirstOrDefault(Authors => Authors.Id == author.Id);
 
-            //var authors = new List<Author>(item.Authors);
-            //item.Authors.Clear();
-            //_dbSet.Update(item);
-            //var result = await _dbSet.Include(edition => edition.Authors).FirstOrDefaultAsync(x => x.Id == item.Id);
-            //result.Authors = authors;
-            //await SaveChangesAsync();
-
-            //var printingEditions = new List<PrintingEdition>(autor.PrintingEditions);
-            ////_dbSet.Update(autor);
-            //var author = _dbSet.Include(autor => autor.PrintingEditions).FirstOrDefault(Authors => Authors.Id == autor.Id);
-            //author.PrintingEditions.Clear();
-            //_dbSet.Update(author);
-            //author.PrintingEditions.AddRange(printingEditions);
-            //await _context.SaveChangesAsync();
+            authorForUpdate.PrintingEditions.RemoveAll(p => !author.PrintingEditions.Exists(p2 => p2.Id == p.Id));
+            var result = author.PrintingEditions.Where(p => !authorForUpdate.PrintingEditions.Exists(p2 => p2.Id == p.Id)).ToList();
+            authorForUpdate.PrintingEditions.AddRange(result);
+            _dbSet.Update(authorForUpdate).State = EntityState.Modified;
+            await _context.SaveChangesAsync(); 
         }
     }
 }

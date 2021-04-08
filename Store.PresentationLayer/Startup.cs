@@ -46,6 +46,7 @@ namespace Store.PresentationLayer
             services.AddTransient<IJwtProvider, JwtProvider>();
             services.AddTransient<IRandomPasswordGeneratorProvider, RandomPasswordGeneratorProvider>();
             services.AddTransient<IAuthorServise, AuthorService>();
+            services.AddTransient<IPrintingEditionService, PrintingEditionService>();
             
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),

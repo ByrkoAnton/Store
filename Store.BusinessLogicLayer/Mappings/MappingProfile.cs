@@ -11,7 +11,7 @@ namespace Store.BusinessLogicLayer.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<User, UserUpdateModel>().ReverseMap();
+            //CreateMap<User, UserUpdateModel>().ReverseMap();
 
             //CreateMap<PrintingEditionModel, PrintingEdition>()
             //    .ForMember(x => x.Authors, opt => opt
@@ -34,6 +34,7 @@ namespace Store.BusinessLogicLayer.Mappings
 
             CreateMap<AuthorModel, Author>().ForMember(x => x.PrintingEditions, opt => opt.MapFrom(src => src.PrintingEditionModels));
             CreateMap<Author, AuthorModel>().ForMember(x => x.PrintingEditionModels, opt => opt.MapFrom(src => src.PrintingEditions));
+
 
 
             //CreateMap<PrintingEdition, PrintingEditionModel>().ReverseMap();
