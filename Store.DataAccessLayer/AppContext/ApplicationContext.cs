@@ -18,7 +18,8 @@ namespace Store.DataAccessLayer.AppContext
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
-
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +36,7 @@ namespace Store.DataAccessLayer.AppContext
                 Id = 1L,
                 Name = "TestAuthor"
             });
+
             modelBuilder.Entity<PrintingEdition>()
             .HasData(
             new PrintingEdition
@@ -49,27 +51,27 @@ namespace Store.DataAccessLayer.AppContext
             });
            
         
-            var author1 = new Author { Id = 9, Name = "Tolstoy" };
-            var author2 = new Author { Id = 10, Name = "Gogol" };
-            var author3 = new Author { Id = 11, Name = "Pushkin" };
-            var author4 = new Author { Id = 12, Name = "Gorkiy" };
+            var author1 = new Author { Id = 2, Name = "Tolstoy" };
+            var author2 = new Author { Id = 3, Name = "Gogol" };
+            var author3 = new Author { Id = 4, Name = "Pushkin" };
+            var author4 = new Author { Id = 5, Name = "Gorkiy" };
 
             modelBuilder.Entity<Author>().HasData(author1);
             modelBuilder.Entity<Author>().HasData(author2);
             modelBuilder.Entity<Author>().HasData(author3);
             modelBuilder.Entity<Author>().HasData(author4);
 
-            var user1 = new User { Id = 1, FirstName = "Ivan", LastName = "Ivanov", IsBlocked = false, Email = "123@gmail.com" };
-            var user2 = new User { Id = 2, FirstName = "Petr", LastName = "Petrov", IsBlocked = false, Email = "1235@gmail.com" };
-            var user5 = new User { Id = 3, FirstName = "Vova", LastName = "Sidorov", IsBlocked = false, Email = "123555@gmail.com" };
+            //var user1 = new User { Id = 1, FirstName = "Ivan", LastName = "Ivanov", IsBlocked = false, Email = "123@gmail.com" };
+            //var user2 = new User { Id = 2, FirstName = "Petr", LastName = "Petrov", IsBlocked = false, Email = "1235@gmail.com" };
+            //var user5 = new User { Id = 3, FirstName = "Vova", LastName = "Sidorov", IsBlocked = false, Email = "123555@gmail.com" };
 
-            modelBuilder.Entity<User>().HasData(user1);
-            modelBuilder.Entity<User>().HasData(user2);
-            modelBuilder.Entity<User>().HasData(user5);
+            //modelBuilder.Entity<User>().HasData(user1);
+            //modelBuilder.Entity<User>().HasData(user2);
+            //modelBuilder.Entity<User>().HasData(user5);
 
             var pe1 = new PrintingEdition
             {
-                Id = 6,
+                Id = 2,
                 Description = "Anna Karenina",
                 Prise = 5,
                 IsRemoved = false,
@@ -79,7 +81,7 @@ namespace Store.DataAccessLayer.AppContext
             };
             var pe2 = new PrintingEdition
             {
-                Id = 7,
+                Id = 3,
                 Description = "Kosaks",
                 Prise = 5,
                 IsRemoved = false,
@@ -89,7 +91,7 @@ namespace Store.DataAccessLayer.AppContext
             };
             var pe3 = new PrintingEdition
             {
-                Id = 8,
+                Id = 4,
                 Description = "Diablo",
                 Prise = 4,
                 IsRemoved = false,
@@ -99,7 +101,7 @@ namespace Store.DataAccessLayer.AppContext
             };
             var pe4 = new PrintingEdition
             {
-                Id = 9,
+                Id = 5,
                 Description = "The Captain's Daughter",
                 Prise = 5,
                 IsRemoved = false,
@@ -109,7 +111,7 @@ namespace Store.DataAccessLayer.AppContext
             };
             var pe5 = new PrintingEdition
             {
-                Id = 10,
+                Id = 6,
                 Description = "Eugene Onegin",
                 Prise = 5,
                 IsRemoved = false,
@@ -120,7 +122,7 @@ namespace Store.DataAccessLayer.AppContext
 
             var pe6 = new PrintingEdition
             {
-                Id = 11,
+                Id = 7,
                 Description = "Boris Godynov",
                 Prise = 50,
                 IsRemoved = false,
@@ -139,7 +141,7 @@ namespace Store.DataAccessLayer.AppContext
             modelBuilder.Entity<Author>()
            .HasMany(author => author.PrintingEditions)
            .WithMany(edition => edition.Authors)
-           .UsingEntity(join => join.HasData(new { AuthorsId = 9L, PrintingEditionsId = 6L }));
+           .UsingEntity(join => join.HasData(new { AuthorsId = 2L, PrintingEditionsId = 2L }));
 
             base.OnModelCreating(modelBuilder);
         }

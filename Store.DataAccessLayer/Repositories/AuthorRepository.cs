@@ -25,24 +25,26 @@ namespace Store.DataAccessLayer.Repositories
 
         public override async Task<IEnumerable<Author>> GetAllAsync()
         {
-            var result = await _dbSet.Include(author => author.PrintingEditions).ToListAsync();
+            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().ToListAsync();
             return result;
         }
         public override async Task<IEnumerable<Author>> GetAsync(Expression<Func<Author, bool>> predicate)
         {
-            var result = await _dbSet.Where(predicate).Include(author => author.PrintingEditions).ToListAsync();
+            var result = await _dbSet.Where(predicate).Include(author => author.PrintingEditions).AsNoTracking().ToListAsync();
             return result;
         }
 
         public override async Task UpdateAsync(Author author)
         {
-            var authorForUpdate = _dbSet.Include(author => author.PrintingEditions).
+            _dbSet.Update(author);
+            List<PrintingEdition> printingEditions = new List<PrintingEdition> (author.PrintingEditions);
+
+            var authorForUpdate = _dbSet.Include(a => a.PrintingEditions).
                 FirstOrDefault(Authors => Authors.Id == author.Id);
 
-            authorForUpdate.PrintingEditions.RemoveAll(p => !author.PrintingEditions.Exists(p2 => p2.Id == p.Id));
-            var result = author.PrintingEditions.Where(p => !authorForUpdate.PrintingEditions.Exists(p2 => p2.Id == p.Id)).ToList();
+            authorForUpdate.PrintingEditions.RemoveAll(p => !printingEditions.Exists(p2 => p2.Id == p.Id));
+            var result = printingEditions.Where(p => !authorForUpdate.PrintingEditions.Exists(p2 => p2.Id == p.Id)).ToList();
             authorForUpdate.PrintingEditions.AddRange(result);
-            _dbSet.Update(authorForUpdate).State = EntityState.Modified;
             await _context.SaveChangesAsync(); 
         }
     }

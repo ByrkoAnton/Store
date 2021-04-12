@@ -14,12 +14,10 @@ namespace Store.BusinessLogicLayer.Servises
     {
         private readonly IAuthorRepository _authorRepository;
         private readonly IMapper _mapper;
-        private readonly IPrintingEditionRepository _printingEdition;
-        public AuthorService(IAuthorRepository authorRepository, IMapper mapper, IPrintingEditionRepository printingEdition)
+        public AuthorService(IAuthorRepository authorRepository, IMapper mapper)
         {
             _authorRepository = authorRepository;
             _mapper = mapper;
-            _printingEdition = printingEdition;
         }
 
         public async Task CreateAsync(AuthorModel model)
@@ -64,7 +62,7 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task<AuthorModel> GetByNameAsync(AuthorModel model)
         {
             var author = await _authorRepository.GetAsync(Authors => Authors.Name == model.Name);
-            if (author is null)
+            if (!author.Any())
             {
                 throw new CustomExeption(Constants.Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
                    StatusCodes.Status400BadRequest);

@@ -15,10 +15,10 @@ namespace Store.PresentationLayer
             var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
             var rolesManager = services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole<long>>>();
 
-            string email = "Byrko2@gmail.com";
+            string email = "Byrko@gmail.com";
             string password = "1_Aa123456";
-            string firstName = "Anton2";
-            string lastName = "Byrko2";
+            string firstName = "Anton";
+            string lastName = "Byrko";
         
             try
             {

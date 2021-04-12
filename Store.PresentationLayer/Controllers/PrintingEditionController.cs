@@ -37,5 +37,33 @@ namespace Store.PresentationLayer.Controllers
             await _editionService.CreateAsync(model);
             return Ok();
         }
+
+        [HttpPost("Remove")]
+        public async Task<IActionResult> Remove([FromBody] PrintingEditionModel model)
+        {
+            await _editionService.RemoveAsync(model);
+            return Ok();
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _editionService.GetAllAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("GetByDescription")]
+        public async Task<IActionResult> GetByDescription(PrintingEditionModel model)
+        {
+            var result = await _editionService.GetByDescriptionAsync(model);
+            return Ok(result);
+        }
+
+        [HttpGet("Update")]
+        public async Task<IActionResult> Update(PrintingEditionModel model)
+        {
+            await _editionService.UpdateAsync(model);
+            return Ok();
+        }
     }
 }

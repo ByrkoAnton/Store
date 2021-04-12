@@ -47,7 +47,7 @@ namespace Store.PresentationLayer
             services.AddTransient<IRandomPasswordGeneratorProvider, RandomPasswordGeneratorProvider>();
             services.AddTransient<IAuthorServise, AuthorService>();
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();
-            
+
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("Store.DataAccessLayer")));
@@ -64,6 +64,8 @@ namespace Store.PresentationLayer
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             //services.InitialazerAsync().Wait();
 
@@ -86,7 +88,8 @@ namespace Store.PresentationLayer
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new MappingProfile());
+                mc.AddProfile(new AuthorMappingProfile());
+                mc.AddProfile(new PrintingEditionMappingProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

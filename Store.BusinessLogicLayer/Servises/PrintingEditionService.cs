@@ -38,8 +38,8 @@ namespace Store.BusinessLogicLayer.Servises
             var editionModel = _mapper.Map<PrintingEditionModel>(edition);
             return editionModel;
         }
-
         public async Task CreateAsync(PrintingEditionModel model)
+
         {
             var editions = await _printingEditionRepository.GetAsync(edition => edition.Description == model.Description);
 
@@ -53,20 +53,71 @@ namespace Store.BusinessLogicLayer.Servises
             {
                 throw new CustomExeption(Constants.Constants.Error.EDITION_MUST_HAVE_AUTHOR,
                     StatusCodes.Status400BadRequest);
-            }
+            } 
 
-            foreach (var i in model.AuthorModels)
+            var authors = _mapper.Map<IEnumerable<Author>>(model.AuthorModels).ToList();
+            var allAuthors = await _authorRepository.GetAllAsync();
+
+            int authorsCountDifference = allAuthors.Count(p => authors.Exists(p2 => p2.Name == p.Name)) - authors.Count();
+            if (authorsCountDifference != 0)
             {
-                var authors = await _authorRepository.GetAsync(authors => authors.Name == i.Name);
-                if (!authors.Any())
-                {
-                    throw new CustomExeption(Constants.Constants.Error.NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST,
-                    StatusCodes.Status400BadRequest);
-                }
+                throw new CustomExeption(Constants.Constants.Error.NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST,
+                StatusCodes.Status400BadRequest);
             }
-
+            
             var printingEdition = _mapper.Map<PrintingEdition>(model);
             await _printingEditionRepository.CreateAsync(printingEdition);
         }
+        public async Task RemoveAsync(PrintingEditionModel model)
+        {
+            var edition = await _printingEditionRepository.GetAsync(edition => edition.Description == model.Description);
+            if (!edition.Any())
+            {
+                throw new CustomExeption(Constants.Constants.Error.EDITION_BY_ID_NOT_FOUND,
+                    StatusCodes.Status400BadRequest);
+            }
+            await _printingEditionRepository.RemoveAsync(edition.First());
+        }
+        public async Task<List<PrintingEditionModel>> GetAllAsync()
+        {
+            var editions = await _printingEditionRepository.GetAllAsync();
+            if (!editions.Any())
+            {
+                throw new CustomExeption(Constants.Constants.Error.NO_ANY_EDITION_IN_DB,
+                   StatusCodes.Status400BadRequest);
+            }
+
+            var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>>(editions);
+
+            return editionModels.ToList();
+        }
+
+        public async Task<PrintingEditionModel> GetByDescriptionAsync(PrintingEditionModel model)
+        {
+            var editions = await _printingEditionRepository.GetAsync(pe => pe.Description == model.Description);
+            if (!editions.Any())
+            {
+                throw new CustomExeption(Constants.Constants.Error.NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS,
+                   StatusCodes.Status400BadRequest);
+            }
+            var editionModel = _mapper.Map<PrintingEditionModel>(editions.First());
+
+            return editionModel;
+        }
+
+        public async Task UpdateAsync(PrintingEditionModel model)
+        {
+            var edition = await _printingEditionRepository.GetByIdAsync(edition => edition.Id == model.Id);
+            if (edition is null)
+            {
+                throw new CustomExeption(Constants.Constants.Error.NO_EDITION_ID_IN_DB,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            edition = _mapper.Map<PrintingEdition>(model);
+
+            await _printingEditionRepository.UpdateAsync(edition);
+        }
     }
+
 }

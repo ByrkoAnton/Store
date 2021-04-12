@@ -10,8 +10,11 @@ namespace Store.BusinessLogicLayer.Constants
     {
         public class Error
         {
+            public const string NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS = "no any editions in db with this conditions";
+            public const string NO_ANY_EDITION_IN_DB = "No any edition in db";
             public const string NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST = "Add author in DB at fitst. Then add edition";
             public const string EDITION_MUST_HAVE_AUTHOR = "printing edition must to have any author";
+            public const string EDITION_BY_ID_NOT_FOUND = "edition with this id not found";
             public const string EDITION_EXISTS_DB = "printing edition with this name already exists in db";
             public const string NO_EDITION_ID_IN_DB = "no any printing edition in db with this id";
             public const string NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS = "no any author in db with this conditions";
