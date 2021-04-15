@@ -4,6 +4,8 @@ namespace Store.BusinessLogicLayer.Models.Users
 {
     public class UserModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = Constants.Constants.Error.REGISRATION_FAILD_NO_IMAIL_IN_MODEL)]
         public string Email { get; set; }
 
@@ -15,5 +17,6 @@ namespace Store.BusinessLogicLayer.Models.Users
 
         [Required(ErrorMessage = Constants.Constants.Error.REGISRATION_FAILD_NO_PASSWORD_IN_MODEL)]
         public string Password { get; set; }
+        public bool IsBlocked { get; set; }
     }
 }

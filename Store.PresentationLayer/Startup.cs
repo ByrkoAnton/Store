@@ -90,6 +90,7 @@ namespace Store.PresentationLayer
             {
                 mc.AddProfile(new AuthorMappingProfile());
                 mc.AddProfile(new PrintingEditionMappingProfile());
+                mc.AddProfile(new UserMappingProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

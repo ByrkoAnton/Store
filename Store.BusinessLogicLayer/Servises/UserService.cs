@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Providers.Interfaces;
@@ -20,12 +21,15 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly UserManager<User> _userManager;
         private readonly IEmailProvider _emailService;
         private readonly IRandomPasswordGeneratorProvider _randomPasswordGenerator;
+        private readonly IMapper _mapper;
 
-        public UserService(UserManager<User> userManager, IEmailProvider emailService, IRandomPasswordGeneratorProvider randomPasswordGenerator)
+        public UserService(UserManager<User> userManager, IEmailProvider emailService,
+            IRandomPasswordGeneratorProvider randomPasswordGenerator, IMapper mapper)
         {
             _userManager = userManager;
             _emailService = emailService;
             _randomPasswordGenerator = randomPasswordGenerator;
+            _mapper = mapper;
         }
 
         public async Task AddUserToRoleAsync(UserUpdateModel updateModel)
@@ -45,7 +49,6 @@ namespace Store.BusinessLogicLayer.Servises
                     StatusCodes.Status400BadRequest);
             }
         }
-
         public async Task<IList<string>> GetUserRoleAsync(UserUpdateModel updateModel)
         {
             var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
@@ -64,7 +67,6 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             return userRoles;
-
         }
         public async Task<bool> IsUserInRoleAsync(UserUpdateModel updateModel)
         {
@@ -79,7 +81,6 @@ namespace Store.BusinessLogicLayer.Servises
 
             return true;
         }
-
         public async Task UserBlockStatusChangingAsync(UserUpdateModel updateModel)
         {
             var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
@@ -98,7 +99,6 @@ namespace Store.BusinessLogicLayer.Servises
                     $" {StatusCodes.Status500InternalServerError}");
             }
         }
-
         public async Task DeleteAllBlockedUserAsync()
         {
 
@@ -112,7 +112,6 @@ namespace Store.BusinessLogicLayer.Servises
                 }
             }
         }
-
         public async Task UserDeleteAsync(UserUpdateModel updateModel)
         {
             var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
@@ -130,7 +129,6 @@ namespace Store.BusinessLogicLayer.Servises
                     $" {StatusCodes.Status500InternalServerError}");
             }
         }
-
         public async Task UserUpdateAsync(UserUpdateModel updateModel)
         {
             var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
@@ -163,7 +161,6 @@ namespace Store.BusinessLogicLayer.Servises
                     $" {StatusCodes.Status500InternalServerError}");
             }
         }
-
         public async Task<string> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel)
         {
             var user = await _userManager.FindByEmailAsync(forgotPasswordModel.Email);
@@ -192,9 +189,30 @@ namespace Store.BusinessLogicLayer.Servises
             $"new password is {newPassword}");
 
             return "check your email";
-
         }
+        public List<UserModel> GetAllUsers()
+        {
+            var users = _userManager.Users.ToList();
+            var userModels = _mapper.Map<IEnumerable<UserModel>>(users);
+            return userModels.ToList();
+        }
+        public List<UserModel> GetFiltratedUsers(UserFiltrationModel model)
+        {
+            dynamic isBlocked = Convert.ToInt32(model.IsBlocked);
+            if (model.IsBlocked is null)
+            {
+                isBlocked = null;
+            }
 
+            var users = _userManager.Users
+                .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
+                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
+                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
+                && EF.Functions.Like(Convert.ToInt32(n.IsBlocked).ToString(), $"%{isBlocked}%")).ToList();
+
+            var userModels = _mapper.Map<IEnumerable<UserModel>>(users);
+            return userModels.ToList();
+        }
     }
 }
 

@@ -64,5 +64,19 @@ namespace Store.PresentationLayer.Controllers
             var result = await _userService.ForgotPasswordAsync(forgotPasswordModel);
             return Ok(result);
         }
+
+        [HttpGet("GetAllUsers")]
+        public IActionResult GetAllUsers()
+        {
+            var result = _userService.GetAllUsers();
+            return Ok(result);
+        }
+
+        [HttpGet("GetFiltratedUsers")]
+        public IActionResult GetFiltratedUsers(UserFiltrationModel model)
+        {
+            var result = _userService.GetFiltratedUsers(model);
+            return Ok(result);
+        }
     }
 }

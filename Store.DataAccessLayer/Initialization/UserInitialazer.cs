@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Store.DataAccessLayer;
 using Store.DataAccessLayer.Entities;
 using System;
 using System.Threading.Tasks;
@@ -29,7 +27,7 @@ namespace Store.PresentationLayer
                 }
             }
 
-            catch (System.Exception roleExeption )
+            catch (Exception roleExeption )
             {
                 var ex = roleExeption;
             }

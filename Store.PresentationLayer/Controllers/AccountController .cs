@@ -4,7 +4,6 @@ using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.BusinessLogicLayer.Models;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Models.RequestModel;
-using Store.BusinessLogicLayer;
 
 namespace Store.PresentationLayer.Controllers
 {
