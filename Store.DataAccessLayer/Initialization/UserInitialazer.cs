@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Store.DataAccessLayer.Entities;
 using System;
 using System.Threading.Tasks;
+using static Store.DataAccessLayer.Enums.Enums.UserRole;
 
 namespace Store.PresentationLayer
 {
@@ -13,28 +14,28 @@ namespace Store.PresentationLayer
             var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
             var rolesManager = services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole<long>>>();
 
-            string email = "Byrko@gmail.com";
+            string email = "nexeve3047@tripaco.com";
             string password = "1_Aa123456";
             string firstName = "Anton";
             string lastName = "Byrko";
-        
+
             try
             {
-                var role = await rolesManager.FindByNameAsync("admin");
+                var role = await rolesManager.FindByNameAsync(Role.Admin.ToString().ToLower());
                 if (role is null)
                 {
-                    await rolesManager.CreateAsync(new IdentityRole<long>("admin"));
+                    await rolesManager.CreateAsync(new IdentityRole<long>(Role.Admin.ToString().ToLower()));
                 }
             }
 
-            catch (Exception roleExeption )
+            catch (Exception roleExeption)
             {
                 var ex = roleExeption;
             }
 
             if (await userManager.FindByEmailAsync(email) is null)
             {
-                User admin = new User { Email = email, UserName = email, FirstName = firstName, LastName = lastName};
+                User admin = new User { Email = email, UserName = email, FirstName = firstName, LastName = lastName };
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {

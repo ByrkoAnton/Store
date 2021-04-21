@@ -33,7 +33,6 @@ namespace Store.DataAccessLayer.Repositories
             var result = await _dbSet.Where(predicate).Include(author => author.PrintingEditions).AsNoTracking().ToListAsync();
             return result;
         }
-
         public override async Task UpdateAsync(Author author)
         {
             _dbSet.Update(author);

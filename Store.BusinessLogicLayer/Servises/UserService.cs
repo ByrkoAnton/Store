@@ -10,9 +10,9 @@ using Store.DataAccessLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
+using Store.BusinessLogicLayer.Providers;
+using Store.BusinessLogicLayer.Models.PaginationsModels;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -190,27 +190,35 @@ namespace Store.BusinessLogicLayer.Servises
 
             return "check your email";
         }
-        public List<UserModel> GetAllUsers()
+        public async Task<IndexViewModel<UserModel>> GetUsersAsync(UserFiltrationModel model, string prop, int page, int pageSize, bool asc)
         {
-            var users = _userManager.Users.ToList();
-            var userModels = _mapper.Map<IEnumerable<UserModel>>(users);
-            return userModels.ToList();
-        }
-        public List<UserModel> GetFiltratedUsers(UserFiltrationModel model)
-        {
-            dynamic isBlocked = Convert.ToInt32(model.IsBlocked);
-            if (model.IsBlocked is null)
-            {
-                isBlocked = null;
-            }
+            var users = await _userManager.Users.
+                Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
+                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
+                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
+                && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null)).OrderBy(prop, asc).ToListAsync();
 
-            var users = _userManager.Users
+            var userModels = _mapper.Map<IEnumerable<UserModel>>(users).ToList();
+            var count = users.Count();
+            var items = userModels.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+            IndexViewModel<UserModel> viewModel = new IndexViewModel<UserModel>
+            {
+                PageViewModel = pageViewModel,
+                EntitiModels = items
+            };
+            return viewModel;      
+        }
+        public async Task<List<UserModel>> GetFiltratedUsers(UserFiltrationModel model)
+        {
+            var users = await _userManager.Users
                 .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
-                && EF.Functions.Like(Convert.ToInt32(n.IsBlocked).ToString(), $"%{isBlocked}%")).ToList();
+                && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null)).ToListAsync();
 
-            var userModels = _mapper.Map<IEnumerable<UserModel>>(users);
+                var userModels = _mapper.Map<IEnumerable<UserModel>>(users);
             return userModels.ToList();
         }
     }

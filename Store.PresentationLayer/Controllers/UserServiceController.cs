@@ -66,16 +66,17 @@ namespace Store.PresentationLayer.Controllers
         }
 
         [HttpGet("GetAllUsers")]
-        public IActionResult GetAllUsers()
-        {
-            var result = _userService.GetAllUsers();
+        public async Task<IActionResult> GetAllUsers(UserFiltrationModel model, string prop = "LastName",
+            int page = 1, int pageSize = 5, bool asc = true)
+        {  
+            var result = await _userService.GetUsersAsync(model, prop, page, pageSize, asc);
             return Ok(result);
         }
 
         [HttpGet("GetFiltratedUsers")]
-        public IActionResult GetFiltratedUsers(UserFiltrationModel model)
+        public async Task<IActionResult> GetFiltratedUsers(UserFiltrationModel model)
         {
-            var result = _userService.GetFiltratedUsers(model);
+            var result = await _userService.GetFiltratedUsers(model);
             return Ok(result);
         }
     }

@@ -44,6 +44,7 @@ namespace Store.DataAccessLayer.Repositories
 
         public override async Task<IEnumerable<PrintingEdition>> GetAllAsync()
         {
+
             var result = await _dbSet.Include(pe => pe.Authors).AsNoTracking().ToListAsync();
             return result;
         }

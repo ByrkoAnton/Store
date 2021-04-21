@@ -65,6 +65,37 @@ namespace Store.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Discription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    PaymentId = table.Column<long>(type: "bigint", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    test = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PrintingEditions",
                 columns: table => new
                 {
@@ -189,6 +220,29 @@ namespace Store.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderItems",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    Currency = table.Column<int>(type: "int", nullable: false),
+                    PrintingEditionId = table.Column<long>(type: "bigint", nullable: false),
+                    OrderId = table.Column<long>(type: "bigint", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AuthorPrintingEdition",
                 columns: table => new
                 {
@@ -211,46 +265,6 @@ namespace Store.DataAccessLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsBlocked", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[,]
-                {
-                    { 1L, 0, "8d22e2af-ab93-44a0-94bb-ba89a6b84ae8", "123@gmail.com", false, "Ivan", false, "Ivanov", false, null, null, null, null, null, false, null, false, null },
-                    { 2L, 0, "3d1b3ae9-ec00-490c-9267-566d794d251d", "1235@gmail.com", false, "Petr", false, "Petrov", false, null, null, null, null, null, false, null, false, null },
-                    { 3L, 0, "d5835f60-9f8b-48be-a723-a69f64f3ad6e", "123555@gmail.com", false, "Vova", false, "Sidorov", false, null, null, null, null, null, false, null, false, null }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Authors",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1L, "TestAuthor" },
-                    { 9L, "Tolstoy" },
-                    { 10L, "Gogol" },
-                    { 11L, "Pushkin" },
-                    { 12L, "Gorkiy" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "PrintingEditions",
-                columns: new[] { "Id", "Currency", "Description", "IsRemoved", "Prise", "Status", "Type" },
-                values: new object[,]
-                {
-                    { 1L, 6, "init desc", false, 5.0, "Avalible", 1 },
-                    { 6L, 6, "Anna Karenina", false, 5.0, "Avalible", 1 },
-                    { 7L, 6, "Kosaks", false, 5.0, "Avalible", 1 },
-                    { 8L, 6, "Diablo", false, 4.0, "Avalible", 1 },
-                    { 9L, 5, "The Captain's Daughter", false, 5.0, "Avalible", 1 },
-                    { 10L, 6, "Eugene Onegin", false, 5.0, "Avalible", 1 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "AuthorPrintingEdition",
-                columns: new[] { "AuthorsId", "PrintingEditionsId" },
-                values: new object[] { 9L, 6L });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -295,6 +309,11 @@ namespace Store.DataAccessLayer.Migrations
                 name: "IX_AuthorPrintingEdition_PrintingEditionsId",
                 table: "AuthorPrintingEdition",
                 column: "PrintingEditionsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_OrderId",
+                table: "OrderItems",
+                column: "OrderId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -318,6 +337,12 @@ namespace Store.DataAccessLayer.Migrations
                 name: "AuthorPrintingEdition");
 
             migrationBuilder.DropTable(
+                name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -328,6 +353,9 @@ namespace Store.DataAccessLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "PrintingEditions");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
         }
     }
 }

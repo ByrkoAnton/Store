@@ -3,9 +3,8 @@
 
 namespace Store.DataAccessLayer.Entities
 {
-    public class Author
+    public class Author : BaseEntyty
     {
-        public long Id { get; set; }
         public string Name { get; set; }
 
         public List<PrintingEdition> PrintingEditions { get; set; }
@@ -13,6 +12,5 @@ namespace Store.DataAccessLayer.Entities
         {
             PrintingEditions = new List<PrintingEdition>();
         }
-  
     }
 }

@@ -30,7 +30,6 @@ namespace Store.DataAccessLayer.Repositories.Base
             return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
         }
 
-
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();

@@ -56,7 +56,7 @@ namespace Store.BusinessLogicLayer.Servises
                    StatusCodes.Status400BadRequest);
             }
 
-            var addToRoleResult = await _userManager.AddToRoleAsync(user, "User");
+            var addToRoleResult = await _userManager.AddToRoleAsync(user, "user");
 
             if (!addToRoleResult.Succeeded)
             {
@@ -75,7 +75,6 @@ namespace Store.BusinessLogicLayer.Servises
 
             await _emailService.SendEmailAsync(user.Email, "confirm email",
             $"Confirm registration, go to : <a href='{finalUrl}'>link</a>");
-
 
             return "regisrtation success. confirm your email";
         }
@@ -114,12 +113,10 @@ namespace Store.BusinessLogicLayer.Servises
             result.AccessToken = _jwtProvider.GenerateJwt(signInModel.Email, "user");
             return result;
         }
-
         public async Task SignOutAsync()
         {
             await _signInManager.SignOutAsync();
         }
-
         public async Task<string> ConfirmEmailAsync(EmailConfirmationModel emailConfirmationModel)
         {
             var user = await _userManager.FindByEmailAsync(emailConfirmationModel.Email);

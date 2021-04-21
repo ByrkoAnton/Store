@@ -10,15 +10,15 @@ using Store.DataAccessLayer.AppContext;
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210401074419_add_book_boris_godunov")]
-    partial class add_book_boris_godunov
+    [Migration("20210420073703_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("AuthorPrintingEdition", b =>
@@ -34,13 +34,6 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasIndex("PrintingEditionsId");
 
                     b.ToTable("AuthorPrintingEdition");
-
-                    b.HasData(
-                        new
-                        {
-                            AuthorsId = 9L,
-                            PrintingEditionsId = 6L
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<long>", b =>
@@ -186,33 +179,80 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Authors");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "TestAuthor"
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            Name = "Tolstoy"
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            Name = "Gogol"
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            Name = "Pushkin"
-                        },
-                        new
-                        {
-                            Id = 12L,
-                            Name = "Gorkiy"
-                        });
+            modelBuilder.Entity("Store.DataAccessLayer.Entities.Order", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Discription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("PaymentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Store.DataAccessLayer.Entities.OrderItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PrintingEditionId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("Store.DataAccessLayer.Entities.Payment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("test")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Store.DataAccessLayer.Entities.PrintingEdition", b =>
@@ -243,78 +283,6 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PrintingEditions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Currency = 6,
-                            Description = "init desc",
-                            IsRemoved = false,
-                            Prise = 5.0,
-                            Status = "Avalible",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            Currency = 6,
-                            Description = "Anna Karenina",
-                            IsRemoved = false,
-                            Prise = 5.0,
-                            Status = "Avalible",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            Currency = 6,
-                            Description = "Kosaks",
-                            IsRemoved = false,
-                            Prise = 5.0,
-                            Status = "Avalible",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            Currency = 6,
-                            Description = "Diablo",
-                            IsRemoved = false,
-                            Prise = 4.0,
-                            Status = "Avalible",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            Currency = 5,
-                            Description = "The Captain's Daughter",
-                            IsRemoved = false,
-                            Prise = 5.0,
-                            Status = "Avalible",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            Currency = 6,
-                            Description = "Eugene Onegin",
-                            IsRemoved = false,
-                            Prise = 5.0,
-                            Status = "Avalible",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            Currency = 3,
-                            Description = "Boris Godynov",
-                            IsRemoved = false,
-                            Prise = 50.0,
-                            Status = "Avalible",
-                            Type = 1
-                        });
                 });
 
             modelBuilder.Entity("Store.DataAccessLayer.Entities.User", b =>
@@ -391,50 +359,6 @@ namespace Store.DataAccessLayer.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6464770d-5e2d-4fff-bde0-06da2d8782d9",
-                            Email = "123@gmail.com",
-                            EmailConfirmed = false,
-                            FirstName = "Ivan",
-                            IsBlocked = false,
-                            LastName = "Ivanov",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            TwoFactorEnabled = false
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "c637fa33-e9d9-42b3-a627-1515ea8f50fa",
-                            Email = "1235@gmail.com",
-                            EmailConfirmed = false,
-                            FirstName = "Petr",
-                            IsBlocked = false,
-                            LastName = "Petrov",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            TwoFactorEnabled = false
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "19d4849b-3b67-40a7-b7d8-3db5c212e965",
-                            Email = "123555@gmail.com",
-                            EmailConfirmed = false,
-                            FirstName = "Vova",
-                            IsBlocked = false,
-                            LastName = "Sidorov",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            TwoFactorEnabled = false
-                        });
                 });
 
             modelBuilder.Entity("AuthorPrintingEdition", b =>
@@ -501,6 +425,20 @@ namespace Store.DataAccessLayer.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Store.DataAccessLayer.Entities.OrderItem", b =>
+                {
+                    b.HasOne("Store.DataAccessLayer.Entities.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Store.DataAccessLayer.Entities.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }
