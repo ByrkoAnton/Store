@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Store.BusinessLogicLayer\Store.BusinessLogicLayer.csproj" />
+    <ProjectReference Include="..\Store.Sharing\Store.Sharing.csproj" />
   </ItemGroup>
 
 </Project>

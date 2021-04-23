@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Store.BusinessLogicLayer.Models.Authors;
 using Store.BusinessLogicLayer.Models.EditionModel;
 using Store.DataAccessLayer.Entities;
 

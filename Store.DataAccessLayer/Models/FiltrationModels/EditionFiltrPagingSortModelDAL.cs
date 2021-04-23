@@ -1,15 +1,11 @@
-﻿using Store.BusinessLogicLayer.Models.Authors;
-using System;
+﻿using Store.DataAccessLayer.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums;
 using Type = Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums.Type;
 
-namespace Store.BusinessLogicLayer.Models.EditionModel
+namespace Store.DataAccessLayer.FiltrationModels
 {
-    public class PrintingEditionFiltrationModel
+    public class EditionFiltrPagingSortModelDAL
     {
         public long? Id { get; set; }
         public string Description { get; set; }
@@ -18,6 +14,10 @@ namespace Store.BusinessLogicLayer.Models.EditionModel
         public string Status { get; set; }
         public Currency? Currency { get; set; }
         public Type? Type { get; set; }
-        public List<AuthorModel> AuthorModels { get; set; } = new();
+        public string AuthorName { get; set; }
+        public string PropForSort { get; set; }
+        public bool IsAsc { get; set; }
+        public int CurrentPage { get; set; }
+        public int PageSize { get; set; }
     }
 }

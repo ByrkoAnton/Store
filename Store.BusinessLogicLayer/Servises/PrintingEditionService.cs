@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Store.BusinessLogicLayer.Models.EditionModel;
+using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Entities;
+using Store.DataAccessLayer.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +26,6 @@ namespace Store.BusinessLogicLayer.Servises
             _printingEditionRepository = printingEditionRepository;
             _mapper = mapper;
             _authorRepository = authorRepository;
-
         }
 
         public async Task<PrintingEditionModel> GetByIdAsync(long id)
@@ -78,20 +79,28 @@ namespace Store.BusinessLogicLayer.Servises
             }
             await _printingEditionRepository.RemoveAsync(edition.First());
         }
-        public async Task<List<PrintingEditionModel>> GetAllAsync()
+        public async Task<NavigationModel<PrintingEditionModel>> GetAsync(EditionFiltPaginSortModel model)
         {
-            var editions = await _printingEditionRepository.GetAllAsync();
-            if (!editions.Any())
+            var editionFiltrPagingSortModelDAL = _mapper.Map<EditionFiltrPagingSortModelDAL>(model);
+
+            var editionsCount = await _printingEditionRepository.GetAsync(editionFiltrPagingSortModelDAL);
+
+            if (!editionsCount.Item1.Any()) 
             {
-                throw new CustomExeption(Constants.Constants.Error.NO_ANY_EDITION_IN_DB,
+                throw new CustomExeption(Constants.Constants.Error.NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS,
                    StatusCodes.Status400BadRequest);
             }
 
-            var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>>(editions);
+            var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>> (editionsCount.Item1);
 
-            return editionModels.ToList();
+            PaginatedPageModel pageViewModel = new PaginatedPageModel(editionsCount.Item2, model.CurrentPage, model.PageSize);
+            NavigationModel<PrintingEditionModel> viewModel = new NavigationModel<PrintingEditionModel>
+            {
+                PageModel = pageViewModel,
+                EntityModels = editionModels
+            };
+            return viewModel;
         }
-
         public async Task<PrintingEditionModel> GetByDescriptionAsync(PrintingEditionModel model)
         {
             var editions = await _printingEditionRepository.GetAsync(pe => pe.Description == model.Description);
@@ -104,7 +113,6 @@ namespace Store.BusinessLogicLayer.Servises
 
             return editionModel;
         }
-
         public async Task UpdateAsync(PrintingEditionModel model)
         {
             var edition = await _printingEditionRepository.GetByIdAsync(edition => edition.Id == model.Id);

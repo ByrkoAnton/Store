@@ -10,6 +10,7 @@ namespace Store.BusinessLogicLayer.Constants
     {
         public class Error
         {
+            public const string NO_ANY_PROP_NAME = "no any property with this name";
             public const string NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS = "no any editions in db with this conditions";
             public const string NO_ANY_EDITION_IN_DB = "No any edition in db";
             public const string NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST = "Add author in DB at fitst. Then add edition";
@@ -49,6 +50,7 @@ namespace Store.BusinessLogicLayer.Constants
             public const string EMAILCONFIRMATION_EMAIL_DID_NOT_CONFIRMED = "emailConfirmation - email did not confirmed";
             public const string UPDATE_USER_FAILD_USER_NOT_FOUND = "update user faild user not found";
             public const string UPDATE_USER_FAILD_UPDATE_MODEL_NULL = "update user faild update model null";
+            public const string NO_USER_THIS_CONDITIONS = "no user in DB with this conditions";
             public const string UPDATE_USER_FAILD_CONTACT_ADMIN = "update user faild contact admin";
             public const string UPDATE_USER_PASSWORD_FAILD_CONTACT_ADMIN = "update user password faild contact admin";
             public const string DELETE_USER_FAILD_NO_USER_ID_IN_DB = "delete user faild no user id in db";

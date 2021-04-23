@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="EntityFramework.DynamicFilters" Version="3.2.0" />
     <PackageReference Include="MailKit" Version="2.11.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.9" />
@@ -21,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Store.DataAccessLayer\Store.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\Store.Sharing\Store.Sharing.csproj" />
   </ItemGroup>
 
 </Project>

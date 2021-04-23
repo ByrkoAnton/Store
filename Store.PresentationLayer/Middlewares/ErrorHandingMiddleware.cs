@@ -30,7 +30,6 @@ namespace Store.PresentationLayer.Middlewares
                 string jsonString = JsonSerializer.Serialize(customExeption.ErrorList);
                 context.Response.StatusCode = customExeption.StatusCode;
                 await context.Response.WriteAsync(jsonString);
-
             }
 
             catch (Exception exeption)

@@ -3,6 +3,7 @@ using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using System.Threading.Tasks;
+using Store.BusinessLogicLayer.Constants;
 
 namespace Store.PresentationLayer.Controllers
 {
@@ -65,18 +66,11 @@ namespace Store.PresentationLayer.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetAllUsers")]
-        public async Task<IActionResult> GetAllUsers(UserFiltrationModel model, string prop = "LastName",
-            int page = 1, int pageSize = 5, bool asc = true)
+        [HttpGet("GetUsers")]
+        public async Task<IActionResult> GetUsers(UserFiltrationModel model, string propForSort = Constants.SortingParams.USER_DEF_SORT_PROP,
+            int page = 1, int pageSize = 5, bool IsAsc = true)
         {  
-            var result = await _userService.GetUsersAsync(model, prop, page, pageSize, asc);
-            return Ok(result);
-        }
-
-        [HttpGet("GetFiltratedUsers")]
-        public async Task<IActionResult> GetFiltratedUsers(UserFiltrationModel model)
-        {
-            var result = await _userService.GetFiltratedUsers(model);
+            var result = await _userService.GetUsersAsync(model, propForSort, page, pageSize, IsAsc);
             return Ok(result);
         }
     }

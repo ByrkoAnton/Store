@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.EditionModel;
-using Store.BusinessLogicLayer.Servises;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using System.Threading.Tasks;
+using Store.BusinessLogicLayer.Constants;
 
 namespace Store.PresentationLayer.Controllers
 {
@@ -42,10 +42,10 @@ namespace Store.PresentationLayer.Controllers
             return Ok();
         }
 
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("GetEditions")]
+        public async Task<IActionResult> GetEditions(EditionFiltPaginSortModel model)
         {
-            var result = await _editionService.GetAllAsync();
+            var result = await _editionService.GetAsync(model);
             return Ok(result);
         }
 

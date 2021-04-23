@@ -2,12 +2,12 @@
 
 namespace Store.BusinessLogicLayer.Models.PaginationsModels
 {
-    public class PageViewModel
+    public class PaginatedPageModel
     {
         public int PageNumber { get; private set; }
         public int TotalPages { get; private set; }
 
-        public PageViewModel(int count, int pageNumber, int pageSize)
+        public PaginatedPageModel(int count, int pageNumber, int pageSize)
         {
             PageNumber = pageNumber;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);

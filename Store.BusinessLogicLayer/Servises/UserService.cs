@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Store.BusinessLogicLayer.Providers;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
+using System.Linq.Dynamic.Core;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -63,7 +64,6 @@ namespace Store.BusinessLogicLayer.Servises
             {
                 throw new CustomExeption(Constants.Constants.Error.ERROR_NO_USERROLE,
                     StatusCodes.Status400BadRequest);
-
             }
 
             return userRoles;
@@ -190,36 +190,39 @@ namespace Store.BusinessLogicLayer.Servises
 
             return "check your email";
         }
-        public async Task<IndexViewModel<UserModel>> GetUsersAsync(UserFiltrationModel model, string prop, int page, int pageSize, bool asc)
+        public async Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrationModel model, string propForSort, int page,
+            int pageSize, bool IsAsc)
         {
+            //var u = await _userManager.Users.OrderBy("Id ASC").ToListAsync();//dinamic test
+
             var users = await _userManager.Users.
                 Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
-                && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null)).OrderBy(prop, asc).ToListAsync();
+                && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null))
+                .OrderBy(propForSort, IsAsc).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            if (!users.Any())
+            {
+                throw new CustomExeption(Constants.Constants.Error.NO_USER_THIS_CONDITIONS,
+                   StatusCodes.Status400BadRequest);
+            }
+
+            int usersCount = await _userManager.Users.
+                Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
+                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
+                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
+                && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null)).CountAsync();
 
             var userModels = _mapper.Map<IEnumerable<UserModel>>(users).ToList();
-            var count = users.Count();
-            var items = userModels.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
-            IndexViewModel<UserModel> viewModel = new IndexViewModel<UserModel>
+            PaginatedPageModel pageViewModel = new PaginatedPageModel(usersCount, page, pageSize);
+            NavigationModel<UserModel> viewModel = new NavigationModel<UserModel>
             {
-                PageViewModel = pageViewModel,
-                EntitiModels = items
+                PageModel = pageViewModel,
+                EntityModels = userModels
             };
-            return viewModel;      
-        }
-        public async Task<List<UserModel>> GetFiltratedUsers(UserFiltrationModel model)
-        {
-            var users = await _userManager.Users
-                .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
-                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
-                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
-                && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null)).ToListAsync();
-
-                var userModels = _mapper.Map<IEnumerable<UserModel>>(users);
-            return userModels.ToList();
+            return viewModel;
         }
     }
 }
