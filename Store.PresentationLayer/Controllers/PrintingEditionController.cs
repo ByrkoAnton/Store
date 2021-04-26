@@ -2,7 +2,7 @@
 using Store.BusinessLogicLayer.Models.EditionModel;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using System.Threading.Tasks;
-using Store.BusinessLogicLayer.Constants;
+
 
 namespace Store.PresentationLayer.Controllers
 {
@@ -43,7 +43,7 @@ namespace Store.PresentationLayer.Controllers
         }
 
         [HttpGet("GetEditions")]
-        public async Task<IActionResult> GetEditions(EditionFiltPaginSortModel model)
+        public async Task<IActionResult> GetEditions(EditionFiltrPaginSortModel model)
         {
             var result = await _editionService.GetAsync(model);
             return Ok(result);

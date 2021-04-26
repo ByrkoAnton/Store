@@ -5,8 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Constants\**" />
+    <EmbeddedResource Remove="Constants\**" />
+    <EntityDeploy Remove="Constants\**" />
+    <None Remove="Constants\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Common\Interfaces\" />
-    <Folder Include="Models\Base\" />
     <Folder Include="Models\Enums\" />
     <Folder Include="Models\Payments\" />
     <Folder Include="Models\Orders\" />

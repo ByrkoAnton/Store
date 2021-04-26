@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Store.BusinessLogicLayer.Models.Authors;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.Sharing.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Store.BusinessLogicLayer.Servises
             var authors = await _authorRepository.GetAsync(Authors => Authors.Name == model.Name);
             if (authors.Any())
             {
-                throw new CustomExeption(Constants.Constants.Error.AUTHOR_CREATE_FAILD_AUTHOR_ALREDY_EXISTS_IN_DB,
+                throw new CustomExeption(Constants.Error.AUTHOR_CREATE_FAILD_AUTHOR_ALREDY_EXISTS_IN_DB,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -38,7 +39,7 @@ namespace Store.BusinessLogicLayer.Servises
             var author = await _authorRepository.GetByIdAsync(Authors => Authors.Id == id);
             if (author is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.NO_AUTHOR_WITH_THIS_ID_DB,
+                throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_THIS_ID_DB,
                    StatusCodes.Status400BadRequest);
             }
             var authorModel = _mapper.Map<AuthorModel>(author);
@@ -50,7 +51,7 @@ namespace Store.BusinessLogicLayer.Servises
             var authors = await _authorRepository.GetAllAsync();
             if (!authors.Any())
             {
-                throw new CustomExeption(Constants.Constants.Error.NO_ANY_AUTHOR_IN_DB,
+                throw new CustomExeption(Constants.Error.NO_ANY_AUTHOR_IN_DB,
                    StatusCodes.Status400BadRequest);
             }
 
@@ -64,7 +65,7 @@ namespace Store.BusinessLogicLayer.Servises
             var author = await _authorRepository.GetAsync(Authors => Authors.Name == model.Name);
             if (!author.Any())
             {
-                throw new CustomExeption(Constants.Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
+                throw new CustomExeption(Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
                    StatusCodes.Status400BadRequest);
             }
             var authorModel = _mapper.Map<AuthorModel>(author.First());
@@ -77,7 +78,7 @@ namespace Store.BusinessLogicLayer.Servises
             var authors = await _authorRepository.GetAsync(Authors => Authors.Name == model.Name);
             if (!authors.Any())
             {
-                throw new CustomExeption(Constants.Constants.Error.AUTHOR_REMOVE_FAILD_NO_AUTHOR_IN_DB,
+                throw new CustomExeption(Constants.Error.AUTHOR_REMOVE_FAILD_NO_AUTHOR_IN_DB,
                     StatusCodes.Status400BadRequest);
             }
             await _authorRepository.RemoveAsync(authors.First());
@@ -88,7 +89,7 @@ namespace Store.BusinessLogicLayer.Servises
             var author = await _authorRepository.GetByIdAsync(Authors => Authors.Id == model.Id);
             if (author is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
+                throw new CustomExeption(Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
                     StatusCodes.Status400BadRequest);
             }
 

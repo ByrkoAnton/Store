@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Store.BusinessLogicLayer.Models.EditionModel;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.Sharing.Constants;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Servises
@@ -33,7 +32,7 @@ namespace Store.BusinessLogicLayer.Servises
             var edition = await _printingEditionRepository.GetByIdAsync(edition => edition.Id == id);
             if (edition is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.NO_EDITION_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.NO_EDITION_ID_IN_DB,
                    StatusCodes.Status400BadRequest);
             }
             var editionModel = _mapper.Map<PrintingEditionModel>(edition);
@@ -46,13 +45,13 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (editions.Any())
             {
-                throw new CustomExeption(Constants.Constants.Error.EDITION_EXISTS_DB,
+                throw new CustomExeption(Constants.Error.EDITION_EXISTS_DB,
                     StatusCodes.Status400BadRequest);
             }
 
             if (!model.AuthorModels.Any())
             {
-                throw new CustomExeption(Constants.Constants.Error.EDITION_MUST_HAVE_AUTHOR,
+                throw new CustomExeption(Constants.Error.EDITION_MUST_HAVE_AUTHOR,
                     StatusCodes.Status400BadRequest);
             } 
 
@@ -62,7 +61,7 @@ namespace Store.BusinessLogicLayer.Servises
             int authorsCountDifference = allAuthors.Count(p => authors.Exists(p2 => p2.Name == p.Name)) - authors.Count();
             if (authorsCountDifference != 0)
             {
-                throw new CustomExeption(Constants.Constants.Error.NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST,
+                throw new CustomExeption(Constants.Error.NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST,
                 StatusCodes.Status400BadRequest);
             }
             
@@ -74,12 +73,12 @@ namespace Store.BusinessLogicLayer.Servises
             var edition = await _printingEditionRepository.GetAsync(edition => edition.Description == model.Description);
             if (!edition.Any())
             {
-                throw new CustomExeption(Constants.Constants.Error.EDITION_BY_ID_NOT_FOUND,
+                throw new CustomExeption(Constants.Error.EDITION_BY_ID_NOT_FOUND,
                     StatusCodes.Status400BadRequest);
             }
             await _printingEditionRepository.RemoveAsync(edition.First());
         }
-        public async Task<NavigationModel<PrintingEditionModel>> GetAsync(EditionFiltPaginSortModel model)
+        public async Task<NavigationModel<PrintingEditionModel>> GetAsync(EditionFiltrPaginSortModel model)
         {
             var editionFiltrPagingSortModelDAL = _mapper.Map<EditionFiltrPagingSortModelDAL>(model);
 
@@ -87,26 +86,26 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!editionsCount.Item1.Any()) 
             {
-                throw new CustomExeption(Constants.Constants.Error.NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS,
+                throw new CustomExeption(Constants.Error.NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS,
                    StatusCodes.Status400BadRequest);
             }
 
             var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>> (editionsCount.Item1);
 
-            PaginatedPageModel pageViewModel = new PaginatedPageModel(editionsCount.Item2, model.CurrentPage, model.PageSize);
-            NavigationModel<PrintingEditionModel> viewModel = new NavigationModel<PrintingEditionModel>
+            PaginatedPageModel paginatedPage = new PaginatedPageModel(editionsCount.Item2, model.CurrentPage, model.PageSize);
+            NavigationModel<PrintingEditionModel> navigation = new NavigationModel<PrintingEditionModel>
             {
-                PageModel = pageViewModel,
+                PageModel = paginatedPage,
                 EntityModels = editionModels
             };
-            return viewModel;
+            return navigation;
         }
         public async Task<PrintingEditionModel> GetByDescriptionAsync(PrintingEditionModel model)
         {
             var editions = await _printingEditionRepository.GetAsync(pe => pe.Description == model.Description);
             if (!editions.Any())
             {
-                throw new CustomExeption(Constants.Constants.Error.NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS,
+                throw new CustomExeption(Constants.Error.NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS,
                    StatusCodes.Status400BadRequest);
             }
             var editionModel = _mapper.Map<PrintingEditionModel>(editions.First());
@@ -118,7 +117,7 @@ namespace Store.BusinessLogicLayer.Servises
             var edition = await _printingEditionRepository.GetByIdAsync(edition => edition.Id == model.Id);
             if (edition is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.NO_EDITION_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.NO_EDITION_ID_IN_DB,
                     StatusCodes.Status400BadRequest);
             }
 

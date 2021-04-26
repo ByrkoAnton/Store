@@ -8,7 +8,7 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
     public interface IPrintingEditionService
     {
         public Task<PrintingEditionModel> GetByIdAsync(long id);
-        public Task<NavigationModel<PrintingEditionModel>> GetAsync(EditionFiltPaginSortModel model);
+        public Task<NavigationModel<PrintingEditionModel>> GetAsync(EditionFiltrPaginSortModel model);
         public Task<PrintingEditionModel> GetByDescriptionAsync(PrintingEditionModel model);
         public Task CreateAsync(PrintingEditionModel model);
         public Task RemoveAsync(PrintingEditionModel model);

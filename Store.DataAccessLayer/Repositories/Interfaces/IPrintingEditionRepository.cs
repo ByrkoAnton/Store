@@ -1,7 +1,6 @@
 ﻿using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Base;
-using Store.DataAccessLayer.SupportingClasses;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

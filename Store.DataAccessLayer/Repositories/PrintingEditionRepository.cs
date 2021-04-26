@@ -10,7 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
-using Store.DataAccessLayer.SupportingClasses;
+using Store.Sharing.Constants;
 
 namespace Store.DataAccessLayer.Repositories
 {
@@ -43,13 +43,12 @@ namespace Store.DataAccessLayer.Repositories
             var result = await _dbSet.Where(predicate).Include(pe => pe.Authors).AsNoTracking().ToListAsync();
             return result;
         }
-
         public async Task<(IEnumerable<PrintingEdition>, int)> GetAsync(EditionFiltrPagingSortModelDAL model)
         {
-            string direction = "ASC";
+            string direction = Constants.SortingParams.SORT_ASC_DIRECTION;
             if (!model.IsAsc)
             {
-                direction = "DESC";
+                direction = Constants.SortingParams.SORT_DESC_DIRECTION;
             }
 
             var editions = await _dbSet.Include(pe => pe.Authors).AsNoTracking()
@@ -71,9 +70,9 @@ namespace Store.DataAccessLayer.Repositories
                 && (n.Type == model.Type || model.Type == null)
                 && (n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))).CountAsync();
 
-            
-            var editionsCount = (editions:editions, count:count);
-            
+
+            var editionsCount = (editions: editions, count: count);
+
             return editionsCount;
         }
 

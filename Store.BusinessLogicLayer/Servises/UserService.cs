@@ -14,6 +14,19 @@ using System.Threading.Tasks;
 using Store.BusinessLogicLayer.Providers;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
 using System.Linq.Dynamic.Core;
+using Store.Sharing.Constants;
+using Store.DataAccessLayer.AppContext;
+using Store.DataAccessLayer.Entities;
+using Store.DataAccessLayer.FiltrationModels;
+using Store.DataAccessLayer.Repositories.Base;
+using Store.DataAccessLayer.Repositories.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using System.Linq.Dynamic.Core;
+using Store.Sharing.Constants;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -38,7 +51,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.ADD_USER_TO_ROLE_FAILD_NO_USER_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.ADD_USER_TO_ROLE_FAILD_NO_USER_ID_IN_DB,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -46,7 +59,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!roleAddingResult.Succeeded)
             {
-                throw new CustomExeption(Constants.Constants.Error.ADD_USER_TO_ROLE_FAILD_ROLE_IS_NOT_PROVIDED,
+                throw new CustomExeption(Constants.Error.ADD_USER_TO_ROLE_FAILD_ROLE_IS_NOT_PROVIDED,
                     StatusCodes.Status400BadRequest);
             }
         }
@@ -55,14 +68,14 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.GET_USER_ROLE_FAILD_NO_USER_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.GET_USER_ROLE_FAILD_NO_USER_ID_IN_DB,
                     StatusCodes.Status400BadRequest);
             }
 
             var userRoles = await _userManager.GetRolesAsync(user);
             if (!userRoles.Any())
             {
-                throw new CustomExeption(Constants.Constants.Error.ERROR_NO_USERROLE,
+                throw new CustomExeption(Constants.Error.ERROR_NO_USERROLE,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -73,7 +86,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.IS_USER_IN_ROLE_FAILD_NO_USER_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.IS_USER_IN_ROLE_FAILD_NO_USER_ID_IN_DB,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -86,7 +99,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.BLOCKING_USER_FAILD_NO_USER_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.BLOCKING_USER_FAILD_NO_USER_ID_IN_DB,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -95,7 +108,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!blockRersult.Succeeded)
             {
-                throw new Exception($"{Constants.Constants.Error.BLOCKING_USER_FAILD_NO_USER_ID_IN_DB}" +
+                throw new Exception($"{Constants.Error.BLOCKING_USER_FAILD_NO_USER_ID_IN_DB}" +
                     $" {StatusCodes.Status500InternalServerError}");
             }
         }
@@ -117,7 +130,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.DELETE_USER_FAILD_NO_USER_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.DELETE_USER_FAILD_NO_USER_ID_IN_DB,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -125,7 +138,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!delResult.Succeeded)
             {
-                throw new Exception($"{Constants.Constants.Error.DELETE_USER_FAILD_CONTACT_ADMIN}" +
+                throw new Exception($"{Constants.Error.DELETE_USER_FAILD_CONTACT_ADMIN}" +
                     $" {StatusCodes.Status500InternalServerError}");
             }
         }
@@ -134,7 +147,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.UPDATE_USER_FAILD_USER_NOT_FOUND,
+                throw new CustomExeption(Constants.Error.UPDATE_USER_FAILD_USER_NOT_FOUND,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -157,7 +170,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!updateResult.Succeeded)
             {
-                throw new Exception($"{Constants.Constants.Error.UPDATE_USER_FAILD_CONTACT_ADMIN}" +
+                throw new Exception($"{Constants.Error.UPDATE_USER_FAILD_CONTACT_ADMIN}" +
                     $" {StatusCodes.Status500InternalServerError}");
             }
         }
@@ -166,13 +179,13 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByEmailAsync(forgotPasswordModel.Email);
             if (user is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.PASSWORD_RESET_FAILD_NO_USER_WITH_THIS_EMAIL,
+                throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER_WITH_THIS_EMAIL,
                     StatusCodes.Status400BadRequest);
             }
 
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
-                throw new CustomExeption(Constants.Constants.Error.PASSWORD_RESET_FAILD_NO_USER_WITH_THIS_EMAIL,
+                throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER_WITH_THIS_EMAIL,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -182,7 +195,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!result.Succeeded)
             {
-                throw new Exception(Constants.Constants.Error.PASSWORD_RESET_FAILD_CONTACT_ADMIN);
+                throw new Exception(Constants.Error.PASSWORD_RESET_FAILD_CONTACT_ADMIN);
             }
 
             await _emailService.SendEmailAsync(user.Email, "reset password",
@@ -190,21 +203,18 @@ namespace Store.BusinessLogicLayer.Servises
 
             return "check your email";
         }
-        public async Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrationModel model, string propForSort, int page,
-            int pageSize, bool IsAsc)
+        public async Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrPaginSortModel model)
         {
-            //var u = await _userManager.Users.OrderBy("Id ASC").ToListAsync();//dinamic test
-
             var users = await _userManager.Users.
                 Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
                 && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null))
-                .OrderBy(propForSort, IsAsc).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+                .OrderBy(model.PropForSort, model.IsAsc).Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
 
             if (!users.Any())
             {
-                throw new CustomExeption(Constants.Constants.Error.NO_USER_THIS_CONDITIONS,
+                throw new CustomExeption(Constants.Error.NO_USER_THIS_CONDITIONS,
                    StatusCodes.Status400BadRequest);
             }
 
@@ -216,13 +226,13 @@ namespace Store.BusinessLogicLayer.Servises
 
             var userModels = _mapper.Map<IEnumerable<UserModel>>(users).ToList();
 
-            PaginatedPageModel pageViewModel = new PaginatedPageModel(usersCount, page, pageSize);
-            NavigationModel<UserModel> viewModel = new NavigationModel<UserModel>
+            PaginatedPageModel paginatedPage = new PaginatedPageModel(usersCount, model.CurrentPage, model.PageSize);
+            NavigationModel<UserModel> navigation = new NavigationModel<UserModel>
             {
-                PageModel = pageViewModel,
+                PageModel = paginatedPage,
                 EntityModels = userModels
             };
-            return viewModel;
+            return navigation;
         }
     }
 }

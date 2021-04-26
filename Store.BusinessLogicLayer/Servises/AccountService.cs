@@ -12,6 +12,7 @@ using System;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.RequestModel;
+using Store.Sharing.Constants;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -36,7 +37,7 @@ namespace Store.BusinessLogicLayer.Servises
             var EmailCheck = await _userManager.FindByEmailAsync(signUpModel.Email);
             if (EmailCheck != null)
             {
-                throw new CustomExeption(Constants.Constants.Error.REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE,
+                throw new CustomExeption(Constants.Error.REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -52,7 +53,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!result.Succeeded)
             {
-                throw new CustomExeption(Constants.Constants.Error.REGISRATION_FAILD_USER_DID_NOT_CREATED,
+                throw new CustomExeption(Constants.Error.REGISRATION_FAILD_USER_DID_NOT_CREATED,
                    StatusCodes.Status400BadRequest);
             }
 
@@ -60,13 +61,13 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!addToRoleResult.Succeeded)
             {
-                throw new CustomExeption(Constants.Constants.Error.USER_ROLE_DID_NOT_ADDED,
+                throw new CustomExeption(Constants.Error.USER_ROLE_DID_NOT_ADDED,
                    StatusCodes.Status400BadRequest);
             }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            var callbackUrl = new UriBuilder(Constants.Constants.URLs.URL_CONFIRMEMAIL);
+            var callbackUrl = new UriBuilder(Constants.URLs.URL_CONFIRMEMAIL);
             var parameters = HttpUtility.ParseQueryString(string.Empty);
             parameters.Add("email", user.Email);
             parameters.Add("code", code);
@@ -83,7 +84,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByNameAsync(signInModel.Email);
             if (user is null)
             {
-                throw new CustomExeption(Constants.Constants.Error.LOGIN_FAILD_NO_USER_WITH_THIS_EMAIL,
+                throw new CustomExeption(Constants.Error.LOGIN_FAILD_NO_USER_WITH_THIS_EMAIL,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -91,14 +92,14 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!signIn.Succeeded)
             {
-                throw new CustomExeption(Constants.Constants.Error.LOGIN_FAILD_WRONG_PASSWORD, StatusCodes.Status400BadRequest);
+                throw new CustomExeption(Constants.Error.LOGIN_FAILD_WRONG_PASSWORD, StatusCodes.Status400BadRequest);
             }
 
             var roleList = await _userManager.GetRolesAsync(user);
 
             if (roleList is null)
             {
-                throw new Exception($"{Constants.Constants.Error.ERROR_NO_USERROLE} {StatusCodes.Status500InternalServerError}");
+                throw new Exception($"{Constants.Error.ERROR_NO_USERROLE} {StatusCodes.Status500InternalServerError}");
             }
 
             bool isRoleAdmin = roleList.Any(s => s.Contains("admin"));
@@ -122,14 +123,14 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByEmailAsync(emailConfirmationModel.Email);
             if (user is null)
             {
-                throw new Exception(Constants.Constants.Error.EMAILCONFIRMATION_USER_NOT_FOUND);
+                throw new Exception(Constants.Error.EMAILCONFIRMATION_USER_NOT_FOUND);
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, emailConfirmationModel.Code);
 
             if (!result.Succeeded)
             {
-                throw new Exception(Constants.Constants.Error.EMAILCONFIRMATION_EMAIL_DID_NOT_CONFIRMED);
+                throw new Exception(Constants.Error.EMAILCONFIRMATION_EMAIL_DID_NOT_CONFIRMED);
             }
 
             return "email confirmed";
