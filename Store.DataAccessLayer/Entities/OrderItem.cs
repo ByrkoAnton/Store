@@ -3,7 +3,7 @@ using static Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums;
 
 namespace Store.DataAccessLayer.Entities
 {
-    public class OrderItem : BaseEntyty
+    public class OrderItem : BaseEntity
     {
         public double Amount { get; set; }
         public Currency Currency { get; set; }

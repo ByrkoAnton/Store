@@ -34,10 +34,10 @@ namespace Store.PresentationLayer.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("Get")]
+        public async Task<IActionResult> Get(AuthorFiltrPagingSortModel model)
         {
-            var result = await _authorService.GetAllAsync();
+            var result = await _authorService.GetAsync(model);
             return Ok(result);
         }
 

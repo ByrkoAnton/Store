@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Store.BusinessLogicLayer.Models.Authors;
+using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.DataAccessLayer.Entities;
+using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System;
@@ -33,7 +35,6 @@ namespace Store.BusinessLogicLayer.Servises
             var author = _mapper.Map<Author>(model);
             await _authorRepository.CreateAsync(author);
         }
-
         public async Task<AuthorModel> GetByIdAsync(long id)
         {
             var author = await _authorRepository.GetByIdAsync(Authors => Authors.Id == id);
@@ -45,21 +46,26 @@ namespace Store.BusinessLogicLayer.Servises
             var authorModel = _mapper.Map<AuthorModel>(author);
             return authorModel;
         }
-
-        public async Task<List<AuthorModel>> GetAllAsync()
+        public async Task<NavigationModel<AuthorModel>> GetAsync(AuthorFiltrPagingSortModel model)
         {
-            var authors = await _authorRepository.GetAllAsync();
-            if (!authors.Any())
+            var authorFiltrPagingSortModelDAL = _mapper.Map<AuthorFiltrPagingSortModelDAL>(model);
+
+            var authorsWithCount = await _authorRepository.GetAsync(authorFiltrPagingSortModelDAL);
+            if (!authorsWithCount.Item1.Any())
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_AUTHOR_IN_DB,
+                throw new CustomExeption(Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
                    StatusCodes.Status400BadRequest);
             }
+            var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCount.Item1);
 
-            var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authors);
-
-            return authorModels.ToList();
+            PaginatedPageModel paginatedPage = new PaginatedPageModel(authorsWithCount.Item2, model.CurrentPage, model.PageSize);
+            NavigationModel<AuthorModel> navigation = new NavigationModel<AuthorModel>
+            {
+                PageModel = paginatedPage,
+                EntityModels = authorModels
+            };
+            return navigation;
         }
-
         public async Task<AuthorModel> GetByNameAsync(AuthorModel model)
         {
             var author = await _authorRepository.GetAsync(Authors => Authors.Name == model.Name);
@@ -72,7 +78,6 @@ namespace Store.BusinessLogicLayer.Servises
 
             return authorModel;
         }
-
         public async Task RemoveAsync(AuthorModel model)
         {
             var authors = await _authorRepository.GetAsync(Authors => Authors.Name == model.Name);
@@ -83,7 +88,6 @@ namespace Store.BusinessLogicLayer.Servises
             }
             await _authorRepository.RemoveAsync(authors.First());
         }
-
         public async Task UpdateAsync(AuthorModel model)
         {
             var author = await _authorRepository.GetByIdAsync(Authors => Authors.Id == model.Id);

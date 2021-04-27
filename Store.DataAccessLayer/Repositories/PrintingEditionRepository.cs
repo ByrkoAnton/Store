@@ -21,7 +21,6 @@ namespace Store.DataAccessLayer.Repositories
         {
             _authorRepository = authorRepository;
         }
-
         public override async Task CreateAsync(PrintingEdition edition)
         {
             List<Author> authors = new List<Author>(edition.Authors);
@@ -31,13 +30,11 @@ namespace Store.DataAccessLayer.Repositories
             edition.Authors.AddRange(authors);
             await _context.SaveChangesAsync();
         }
-
         public override async Task<PrintingEdition> GetByIdAsync(Expression<Func<PrintingEdition, bool>> predicate)
         {
             var result = await _dbSet.Include(pe => pe.Authors).AsNoTracking().FirstOrDefaultAsync(predicate);
             return result;
         }
-
         public override async Task<IEnumerable<PrintingEdition>> GetAsync(Expression<Func<PrintingEdition, bool>> predicate)
         {
             var result = await _dbSet.Where(predicate).Include(pe => pe.Authors).AsNoTracking().ToListAsync();
@@ -71,11 +68,10 @@ namespace Store.DataAccessLayer.Repositories
                 && (n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))).CountAsync();
 
 
-            var editionsCount = (editions: editions, count: count);
+            var editionsWithCount = (editions: editions, count: count);
 
-            return editionsCount;
+            return editionsWithCount;
         }
-
         public override async Task UpdateAsync(PrintingEdition edition)
         {
             _dbSet.Update(edition);

@@ -8,7 +8,7 @@ using static Store.DataAccessLayer.Enums.Enums.OrderStatysState;
 
 namespace Store.DataAccessLayer.Entities
 {
-    public class Order : BaseEntyty
+    public class Order : BaseEntity
     {
         public string Discription { get; set; }
         [ForeignKey("User")]

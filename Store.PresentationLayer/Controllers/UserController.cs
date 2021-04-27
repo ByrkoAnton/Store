@@ -9,10 +9,10 @@ namespace Store.PresentationLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserServiceController : Controller
+    public class UserController : Controller
     {
         private readonly IUserService _userService;
-        public UserServiceController(IUserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }

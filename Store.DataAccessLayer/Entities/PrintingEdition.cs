@@ -3,7 +3,7 @@ using static Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums;
 
 namespace Store.DataAccessLayer.Entities
 {
-    public class PrintingEdition : BaseEntyty
+    public class PrintingEdition : BaseEntity
     {
         public string Description { get; set; }
         public double Prise { get; set; }
