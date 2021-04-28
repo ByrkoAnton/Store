@@ -17,7 +17,6 @@ using Store.BusinessLogicLayer.Providers;
 using Store.BusinessLogicLayer.Mappings;
 using AutoMapper;
 using Store.DataAccessLayer.Repositories.Base;
-using System.Collections.Generic;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.DataAccessLayer.Repositories;
 
@@ -38,6 +37,7 @@ namespace Store.PresentationLayer
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IAuthorRepository, AuthorRepository>();
             services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
+            services.AddTransient<IPaymentRepository, PaymentRepository>();
 
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IRoleService, RoleService>();
@@ -47,6 +47,7 @@ namespace Store.PresentationLayer
             services.AddTransient<IRandomPasswordGeneratorProvider, RandomPasswordGeneratorProvider>();
             services.AddTransient<IAuthorServise, AuthorService>();
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();
+            services.AddTransient<IPaymentServise, PaymentServise>();
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
@@ -93,6 +94,7 @@ namespace Store.PresentationLayer
                 mc.AddProfile(new UserMappingProfile());
                 mc.AddProfile(new PrintingEditionFiltrationMappingProfile());
                 mc.AddProfile(new AuthorFiltrationMappingProfile());
+                mc.AddProfile(new PaymentMappingProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

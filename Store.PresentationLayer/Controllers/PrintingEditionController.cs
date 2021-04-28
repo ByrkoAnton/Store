@@ -16,10 +16,6 @@ namespace Store.PresentationLayer.Controllers
         {
             _editionService = editionService;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById([FromBody] PrintingEditionModel model)
