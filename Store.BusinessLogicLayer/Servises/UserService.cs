@@ -16,17 +16,7 @@ using Store.BusinessLogicLayer.Models.PaginationsModels;
 using System.Linq.Dynamic.Core;
 using Store.Sharing.Constants;
 using Store.DataAccessLayer.AppContext;
-using Store.DataAccessLayer.Entities;
-using Store.DataAccessLayer.FiltrationModels;
-using Store.DataAccessLayer.Repositories.Base;
-using Store.DataAccessLayer.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using System.Linq.Dynamic.Core;
-using Store.Sharing.Constants;
+
 
 namespace Store.BusinessLogicLayer.Servises
 {

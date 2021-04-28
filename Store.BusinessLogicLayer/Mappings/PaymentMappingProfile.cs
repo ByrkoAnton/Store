@@ -8,7 +8,8 @@ namespace Store.BusinessLogicLayer.Mappings
     {
         public PaymentMappingProfile()
         {
-            CreateMap<Payment, PaymentCreationModel>().ReverseMap();
+            CreateMap<PaymentModel,Payment >().ForMember(x => x.DateOfCreation, opt => opt.Ignore());
+            CreateMap<Payment,PaymentModel>();
         }
     }
 }

@@ -5,8 +5,11 @@ namespace Store.Sharing.Constants
     {
         public class Error
         {
-
-            public const string PAYMENT_CREATION_FAILD_PATMENT_ID_EXISTS = "Payment creation faild this payment id exists in DB";
+            public const string NO_ANY_PAYMENTS_IN_DB = "no any payments in DB";
+            public const string NO_ANY_PAYMENTS_IN_DB_WITH_THIS_ID = "no any payments in DB with this ID";
+            public const string NO_ANY_PAYMENTS_IN_DB_WITH_THIS_TRANSACTION_ID = "no any payments in DB with this transaction ID";
+            public const string THIS_TRANSACTION_ID_EXISTS_DB = "this transaction ID already exists in DB";
+            public const string PAYMENT_CREATION_FAILD_PATMENT_ID_EXISTS = "Payment creation faild this TransactionId exists in DB";
             public const string NO_ANY_PROP_NAME = "no any property with this name";
             public const string NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS = "no any editions in db with this conditions";
             public const string NO_ANY_EDITION_IN_DB = "No any edition in db";

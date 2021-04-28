@@ -9,6 +9,10 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
 {
     public interface IPaymentServise
     {
-        public Task CreateAsync(PaymentCreationModel model);
+        public Task CreateAsync(PaymentModel model);
+        public Task<PaymentModel> GetByTransactionId(PaymentModel model);
+        public Task<List<PaymentModel>> GetAll();
+        public Task UpdateAsync(PaymentModel model);
+        public Task RemoveAsync(PaymentModel model);
     }
 }
