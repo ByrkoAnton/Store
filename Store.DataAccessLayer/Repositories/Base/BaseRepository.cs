@@ -10,7 +10,7 @@ namespace Store.DataAccessLayer.Repositories.Base
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        protected DbContext _context;
+        private DbContext _context;
         protected DbSet<TEntity> _dbSet;
 
         public BaseRepository(ApplicationContext context)
@@ -32,7 +32,7 @@ namespace Store.DataAccessLayer.Repositories.Base
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
@@ -49,6 +49,11 @@ namespace Store.DataAccessLayer.Repositories.Base
         public virtual async Task UpdateAsync(TEntity item)
         {
             _context.Entry(item).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SaveChangesAsync()
+        {
             await _context.SaveChangesAsync();
         }
     }

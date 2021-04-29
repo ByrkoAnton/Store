@@ -1,24 +1,17 @@
 ﻿using Store.BusinessLogicLayer.Models.Authors;
-using Store.DataAccessLayer.Entities;
-using System;
+using Store.BusinessLogicLayer.Models.Base;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums;
-using Type = Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums.Type;
-
+using static Store.DataAccessLayer.Enums.Enums;
 namespace Store.BusinessLogicLayer.Models.EditionModel
 {
-    public class PrintingEditionModel
+    public class PrintingEditionModel : BaseModel
     {
-        public long Id { get; set; }
         public string Description { get; set; }
         public double Prise { get; set; }
         public bool IsRemoved { get; set; }
         public string Status { get; set; }
         public Currency Currency { get; set; }
-        public Type Type { get; set; }
+        public PrintingEditionType Type { get; set; }
 
         public List<AuthorModel> AuthorModels { get; set; } = new();
     }

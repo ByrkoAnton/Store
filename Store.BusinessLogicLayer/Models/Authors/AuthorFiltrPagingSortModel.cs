@@ -11,7 +11,7 @@ namespace Store.BusinessLogicLayer.Models.Authors
 
         public AuthorFiltrPagingSortModel()
         {
-            PropForSort = Constants.SortingParams.AUTHOR_DEF_SORT_PROP;
+            PropertyForSort = Constants.SortingParams.AUTHOR_DEF_SORT_PROP;
         }
     }
 }

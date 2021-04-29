@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 namespace Store.BusinessLogicLayer.Providers
 {
@@ -17,7 +18,7 @@ namespace Store.BusinessLogicLayer.Providers
         {
             _config = config;
         }
-        public string GenerateJwt(string name, string role)
+        public string GenerateJwt(string name, string role)//Change to list
         {
             var claims = new List<Claim>
             {

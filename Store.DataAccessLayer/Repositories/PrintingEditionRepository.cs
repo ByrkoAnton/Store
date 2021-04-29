@@ -16,10 +16,8 @@ namespace Store.DataAccessLayer.Repositories
 {
     public class PrintingEditionRepository : BaseRepository<PrintingEdition>, IPrintingEditionRepository
     {
-        private readonly IAuthorRepository _authorRepository;
         public PrintingEditionRepository(ApplicationContext context, IAuthorRepository authorRepository) : base(context)
         {
-            _authorRepository = authorRepository;
         }
         public override async Task CreateAsync(PrintingEdition edition)
         {
@@ -28,7 +26,7 @@ namespace Store.DataAccessLayer.Repositories
             edition.Authors.Clear();
             await _dbSet.AddAsync(edition);
             edition.Authors.AddRange(authors);
-            await _context.SaveChangesAsync();
+            await SaveChangesAsync();
         }
         public override async Task<PrintingEdition> GetByIdAsync(Expression<Func<PrintingEdition, bool>> predicate)
         {
@@ -43,7 +41,7 @@ namespace Store.DataAccessLayer.Repositories
         public async Task<(IEnumerable<PrintingEdition>, int)> GetAsync(EditionFiltrPagingSortModelDAL model)
         {
             string direction = Constants.SortingParams.SORT_ASC_DIRECTION;
-            if (!model.IsAsc)
+            if (!model.IsAscending)
             {
                 direction = Constants.SortingParams.SORT_DESC_DIRECTION;
             }
@@ -56,7 +54,7 @@ namespace Store.DataAccessLayer.Repositories
             && (n.Currency == model.Currency || model.Currency == null)
             && (n.Type == model.Type || model.Type == null)
             && (n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%"))))
-            .OrderBy($"{model.PropForSort} {direction}").Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
+            .OrderBy($"{model.PropertyForSort} {direction}").Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
 
             int count = await _dbSet
                 .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
@@ -83,7 +81,7 @@ namespace Store.DataAccessLayer.Repositories
             editionForUpdate.Authors.RemoveAll(p => !authors.Exists(p2 => p2.Id == p.Id));
             var result = authors.Where(p => !editionForUpdate.Authors.Exists(p2 => p2.Id == p.Id)).ToList();
             editionForUpdate.Authors.AddRange(result);
-            await _context.SaveChangesAsync();
+            await SaveChangesAsync();
         }
     }
 }

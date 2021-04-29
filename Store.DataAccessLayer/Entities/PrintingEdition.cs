@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using static Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums;
+using static Store.DataAccessLayer.Enums.Enums;
 
 namespace Store.DataAccessLayer.Entities
 {
@@ -10,7 +10,7 @@ namespace Store.DataAccessLayer.Entities
         public bool IsRemoved { get; set; }
         public string Status { get; set; }
         public Currency Currency { get; set; }
-        public Type Type { get; set; }
+        public PrintingEditionType Type { get; set; }
         public List<Author> Authors { get; set; }
         public PrintingEdition()
         {

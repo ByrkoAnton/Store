@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using static Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums;
+using static Store.DataAccessLayer.Enums.Enums;
 
 namespace Store.DataAccessLayer.Entities
 {
@@ -11,6 +11,5 @@ namespace Store.DataAccessLayer.Entities
         [ForeignKey ("Order")]
         public long OrderId { get; set; }
         public int Count { get; set; }
-
     }
 }

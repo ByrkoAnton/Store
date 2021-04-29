@@ -28,21 +28,21 @@ namespace Store.DataAccessLayer.Repositories
 
         public async Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrPagingSortModelDAL model)
         {
-            string direction = Constants.SortingParams.SORT_ASC_DIRECTION;
-            if (!model.IsAsc)
-            {
-                direction = Constants.SortingParams.SORT_DESC_DIRECTION;
-            }
-
             var authors = await _dbSet.Include(n => n.PrintingEditions).AsNoTracking()
-            .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
-            && EF.Functions.Like(n.Name, $"%{model.Name}%")
-            && (string.IsNullOrEmpty(model.EditionDescription) || n.PrintingEditions.Any(t => EF.Functions.Like(t.Description, $"%{model.EditionDescription}%"))))
-            .OrderBy($"{model.PropForSort} {direction}").Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
+            .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
+            .Where(n => EF.Functions.Like(n.Name, $"%{model.Name}%"))
+            .Where(n => string.IsNullOrEmpty(model.EditionDescription)
+            || n.PrintingEditions.Any(t => EF.Functions.Like(t.Description, $"%{model.EditionDescription}%")))
+            .OrderBy($"{model.PropertyForSort} " +
+            $"{(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
+            .Skip((model.CurrentPage - 1) * model.PageSize)
+            .Take(model.PageSize).ToListAsync();
 
-            int count = await _dbSet.Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
-            && EF.Functions.Like(n.Name, $"%{model.Name}%")
-            && (string.IsNullOrEmpty(model.EditionDescription) || n.PrintingEditions.Any(t => EF.Functions.Like(t.Description, $"%{model.EditionDescription}%")))).CountAsync();
+            int count = await _dbSet.Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
+            .Where(n => EF.Functions.Like(n.Name, $"%{model.Name}%"))
+            .Where(n => string.IsNullOrEmpty(model.EditionDescription)
+            || n.PrintingEditions.Any(t => EF.Functions.Like(t.Description, $"%{model.EditionDescription}%")))
+            .CountAsync();
 
             var AuthorsWithCount = (authors: authors, count: count);
 
@@ -64,7 +64,7 @@ namespace Store.DataAccessLayer.Repositories
             authorForUpdate.PrintingEditions.RemoveAll(p => !printingEditions.Exists(p2 => p2.Id == p.Id));
             var result = printingEditions.Where(p => !authorForUpdate.PrintingEditions.Exists(p2 => p2.Id == p.Id)).ToList();
             authorForUpdate.PrintingEditions.AddRange(result);
-            await _context.SaveChangesAsync();
+            await SaveChangesAsync();
         }
     }
 }

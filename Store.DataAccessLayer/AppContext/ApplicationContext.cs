@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Store.DataAccessLayer.Entities;
 using System;
-using static Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums;
-using static Store.DataAccessLayer.Enums.Enums.UserRole;
-using Type = Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums.Type;
+
 
 namespace Store.DataAccessLayer.AppContext
 {

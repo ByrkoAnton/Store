@@ -1,15 +1,11 @@
-﻿
-namespace Store.DataAccessLayer.Enums
+﻿namespace Store.DataAccessLayer.Enums
 {
     public partial class Enums
     {
-        public class UserRole
+        public enum UserRole
         {
-            public enum Role
-            {
-                Admin = 1,
-                User = 2,
-            }
+            Admin = 1,
+            User = 2,
         }
     }
 }

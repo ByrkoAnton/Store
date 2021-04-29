@@ -1,22 +1,14 @@
 ﻿using Store.BusinessLogicLayer.Models.Payments;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Repositories.Interfaces;
-using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Store.BusinessLogicLayer.Models.Authors;
-using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.DataAccessLayer.Entities;
-using Store.DataAccessLayer.Models.FiltrationModels;
-using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -68,7 +60,6 @@ namespace Store.BusinessLogicLayer.Servises
 
             return paymentModel.ToList();
         }
-
         public async Task UpdateAsync(PaymentModel model)
         {
             var payments = await _paymentRepository.GetAsync(p => p.TransactionId == model.TransactionId);
@@ -89,7 +80,6 @@ namespace Store.BusinessLogicLayer.Servises
 
             await _paymentRepository.UpdateAsync(payment);
         }
-
         public async Task RemoveAsync(PaymentModel model)
         {
             var payments = await _paymentRepository.GetAsync(a =>a.TransactionId == model.TransactionId);

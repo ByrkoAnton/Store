@@ -17,7 +17,7 @@ namespace Store.BusinessLogicLayer.Models.Users
         
         public UserFiltrPaginSortModel()
         {
-            PropForSort = Constants.SortingParams.USER_DEF_SORT_PROP;
+            PropertyForSort = Constants.SortingParams.USER_DEF_SORT_PROP;
         }
     }
 }

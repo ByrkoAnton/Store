@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Store.DataAccessLayer.Entities;
 using System;
 using System.Threading.Tasks;
-using static Store.DataAccessLayer.Enums.Enums.UserRole;
+using static Store.DataAccessLayer.Enums.Enums;
 
 namespace Store.PresentationLayer
 {
@@ -21,10 +21,10 @@ namespace Store.PresentationLayer
 
             try
             {
-                var role = await rolesManager.FindByNameAsync(Role.Admin.ToString().ToLower());
+                var role = await rolesManager.FindByNameAsync(UserRole.Admin.ToString().ToLower());
                 if (role is null)
                 {
-                    await rolesManager.CreateAsync(new IdentityRole<long>(Role.Admin.ToString().ToLower()));
+                    await rolesManager.CreateAsync(new IdentityRole<long>(UserRole.Admin.ToString().ToLower()));
                 }
             }
 

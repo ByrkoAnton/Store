@@ -13,5 +13,6 @@ namespace Store.DataAccessLayer.Repositories.Base
         public Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
         public Task RemoveAsync(TEntity item);
         public Task UpdateAsync(TEntity item);
+        public Task SaveChangesAsync();
     }
 }

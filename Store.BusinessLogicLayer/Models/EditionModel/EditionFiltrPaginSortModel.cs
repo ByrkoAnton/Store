@@ -1,7 +1,6 @@
 ﻿using Store.BusinessLogicLayer.Models.Base;
 using Store.Sharing.Constants;
-using static Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums;
-using Type = Store.DataAccessLayer.Enums.Enums.PrintingEditionEnums.Type;
+using static Store.DataAccessLayer.Enums.Enums;
 
 namespace Store.BusinessLogicLayer.Models.EditionModel
 {
@@ -12,12 +11,12 @@ namespace Store.BusinessLogicLayer.Models.EditionModel
         public bool? IsRemoved { get; set; }
         public string Status { get; set; }
         public Currency? Currency { get; set; }
-        public Type? Type { get; set; }
+        public PrintingEditionType? Type { get; set; }
         public string AuthorName { get; set; }
 
         public EditionFiltrPaginSortModel()
         {
-            PropForSort = Constants.SortingParams.EDITION_DEF_SORT_PROP;
+            PropertyForSort = Constants.SortingParams.EDITION_DEF_SORT_PROP;
         }
     }
 

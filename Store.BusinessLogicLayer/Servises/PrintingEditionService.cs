@@ -53,18 +53,19 @@ namespace Store.BusinessLogicLayer.Servises
             {
                 throw new CustomExeption(Constants.Error.EDITION_MUST_HAVE_AUTHOR,
                     StatusCodes.Status400BadRequest);
-            } 
+            }
 
-            var authors = _mapper.Map<IEnumerable<Author>>(model.AuthorModels).ToList();
             var allAuthors = await _authorRepository.GetAllAsync();
 
-            int authorsCountDifference = allAuthors.Count(p => authors.Exists(p2 => p2.Name == p.Name)) - authors.Count();
+            int authorsCountDifference = allAuthors.Count(p => model.AuthorModels.Exists(p2 => p2.Name == p.Name))
+                - model.AuthorModels.Count();
+
             if (authorsCountDifference != 0)
             {
                 throw new CustomExeption(Constants.Error.NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST,
                 StatusCodes.Status400BadRequest);
             }
-            
+
             var printingEdition = _mapper.Map<PrintingEdition>(model);
             await _printingEditionRepository.CreateAsync(printingEdition);
         }
@@ -82,17 +83,17 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var editionFiltrPagingSortModelDAL = _mapper.Map<EditionFiltrPagingSortModelDAL>(model);
 
-            var editionsCount = await _printingEditionRepository.GetAsync(editionFiltrPagingSortModelDAL);
+            (IEnumerable<PrintingEdition> editions, int count) editionsCount = await _printingEditionRepository.GetAsync(editionFiltrPagingSortModelDAL);
 
-            if (!editionsCount.Item1.Any()) 
+            if (!editionsCount.editions.Any()) 
             {
                 throw new CustomExeption(Constants.Error.NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS,
                    StatusCodes.Status400BadRequest);
             }
 
-            var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>> (editionsCount.Item1);
+            var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>> (editionsCount.count);
 
-            PaginatedPageModel paginatedPage = new PaginatedPageModel(editionsCount.Item2, model.CurrentPage, model.PageSize);
+            PaginatedPageModel paginatedPage = new PaginatedPageModel(editionsCount.count, model.CurrentPage, model.PageSize);
             NavigationModel<PrintingEditionModel> navigation = new NavigationModel<PrintingEditionModel>
             {
                 PageModel = paginatedPage,

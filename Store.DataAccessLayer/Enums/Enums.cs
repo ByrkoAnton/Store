@@ -3,24 +3,21 @@ namespace Store.DataAccessLayer.Enums
 {
     public partial class Enums
     {
-        public class PrintingEditionEnums
+        public enum PrintingEditionType
         {
-            public enum Type
-            {
-                Book = 1,
-                Journal = 2,
-                Newspaper = 3
-            }
-            public enum Currency
-            {
-                USD = 1,
-                EUR = 2,
-                GBP = 3,
-                CHF = 4,
-                JPY = 5,
-                UAH = 6
-            }
+            Book = 0,
+            Journal = 1,
+            Newspaper = 2
         }
-
+        public enum Currency
+        {
+            USD = 0,
+            EUR = 1,
+            GBP = 2,
+            CHF = 3,
+            JPY = 4,
+            UAH = 5
+        }
     }
 }
+

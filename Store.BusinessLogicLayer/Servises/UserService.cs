@@ -200,7 +200,7 @@ namespace Store.BusinessLogicLayer.Servises
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
                 && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null))
-                .OrderBy(model.PropForSort, model.IsAsc).Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
+                .OrderBy(model.PropertyForSort, model.IsAscending).Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
 
             if (!users.Any())
             {
