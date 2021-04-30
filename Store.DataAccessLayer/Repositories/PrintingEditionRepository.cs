@@ -72,26 +72,13 @@ namespace Store.DataAccessLayer.Repositories
         }
         public override async Task UpdateAsync(PrintingEdition edition)
         {
-            _dbSet.Update(edition);
-            List<Author> authors = new List<Author>(edition.Authors);
-
             var editionForUpdate = _dbSet.Include(a => a.Authors).
-                FirstOrDefault(e => e.Id == edition.Id);
+               FirstOrDefault(b => b.Id == edition.Id);
 
-            editionForUpdate.Authors.RemoveAll(p => !authors.Exists(p2 => p2.Id == p.Id));
-           
-            var result = authors.Where(p => !editionForUpdate.Authors.Exists(p2 => p2.Id == p.Id)).ToList();
+            editionForUpdate.Authors.RemoveAll(p => !edition.Authors.Exists(p2 => p2.Id == p.Id));
+            var result = edition.Authors.Where(p => !editionForUpdate.Authors.Exists(p2 => p2.Id == p.Id)).ToList();
             editionForUpdate.Authors.AddRange(result);
-            await SaveChangesAsync();
-
-            //var authors = new List<Author>(edition.Authors);
-            //edition.Authors.Clear();
-            //_dbSet.Update(edition);
-            //var result = await _dbSet.Include(edition => edition.Authors).FirstOrDefaultAsync(x => x.Id == edition.Id);
-            //result.Authors.RemoveAll(x => authors.Any(y => y.Id == x.Id));
-            //result.Authors = authors;
-
-
+            _dbSet.Update(editionForUpdate);
             await SaveChangesAsync();
         }
     }

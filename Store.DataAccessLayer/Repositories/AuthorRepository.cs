@@ -55,15 +55,13 @@ namespace Store.DataAccessLayer.Repositories
         }
         public override async Task UpdateAsync(Author author)
         {
-            _dbSet.Update(author);
-            List<PrintingEdition> printingEditions = new List<PrintingEdition>(author.PrintingEditions);
-
-            var authorForUpdate = _dbSet.Include(a => a.PrintingEditions).
+            var authorForUpdate = _dbSet.Include(author => author.PrintingEditions).
                 FirstOrDefault(Authors => Authors.Id == author.Id);
 
-            authorForUpdate.PrintingEditions.RemoveAll(p => !printingEditions.Exists(p2 => p2.Id == p.Id));
-            var result = printingEditions.Where(p => !authorForUpdate.PrintingEditions.Exists(p2 => p2.Id == p.Id)).ToList();
+            authorForUpdate.PrintingEditions.RemoveAll(p => !author.PrintingEditions.Exists(p2 => p2.Id == p.Id));
+            var result = author.PrintingEditions.Where(p => !authorForUpdate.PrintingEditions.Exists(p2 => p2.Id == p.Id)).ToList();
             authorForUpdate.PrintingEditions.AddRange(result);
+            _dbSet.Update(authorForUpdate);
             await SaveChangesAsync();
         }
     }
