@@ -6,5 +6,10 @@ namespace Store.BusinessLogicLayer.Models.Base
     {
         public long Id { get; set; } 
         public DateTime DateOfCreation { get; set; }
+
+        public BaseModel()
+        {
+            DateOfCreation = DateTime.Now;
+        }
     }
 }

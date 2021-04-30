@@ -57,10 +57,9 @@ namespace Store.BusinessLogicLayer.Servises
 
             var allAuthors = await _authorRepository.GetAllAsync();
 
-            int authorsCountDifference = allAuthors.Count(p => model.AuthorModels.Exists(p2 => p2.Name == p.Name))
-                - model.AuthorModels.Count();
+            var autors = allAuthors.Where(a => model.AuthorModels.Exists(p => p.Id == a.Id)).ToList();
 
-            if (authorsCountDifference != 0)
+            if (model.AuthorModels.Count != autors.Count)
             {
                 throw new CustomExeption(Constants.Error.NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST,
                 StatusCodes.Status400BadRequest);

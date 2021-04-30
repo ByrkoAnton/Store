@@ -50,15 +50,15 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var authorFiltrPagingSortModelDAL = _mapper.Map<AuthorFiltrPagingSortModelDAL>(model);
 
-            var authorsWithCount = await _authorRepository.GetAsync(authorFiltrPagingSortModelDAL);
-            if (!authorsWithCount.Item1.Any())
+            (IEnumerable<Author> authors, int count) authorsWithCount = await _authorRepository.GetAsync(authorFiltrPagingSortModelDAL);
+            if (!authorsWithCount.authors.Any())
             {
                 throw new CustomExeption(Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
                    StatusCodes.Status400BadRequest);
             }
-            var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCount.Item1);
+            var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCount.authors);
 
-            PaginatedPageModel paginatedPage = new PaginatedPageModel(authorsWithCount.Item2, model.CurrentPage, model.PageSize);
+            PaginatedPageModel paginatedPage = new PaginatedPageModel(authorsWithCount.count, model.CurrentPage, model.PageSize);
             NavigationModel<AuthorModel> result = new NavigationModel<AuthorModel>
             {
                 PageModel = paginatedPage,

@@ -79,8 +79,19 @@ namespace Store.DataAccessLayer.Repositories
                 FirstOrDefault(e => e.Id == edition.Id);
 
             editionForUpdate.Authors.RemoveAll(p => !authors.Exists(p2 => p2.Id == p.Id));
+           
             var result = authors.Where(p => !editionForUpdate.Authors.Exists(p2 => p2.Id == p.Id)).ToList();
             editionForUpdate.Authors.AddRange(result);
+            await SaveChangesAsync();
+
+            //var authors = new List<Author>(edition.Authors);
+            //edition.Authors.Clear();
+            //_dbSet.Update(edition);
+            //var result = await _dbSet.Include(edition => edition.Authors).FirstOrDefaultAsync(x => x.Id == edition.Id);
+            //result.Authors.RemoveAll(x => authors.Any(y => y.Id == x.Id));
+            //result.Authors = authors;
+
+
             await SaveChangesAsync();
         }
     }
