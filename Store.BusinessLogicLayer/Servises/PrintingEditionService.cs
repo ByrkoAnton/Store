@@ -90,15 +90,15 @@ namespace Store.BusinessLogicLayer.Servises
                    StatusCodes.Status400BadRequest);
             }
 
-            var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>> (editionsCount.count);
+            var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>> (editionsCount.editions);
 
             PaginatedPageModel paginatedPage = new PaginatedPageModel(editionsCount.count, model.CurrentPage, model.PageSize);
-            NavigationModel<PrintingEditionModel> navigation = new NavigationModel<PrintingEditionModel>
+            NavigationModel<PrintingEditionModel> result = new NavigationModel<PrintingEditionModel>
             {
                 PageModel = paginatedPage,
                 EntityModels = editionModels
             };
-            return navigation;
+            return result;
         }
         public async Task<PrintingEditionModel> GetByDescriptionAsync(PrintingEditionModel model)
         {

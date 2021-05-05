@@ -11,16 +11,14 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Store.Sharing.Constants;
-using AutoMapper;
 
 namespace Store.DataAccessLayer.Repositories
 {
     public class PrintingEditionRepository : BaseRepository<PrintingEdition>, IPrintingEditionRepository
     {
-        private readonly IMapper _mapper;
-        public PrintingEditionRepository(ApplicationContext context, IAuthorRepository authorRepository, IMapper mapper) : base(context)
+        
+        public PrintingEditionRepository(ApplicationContext context, IAuthorRepository authorRepository) : base(context)
         {
-            _mapper = mapper;
         }
         public override async Task CreateAsync(PrintingEdition edition)
         {
@@ -43,12 +41,6 @@ namespace Store.DataAccessLayer.Repositories
         }
         public async Task<(IEnumerable<PrintingEdition>, int)> GetAsync(EditionFiltrPagingSortModelDAL model)
         {
-            string direction = Constants.SortingParams.SORT_ASC_DIRECTION;
-            if (!model.IsAscending)
-            {
-                direction = Constants.SortingParams.SORT_DESC_DIRECTION;
-            }
-
             var editions = await _dbSet.Include(pe => pe.Authors).AsNoTracking()
             .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
             && EF.Functions.Like(n.Description, $"%{model.Description}%")
@@ -57,7 +49,9 @@ namespace Store.DataAccessLayer.Repositories
             && (n.Currency == model.Currency || model.Currency == null)
             && (n.Type == model.Type || model.Type == null)
             && (n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%"))))
-            .OrderBy($"{model.PropertyForSort} {direction}").Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
+            .OrderBy($"{model.PropertyForSort} " +
+            $"{(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
+            .Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
 
             int count = await _dbSet
                 .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
@@ -67,7 +61,6 @@ namespace Store.DataAccessLayer.Repositories
                 && (n.Currency == model.Currency || model.Currency == null)
                 && (n.Type == model.Type || model.Type == null)
                 && (n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))).CountAsync();
-
 
             var editionsWithCount = (editions: editions, count: count);
 

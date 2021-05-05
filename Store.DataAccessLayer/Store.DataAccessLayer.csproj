@@ -5,10 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DapperRepositories\" />
-    <Folder Include="EFRepositories\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Servises\" />
   </ItemGroup>
 
   <ItemGroup>
