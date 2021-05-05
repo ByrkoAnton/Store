@@ -36,7 +36,7 @@ namespace Store.PresentationLayer.Middlewares
             {
                 _loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
                 var logger = _loggerFactory.CreateLogger("FileLogger");
-                string log = $"{DateTime.Now}\n{exeption.StackTrace}\n{new string ('*',100)}";
+                string log = $"{DateTime.Now}\n{exeption.Message}\n{exeption.StackTrace}\n{new string ('*',100)}";
                 logger.LogError(log);
             }
         }
