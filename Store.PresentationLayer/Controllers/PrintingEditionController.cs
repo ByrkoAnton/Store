@@ -52,7 +52,7 @@ namespace Store.PresentationLayer.Controllers
             return Ok(result);
         }
 
-        [HttpGet("Update")]
+        [HttpPost("Update")]
         public async Task<IActionResult> Update(PrintingEditionModel model)
         {
             await _editionService.UpdateAsync(model);

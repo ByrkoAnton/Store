@@ -33,7 +33,7 @@ namespace Store.DataAccessLayer.Repositories
         }
         public override async Task<PrintingEdition> GetByIdAsync(Expression<Func<PrintingEdition, bool>> predicate)
         {
-            var result = await _dbSet.Include(x=>x.Authors).AsNoTracking().FirstOrDefaultAsync(predicate);
+            var result = await _dbSet.Include(x => x.Authors).AsNoTracking().FirstOrDefaultAsync(predicate);
             return result;
         }
         public override async Task<IEnumerable<PrintingEdition>> GetAsync(Expression<Func<PrintingEdition, bool>> predicate)
@@ -75,29 +75,16 @@ namespace Store.DataAccessLayer.Repositories
         }
         public override async Task UpdateAsync(PrintingEdition edition)
         {
-
-            //var editionForUpdate = _dbSet.Include(a => a.Authors).
-            //   FirstOrDefault(b => b.Id == edition.Id);
-            
-            //editionForUpdate.Authors.RemoveAll(p => !edition.Authors.Exists(p2 => p2.Id == p.Id));
-            //var result = edition.Authors.Where(p => !editionForUpdate.Authors.Exists(p2 => p2.Id == p.Id)).ToList();
-
-            ////editionForUpdate.Authors.AddRange(result);
-            ////editionForUpdate.Currency = edition.Currency;
-            ////editionForUpdate.DateOfCreation = edition.DateOfCreation;
-            ////editionForUpdate.Description = edition.Description;
-            ////editionForUpdate.IsRemoved = edition.IsRemoved;
-            ////editionForUpdate.Prise = edition.Prise;
-            //_dbSet.Update(editionForUpdate);
-            //await SaveChangesAsync();
-
             var authors = new List<Author>(edition.Authors);
             edition.Authors.Clear();
             _dbSet.Update(edition);
-            var result = await _dbSet.Include(edition => edition.Authors).FirstOrDefaultAsync(x => x.Id == edition.Id);
-            result.Authors.RemoveAll(x => authors.Any(y => y.Id == x.Id));
-            result.Authors.AddRange(authors);
-            _dbSet.Update(edition);
+            var editionForUpdate = _dbSet.Include(a => a.Authors).FirstOrDefault(b => b.Id == edition.Id);
+            editionForUpdate.Authors.RemoveAll(p => !authors.Exists(p2 => p2.Id == p.Id));
+            var result = authors.Where(p => !editionForUpdate.Authors.Exists(p2 => p2.Id == p.Id)).ToList();
+            editionForUpdate.Authors.AddRange(result);
+            //authors.RemoveAll(p => !editionForUpdate.Authors.Exists(p2 => p2.Id == p.Id));
+            //editionForUpdate.Authors.AddRange(authors);
+            _dbSet.Update(editionForUpdate);
             await SaveChangesAsync();
         }
     }
