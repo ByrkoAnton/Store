@@ -15,8 +15,7 @@ using Store.BusinessLogicLayer.Providers;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
 using System.Linq.Dynamic.Core;
 using Store.Sharing.Constants;
-using Store.DataAccessLayer.AppContext;
-
+using clearwaterstream.Security;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -24,15 +23,12 @@ namespace Store.BusinessLogicLayer.Servises
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailProvider _emailService;
-        private readonly IRandomPasswordGeneratorProvider _randomPasswordGenerator;
         private readonly IMapper _mapper;
 
-        public UserService(UserManager<User> userManager, IEmailProvider emailService,
-            IRandomPasswordGeneratorProvider randomPasswordGenerator, IMapper mapper)
+        public UserService(UserManager<User> userManager, IEmailProvider emailService, IMapper mapper)
         {
             _userManager = userManager;
             _emailService = emailService;
-            _randomPasswordGenerator = randomPasswordGenerator;
             _mapper = mapper;
         }
 
@@ -180,7 +176,7 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            string newPassword = _randomPasswordGenerator.GenerateRandomPassword();
+            var newPassword = PasswordGenerator.GeneratePassword(10, 2, 3);
             var result = await _userManager.ResetPasswordAsync(user, code, newPassword);
 
             if (!result.Succeeded)
