@@ -4,15 +4,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Store.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using Store.BusinessLogicLayer.Providers.Interfaces;
 using System.Linq;
 using Store.BusinessLogicLayer.Models.Users;
 using System;
 using System.Web;
-using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.Sharing.Constants;
+using AutoMapper;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -22,15 +21,17 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly UserManager<User> _userManager;
         private readonly IJwtProvider _jwtProvider;
         private readonly IEmailProvider _emailService;
+        private readonly IMapper _mapper;
 
 
         public AccountService(SignInManager<User> signInManager, UserManager<User> userManager, IJwtProvider jwtProvider,
-            IEmailProvider emailService)
+            IEmailProvider emailService, IMapper mapper)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _jwtProvider = jwtProvider;
             _emailService = emailService;
+            _mapper = mapper;
         }
         public async Task<string> SignUpAsync(UserModel signUpModel)
         {
@@ -41,13 +42,7 @@ namespace Store.BusinessLogicLayer.Servises
                     StatusCodes.Status400BadRequest);
             }
 
-            User user = new User
-            {
-                UserName = signUpModel.Email,
-                Email = signUpModel.Email,
-                FirstName = signUpModel.FirstName,
-                LastName = signUpModel.LastName
-            };
+            User user = _mapper.Map<User>(signUpModel);
 
             IdentityResult result = await _userManager.CreateAsync(user, signUpModel.Password);
 
@@ -57,7 +52,7 @@ namespace Store.BusinessLogicLayer.Servises
                    StatusCodes.Status400BadRequest);
             }
 
-            var addToRoleResult = await _userManager.AddToRoleAsync(user, "user");
+            var addToRoleResult = await _userManager.AddToRoleAsync(user, Constants.UserConstants.ROLE_USER);
 
             if (!addToRoleResult.Succeeded)
             {
@@ -69,15 +64,15 @@ namespace Store.BusinessLogicLayer.Servises
 
             var callbackUrl = new UriBuilder(Constants.URLs.URL_CONFIRMEMAIL);
             var parameters = HttpUtility.ParseQueryString(string.Empty);
-            parameters.Add("email", user.Email);
-            parameters.Add("code", code);
+            parameters.Add(Constants.UserConstants.EMAIL, user.Email);
+            parameters.Add(Constants.UserConstants.CODE, code);
             callbackUrl.Query = parameters.ToString();
             Uri finalUrl = callbackUrl.Uri;
 
-            await _emailService.SendEmailAsync(user.Email, "confirm email",
-            $"Confirm registration, go to : <a href='{finalUrl}'>link</a>");
+            await _emailService.SendEmailAsync(user.Email, Constants.UserConstants.CONFIRM_EMAIL,
+            String.Format(Constants.UserConstants.CONFIRM_REGISRT_LINK, finalUrl));
 
-            return "regisrtation success. confirm your email";
+            return Constants.UserConstants.REGISTR_SUCCESS;
         }
         public async Task<TokenResponseModel> SignInAsync(UserSignInModel signInModel)
         {
@@ -102,16 +97,9 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new Exception($"{Constants.Error.ERROR_NO_USERROLE} {StatusCodes.Status500InternalServerError}");
             }
 
-            bool isRoleAdmin = roleList.Any(s => s.Contains("admin"));
-
             var result = new TokenResponseModel();
-            if (isRoleAdmin)
-            {
-                result.AccessToken = _jwtProvider.GenerateJwt(signInModel.Email, "admin");
-                return result;
-            }
-
-            result.AccessToken = _jwtProvider.GenerateJwt(signInModel.Email, "user");
+            
+            result.AccessToken = _jwtProvider.GenerateJwt(signInModel.Email, roleList.ToList());
             return result;
         }
         public async Task SignOutAsync()
@@ -133,7 +121,7 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new Exception(Constants.Error.EMAILCONFIRMATION_EMAIL_DID_NOT_CONFIRMED);
             }
 
-            return "email confirmed";
+            return Constants.UserConstants.EMAIL_CONFIRMED;
         }
     }
 }

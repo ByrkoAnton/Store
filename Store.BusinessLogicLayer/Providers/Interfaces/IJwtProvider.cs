@@ -8,6 +8,6 @@ namespace Store.BusinessLogicLayer.Providers.Interfaces
 {
     public interface IJwtProvider
     {
-        public string GenerateJwt(string name, string role);
+        public string GenerateJwt(string name, List<string> roles);
     }
 }

@@ -4,6 +4,7 @@ using Store.DataAccessLayer.Entities;
 using System;
 using System.Threading.Tasks;
 using static Store.DataAccessLayer.Enums.Enums;
+using Store.Sharing.Constants;
 
 namespace Store.PresentationLayer
 {
@@ -14,10 +15,10 @@ namespace Store.PresentationLayer
             var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
             var rolesManager = services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole<long>>>();
 
-            string email = "nexeve3047@tripaco.com";
-            string password = "1_Aa123456";
-            string firstName = "Anton";
-            string lastName = "Byrko";
+            string email = Constants.UserConstants.EMAIL_INIT;
+            string password = Constants.UserConstants.PASSWORD;
+            string firstName = Constants.UserConstants.FIRST_NAME;
+            string lastName = Constants.UserConstants.LAST_NAME;
 
             try
             {
@@ -39,7 +40,7 @@ namespace Store.PresentationLayer
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(admin, "admin");
+                    await userManager.AddToRoleAsync(admin, Constants.UserConstants.ROLE_ADMIN);
                 }
             }
         }

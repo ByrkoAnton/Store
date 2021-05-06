@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
-using Store.BusinessLogicLayer.Providers.Interfaces;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Entities;
 using System;
@@ -176,7 +175,8 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var newPassword = PasswordGenerator.GeneratePassword(10, 2, 3);
+            var newPassword = PasswordGenerator.GeneratePassword(Constants.UserConstants.PASSWORD_LENGHT,
+                Constants.UserConstants.PASSWORD_DIGETS, Constants.UserConstants.PASSWORD_SPECIAL_CHARS);
             var result = await _userManager.ResetPasswordAsync(user, code, newPassword);
 
             if (!result.Succeeded)
@@ -184,8 +184,8 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new Exception(Constants.Error.PASSWORD_RESET_FAILD_CONTACT_ADMIN);
             }
 
-            await _emailService.SendEmailAsync(user.Email, "reset password",
-            $"new password is {newPassword}");
+            await _emailService.SendEmailAsync(user.Email, Constants.UserConstants.RESET_PASSWORD_SUBJ,
+            String.Format(Constants.UserConstants.RESET_PASSWORD_MSG, newPassword));
 
             return "check your email";
         }

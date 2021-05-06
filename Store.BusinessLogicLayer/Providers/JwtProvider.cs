@@ -1,5 +1,4 @@
-﻿using Store.BusinessLogicLayer.Models;
-using Store.BusinessLogicLayer.Providers.Interfaces;
+﻿using Store.BusinessLogicLayer.Providers.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
+using Store.Sharing.Constants;
 
 namespace Store.BusinessLogicLayer.Providers
 {
@@ -18,8 +18,9 @@ namespace Store.BusinessLogicLayer.Providers
         {
             _config = config;
         }
-        public string GenerateJwt(string name, string role)//Change to list
+        public string GenerateJwt(string name, List<string> roles)//Change to list
         {
+            string role = $"{(roles.Any(s => s.Contains(Constants.UserConstants.ROLE_ADMIN)) ? Constants.UserConstants.ROLE_ADMIN : Constants.UserConstants.ROLE_USER)}"; 
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, name),

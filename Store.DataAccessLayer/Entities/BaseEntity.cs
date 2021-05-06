@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Store.DataAccessLayer.Entities
 {
@@ -12,6 +11,5 @@ namespace Store.DataAccessLayer.Entities
         {
             DateOfCreation = DateTime.Now;
         }
-        
     }
 }
