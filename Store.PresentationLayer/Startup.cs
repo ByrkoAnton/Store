@@ -19,6 +19,7 @@ using AutoMapper;
 using Store.DataAccessLayer.Repositories.Base;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.DataAccessLayer.Repositories;
+using Store.Sharing.Constants;
 
 namespace Store.PresentationLayer
 {
@@ -76,9 +77,9 @@ namespace Store.PresentationLayer
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuer = true,
-                            ValidIssuer = Configuration["Jwt:Issuer"],
+                            ValidIssuer = Configuration[Constants.JwtProviderConst.ISSUER],
                             ValidateAudience = true,
-                            ValidAudience = Configuration["Jwt:AUDIENCE"],
+                            ValidAudience = Configuration[Constants.JwtProviderConst.AUDIENCE],
                             ValidateLifetime = true,
                             ValidateIssuerSigningKey = true,
                         };

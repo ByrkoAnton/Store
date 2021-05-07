@@ -9,7 +9,6 @@ using Store.DataAccessLayer.Entities;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
 
-
 namespace Store.BusinessLogicLayer.Servises
 {
     public class PaymentServise :IPaymentServise
