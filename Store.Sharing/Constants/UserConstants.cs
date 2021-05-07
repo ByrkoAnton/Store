@@ -22,6 +22,7 @@ namespace Store.Sharing.Constants
             public const int PASSWORD_LENGHT = 10;
             public const int PASSWORD_DIGETS = 2;
             public const int PASSWORD_SPECIAL_CHARS = 2;
+            public const string CHECK_EMAIL_MSG = "check your email";
 
         }
     }

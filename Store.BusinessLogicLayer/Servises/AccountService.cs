@@ -92,7 +92,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             var roleList = await _userManager.GetRolesAsync(user);
 
-            if (roleList is null)
+            if (!roleList.Any())
             {
                 throw new Exception($"{Constants.Error.ERROR_NO_USERROLE} {StatusCodes.Status500InternalServerError}");
             }

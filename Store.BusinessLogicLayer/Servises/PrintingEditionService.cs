@@ -29,7 +29,7 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task<PrintingEditionModel> GetByIdAsync(long id)
         {
-            var edition = await _printingEditionRepository.GetByIdAsync(edition => edition.Id == id);
+            var edition = await _printingEditionRepository.GetByIdAsync(id);
             if (edition is null)
             {
                 throw new CustomExeption(Constants.Error.NO_EDITION_ID_IN_DB,
@@ -41,7 +41,7 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task CreateAsync(PrintingEditionModel model)
 
         {
-            var editions = await _printingEditionRepository.GetAsync(edition => edition.Description == model.Description);
+            var editions = await _printingEditionRepository.GetByDescriptionAsync(model.Description);
 
             if (editions.Any())
             {
@@ -70,7 +70,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task RemoveAsync(PrintingEditionModel model)
         {
-            var edition = await _printingEditionRepository.GetAsync(edition => edition.Description == model.Description);
+            var edition = await _printingEditionRepository.GetByDescriptionAsync(model.Description);
             if (!edition.Any())
             {
                 throw new CustomExeption(Constants.Error.EDITION_BY_ID_NOT_FOUND,
@@ -102,7 +102,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<PrintingEditionModel> GetByDescriptionAsync(PrintingEditionModel model)
         {
-            var editions = await _printingEditionRepository.GetAsync(pe => pe.Description == model.Description);
+            var editions = await _printingEditionRepository.GetByDescriptionAsync(model.Description);
             if (!editions.Any())
             {
                 throw new CustomExeption(Constants.Error.NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS,
@@ -114,7 +114,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task UpdateAsync(PrintingEditionModel model)
         {
-            var edition = await _printingEditionRepository.GetByIdAsync(edition => edition.Id == model.Id);
+            var edition = await _printingEditionRepository.GetByIdAsync(model.Id);
             if (edition is null)
             {
                 throw new CustomExeption(Constants.Error.NO_EDITION_ID_IN_DB,

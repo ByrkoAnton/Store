@@ -24,27 +24,27 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task CreateAsync(PaymentModel model)
         {
-            var payments = await _paymentRepository.GetAsync(Payment => Payment.TransactionId == model.TransactionId);
+            var payment = await _paymentRepository.GetByTransactionIdAsync(model.TransactionId);
 
-            if (payments.Any())
+            if (payment is not null)
             {
                 throw new CustomExeption(Constants.Error.PAYMENT_CREATION_FAILD_PATMENT_ID_EXISTS,
                     StatusCodes.Status400BadRequest);
             }
 
-            var payment = _mapper.Map<Payment>(model);
+            payment = _mapper.Map<Payment>(model);
             await _paymentRepository.CreateAsync(payment);
         }
 
         public async Task<PaymentModel> GetByTransactionId(PaymentModel model)
         {
-            var payments = await _paymentRepository.GetAsync(p => p.TransactionId == model.TransactionId);
-            if (!payments.Any())
+            var payment = await _paymentRepository.GetByTransactionIdAsync(model.TransactionId);
+            if (payment is null)
             {
                 throw new CustomExeption(Constants.Error.NO_ANY_PAYMENTS_IN_DB_WITH_THIS_TRANSACTION_ID,
                    StatusCodes.Status400BadRequest);
             }
-            var paymentModel = _mapper.Map<PaymentModel>(payments.First());
+            var paymentModel = _mapper.Map<PaymentModel>(payment);
 
             return paymentModel;
         }
@@ -62,14 +62,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task UpdateAsync(PaymentModel model)
         {
-            var payments = await _paymentRepository.GetAsync(p => p.TransactionId == model.TransactionId);
-            if (payments.Any())
-            {
-                throw new CustomExeption(Constants.Error.THIS_TRANSACTION_ID_EXISTS_DB,
-                   StatusCodes.Status400BadRequest);
-            }
-
-            var payment = await _paymentRepository.GetByIdAsync(Payment => Payment.Id == model.Id);
+            var payment = await _paymentRepository.GetByIdAsync(model.Id);
             if (payment is null)
             {
                 throw new CustomExeption(Constants.Error.NO_ANY_PAYMENTS_IN_DB_WITH_THIS_ID,
@@ -82,13 +75,13 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task RemoveAsync(PaymentModel model)
         {
-            var payments = await _paymentRepository.GetAsync(a =>a.TransactionId == model.TransactionId);
-            if (!payments.Any())
+            var payment = await _paymentRepository.GetByTransactionIdAsync(model.TransactionId);
+            if (payment is null)
             {
-                throw new CustomExeption(Constants.Error.AUTHOR_REMOVE_FAILD_NO_AUTHOR_IN_DB,
+                throw new CustomExeption(Constants.Error.NO_ANY_PAYMENTS_IN_DB_WITH_THIS_TRANSACTION_ID,
                     StatusCodes.Status400BadRequest);
             }
-            await _paymentRepository.RemoveAsync(payments.First());
+            await _paymentRepository.RemoveAsync(payment);
         }
     }
 }

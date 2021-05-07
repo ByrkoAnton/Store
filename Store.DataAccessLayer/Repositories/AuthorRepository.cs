@@ -16,13 +16,12 @@ namespace Store.DataAccessLayer.Repositories
 {
     public class AuthorRepository : BaseRepository<Author>, IAuthorRepository
     {
-
         public AuthorRepository(ApplicationContext context) : base(context)
         {
         }
-        public override async Task<Author> GetByIdAsync(Expression<Func<Author, bool>> predicate)
+        public async Task<Author> GetByIdAsync(long id)
         {
-            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(predicate);
+            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(Authors => Authors.Id == id);
             return result;
         }
 
@@ -48,9 +47,10 @@ namespace Store.DataAccessLayer.Repositories
 
             return AuthorsWithCount;
         }
-        public override async Task<IEnumerable<Author>> GetAsync(Expression<Func<Author, bool>> predicate)
+        public async Task<IEnumerable<Author>> GetByNameAsync(string name)
         {
-            var result = await _dbSet.Where(predicate).Include(author => author.PrintingEditions).AsNoTracking().ToListAsync();
+            var result = await _dbSet.Where(Authors => Authors.Name == name)
+                .Include(author => author.PrintingEditions).AsNoTracking().ToListAsync();
             return result;
         }
         public override async Task UpdateAsync(Author author)

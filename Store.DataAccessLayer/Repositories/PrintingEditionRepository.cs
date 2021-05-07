@@ -4,10 +4,8 @@ using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Base;
 using Store.DataAccessLayer.Repositories.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Store.Sharing.Constants;
@@ -15,8 +13,7 @@ using Store.Sharing.Constants;
 namespace Store.DataAccessLayer.Repositories
 {
     public class PrintingEditionRepository : BaseRepository<PrintingEdition>, IPrintingEditionRepository
-    {
-        
+    { 
         public PrintingEditionRepository(ApplicationContext context, IAuthorRepository authorRepository) : base(context)
         {
         }
@@ -29,14 +26,15 @@ namespace Store.DataAccessLayer.Repositories
             edition.Authors.AddRange(authors);
             await SaveChangesAsync();
         }
-        public override async Task<PrintingEdition> GetByIdAsync(Expression<Func<PrintingEdition, bool>> predicate)
+        public async Task<PrintingEdition> GetByIdAsync(long id)
         {
-            var result = await _dbSet.Include(x => x.Authors).AsNoTracking().FirstOrDefaultAsync(predicate);
+            var result = await _dbSet.Include(x => x.Authors).AsNoTracking().FirstOrDefaultAsync(edition => edition.Id == id);
             return result;
         }
-        public override async Task<IEnumerable<PrintingEdition>> GetAsync(Expression<Func<PrintingEdition, bool>> predicate)
+        public async Task<IEnumerable<PrintingEdition>> GetByDescriptionAsync(string description)
         {
-            var result = await _dbSet.Where(predicate).Include(pe => pe.Authors).AsNoTracking().ToListAsync();
+            var result = await _dbSet.Where(edition => edition.Description == description)
+                .Include(pe => pe.Authors).AsNoTracking().ToListAsync();
             return result;
         }
         public async Task<(IEnumerable<PrintingEdition>, int)> GetAsync(EditionFiltrPagingSortModelDAL model)

@@ -18,7 +18,7 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task AddNewRoleToRolesTable(UserRoleModel roleModel)
         {
             var role = await _roleManager.FindByNameAsync(roleModel.RoleName);
-            if (role != null)
+            if (role is not null)
             {
                 throw new CustomExeption(Constants.Error.ROLE_ALREADY_EXISTS,
                    StatusCodes.Status400BadRequest);

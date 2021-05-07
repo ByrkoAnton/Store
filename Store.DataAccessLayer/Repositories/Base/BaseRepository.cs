@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.DataAccessLayer.AppContext;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Repositories.Base
@@ -25,19 +22,9 @@ namespace Store.DataAccessLayer.Repositories.Base
             await _context.SaveChangesAsync();
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
-        }
-
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbSet.AsNoTracking().ToListAsync();
-        }
-
-        public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return await _dbSet.Where(predicate).ToListAsync();
         }
 
         public async Task RemoveAsync(TEntity item)

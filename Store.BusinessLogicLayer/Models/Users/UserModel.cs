@@ -1,4 +1,5 @@
 ﻿using Store.Sharing.Constants;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Store.BusinessLogicLayer.Models.Users
@@ -17,7 +18,14 @@ namespace Store.BusinessLogicLayer.Models.Users
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = Constants.Error.REGISRATION_FAILD_NO_PASSWORD_IN_MODEL)]
+
+        public DateTime DateOfCreation { get; set; }
         public string Password { get; set; }
         public bool IsBlocked { get; set; }
+
+        public UserModel()
+        {
+            DateOfCreation = DateTime.Now;
+        }
     }
 }

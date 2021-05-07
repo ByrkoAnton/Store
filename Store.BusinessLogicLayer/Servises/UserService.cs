@@ -187,7 +187,7 @@ namespace Store.BusinessLogicLayer.Servises
             await _emailService.SendEmailAsync(user.Email, Constants.UserConstants.RESET_PASSWORD_SUBJ,
             String.Format(Constants.UserConstants.RESET_PASSWORD_MSG, newPassword));
 
-            return "check your email";
+            return Constants.UserConstants.CHECK_EMAIL_MSG;
         }
         public async Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrPaginSortModel model)
         {
@@ -196,7 +196,9 @@ namespace Store.BusinessLogicLayer.Servises
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
                 && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null))
-                .OrderBy(model.PropertyForSort, model.IsAscending).Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
+                .OrderBy(model.PropertyForSort, model.IsAscending)
+                .Skip((model.CurrentPage - 1) * model.PageSize)
+                .Take(model.PageSize).ToListAsync();
 
             if (!users.Any())
             {

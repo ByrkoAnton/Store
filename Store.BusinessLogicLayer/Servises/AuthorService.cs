@@ -25,7 +25,7 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task CreateAsync(AuthorModel model)
         {
-            var authors = await _authorRepository.GetAsync(Authors => Authors.Name == model.Name);
+            var authors = await _authorRepository.GetByNameAsync(model.Name);
             if (authors.Any())
             {
                 throw new CustomExeption(Constants.Error.AUTHOR_CREATE_FAILD_AUTHOR_ALREDY_EXISTS_IN_DB,
@@ -37,7 +37,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<AuthorModel> GetByIdAsync(long id)
         {
-            var author = await _authorRepository.GetByIdAsync(Authors => Authors.Id == id);
+            var author = await _authorRepository.GetByIdAsync(id);
             if (author is null)
             {
                 throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_THIS_ID_DB,
@@ -68,7 +68,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<AuthorModel> GetByNameAsync(AuthorModel model)
         {
-            var author = await _authorRepository.GetAsync(Authors => Authors.Name == model.Name);
+            var author = await _authorRepository.GetByNameAsync(model.Name);
             if (!author.Any())
             {
                 throw new CustomExeption(Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
@@ -80,7 +80,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task RemoveAsync(AuthorModel model)
         {
-            var authors = await _authorRepository.GetAsync(Authors => Authors.Name == model.Name);
+            var authors = await _authorRepository.GetByNameAsync(model.Name);
             if (!authors.Any())
             {
                 throw new CustomExeption(Constants.Error.AUTHOR_REMOVE_FAILD_NO_AUTHOR_IN_DB,
@@ -90,7 +90,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task UpdateAsync(AuthorModel model)
         {
-            var author = await _authorRepository.GetByIdAsync(Authors => Authors.Id == model.Id);
+            var author = await _authorRepository.GetByIdAsync(model.Id);
             if (author is null)
             {
                 throw new CustomExeption(Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
