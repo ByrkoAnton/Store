@@ -31,6 +31,7 @@ namespace Store.DataAccessLayer.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsBlocked = table.Column<bool>(type: "bit", nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999)),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -57,7 +58,8 @@ namespace Store.DataAccessLayer.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfCreation = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999))
                 },
                 constraints: table =>
                 {
@@ -73,8 +75,8 @@ namespace Store.DataAccessLayer.Migrations
                     Discription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     PaymentId = table.Column<long>(type: "bigint", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999))
                 },
                 constraints: table =>
                 {
@@ -88,7 +90,7 @@ namespace Store.DataAccessLayer.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    test = table.Column<int>(type: "int", nullable: false)
+                    DateOfCreation = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999))
                 },
                 constraints: table =>
                 {
@@ -106,7 +108,8 @@ namespace Store.DataAccessLayer.Migrations
                     IsRemoved = table.Column<bool>(type: "bit", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Currency = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false)
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999))
                 },
                 constraints: table =>
                 {
@@ -229,7 +232,8 @@ namespace Store.DataAccessLayer.Migrations
                     Currency = table.Column<int>(type: "int", nullable: false),
                     PrintingEditionId = table.Column<long>(type: "bigint", nullable: false),
                     OrderId = table.Column<long>(type: "bigint", nullable: false),
-                    Count = table.Column<int>(type: "int", nullable: false)
+                    Count = table.Column<int>(type: "int", nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999))
                 },
                 constraints: table =>
                 {
@@ -265,6 +269,21 @@ namespace Store.DataAccessLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Authors",
+                columns: new[] { "Id", "DateOfCreation", "Name" },
+                values: new object[] { 1L, new DateTime(2021, 5, 10, 14, 21, 26, 186, DateTimeKind.Local).AddTicks(1781), "FirstAuthor" });
+
+            migrationBuilder.InsertData(
+                table: "PrintingEditions",
+                columns: new[] { "Id", "Currency", "DateOfCreation", "Description", "IsRemoved", "Prise", "Status", "Type" },
+                values: new object[] { 1L, 5, new DateTime(2021, 5, 10, 14, 21, 26, 189, DateTimeKind.Local).AddTicks(6463), "FirstEdition", false, 5.0, "Avalible", 0 });
+
+            migrationBuilder.InsertData(
+                table: "AuthorPrintingEdition",
+                columns: new[] { "AuthorsId", "PrintingEditionsId" },
+                values: new object[] { 1L, 1L });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

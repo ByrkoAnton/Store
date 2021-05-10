@@ -32,6 +32,13 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasIndex("PrintingEditionsId");
 
                     b.ToTable("AuthorPrintingEdition");
+
+                    b.HasData(
+                        new
+                        {
+                            AuthorsId = 1L,
+                            PrintingEditionsId = 1L
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<long>", b =>
@@ -182,6 +189,14 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Authors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            DateOfCreation = new DateTime(2021, 5, 10, 14, 21, 26, 186, DateTimeKind.Local).AddTicks(1781),
+                            Name = "FirstAuthor"
+                        });
                 });
 
             modelBuilder.Entity("Store.DataAccessLayer.Entities.Order", b =>
@@ -300,6 +315,19 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PrintingEditions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Currency = 5,
+                            DateOfCreation = new DateTime(2021, 5, 10, 14, 21, 26, 189, DateTimeKind.Local).AddTicks(6463),
+                            Description = "FirstEdition",
+                            IsRemoved = false,
+                            Prise = 5.0,
+                            Status = "Avalible",
+                            Type = 0
+                        });
                 });
 
             modelBuilder.Entity("Store.DataAccessLayer.Entities.User", b =>

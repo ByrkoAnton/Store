@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using static Store.DataAccessLayer.Enums.Enums;
 using Store.Sharing.Constants;
 
+
 namespace Store.PresentationLayer
 {
     public static class UserInitialazer
@@ -36,7 +37,7 @@ namespace Store.PresentationLayer
 
             if (await userManager.FindByEmailAsync(email) is null)
             {
-                User admin = new User { Email = email, UserName = email, FirstName = firstName, LastName = lastName };
+                User admin = new User {Email = email, UserName = email, FirstName = firstName, LastName = lastName};
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {

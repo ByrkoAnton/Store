@@ -10,8 +10,8 @@ using Store.DataAccessLayer.AppContext;
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210427090653_entity_creation_date_added")]
-    partial class entity_creation_date_added
+    [Migration("20210510112128_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,13 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasIndex("PrintingEditionsId");
 
                     b.ToTable("AuthorPrintingEdition");
+
+                    b.HasData(
+                        new
+                        {
+                            AuthorsId = 1L,
+                            PrintingEditionsId = 1L
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<long>", b =>
@@ -173,8 +180,10 @@ namespace Store.DataAccessLayer.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("DateOfCreation")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999));
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -182,6 +191,14 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Authors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            DateOfCreation = new DateTime(2021, 5, 10, 14, 21, 26, 186, DateTimeKind.Local).AddTicks(1781),
+                            Name = "FirstAuthor"
+                        });
                 });
 
             modelBuilder.Entity("Store.DataAccessLayer.Entities.Order", b =>
@@ -191,11 +208,10 @@ namespace Store.DataAccessLayer.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("DateOfCreation")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999));
 
                     b.Property<string>("Discription")
                         .HasColumnType("nvarchar(max)");
@@ -227,11 +243,13 @@ namespace Store.DataAccessLayer.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("Currency")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999));
 
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
@@ -253,8 +271,10 @@ namespace Store.DataAccessLayer.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("DateOfCreation")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999));
 
                     b.Property<string>("TransactionId")
                         .HasColumnType("nvarchar(max)");
@@ -271,11 +291,13 @@ namespace Store.DataAccessLayer.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("Currency")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -295,6 +317,19 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PrintingEditions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Currency = 5,
+                            DateOfCreation = new DateTime(2021, 5, 10, 14, 21, 26, 189, DateTimeKind.Local).AddTicks(6463),
+                            Description = "FirstEdition",
+                            IsRemoved = false,
+                            Prise = 5.0,
+                            Status = "Avalible",
+                            Type = 0
+                        });
                 });
 
             modelBuilder.Entity("Store.DataAccessLayer.Entities.User", b =>
@@ -310,6 +345,11 @@ namespace Store.DataAccessLayer.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999));
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)

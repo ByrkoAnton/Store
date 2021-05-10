@@ -68,7 +68,6 @@ namespace Store.PresentationLayer
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.InitialazerAsync().Wait();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -101,6 +100,7 @@ namespace Store.PresentationLayer
             services.AddSingleton(mapper);
 
             services.AddMvc();
+            services.InitialazerAsync().Wait();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
