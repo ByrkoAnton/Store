@@ -5,8 +5,8 @@ namespace Store.DataAccessLayer.Enums
     {
         public enum OrderStastys
         {
-            Payed = 0,
-            Unpayed = 1,
+            Payed = 1,
+            Unpayed = 2,
         }
     }
 }
