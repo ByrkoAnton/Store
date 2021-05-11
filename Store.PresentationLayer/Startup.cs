@@ -20,6 +20,7 @@ using Store.DataAccessLayer.Repositories.Base;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.DataAccessLayer.Repositories;
 using Store.Sharing.Constants;
+using Stripe;
 
 namespace Store.PresentationLayer
 {
@@ -40,7 +41,7 @@ namespace Store.PresentationLayer
             services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
             services.AddTransient<IPaymentRepository, PaymentRepository>();
 
-            services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IUserAccountService, UserAccountService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IEmailProvider, EmailProvider>();
             services.AddTransient<IUserService, UserService>();
@@ -101,10 +102,13 @@ namespace Store.PresentationLayer
 
             services.AddMvc();
             services.InitialazerAsync().Wait();
+
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["SecretKey"];
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

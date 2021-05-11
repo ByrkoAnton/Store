@@ -21,6 +21,7 @@
     <PackageReference Include="MailKit" Version="2.11.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.4" />
     <PackageReference Include="PasswordGenerator.Exact" Version="1.0.1" />
+    <PackageReference Include="Stripe.net" Version="39.48.0" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.9" />
   </ItemGroup>
 

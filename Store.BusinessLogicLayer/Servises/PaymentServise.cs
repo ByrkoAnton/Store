@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Store.DataAccessLayer.Entities;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
+using Stripe;
+using Store.BusinessLogicLayer.Models.Stipe;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -19,6 +21,49 @@ namespace Store.BusinessLogicLayer.Servises
         {
             _paymentRepository = paymentRepository;
             _mapper = maper;
+        }
+
+        public async Task<string> PayAsync(StripePayModel model)
+        {
+            try
+            {
+                var optionsToken = new TokenCreateOptions
+                {
+                    Card = new TokenCardOptions
+                    {
+                        Number = model.CardNumber,
+                        ExpMonth = model.Month,
+                        ExpYear = model.Year,
+                        Cvc = model.Cvc
+                    }
+                };
+
+                var serviceToken = new TokenService();
+                Token stripeToken = await serviceToken.CreateAsync(optionsToken);
+
+                var options = new ChargeCreateOptions
+                {
+                    Amount = model.Value,
+                    Currency = "usd",
+                    Description = "test",
+                    Source = stripeToken.Id
+                };
+
+                var service = new ChargeService();
+                Charge charge = await service.CreateAsync(options);
+
+                if (charge.Paid)
+                {
+                    return "Success";
+                }
+
+                return "faild";
+            }
+            catch (System.Exception e)
+            {
+
+                return e.Message.ToString();
+            }
         }
 
         public async Task CreateAsync(PaymentModel model)

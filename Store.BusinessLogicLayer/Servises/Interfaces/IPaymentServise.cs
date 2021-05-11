@@ -1,8 +1,6 @@
 ﻿using Store.BusinessLogicLayer.Models.Payments;
-using System;
+using Store.BusinessLogicLayer.Models.Stipe;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Servises.Interfaces
@@ -14,5 +12,6 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
         public Task<List<PaymentModel>> GetAll();
         public Task UpdateAsync(PaymentModel model);
         public Task RemoveAsync(PaymentModel model);
+        public Task<string> PayAsync(StripePayModel model);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.Payments;
+using Store.BusinessLogicLayer.Models.Stipe;
 using Store.BusinessLogicLayer.Servises.Interfaces;
+using Stripe;
 using System.Threading.Tasks;
 
 namespace Store.PresentationLayer.Controllers
@@ -15,6 +17,13 @@ namespace Store.PresentationLayer.Controllers
         public PaymentController(IPaymentServise paymentServise)
         {
             _paymentServise = paymentServise;
+        }
+
+        [HttpPost("Pay")]
+        public async Task<IActionResult> Pay([FromBody] StripePayModel model)
+        {
+            var result = await _paymentServise.PayAsync(model);
+            return Ok(result);
         }
 
         [HttpPost("Create")]

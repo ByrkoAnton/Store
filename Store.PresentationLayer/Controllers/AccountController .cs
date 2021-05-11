@@ -11,9 +11,9 @@ namespace Store.PresentationLayer.Controllers
     [ApiController]
     public class AccountController : Controller
     {
-        private readonly IAccountService _accountService;
+        private readonly IUserAccountService _accountService;
 
-        public AccountController(IAccountService accountService, IEmailProvider emailServices)
+        public AccountController(IUserAccountService accountService, IEmailProvider emailServices)
         {
             _accountService = accountService;
         }
