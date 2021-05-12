@@ -8,6 +8,7 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
     {
         public Task CreateAsync(OrderItemModel model);
         public Task<List<OrderItemModel>> GetAll();
+        public Task<OrderItemModel> GetById(long id);
         public Task UpdateAsync(OrderItemModel model);
         public Task RemoveAsync(OrderItemModel model);
     }

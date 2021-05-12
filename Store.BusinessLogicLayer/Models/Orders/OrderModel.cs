@@ -10,7 +10,7 @@ namespace Store.BusinessLogicLayer.Models.Orders
         public string Discription { get; set; }
         public long UserId { get; set; }
         public long PaymentId { get; set; }
-        public OrderStastys Status { get; set; }
+        public OrderStatus Status { get; set; }
         public IEnumerable<OrderItemModel> OrderItemModels { get; set; }
     }
 }

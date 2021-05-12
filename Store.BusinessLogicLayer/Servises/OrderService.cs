@@ -40,6 +40,19 @@ namespace Store.BusinessLogicLayer.Servises
             return ordersModels.ToList();
         }
 
+        public async Task<OrderModel> GetById(long id)
+        {
+            var order = await _orderRepository.GetByIdAsync(id);
+            if (order is null)
+            {
+                throw new CustomExeption(Constants.Error.NO_ANY_ORDERS_IN_DB_WITH_THIS_ID,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            var orderModel = _mapper.Map<OrderModel>(order);
+            return orderModel;
+        }
+
         public async Task RemoveAsync(OrderModel model)
         {
             var order = await _orderRepository.GetByIdAsync(model.Id);

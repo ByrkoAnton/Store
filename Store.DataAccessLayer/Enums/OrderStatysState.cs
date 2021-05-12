@@ -3,10 +3,10 @@ namespace Store.DataAccessLayer.Enums
 {
     public partial class Enums
     {
-        public enum OrderStastys
+        public enum OrderStatus
         {
-            Payed = 1,
-            Unpayed = 2,
+            Unpayed = 1,
+            Payed = 2,
         }
     }
 }

@@ -99,6 +99,8 @@ namespace Store.PresentationLayer
                 mc.AddProfile(new PrintingEditionFiltrationMappingProfile());
                 mc.AddProfile(new AuthorFiltrationMappingProfile());
                 mc.AddProfile(new PaymentMappingProfile());
+                mc.AddProfile(new OrderMappingProfile());
+                mc.AddProfile(new OrderItemMappingProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
