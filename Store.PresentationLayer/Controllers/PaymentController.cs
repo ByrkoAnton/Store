@@ -12,9 +12,9 @@ namespace Store.PresentationLayer.Controllers
     public class PaymentController : Controller
     {
 
-        private readonly IPaymentServise _paymentServise;
+        private readonly IPaymentService _paymentServise;
 
-        public PaymentController(IPaymentServise paymentServise)
+        public PaymentController(IPaymentService paymentServise)
         {
             _paymentServise = paymentServise;
         }

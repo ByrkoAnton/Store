@@ -9,9 +9,9 @@ namespace Store.PresentationLayer.Controllers
     [ApiController]
     public class AuthorController : Controller
     {
-        private readonly IAuthorServise _authorService;
+        private readonly IAuthorService _authorService;
 
-        public AuthorController(IAuthorServise authorService)
+        public AuthorController(IAuthorService authorService)
         {
             _authorService = authorService;
         }

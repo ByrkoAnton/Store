@@ -40,15 +40,19 @@ namespace Store.PresentationLayer
             services.AddTransient<IAuthorRepository, AuthorRepository>();
             services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
             services.AddTransient<IPaymentRepository, PaymentRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IOrderItemRepository, OrderItemRepository>();
 
             services.AddTransient<IUserAccountService, UserAccountService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IEmailProvider, EmailProvider>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IJwtProvider, JwtProvider>();
-            services.AddTransient<IAuthorServise, AuthorService>();
+            services.AddTransient<IAuthorService, AuthorService>();
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();
-            services.AddTransient<IPaymentServise, PaymentServise>();
+            services.AddTransient<IPaymentService, PaymentService>();
+            services.AddTransient<IOrderService, BusinessLogicLayer.Servises.OrderService>();
+            services.AddTransient<IOrderItemService, OrderItemService>();
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),

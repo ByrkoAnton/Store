@@ -12,13 +12,11 @@ namespace Store.DataAccessLayer.Repositories
         public PaymentRepository(ApplicationContext context) : base(context)
         {
         }
-
         public async Task<Payment> GetByIdAsync(long id)
         {
             var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(Payment => Payment.Id == id);
             return result;
         }
-
         public async Task<Payment> GetByTransactionIdAsync(string transactionId)
         {
             var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(t => t.TransactionId == transactionId);

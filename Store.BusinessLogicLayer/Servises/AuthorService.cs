@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Servises
 {
-    public class AuthorService : IAuthorServise
+    public class AuthorService : IAuthorService
     {
         private readonly IAuthorRepository _authorRepository;
         private readonly IMapper _mapper;
