@@ -194,7 +194,7 @@ namespace Store.DataAccessLayer.Migrations
                         new
                         {
                             Id = 1L,
-                            DateOfCreation = new DateTime(2021, 5, 10, 14, 21, 26, 186, DateTimeKind.Local).AddTicks(1781),
+                            DateOfCreation = new DateTime(2021, 5, 13, 16, 42, 16, 42, DateTimeKind.Local).AddTicks(3663),
                             Name = "FirstAuthor"
                         });
                 });
@@ -224,6 +224,8 @@ namespace Store.DataAccessLayer.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -321,7 +323,7 @@ namespace Store.DataAccessLayer.Migrations
                         {
                             Id = 1L,
                             Currency = 5,
-                            DateOfCreation = new DateTime(2021, 5, 10, 14, 21, 26, 189, DateTimeKind.Local).AddTicks(6463),
+                            DateOfCreation = new DateTime(2021, 5, 13, 16, 42, 16, 45, DateTimeKind.Local).AddTicks(7770),
                             Description = "FirstEdition",
                             IsRemoved = false,
                             Prise = 5.0,
@@ -477,13 +479,26 @@ namespace Store.DataAccessLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Store.DataAccessLayer.Entities.Order", b =>
+                {
+                    b.HasOne("Store.DataAccessLayer.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Store.DataAccessLayer.Entities.OrderItem", b =>
                 {
-                    b.HasOne("Store.DataAccessLayer.Entities.Order", null)
+                    b.HasOne("Store.DataAccessLayer.Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Store.DataAccessLayer.Entities.Order", b =>

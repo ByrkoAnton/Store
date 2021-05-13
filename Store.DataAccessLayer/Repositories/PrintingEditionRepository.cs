@@ -14,7 +14,7 @@ namespace Store.DataAccessLayer.Repositories
 {
     public class PrintingEditionRepository : BaseRepository<PrintingEdition>, IPrintingEditionRepository
     { 
-        public PrintingEditionRepository(ApplicationContext context, IAuthorRepository authorRepository) : base(context)
+        public PrintingEditionRepository(ApplicationContext context) : base(context)
         {
         }
         public override async Task CreateAsync(PrintingEdition edition)

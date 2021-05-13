@@ -10,21 +10,54 @@ using Store.Sharing.Constants;
 using System.Collections.Generic;
 using Stripe;
 using Store.BusinessLogicLayer.Models.Stipe;
+using static Store.DataAccessLayer.Enums.Enums;
 
 namespace Store.BusinessLogicLayer.Servises
 {
     public class PaymentService :IPaymentService
     {
         private readonly IPaymentRepository _paymentRepository;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IPrintingEditionRepository _printingEditionRepository;
+        private readonly IOrderItemRepository _orderItemRepository;
         private readonly IMapper _mapper;
-        public PaymentService(IPaymentRepository paymentRepository, IMapper maper)
+        public PaymentService(IPaymentRepository paymentRepository, IOrderRepository orderRepository, IMapper maper,
+         IPrintingEditionRepository printingEditionRepository, IOrderItemRepository orderItemRepository)
         {
             _paymentRepository = paymentRepository;
             _mapper = maper;
+            _orderRepository = orderRepository;
+            _printingEditionRepository = printingEditionRepository;
+            _orderItemRepository = orderItemRepository;
+
         }
 
         public async Task<string> PayAsync(StripePayModel model)
         {
+            DataAccessLayer.Entities.Order order = new DataAccessLayer.Entities.Order
+            {
+                Discription = model.OrderDescription,
+                UserId = model.userId,   
+            };
+
+            await _orderRepository.CreateAsync(order);
+
+            foreach (var i in model.EditionsIdAndQuant)
+            {
+                var edition = await _printingEditionRepository.GetByIdAsync(i.EditionId);
+                DataAccessLayer.Entities.OrderItem orderItem = new DataAccessLayer.Entities.OrderItem
+                {
+                    Amount = edition.Prise * i.Count,
+                    Currency = edition.Currency,
+                    PrintingEditionId = edition.Id,
+                    OrderId = order.Id,
+                    Count = (int)i.Count
+                };
+
+                await _orderItemRepository.CreateAsync(orderItem);
+   
+            }
+
             try
             {
                 var optionsToken = new TokenCreateOptions
@@ -43,7 +76,7 @@ namespace Store.BusinessLogicLayer.Servises
 
                 var options = new ChargeCreateOptions
                 {
-                    Amount = model.Value,
+                    Amount = (int)order.OrderItems.Sum(s => s.Amount)*100,
                     Currency = "usd",
                     Description = "test",
                     Source = stripeToken.Id
@@ -51,9 +84,17 @@ namespace Store.BusinessLogicLayer.Servises
 
                 var service = new ChargeService();
                 Charge charge = await service.CreateAsync(options);
-
+               
                 if (charge.Paid)
                 {
+                    Payment payment = new Payment
+                    {
+                        TransactionId = charge.PaymentMethod,
+                    };
+                    await _paymentRepository.CreateAsync(payment);
+                    order.PaymentId = payment.Id;
+                    order.Status = OrderStatus.Payed;
+                    await _orderRepository.UpdateAsync(order);
                     return "Success";
                 }
 
@@ -61,7 +102,6 @@ namespace Store.BusinessLogicLayer.Servises
             }
             catch (System.Exception e)
             {
-
                 return e.Message.ToString();
             }
         }

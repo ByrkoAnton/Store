@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using static Store.DataAccessLayer.Enums.Enums;
+﻿using static Store.DataAccessLayer.Enums.Enums;
 
 namespace Store.DataAccessLayer.Entities
 {
@@ -8,8 +7,8 @@ namespace Store.DataAccessLayer.Entities
         public double Amount { get; set; }
         public Currency Currency { get; set; }
         public long PrintingEditionId { get; set; }
-        [ForeignKey ("Order")]
         public long OrderId { get; set; }
-        public int Count { get; set; }
+        public Order Order { get; set; }
+        public int Count { get; set; } 
     }
 }

@@ -17,16 +17,28 @@ namespace Store.BusinessLogicLayer.Servises
     public class OrderItemService : IOrderItemService
     {
         private readonly IOrderItemRepository _orderItemRepository;
+        private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IMapper _mapper;
 
-        public OrderItemService(IOrderItemRepository orderItemRepository, IMapper maper)
+        public OrderItemService(IOrderItemRepository orderItemRepository, IMapper maper,
+            IPrintingEditionRepository printingEditionRepository)
         {
             _orderItemRepository = orderItemRepository;
             _mapper = maper;
+            _printingEditionRepository = printingEditionRepository;
         }
         public async Task CreateAsync(OrderItemModel model)
         {
+            var edition = await _printingEditionRepository.GetByIdAsync(model.PrintingEditionId);
+            if (edition is null)
+            {
+                throw new CustomExeption(Constants.Error.NO_EDITION_ID_IN_DB,
+                   StatusCodes.Status400BadRequest);
+            }
+            model.Currency = edition.Currency;
+            model.Amount = edition.Prise * model.Count;
             var orderItem = _mapper.Map<OrderItem>(model);
+            
             await _orderItemRepository.CreateAsync(orderItem);
         }
 

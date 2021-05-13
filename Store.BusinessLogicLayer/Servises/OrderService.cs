@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogicLayer.Models.Orders;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Entities;
@@ -14,16 +15,31 @@ namespace Store.BusinessLogicLayer.Servises
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IPaymentRepository _paymentRepository;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
-        public OrderService(IOrderRepository orderRepository, IMapper maper)
+        public OrderService(IOrderRepository orderRepository, IMapper maper, UserManager<User> userManager,
+            IPaymentRepository paymentRepository)
         {
             _orderRepository = orderRepository;
             _mapper = maper;
+            _userManager = userManager;
+            _paymentRepository = paymentRepository;
         }
         public async Task CreateAsync(OrderModel model)
         {
+            var user = await _userManager.FindByIdAsync(model.UserId.ToString());
+            if (user is null)
+            {
+                throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB,
+                    StatusCodes.Status400BadRequest);
+            }
             var order = _mapper.Map<Order>(model);
+
+            await _paymentRepository.CreateAsync(new Payment());
+            order.PaymentId = await _paymentRepository.GetLastId();
+
             await _orderRepository.CreateAsync(order);
         }
 

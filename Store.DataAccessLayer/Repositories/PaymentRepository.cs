@@ -3,6 +3,7 @@ using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Base;
 using Store.DataAccessLayer.Repositories.Interfaces;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Repositories
@@ -21,6 +22,12 @@ namespace Store.DataAccessLayer.Repositories
         {
             var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(t => t.TransactionId == transactionId);
             return result;
+        }
+
+        public async Task<long> GetLastId()
+        {
+            var payment = _dbSet.OrderBy(t => t.Id).Last().Id;//no awate
+            return payment;
         }
     }
 }

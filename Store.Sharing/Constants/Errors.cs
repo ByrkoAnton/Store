@@ -45,6 +45,7 @@ namespace Store.Sharing.Constants
             public const string REGISRATION_FAILD_NO_LAST_NAME_IN_MODEL = "regisration faild no last name in model";
             public const string REGISRATION_FAILD_NO_NAME_IN_MODEL = "regisration faild no name in model";
             public const string REGISRATION_FAILD_USER_DID_NOT_CREATED = "regisration faild user did not created";
+            public const string NO_USER_ID_IN_DB = "no user with this id";
             public const string REGISRATION_FAILD_THIS_NAME_IS_ALREADY_IN_USE = "regisration faild this name is already in use";
             public const string REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE = "regisration faild this email is already in use";
             public const string USER_ROLE_DID_NOT_ADDED = "user role did not added";
