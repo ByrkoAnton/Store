@@ -26,12 +26,6 @@ namespace Store.PresentationLayer.Controllers
             return Ok(result);
         }
 
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] PaymentModel model)
-        {
-            await _paymentServise.CreateAsync(model);
-            return Ok();
-        }
 
         [HttpGet("GetByTransactionId")]
         public async Task<IActionResult> GetByTransactionId([FromBody] PaymentModel model)

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Stripe;
 using Store.BusinessLogicLayer.Models.Stipe;
 using static Store.DataAccessLayer.Enums.Enums;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -31,13 +32,15 @@ namespace Store.BusinessLogicLayer.Servises
             _orderItemRepository = orderItemRepository;
 
         }
-
         public async Task<string> PayAsync(StripePayModel model)
         {
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(model.Jwt);
+            var id = long.Parse(handler.Claims.Where(a=>a.Type == Constants.JwtProviderConst.ID).FirstOrDefault().Value);
+            
             DataAccessLayer.Entities.Order order = new DataAccessLayer.Entities.Order
             {
                 Discription = model.OrderDescription,
-                UserId = model.userId,   
+                UserId = id,   
             };
 
             await _orderRepository.CreateAsync(order);
@@ -55,7 +58,6 @@ namespace Store.BusinessLogicLayer.Servises
                 };
 
                 await _orderItemRepository.CreateAsync(orderItem);
-   
             }
 
             try
@@ -76,9 +78,9 @@ namespace Store.BusinessLogicLayer.Servises
 
                 var options = new ChargeCreateOptions
                 {
-                    Amount = (int)order.OrderItems.Sum(s => s.Amount)*100,
-                    Currency = "usd",
-                    Description = "test",
+                    Amount = (int)order.OrderItems.Sum(s => s.Amount) * Constants.ChargeConstants.GET_CENTS,
+                    Currency = Constants.ChargeConstants.USD,
+                    Description = $"{Constants.ChargeConstants.FROM_USER}{order.Id}",
                     Source = stripeToken.Id
                 };
 
@@ -95,30 +97,16 @@ namespace Store.BusinessLogicLayer.Servises
                     order.PaymentId = payment.Id;
                     order.Status = OrderStatus.Payed;
                     await _orderRepository.UpdateAsync(order);
-                    return "Success";
+                    return Constants.ChargeConstants.SUCCESS_MSG;
                 }
 
-                return "faild";
+                return Constants.ChargeConstants.UN_SUCCESS_MSG;
             }
             catch (System.Exception e)
             {
                 return e.Message.ToString();
             }
         }
-        public async Task CreateAsync(PaymentModel model)
-        {
-            var payment = await _paymentRepository.GetByTransactionIdAsync(model.TransactionId);
-
-            if (payment is not null)
-            {
-                throw new CustomExeption(Constants.Error.PAYMENT_CREATION_FAILD_PATMENT_ID_EXISTS,
-                    StatusCodes.Status400BadRequest);
-            }
-
-            payment = _mapper.Map<Payment>(model);
-            await _paymentRepository.CreateAsync(payment);
-        }
-
         public async Task<PaymentModel> GetByTransactionId(PaymentModel model)
         {
             var payment = await _paymentRepository.GetByTransactionIdAsync(model.TransactionId);

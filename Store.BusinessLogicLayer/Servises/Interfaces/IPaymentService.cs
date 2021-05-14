@@ -7,7 +7,6 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
 {
     public interface IPaymentService
     {
-        public Task CreateAsync(PaymentModel model);
         public Task<PaymentModel> GetByTransactionId(PaymentModel model);
         public Task<List<PaymentModel>> GetAll();
         public Task UpdateAsync(PaymentModel model);

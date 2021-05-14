@@ -8,9 +8,10 @@ namespace Store.BusinessLogicLayer.Models.Stipe
         public int Month { get; set; }
         public int Year { get; set; }
         public string Cvc { get; set; }
-        public List<EditionIdAndQuantModel> EditionsIdAndQuant { get; set;}
+        public List<EditionIdAndQuantModel> EditionsIdAndQuant { get; set; }
         public string OrderDescription { get; set; }
         public long userId { get; set; }
         public int Value { get; set; }
+        public string Jwt { get; set; }
     }
 }

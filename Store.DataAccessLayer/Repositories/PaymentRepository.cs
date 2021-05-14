@@ -24,10 +24,5 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
-        public async Task<long> GetLastId()
-        {
-            var payment = _dbSet.OrderBy(t => t.Id).Last().Id;//no awate
-            return payment;
-        }
     }
 }

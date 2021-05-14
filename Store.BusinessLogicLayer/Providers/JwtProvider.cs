@@ -18,13 +18,14 @@ namespace Store.BusinessLogicLayer.Providers
         {
             _config = config;
         }
-        public string GenerateJwt(string name, List<string> roles)
+        public string GenerateJwt(string name, List<string> roles, string id)
         {
-            string role = $"{(roles.Any(s => s.Contains(Constants.UserConstants.ROLE_ADMIN)) ? Constants.UserConstants.ROLE_ADMIN : Constants.UserConstants.ROLE_USER)}"; 
+            string role = $"{(roles.Any(s => s.Contains(Constants.UserConstants.ROLE_ADMIN)) ? Constants.UserConstants.ROLE_ADMIN : Constants.UserConstants.ROLE_USER)}";
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, name),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, role)
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, role),
+                new Claim(Constants.JwtProviderConst.ID, id)
             };
 
             var identity = new ClaimsIdentity(claims, Constants.JwtProviderConst.METHOD_NAME, ClaimsIdentity.DefaultNameClaimType,

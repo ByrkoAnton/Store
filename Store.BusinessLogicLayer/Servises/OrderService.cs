@@ -38,7 +38,7 @@ namespace Store.BusinessLogicLayer.Servises
             var order = _mapper.Map<Order>(model);
 
             await _paymentRepository.CreateAsync(new Payment());
-            order.PaymentId = await _paymentRepository.GetLastId();
+            //order.PaymentId = await _paymentRepository.GetLastId();
 
             await _orderRepository.CreateAsync(order);
         }

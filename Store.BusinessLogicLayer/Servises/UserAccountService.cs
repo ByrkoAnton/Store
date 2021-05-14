@@ -99,7 +99,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             var result = new TokenResponseModel();
             
-            result.AccessToken = _jwtProvider.GenerateJwt(signInModel.Email, roleList.ToList());
+            result.AccessToken = _jwtProvider.GenerateJwt(signInModel.Email, roleList.ToList(), user.Id.ToString());
             return result;
         }
         public async Task SignOutAsync()
