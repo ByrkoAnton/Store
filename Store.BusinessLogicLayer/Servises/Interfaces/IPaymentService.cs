@@ -11,6 +11,6 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
         public Task<List<PaymentModel>> GetAll();
         public Task UpdateAsync(PaymentModel model);
         public Task RemoveAsync(PaymentModel model);
-        public Task<string> PayAsync(StripePayModel model);
+        public Task<string> PayAsync(StripePayModel model, string jwt);
     }
 }

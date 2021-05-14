@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.Payments;
 using Store.BusinessLogicLayer.Models.Stipe;
 using Store.BusinessLogicLayer.Servises.Interfaces;
-using Stripe;
 using System.Threading.Tasks;
 
 namespace Store.PresentationLayer.Controllers
@@ -19,10 +21,15 @@ namespace Store.PresentationLayer.Controllers
             _paymentServise = paymentServise;
         }
 
+
         [HttpPost("Pay")]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> Pay([FromBody] StripePayModel model)
         {
-            var result = await _paymentServise.PayAsync(model);
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var accessTok = HttpContext.Request.Headers["Authorization"];
+
+            var result = await _paymentServise.PayAsync(model, accessTok);
             return Ok(result);
         }
 

@@ -32,11 +32,12 @@ namespace Store.BusinessLogicLayer.Servises
             _orderItemRepository = orderItemRepository;
 
         }
-        public async Task<string> PayAsync(StripePayModel model)
+        public async Task<string> PayAsync(StripePayModel model, string jwt)
         {
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(model.Jwt);
-            var id = long.Parse(handler.Claims.Where(a=>a.Type == Constants.JwtProviderConst.ID).FirstOrDefault().Value);
-            
+            var temp = jwt.Remove(jwt.IndexOf("Bearer"), "Bearer".Length+1);
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(temp);
+            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProviderConst.ID).FirstOrDefault().Value);
+
             DataAccessLayer.Entities.Order order = new DataAccessLayer.Entities.Order
             {
                 Discription = model.OrderDescription,
