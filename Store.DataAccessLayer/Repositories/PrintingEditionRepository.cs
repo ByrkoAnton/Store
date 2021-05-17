@@ -31,6 +31,12 @@ namespace Store.DataAccessLayer.Repositories
             var result = await _dbSet.Include(x => x.Authors).AsNoTracking().FirstOrDefaultAsync(edition => edition.Id == id);
             return result;
         }
+
+        public async Task<List<PrintingEdition>> GetByIdAsync(List<long> id)
+        {
+            var result = await _dbSet.Where(x => id.Contains(x.Id)).ToListAsync();
+            return result;
+        }
         public async Task<IEnumerable<PrintingEdition>> GetByDescriptionAsync(string description)
         {
             var result = await _dbSet.Where(edition => edition.Description == description)

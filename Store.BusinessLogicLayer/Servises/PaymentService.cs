@@ -12,10 +12,12 @@ using Stripe;
 using Store.BusinessLogicLayer.Models.Stipe;
 using static Store.DataAccessLayer.Enums.Enums;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Dynamic.Core;
+
 
 namespace Store.BusinessLogicLayer.Servises
 {
-    public class PaymentService :IPaymentService
+    public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepository _paymentRepository;
         private readonly IOrderRepository _orderRepository;
@@ -30,25 +32,30 @@ namespace Store.BusinessLogicLayer.Servises
             _orderRepository = orderRepository;
             _printingEditionRepository = printingEditionRepository;
             _orderItemRepository = orderItemRepository;
-
         }
         public async Task<string> PayAsync(StripePayModel model, string jwt)
         {
-            var temp = jwt.Remove(jwt.IndexOf("Bearer"), "Bearer".Length+1);
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(temp);
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProviderConst.BEARER),
+                Constants.JwtProviderConst.BEARER.Length).Trim());
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProviderConst.ID).FirstOrDefault().Value);
 
             DataAccessLayer.Entities.Order order = new DataAccessLayer.Entities.Order
             {
                 Discription = model.OrderDescription,
-                UserId = id,   
+                UserId = id,
             };
 
             await _orderRepository.CreateAsync(order);
 
+            List<long> EditionsId = model.EditionsIdAndQuant.Select(id => id.EditionId).ToList();
+
+            var editions = await _printingEditionRepository.GetByIdAsync(EditionsId);
+
+            List<DataAccessLayer.Entities.OrderItem> orderItems = new List<DataAccessLayer.Entities.OrderItem>();
+
             foreach (var i in model.EditionsIdAndQuant)
             {
-                var edition = await _printingEditionRepository.GetByIdAsync(i.EditionId);
+                var edition = editions.FirstOrDefault(e => e.Id == i.EditionId);
                 DataAccessLayer.Entities.OrderItem orderItem = new DataAccessLayer.Entities.OrderItem
                 {
                     Amount = edition.Prise * i.Count,
@@ -57,56 +64,50 @@ namespace Store.BusinessLogicLayer.Servises
                     OrderId = order.Id,
                     Count = (int)i.Count
                 };
-
-                await _orderItemRepository.CreateAsync(orderItem);
+                orderItems.Add(orderItem);
             }
 
-            try
+            await _orderItemRepository.CreateAsync(orderItems);
+
+            var optionsToken = new TokenCreateOptions
             {
-                var optionsToken = new TokenCreateOptions
+                Card = new TokenCardOptions
                 {
-                    Card = new TokenCardOptions
-                    {
-                        Number = model.CardNumber,
-                        ExpMonth = model.Month,
-                        ExpYear = model.Year,
-                        Cvc = model.Cvc
-                    }
-                };
-
-                var serviceToken = new TokenService();
-                Token stripeToken = await serviceToken.CreateAsync(optionsToken);
-
-                var options = new ChargeCreateOptions
-                {
-                    Amount = (int)order.OrderItems.Sum(s => s.Amount) * Constants.ChargeConstants.GET_CENTS,
-                    Currency = Constants.ChargeConstants.USD,
-                    Description = $"{Constants.ChargeConstants.FROM_USER}{order.Id}",
-                    Source = stripeToken.Id
-                };
-
-                var service = new ChargeService();
-                Charge charge = await service.CreateAsync(options);
-               
-                if (charge.Paid)
-                {
-                    Payment payment = new Payment
-                    {
-                        TransactionId = charge.PaymentMethod,
-                    };
-                    await _paymentRepository.CreateAsync(payment);
-                    order.PaymentId = payment.Id;
-                    order.Status = OrderStatus.Payed;
-                    await _orderRepository.UpdateAsync(order);
-                    return Constants.ChargeConstants.SUCCESS_MSG;
+                    Number = model.CardNumber,
+                    ExpMonth = model.Month,
+                    ExpYear = model.Year,
+                    Cvc = model.Cvc
                 }
+            };
 
+            var serviceToken = new TokenService();
+            Token stripeToken = await serviceToken.CreateAsync(optionsToken);
+
+            var options = new ChargeCreateOptions
+            {
+                Amount = (int)order.OrderItems.Sum(s => s.Amount) * Constants.ChargeConstants.GET_CENTS,
+                Currency = Constants.ChargeConstants.USD,
+                Description = $"{Constants.ChargeConstants.FROM_USER}{order.UserId}",
+                Source = stripeToken.Id
+            };
+
+            var service = new ChargeService();
+            Charge charge = await service.CreateAsync(options);
+
+            if (!charge.Paid)
+            {
                 return Constants.ChargeConstants.UN_SUCCESS_MSG;
             }
-            catch (System.Exception e)
+
+            Payment payment = new Payment
             {
-                return e.Message.ToString();
-            }
+                TransactionId = charge.PaymentMethod,
+            };
+            await _paymentRepository.CreateAsync(payment);
+            order.PaymentId = payment.Id;
+            order.Status = OrderStatus.Payed;
+            await _orderRepository.UpdateAsync(order);
+            return Constants.ChargeConstants.SUCCESS_MSG;
         }
         public async Task<PaymentModel> GetByTransactionId(PaymentModel model)
         {

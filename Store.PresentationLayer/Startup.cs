@@ -75,8 +75,6 @@ namespace Store.PresentationLayer
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            //services.AddHttpContextAccessor();
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -91,32 +89,7 @@ namespace Store.PresentationLayer
                             ValidateIssuerSigningKey = true,
                         };
                     });
-///////////////
-            //services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultScheme = "Cookies";
-            //    options.DefaultChallengeScheme = "oidc";
-            //})
-            //            .AddCookie("Cookies")
-            //            .AddOpenIdConnect("oidc", options =>
-            //            {
-            //                options.SignInScheme = "Cookies";
-
-            //                options.Authority = "http://localhost:5001";
-            //                options.RequireHttpsMetadata = false;
-
-            //                options.ClientId = "testclient";
-            //                options.ClientSecret = "secret";
-            //                options.ResponseType = "code id_token";
-            //                options.SaveTokens = true;
-            //                options.GetClaimsFromUserInfoEndpoint = true;
-
-            //                options.Scope.Add("testapi");
-            //                options.Scope.Add("offline_access");
-            //            });
- ///////////////////////           
+          
             services.AddControllersWithViews();
 
             var mappingConfig = new MapperConfiguration(mc =>
