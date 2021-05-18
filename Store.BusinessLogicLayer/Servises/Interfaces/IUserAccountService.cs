@@ -12,5 +12,6 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
         public Task<string> SignUpAsync(UserModel signUpModel);  
         public Task SignOutAsync();
         public Task<string> ConfirmEmailAsync(EmailConfirmationModel emailConfirmationModel);
+        public Task<TokenResponseModel> UpdateTokens(string jwtToken, string refreshToken);
     }
 }

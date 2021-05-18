@@ -4,6 +4,7 @@ using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.BusinessLogicLayer.Models;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Models.RequestModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Store.PresentationLayer.Controllers
 {
@@ -39,6 +40,15 @@ namespace Store.PresentationLayer.Controllers
         public async Task<IActionResult> ConfirmEmail([FromQuery] EmailConfirmationModel emailConfirmationModel)
         {
             var result = await _accountService.ConfirmEmailAsync(emailConfirmationModel);
+            return Ok(result);
+        }
+
+        
+        [HttpGet("updateTokens")]
+        public async Task<IActionResult> UpdateTokens([FromBody] TokenResponseModel model)
+        {
+            var accessToken = HttpContext.Request.Headers["Authorization"];
+            var result = await _accountService.UpdateTokens(accessToken, model.RefreshToken);
             return Ok(result);
         }
     }

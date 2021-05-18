@@ -33,7 +33,7 @@ namespace Store.BusinessLogicLayer.Servises
             _printingEditionRepository = printingEditionRepository;
             _orderItemRepository = orderItemRepository;
         }
-        public async Task<string> PayAsync(StripePayModel model, string jwt)
+        public async Task<ResultPayModel> PayAsync(StripePayModel model, string jwt)
         {
             var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProviderConst.BEARER),
                 Constants.JwtProviderConst.BEARER.Length).Trim());
@@ -96,7 +96,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!charge.Paid)
             {
-                return Constants.ChargeConstants.UN_SUCCESS_MSG;
+                throw new CustomExeption(Constants.ChargeConstants.UN_SUCCESS_MSG, StatusCodes.Status400BadRequest);
             }
 
             Payment payment = new Payment
@@ -107,7 +107,13 @@ namespace Store.BusinessLogicLayer.Servises
             order.PaymentId = payment.Id;
             order.Status = OrderStatus.Payed;
             await _orderRepository.UpdateAsync(order);
-            return Constants.ChargeConstants.SUCCESS_MSG;
+
+            var resultPayModel = new ResultPayModel()
+            {
+                Message = Constants.ChargeConstants.SUCCESS_MSG,
+                OrderID = order.Id.ToString()
+            };
+            return resultPayModel;
         }
         public async Task<PaymentModel> GetByTransactionId(PaymentModel model)
         {

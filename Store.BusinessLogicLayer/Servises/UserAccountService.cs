@@ -12,6 +12,8 @@ using System.Web;
 using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.Sharing.Constants;
 using AutoMapper;
+using System.IdentityModel.Tokens.Jwt;
+using System.Collections.Generic;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -19,12 +21,12 @@ namespace Store.BusinessLogicLayer.Servises
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        private readonly IJwtProvider _jwtProvider;
+        private readonly ITokenProvider _jwtProvider;
         private readonly IEmailProvider _emailService;
         private readonly IMapper _mapper;
 
 
-        public UserAccountService(SignInManager<User> signInManager, UserManager<User> userManager, IJwtProvider jwtProvider,
+        public UserAccountService(SignInManager<User> signInManager, UserManager<User> userManager, ITokenProvider jwtProvider,
             IEmailProvider emailService, IMapper mapper)
         {
             _signInManager = signInManager;
@@ -98,8 +100,12 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             var result = new TokenResponseModel();
-            
+
             result.AccessToken = _jwtProvider.GenerateJwt(signInModel.Email, roleList.ToList(), user.Id.ToString());
+            result.RefreshToken = _jwtProvider.GenerateRefreshToken();
+            user.RefreshToken = result.RefreshToken;
+            await _userManager.UpdateAsync(user);
+
             return result;
         }
         public async Task SignOutAsync()
@@ -122,6 +128,34 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             return Constants.UserConstants.EMAIL_CONFIRMED;
+        }
+
+        public async Task<TokenResponseModel> UpdateTokens(string jwtToken, string refreshToken)
+        {
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken.Remove(jwtToken.IndexOf(Constants.JwtProviderConst.BEARER),
+                Constants.JwtProviderConst.BEARER.Length).Trim());
+            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProviderConst.ID).FirstOrDefault().Value);
+
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user is null)
+            {
+                /////////
+            }
+
+            if (refreshToken != user.RefreshToken)
+            {
+                ////
+            }
+            TokenResponseModel tokenResponseModel = new TokenResponseModel();
+
+            tokenResponseModel.AccessToken = _jwtProvider.GenerateJwt(user.Email, new List<string>(await _userManager.GetRolesAsync(user)),
+                user.Id.ToString());
+            tokenResponseModel.RefreshToken = _jwtProvider.GenerateRefreshToken();
+
+            user.RefreshToken = tokenResponseModel.RefreshToken;
+            await _userManager.UpdateAsync(user);
+
+            return tokenResponseModel;
         }
     }
 }

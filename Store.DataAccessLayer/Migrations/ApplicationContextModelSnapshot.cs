@@ -194,7 +194,7 @@ namespace Store.DataAccessLayer.Migrations
                         new
                         {
                             Id = 1L,
-                            DateOfCreation = new DateTime(2021, 5, 13, 16, 42, 16, 42, DateTimeKind.Local).AddTicks(3663),
+                            DateOfCreation = new DateTime(2021, 5, 17, 17, 10, 23, 827, DateTimeKind.Local).AddTicks(9203),
                             Name = "FirstAuthor"
                         });
                 });
@@ -323,7 +323,7 @@ namespace Store.DataAccessLayer.Migrations
                         {
                             Id = 1L,
                             Currency = 5,
-                            DateOfCreation = new DateTime(2021, 5, 13, 16, 42, 16, 45, DateTimeKind.Local).AddTicks(7770),
+                            DateOfCreation = new DateTime(2021, 5, 17, 17, 10, 23, 832, DateTimeKind.Local).AddTicks(3398),
                             Description = "FirstEdition",
                             IsRemoved = false,
                             Prise = 5.0,
@@ -389,6 +389,9 @@ namespace Store.DataAccessLayer.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

@@ -23,6 +23,7 @@ using Store.Sharing.Constants;
 using Stripe;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Http;
+using System.Text;
 
 namespace Store.PresentationLayer
 {
@@ -38,6 +39,22 @@ namespace Store.PresentationLayer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidIssuer = Configuration.GetValue<string>(Constants.JwtProviderConst.ISSUER),
+                            ValidateAudience = true,
+                            ValidAudience = Configuration.GetValue<string>(Constants.JwtProviderConst.AUDIENCE),
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey
+                            (Encoding.ASCII.GetBytes(Configuration.GetValue<string>(Constants.JwtProviderConst.KEY)))
+                    };
+                    });
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IAuthorRepository, AuthorRepository>();
             services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
@@ -49,7 +66,7 @@ namespace Store.PresentationLayer
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IEmailProvider, EmailProvider>();
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IJwtProvider, JwtProvider>();
+            services.AddTransient<ITokenProvider, TokenProvider>();
             services.AddTransient<IAuthorService, AuthorService>();
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();
             services.AddTransient<IPaymentService, PaymentService>();
@@ -58,7 +75,9 @@ namespace Store.PresentationLayer
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly("Store.DataAccessLayer")));
+                b=> b.MigrationsAssembly("Store.DataAccessLayer"))
+                .UseLazyLoadingProxies());
+                
 
             services.AddIdentity<User, IdentityRole<long>>(
                 opts =>
@@ -75,22 +94,6 @@ namespace Store.PresentationLayer
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options =>
-                    {
-                        options.RequireHttpsMetadata = false;
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateIssuer = true,
-                            ValidIssuer = Configuration[Constants.JwtProviderConst.ISSUER],
-                            ValidateAudience = true,
-                            ValidAudience = Configuration[Constants.JwtProviderConst.AUDIENCE],
-                            ValidateLifetime = true,
-                            ValidateIssuerSigningKey = true,
-                        };
-                    });
-          
-            services.AddControllersWithViews();
 
             var mappingConfig = new MapperConfiguration(mc =>
             {

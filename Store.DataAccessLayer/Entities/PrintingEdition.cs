@@ -11,7 +11,7 @@ namespace Store.DataAccessLayer.Entities
         public string Status { get; set; }
         public Currency Currency { get; set; }
         public PrintingEditionType Type { get; set; }
-        public List<Author> Authors { get; set; }
+        public virtual List<Author> Authors { get; set; }
         public PrintingEdition()
         {
             Authors = new();
