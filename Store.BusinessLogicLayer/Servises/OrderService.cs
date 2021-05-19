@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogicLayer.Models.Orders;
+using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Entities;
+using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
@@ -38,8 +40,7 @@ namespace Store.BusinessLogicLayer.Servises
             var order = _mapper.Map<Order>(model);
 
             await _paymentRepository.CreateAsync(new Payment());
-            //order.PaymentId = await _paymentRepository.GetLastId();
-
+           
             await _orderRepository.CreateAsync(order);
         }
 
@@ -54,6 +55,29 @@ namespace Store.BusinessLogicLayer.Servises
             var ordersModels = _mapper.Map<IEnumerable<OrderModel>>(orders);
 
             return ordersModels.ToList();
+        }
+
+        public async Task<NavigationModel<OrderModel>> GetAsync(OrderFiltrPagingSortModel model)
+        {
+            var orderFiltrPagingSortModelDAL = _mapper.Map<OrderFiltrPagingSortModelDAL>(model);
+
+            (IEnumerable<Order> orders, int count) ordersCount = await _orderRepository.GetAsync(orderFiltrPagingSortModelDAL);
+
+            if (!ordersCount.orders.Any())
+            {
+                throw new CustomExeption(Constants.Error.NO_ANY_ORDERS_IN_DB_WITH_THIS_CONDITIONS,
+                   StatusCodes.Status400BadRequest);
+            }
+
+            var orderModels = _mapper.Map<IEnumerable<OrderModel>>(ordersCount.orders);
+
+            PaginatedPageModel paginatedPage = new PaginatedPageModel(ordersCount.count, model.CurrentPage, model.PageSize);
+            NavigationModel<OrderModel> result = new NavigationModel<OrderModel>
+            {
+                PageModel = paginatedPage,
+                EntityModels = orderModels
+            };
+            return result;
         }
 
         public async Task<OrderModel> GetById(long id)

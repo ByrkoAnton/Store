@@ -1,4 +1,4 @@
-﻿using Store.BusinessLogicLayer.Models.OrderItem;
+﻿using Store.BusinessLogicLayer.Models.OrderItems;
 using System.Collections.Generic;
 using static Store.DataAccessLayer.Enums.Enums;
 
@@ -11,6 +11,6 @@ namespace Store.BusinessLogicLayer.Models.Orders
         public long UserId { get; set; }
         public long PaymentId { get; set; }
         public OrderStatus Status { get; set; }
-        public IEnumerable<OrderItemModel> OrderItemModels { get; set; }
+        public List<OrderItemModel> OrderItems { get; set; }
     }
 }

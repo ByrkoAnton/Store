@@ -37,6 +37,13 @@ namespace Store.PresentationLayer.Controllers
             return Ok(result);
         }
 
+        [HttpGet("Get")]
+        public async Task<IActionResult> Get(OrderFiltrPagingSortModel model)
+        {
+            var result = await _orderServise.GetAsync(model);
+            return Ok(result);
+        }
+
         [HttpPost("Update")]
         public async Task<IActionResult> Update([FromBody] OrderModel model)
         {

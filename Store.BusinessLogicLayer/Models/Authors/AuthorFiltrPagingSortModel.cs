@@ -1,5 +1,4 @@
-﻿
-using Store.BusinessLogicLayer.Models.Base;
+﻿using Store.BusinessLogicLayer.Models.Base;
 using Store.Sharing.Constants;
 
 namespace Store.BusinessLogicLayer.Models.Authors

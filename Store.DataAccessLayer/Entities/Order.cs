@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using static Store.DataAccessLayer.Enums.Enums;
-
 namespace Store.DataAccessLayer.Entities
 {
     public class Order : BaseEntity

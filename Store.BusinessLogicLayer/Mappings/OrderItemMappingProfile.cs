@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Store.BusinessLogicLayer.Models.OrderItem;
+using Store.BusinessLogicLayer.Models.OrderItems;
 using Store.DataAccessLayer.Entities;
 
 namespace Store.BusinessLogicLayer.Mappings

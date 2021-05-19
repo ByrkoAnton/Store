@@ -1,4 +1,4 @@
-﻿using Store.BusinessLogicLayer.Models.OrderItem;
+﻿using Store.BusinessLogicLayer.Models.OrderItems;
 using System.Collections.Generic;
 namespace Store.BusinessLogicLayer.Models.Stipe
 {

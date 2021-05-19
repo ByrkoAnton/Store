@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Store.BusinessLogicLayer.Models.OrderItem;
+using Store.BusinessLogicLayer.Models.OrderItems;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using System.Threading.Tasks;
 

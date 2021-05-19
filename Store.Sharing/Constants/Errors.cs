@@ -16,6 +16,7 @@ namespace Store.Sharing.Constants
             public const string PAYMENT_CREATION_FAILD_PATMENT_ID_EXISTS = "Payment creation faild this TransactionId exists in DB";
             public const string NO_ANY_PROP_NAME = "no any property with this name";
             public const string NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS = "no any editions in db with this conditions";
+            public const string NO_ANY_ORDERS_IN_DB_WITH_THIS_CONDITIONS = "no any orders in db with this conditions";
             public const string NO_ANY_EDITION_IN_DB = "No any edition in db";
             public const string NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST = "Add author in DB at fitst. Then add edition";
             public const string EDITION_MUST_HAVE_AUTHOR = "printing edition must to have any author";

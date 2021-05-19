@@ -21,8 +21,6 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.DataAccessLayer.Repositories;
 using Store.Sharing.Constants;
 using Stripe;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.Http;
 using System.Text;
 
 namespace Store.PresentationLayer
@@ -53,7 +51,7 @@ namespace Store.PresentationLayer
                             ValidateIssuerSigningKey = true,
                             IssuerSigningKey = new SymmetricSecurityKey
                             (Encoding.ASCII.GetBytes(Configuration.GetValue<string>(Constants.JwtProviderConst.KEY)))
-                    };
+                        };
                     });
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IAuthorRepository, AuthorRepository>();
@@ -75,9 +73,9 @@ namespace Store.PresentationLayer
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                b=> b.MigrationsAssembly("Store.DataAccessLayer"))
+                b => b.MigrationsAssembly("Store.DataAccessLayer"))
                 .UseLazyLoadingProxies());
-                
+
 
             services.AddIdentity<User, IdentityRole<long>>(
                 opts =>
@@ -105,6 +103,7 @@ namespace Store.PresentationLayer
                 mc.AddProfile(new PaymentMappingProfile());
                 mc.AddProfile(new OrderMappingProfile());
                 mc.AddProfile(new OrderItemMappingProfile());
+                mc.AddProfile(new OrderFiltrationMappingProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

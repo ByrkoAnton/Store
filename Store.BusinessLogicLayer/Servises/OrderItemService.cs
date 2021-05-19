@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Store.BusinessLogicLayer.Models.OrderItem;
+using Store.BusinessLogicLayer.Models.OrderItems;
 using Store.BusinessLogicLayer.Models.Orders;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Entities;
