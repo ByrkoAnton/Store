@@ -80,6 +80,11 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<NavigationModel<PrintingEditionModel>> GetAsync(EditionFiltrPaginSortModel model)
         {
+            if (model.MinPrise > model.MaxPrise)
+            {
+                model.MaxPrise = null;
+                model.MinPrise = null;
+            }
             var editionFiltrPagingSortModelDAL = _mapper.Map<EditionFiltrPagingSortModelDAL>(model);
 
             (IEnumerable<PrintingEdition> editions, int count) editionsCount = await _printingEditionRepository.GetAsync(editionFiltrPagingSortModelDAL);

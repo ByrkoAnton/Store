@@ -1,4 +1,5 @@
 ﻿using Store.BusinessLogicLayer.Models.Base;
+using Store.Sharing.Constants;
 using static Store.DataAccessLayer.Enums.Enums;
 namespace Store.BusinessLogicLayer.Models.Orders
 {
@@ -11,7 +12,7 @@ namespace Store.BusinessLogicLayer.Models.Orders
 
         public OrderFiltrPagingSortModel()
         {
-            PropertyForSort = "id";//const
+            PropertyForSort = Constants.SortingParams.ORDER_DEF_SORT_PROP;
         }
     }
 } 

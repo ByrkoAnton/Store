@@ -8,6 +8,8 @@ namespace Store.BusinessLogicLayer.Models.EditionModel
     {
         public string Description { get; set; }
         public double? Prise { get; set; }
+        public int? MinPrise { get; set; }
+        public int? MaxPrise { get; set; }
         public bool? IsRemoved { get; set; }
         public string Status { get; set; }
         public Currency? Currency { get; set; }

@@ -13,7 +13,7 @@ using Store.Sharing.Constants;
 namespace Store.DataAccessLayer.Repositories
 {
     public class PrintingEditionRepository : BaseRepository<PrintingEdition>, IPrintingEditionRepository
-    { 
+    {
         public PrintingEditionRepository(ApplicationContext context) : base(context)
         {
         }
@@ -46,25 +46,29 @@ namespace Store.DataAccessLayer.Repositories
         public async Task<(IEnumerable<PrintingEdition>, int)> GetAsync(EditionFiltrPagingSortModelDAL model)
         {
             var editions = await _dbSet.Include(pe => pe.Authors).AsNoTracking()
-            .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
-            && EF.Functions.Like(n.Description, $"%{model.Description}%")
-            && EF.Functions.Like(n.Prise.ToString(), $"%{model.Prise}%")
-            && EF.Functions.Like(n.Status, $"%{model.Status}%")
-            && (n.Currency == model.Currency || model.Currency == null)
-            && (n.Type == model.Type || model.Type == null)
-            && (n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%"))))
+            .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
+            .Where(n => EF.Functions.Like(n.Description, $"%{model.Description}%"))
+            .Where(n => EF.Functions.Like(n.Prise.ToString(), $"%{model.Prise}%"))
+            .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
+            .Where(n => n.Currency == model.Currency || model.Currency == null)
+            .Where(n => n.Type == model.Type || model.Type == null)
+            .Where(n => n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
+            .Where(n => n.Prise <= model.MaxPrise || model.MaxPrise == null)
+            .Where(n => n.Prise >= model.MinPrise || model.MinPrise == null)
             .OrderBy($"{model.PropertyForSort} " +
             $"{(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
             .Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
 
             int count = await _dbSet
-                .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
-                && EF.Functions.Like(n.Description, $"%{model.Description}%")
-                && EF.Functions.Like(n.Prise.ToString(), $"%{model.Prise}%")
-                && EF.Functions.Like(n.Status, $"%{model.Status}%")
-                && (n.Currency == model.Currency || model.Currency == null)
-                && (n.Type == model.Type || model.Type == null)
-                && (n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))).CountAsync();
+            .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
+            .Where(n => EF.Functions.Like(n.Description, $"%{model.Description}%"))
+            .Where(n => EF.Functions.Like(n.Prise.ToString(), $"%{model.Prise}%"))
+            .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
+            .Where(n => n.Currency == model.Currency || model.Currency == null)
+            .Where(n => n.Type == model.Type || model.Type == null)
+            .Where(n => n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
+            .Where(n => n.Prise <= model.MaxPrise || model.MaxPrise == null)
+            .Where(n => n.Prise >= model.MinPrise || model.MinPrise == null).CountAsync();
 
             var editionsWithCount = (editions: editions, count: count);
 
