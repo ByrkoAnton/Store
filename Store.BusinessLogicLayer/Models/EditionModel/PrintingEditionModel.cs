@@ -11,8 +11,7 @@ namespace Store.BusinessLogicLayer.Models.EditionModel
         public bool IsRemoved { get; set; }
         public string Status { get; set; }
         public Currency Currency { get; set; }
-        public PrintingEditionType Type { get; set; }
-
+        public PrintingEditionType EditionType { get; set; }
         public List<AuthorModel> AuthorModels { get; set; } = new();
     }
 }

@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 
 namespace Store.BusinessLogicLayer.Providers
 {
-
     public static class Sort
     {
         public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, string prop, bool asc) where T: class

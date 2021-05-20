@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-
 namespace Store.BusinessLogicLayer.Models.RequestModel
 {
     public class ForgotPasswordModel

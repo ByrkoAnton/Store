@@ -13,7 +13,5 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
         public Task UpdateAsync(OrderModel model);
         public Task RemoveAsync(OrderModel model);
         public Task<NavigationModel<OrderModel>> GetAsync(OrderFiltrPagingSortModel model);
-
-
     }
 }

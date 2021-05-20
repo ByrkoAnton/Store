@@ -21,17 +21,16 @@ namespace Store.BusinessLogicLayer.Servises
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        private readonly ITokenProvider _jwtProvider;
+        private readonly ITokenProvider _tokenProvider;
         private readonly IEmailProvider _emailService;
         private readonly IMapper _mapper;
-
 
         public UserAccountService(SignInManager<User> signInManager, UserManager<User> userManager, ITokenProvider jwtProvider,
             IEmailProvider emailService, IMapper mapper)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _jwtProvider = jwtProvider;
+            _tokenProvider = jwtProvider;
             _emailService = emailService;
             _mapper = mapper;
         }
@@ -101,8 +100,8 @@ namespace Store.BusinessLogicLayer.Servises
 
             var result = new TokenResponseModel();
 
-            result.AccessToken = _jwtProvider.GenerateJwt(signInModel.Email, roleList.ToList(), user.Id.ToString());
-            result.RefreshToken = _jwtProvider.GenerateRefreshToken();
+            result.AccessToken = _tokenProvider.GenerateJwt(signInModel.Email, roleList.ToList(), user.Id.ToString());
+            result.RefreshToken = _tokenProvider.GenerateRefreshToken();
             user.RefreshToken = result.RefreshToken;
             await _userManager.UpdateAsync(user);
 
@@ -148,9 +147,9 @@ namespace Store.BusinessLogicLayer.Servises
             }
             TokenResponseModel tokenResponseModel = new TokenResponseModel();
 
-            tokenResponseModel.AccessToken = _jwtProvider.GenerateJwt(user.Email, new List<string>(await _userManager.GetRolesAsync(user)),
+            tokenResponseModel.AccessToken = _tokenProvider.GenerateJwt(user.Email, new List<string>(await _userManager.GetRolesAsync(user)),
                 user.Id.ToString());
-            tokenResponseModel.RefreshToken = _jwtProvider.GenerateRefreshToken();
+            tokenResponseModel.RefreshToken = _tokenProvider.GenerateRefreshToken();
 
             user.RefreshToken = tokenResponseModel.RefreshToken;
             await _userManager.UpdateAsync(user);

@@ -6,7 +6,6 @@ using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +21,6 @@ namespace Store.BusinessLogicLayer.Servises
             _authorRepository = authorRepository;
             _mapper = mapper;
         }
-
         public async Task CreateAsync(AuthorModel model)
         {
             var authors = await _authorRepository.GetByNameAsync(model.Name);

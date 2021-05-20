@@ -4,7 +4,6 @@ using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using System.Threading.Tasks;
 
-
 namespace Store.PresentationLayer.Controllers
 {
     [Route("api/[controller]")]

@@ -22,14 +22,13 @@ namespace Store.BusinessLogicLayer.Providers
 
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte[32];
+            var randomNumber = new byte[Constants.RefreshTokenConstants.RANDOM_NUMBER_BYTES];
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);
                 return Convert.ToBase64String(randomNumber);
             }
         }
-
 
         public string GenerateJwt(string name, List<string> roles, string id)
         {
@@ -53,7 +52,7 @@ namespace Store.BusinessLogicLayer.Providers
                     audience: _config.GetValue<string>(Constants.JwtProviderConst.AUDIENCE),
                     notBefore: now,
                     claims: identity.Claims,
-                    expires: now.Add(TimeSpan.FromMinutes(1)),
+                    expires: now.Add(TimeSpan.FromMinutes(double.Parse(_config.GetValue<string>(Constants.JwtProviderConst.LIFETIME)))),
                     signingCredentials: credentials);
                     var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
             

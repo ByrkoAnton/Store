@@ -43,7 +43,6 @@ namespace Store.BusinessLogicLayer.Servises
            
             await _orderRepository.CreateAsync(order);
         }
-
         public async Task<List<OrderModel>> GetAll()
         {
             var orders = await _orderRepository.GetAllAsync();

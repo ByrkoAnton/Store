@@ -1,5 +1,4 @@
-﻿
-namespace Store.BusinessLogicLayer.Models.Payments
+﻿namespace Store.BusinessLogicLayer.Models.Payments
 {
     public class ResultPayModel
     {

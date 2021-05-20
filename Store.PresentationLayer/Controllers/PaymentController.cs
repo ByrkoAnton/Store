@@ -57,7 +57,5 @@ namespace Store.PresentationLayer.Controllers
             await _paymentServise.RemoveAsync(model);
             return Ok();
         }
-
-
     }
 }

@@ -11,6 +11,7 @@ namespace Store.Sharing.Constants
             public const string KEY = "Jwt:Key";
             public const string ISSUER = "Jwt:Issuer";
             public const string AUDIENCE = "Jwt:AUDIENCE";
+            public const string LIFETIME = "Jwt:LIFETIME";
         }
     }
 }
