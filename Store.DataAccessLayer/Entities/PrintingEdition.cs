@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
-using static Store.DataAccessLayer.Enums.Enums;
+using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
 namespace Store.DataAccessLayer.Entities
 {
     public class PrintingEdition : BaseEntity
     {
+        public string Title { get; set; }
         public string Description { get; set; }
-        public double Prise { get; set; }
+        public double Price { get; set; }
         public bool IsRemoved { get; set; }
         public string Status { get; set; }
         public Currency Currency { get; set; }
@@ -14,7 +15,7 @@ namespace Store.DataAccessLayer.Entities
         public virtual List<Author> Authors { get; set; }
         public PrintingEdition()
         {
-            Authors = new();
+            Authors = new List<Author>();
         }
     }
 }

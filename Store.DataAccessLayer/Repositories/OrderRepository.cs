@@ -23,7 +23,7 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
-        public async Task<(IEnumerable<Order>, int)> GetAsync(OrderFiltrPagingSortModelDAL model)
+        public async Task<(IEnumerable<Order>, int)> GetAsync(OrderFiltrationModelDAL model)
         {
             var order = await _dbSet.Where(o => o.UserId == model.UserId || model.UserId == null)
                .Where(o=> model.EditionId==null || o.OrderItems.Any(i => i.PrintingEditionId == model.EditionId))
@@ -32,7 +32,7 @@ namespace Store.DataAccessLayer.Repositories
                .Where(o => model.Status == null || o.Status == model.Status)
                 .OrderBy($"{model.PropertyForSort} " +
                 $"{(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
-                .Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
+                .Skip((model.CurrentPage - Constants.PaginationParams.STARTS_ONE) * model.PageSize).Take(model.PageSize).ToListAsync();
 
             int count = await _dbSet.Where(o => o.UserId == model.UserId || model.UserId == null)
                .Where(o => model.EditionId == null || o.OrderItems.Any(i => i.PrintingEditionId == model.EditionId))

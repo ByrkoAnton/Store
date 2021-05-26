@@ -38,7 +38,7 @@ namespace Store.PresentationLayer.Controllers
         }
 
         [HttpGet("GetEditions")]
-        public async Task<IActionResult> GetEditions(EditionFiltrPaginSortModel model)
+        public async Task<IActionResult> GetEditions(EditionFiltrationModel model)
         {
             var result = await _editionService.GetAsync(model);
             return Ok(result);

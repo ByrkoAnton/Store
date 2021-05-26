@@ -10,8 +10,9 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
 {
     public interface IAuthorRepository : IBaseRepository<Author>
     {
-        public Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrPagingSortModelDAL model);
+        public Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrationModelDAL model);
         public Task<Author> GetByIdAsync(long id);
         public Task<IEnumerable<Author>> GetByNameAsync(string name);
+        public Task<List<Author>> GetAuthorsListByIdListAsync(List<long> id);
     }
 }

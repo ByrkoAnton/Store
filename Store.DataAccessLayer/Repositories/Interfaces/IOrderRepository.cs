@@ -9,6 +9,6 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
     public interface IOrderRepository : IBaseRepository<Order>
     {
         public Task<Order> GetByIdAsync(long id);
-        public Task<(IEnumerable<Order>, int)> GetAsync(OrderFiltrPagingSortModelDAL model);
+        public Task<(IEnumerable<Order>, int)> GetAsync(OrderFiltrationModelDAL model);
     }
 }

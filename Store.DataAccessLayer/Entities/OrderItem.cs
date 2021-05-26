@@ -1,4 +1,5 @@
 ﻿using static Store.DataAccessLayer.Enums.Enums;
+using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
 namespace Store.DataAccessLayer.Entities
 {

@@ -41,6 +41,12 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task CreateAsync(PrintingEditionModel model)
 
         {
+            if (!model.AuthorModels.Any())
+            {
+                throw new CustomExeption(Constants.Error.EDITION_MUST_HAVE_AUTHOR,
+                    StatusCodes.Status400BadRequest);
+            }
+
             var editions = await _printingEditionRepository.GetByDescriptionAsync(model.Description);
 
             if (editions.Any())
@@ -49,13 +55,7 @@ namespace Store.BusinessLogicLayer.Servises
                     StatusCodes.Status400BadRequest);
             }
 
-            if (!model.AuthorModels.Any())
-            {
-                throw new CustomExeption(Constants.Error.EDITION_MUST_HAVE_AUTHOR,
-                    StatusCodes.Status400BadRequest);
-            }
-
-            var allAuthors = await _authorRepository.GetAllAsync();
+            var allAuthors = await _authorRepository.GetAuthorsListByIdListAsync(model.AuthorModels.Select(x => x.Id).ToList());
 
             var autors = allAuthors.Where(a => model.AuthorModels.Exists(p => p.Id == a.Id)).ToList();
 
@@ -78,14 +78,14 @@ namespace Store.BusinessLogicLayer.Servises
             }
             await _printingEditionRepository.RemoveAsync(edition.First());
         }
-        public async Task<NavigationModel<PrintingEditionModel>> GetAsync(EditionFiltrPaginSortModel model)
+        public async Task<NavigationModel<PrintingEditionModel>> GetAsync(EditionFiltrationModel model)
         {
             if (model.MinPrise > model.MaxPrise)
             {
                 model.MaxPrise = null;
                 model.MinPrise = null;
             }
-            var editionFiltrPagingSortModelDAL = _mapper.Map<EditionFiltrPagingSortModelDAL>(model);
+            var editionFiltrPagingSortModelDAL = _mapper.Map<EditionFiltrationModelDAL>(model);
 
             (IEnumerable<PrintingEdition> editions, int count) editionsCount = await _printingEditionRepository.GetAsync(editionFiltrPagingSortModelDAL);
 
@@ -101,7 +101,7 @@ namespace Store.BusinessLogicLayer.Servises
             NavigationModel<PrintingEditionModel> result = new NavigationModel<PrintingEditionModel>
             {
                 PageModel = paginatedPage,
-                EntityModels = editionModels
+                Models = editionModels
             };
             return result;
         }

@@ -32,7 +32,7 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
-        public async Task<List<PrintingEdition>> GetByIdAsync(List<long> id)
+        public async Task<List<PrintingEdition>> GetEditionsListByIdListAsync(List<long> id)
         {
             var result = await _dbSet.Where(x => id.Contains(x.Id)).ToListAsync();
             return result;
@@ -43,32 +43,32 @@ namespace Store.DataAccessLayer.Repositories
                 .Include(pe => pe.Authors).AsNoTracking().ToListAsync();
             return result;
         }
-        public async Task<(IEnumerable<PrintingEdition>, int)> GetAsync(EditionFiltrPagingSortModelDAL model)
+        public async Task<(IEnumerable<PrintingEdition>, int)> GetAsync(EditionFiltrationModelDAL model)
         {
             var editions = await _dbSet.Include(pe => pe.Authors).AsNoTracking()
             .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
             .Where(n => EF.Functions.Like(n.Description, $"%{model.Description}%"))
-            .Where(n => EF.Functions.Like(n.Prise.ToString(), $"%{model.Prise}%"))
+            .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
             .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
             .Where(n => n.Currency == model.Currency || model.Currency == null)
             .Where(n => n.Type == model.Type || model.Type == null)
             .Where(n => n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
-            .Where(n => n.Prise <= model.MaxPrise || model.MaxPrise == null)
-            .Where(n => n.Prise >= model.MinPrise || model.MinPrise == null)
+            .Where(n => n.Price <= model.MaxPrice || model.MaxPrice == null)
+            .Where(n => n.Price >= model.MinPrice || model.MinPrice == null)
             .OrderBy($"{model.PropertyForSort} " +
             $"{(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
-            .Skip((model.CurrentPage - 1) * model.PageSize).Take(model.PageSize).ToListAsync();
+            .Skip((model.CurrentPage - Constants.PaginationParams.STARTS_ONE) * model.PageSize).Take(model.PageSize).ToListAsync();
 
             int count = await _dbSet
             .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
             .Where(n => EF.Functions.Like(n.Description, $"%{model.Description}%"))
-            .Where(n => EF.Functions.Like(n.Prise.ToString(), $"%{model.Prise}%"))
+            .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
             .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
             .Where(n => n.Currency == model.Currency || model.Currency == null)
             .Where(n => n.Type == model.Type || model.Type == null)
             .Where(n => n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
-            .Where(n => n.Prise <= model.MaxPrise || model.MaxPrise == null)
-            .Where(n => n.Prise >= model.MinPrise || model.MinPrise == null).CountAsync();
+            .Where(n => n.Price <= model.MaxPrice || model.MaxPrice == null)
+            .Where(n => n.Price >= model.MinPrice || model.MinPrice == null).CountAsync();
 
             var editionsWithCount = (editions: editions, count: count);
 
@@ -79,12 +79,10 @@ namespace Store.DataAccessLayer.Repositories
             var authors = new List<Author>(edition.Authors);
             edition.Authors.Clear();
             _dbSet.Update(edition);
-            var editionForUpdate = _dbSet.Include(a => a.Authors).FirstOrDefault(b => b.Id == edition.Id);
-            editionForUpdate.Authors.RemoveAll(p => !authors.Exists(p2 => p2.Id == p.Id));
-            var result = authors.Where(p => !editionForUpdate.Authors.Exists(p2 => p2.Id == p.Id)).ToList();
+            var editionForUpdate = _dbSet.Include(e => e.Authors).FirstOrDefault(e => e.Id == edition.Id);
+            editionForUpdate.Authors.RemoveAll(a => !authors.Exists(a2 => a2.Id == a.Id));
+            var result = authors.Where(a => !editionForUpdate.Authors.Exists(a2 => a2.Id == a.Id)).ToList();
             editionForUpdate.Authors.AddRange(result);
-            //authors.RemoveAll(p => !editionForUpdate.Authors.Exists(p2 => p2.Id == p.Id));
-            //editionForUpdate.Authors.AddRange(authors);
             _dbSet.Update(editionForUpdate);
             await SaveChangesAsync();
         }

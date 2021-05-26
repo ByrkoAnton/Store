@@ -9,7 +9,7 @@ using Store.DataAccessLayer.Entities;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
 using Stripe;
-using Store.BusinessLogicLayer.Models.Stipe;
+using Store.BusinessLogicLayer.Models.Stripe;
 using static Store.DataAccessLayer.Enums.Enums;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq.Dynamic.Core;
@@ -49,7 +49,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             List<long> EditionsId = model.EditionsIdAndQuant.Select(id => id.EditionId).ToList();
 
-            var editions = await _printingEditionRepository.GetByIdAsync(EditionsId);
+            var editions = await _printingEditionRepository.GetEditionsListByIdListAsync(EditionsId);
 
             List<DataAccessLayer.Entities.OrderItem> orderItems = new List<DataAccessLayer.Entities.OrderItem>();
 
@@ -58,7 +58,7 @@ namespace Store.BusinessLogicLayer.Servises
                 var edition = editions.FirstOrDefault(e => e.Id == i.EditionId);
                 DataAccessLayer.Entities.OrderItem orderItem = new DataAccessLayer.Entities.OrderItem
                 {
-                    Amount = edition.Prise * i.Count,
+                    Amount = edition.Price * i.Count,
                     Currency = edition.Currency,
                     PrintingEditionId = edition.Id,
                     OrderId = order.Id,
@@ -94,10 +94,7 @@ namespace Store.BusinessLogicLayer.Servises
             var service = new ChargeService();
             Charge charge = await service.CreateAsync(options);
 
-            if (!charge.Paid)
-            {
-                throw new CustomExeption(Constants.ChargeConstants.UN_SUCCESS_MSG, StatusCodes.Status400BadRequest);
-            }
+            var stratus = charge.Paid ? OrderStatusState.Payed : OrderStatusState.Unpayed;
 
             Payment payment = new Payment
             {
@@ -105,7 +102,7 @@ namespace Store.BusinessLogicLayer.Servises
             };
             await _paymentRepository.CreateAsync(payment);
             order.PaymentId = payment.Id;
-            order.Status = OrderStatus.Payed;
+            order.Status = stratus;
             await _orderRepository.UpdateAsync(order);
 
             var resultPayModel = new ResultPayModel()

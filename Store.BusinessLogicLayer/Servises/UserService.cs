@@ -10,11 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Store.BusinessLogicLayer.Providers;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
-using System.Linq.Dynamic.Core;
 using Store.Sharing.Constants;
 using clearwaterstream.Security;
+using Store.DataAccessLayer.Extentions;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -102,12 +101,13 @@ namespace Store.BusinessLogicLayer.Servises
 
             var users = _userManager.Users.Where(i => i.IsBlocked).ToList();
 
-            if (users.Any())
+            if (!users.Any())
             {
-                foreach (var i in users)
-                {
-                    await _userManager.DeleteAsync(i);
-                }
+                return;   
+            }
+            foreach (var i in users)
+            {
+                await _userManager.DeleteAsync(i);
             }
         }
         public async Task UserDeleteAsync(UserUpdateModel updateModel)
@@ -189,15 +189,22 @@ namespace Store.BusinessLogicLayer.Servises
 
             return Constants.UserConstants.CHECK_EMAIL_MSG;
         }
-        public async Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrPaginSortModel model)
+        public async Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrationModel model)
         {
+            var propertyForSort = typeof(User).GetProperty(model.PropertyForSort);
+
+            if (propertyForSort is null)
+            {
+                throw new CustomExeption(Constants.Error.NO_ANY_PROP_NAME, StatusCodes.Status400BadRequest);
+            }
+
             var users = await _userManager.Users.
                 Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
                 && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
                 && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null))
-                .OrderBy(model.PropertyForSort, model.IsAscending)
-                .Skip((model.CurrentPage - 1) * model.PageSize)
+                .OrderBy(propertyForSort, model.IsAscending)
+                .Skip((model.CurrentPage - Constants.PaginationParams.STARTS_ONE) * model.PageSize)
                 .Take(model.PageSize).ToListAsync();
 
             if (!users.Any())
@@ -218,7 +225,7 @@ namespace Store.BusinessLogicLayer.Servises
             NavigationModel<UserModel> navigation = new NavigationModel<UserModel>
             {
                 PageModel = paginatedPage,
-                EntityModels = userModels
+                Models = userModels
             };
             return navigation;
         }

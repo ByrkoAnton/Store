@@ -8,7 +8,7 @@ namespace Store.BusinessLogicLayer.Mappings
     {
         public PrintingEditionFiltrationMappingProfile()
         {
-            CreateMap<EditionFiltrPagingSortModelDAL, EditionFiltrPaginSortModel>().ReverseMap();
+            CreateMap<EditionFiltrationModelDAL, EditionFiltrationModel>().ReverseMap();
         }
     }
 }

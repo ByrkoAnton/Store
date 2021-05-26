@@ -5,10 +5,8 @@ using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Base;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 
@@ -25,7 +23,13 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
-        public async Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrPagingSortModelDAL model)
+        public async Task<List<Author>> GetAuthorsListByIdListAsync(List<long> id)
+        {
+            var result = await _dbSet.Where(x => id.Contains(x.Id)).AsNoTracking().ToListAsync();
+            return result;
+        }
+
+        public async Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrationModelDAL model)
         {
             var authors = await _dbSet.Include(n => n.PrintingEditions).AsNoTracking()
             .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
@@ -34,7 +38,7 @@ namespace Store.DataAccessLayer.Repositories
             || n.PrintingEditions.Any(t => EF.Functions.Like(t.Description, $"%{model.EditionDescription}%")))
             .OrderBy($"{model.PropertyForSort} " +
             $"{(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
-            .Skip((model.CurrentPage - 1) * model.PageSize)
+            .Skip((model.CurrentPage - Constants.PaginationParams.STARTS_ONE) * model.PageSize)
             .Take(model.PageSize).ToListAsync();
 
             int count = await _dbSet.Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
@@ -58,12 +62,10 @@ namespace Store.DataAccessLayer.Repositories
             var editions = new List<PrintingEdition>(author.PrintingEditions);
             author.PrintingEditions.Clear();
             _dbSet.Update(author);
-            var authorForUpdate = _dbSet.Include(a => a.PrintingEditions).FirstOrDefault(b => b.Id == author.Id);
-            authorForUpdate.PrintingEditions.RemoveAll(p => !editions.Exists(p2 => p2.Id == p.Id));
-            var result = editions.Where(p => !authorForUpdate.PrintingEditions.Exists(p2 => p2.Id == p.Id)).ToList();
+            var authorForUpdate = _dbSet.Include(a => a.PrintingEditions).FirstOrDefault(a => a.Id == author.Id);
+            authorForUpdate.PrintingEditions.RemoveAll(e => !editions.Exists(pe => pe.Id == e.Id));
+            var result = editions.Where(e => !authorForUpdate.PrintingEditions.Exists(pe => pe.Id == e.Id)).ToList();
             authorForUpdate.PrintingEditions.AddRange(result);
-            //authors.RemoveAll(p => !editionForUpdate.Authors.Exists(p2 => p2.Id == p.Id));
-            //editionForUpdate.Authors.AddRange(authors);
             _dbSet.Update(authorForUpdate);
             await SaveChangesAsync();
         }

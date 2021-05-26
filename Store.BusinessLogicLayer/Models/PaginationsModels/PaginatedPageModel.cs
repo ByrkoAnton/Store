@@ -14,17 +14,11 @@ namespace Store.BusinessLogicLayer.Models.PaginationsModels
         }
         public bool HasPreviousPage
         {
-            get
-            {
-                return (PageNumber > 1);
-            }
+            get => PageNumber > 1;
         }
         public bool HasNextPage
         {
-            get
-            {
-                return (PageNumber < TotalPages);
-            }
+            get => PageNumber < TotalPages;
         }
     }
 }

@@ -16,6 +16,6 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
         public Task AddUserToRoleAsync(UserUpdateModel updateModel);
         public Task<bool> IsUserInRoleAsync(UserUpdateModel updateModel);
         public Task<string> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel);
-        public Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrPaginSortModel model);
+        public Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrationModel model);
     }
 }

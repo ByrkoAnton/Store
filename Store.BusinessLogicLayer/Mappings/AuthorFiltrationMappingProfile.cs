@@ -8,7 +8,7 @@ namespace Store.BusinessLogicLayer.Mappings
     {
         public AuthorFiltrationMappingProfile()
         {
-            CreateMap<AuthorFiltrPagingSortModel, AuthorFiltrPagingSortModelDAL>().ReverseMap();
+            CreateMap<AuthorFiltrationModel, AuthorFiltrationModelDAL>().ReverseMap();
         }
     }
 }

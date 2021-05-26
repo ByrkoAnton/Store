@@ -31,7 +31,7 @@ namespace Store.PresentationLayer.Controllers
         }
 
         [HttpGet("Get")]
-        public async Task<IActionResult> Get(AuthorFiltrPagingSortModel model)
+        public async Task<IActionResult> Get(AuthorFiltrationModel model)
         {
             var result = await _authorService.GetAsync(model);
             return Ok(result);

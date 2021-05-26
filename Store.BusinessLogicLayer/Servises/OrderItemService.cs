@@ -34,7 +34,7 @@ namespace Store.BusinessLogicLayer.Servises
                    StatusCodes.Status400BadRequest);
             }
             model.Currency = edition.Currency;
-            model.Amount = edition.Prise * model.Count;
+            model.Amount = edition.Price * model.Count;
             var orderItem = _mapper.Map<OrderItem>(model);
             
             await _orderItemRepository.CreateAsync(orderItem);

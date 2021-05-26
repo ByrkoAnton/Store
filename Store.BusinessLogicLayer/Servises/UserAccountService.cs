@@ -71,7 +71,7 @@ namespace Store.BusinessLogicLayer.Servises
             Uri finalUrl = callbackUrl.Uri;
 
             await _emailService.SendEmailAsync(user.Email, Constants.UserConstants.CONFIRM_EMAIL,
-            String.Format(Constants.UserConstants.CONFIRM_REGISRT_LINK, finalUrl));
+            string.Format(Constants.UserConstants.CONFIRM_REGISRT_LINK, finalUrl));
 
             return Constants.UserConstants.REGISTR_SUCCESS;
         }
@@ -138,12 +138,14 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
             {
-                /////////
+                throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB,
+                    StatusCodes.Status400BadRequest);
             }
 
             if (refreshToken != user.RefreshToken)
             {
-                ////
+                throw new CustomExeption(Constants.RefreshTokenConstants.REFRESH_TOKENS_NOT_EQUALS,
+                    StatusCodes.Status400BadRequest);
             }
             TokenResponseModel tokenResponseModel = new TokenResponseModel();
 

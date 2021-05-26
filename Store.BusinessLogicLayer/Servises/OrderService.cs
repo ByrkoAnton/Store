@@ -56,9 +56,9 @@ namespace Store.BusinessLogicLayer.Servises
             return ordersModels.ToList();
         }
 
-        public async Task<NavigationModel<OrderModel>> GetAsync(OrderFiltrPagingSortModel model)
+        public async Task<NavigationModel<OrderModel>> GetAsync(OrderFiltrationModel model)
         {
-            var orderFiltrPagingSortModelDAL = _mapper.Map<OrderFiltrPagingSortModelDAL>(model);
+            var orderFiltrPagingSortModelDAL = _mapper.Map<OrderFiltrationModelDAL>(model);
 
             (IEnumerable<Order> orders, int count) ordersCount = await _orderRepository.GetAsync(orderFiltrPagingSortModelDAL);
 
@@ -74,7 +74,7 @@ namespace Store.BusinessLogicLayer.Servises
             NavigationModel<OrderModel> result = new NavigationModel<OrderModel>
             {
                 PageModel = paginatedPage,
-                EntityModels = orderModels
+                Models = orderModels
             };
             return result;
         }
