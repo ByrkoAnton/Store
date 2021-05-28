@@ -10,7 +10,6 @@ namespace Store.DataAccessLayer.Entities
         public bool IsBlocked { get; set; }
         public DateTime DateOfCreation { get; set; }
         public string RefreshToken { get; set; }
-
         public User()
         {
             DateOfCreation = DateTime.Now;

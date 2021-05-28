@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 
-
 namespace Store.BusinessLogicLayer
 {
     public class FileLoggerProvider : ILoggerProvider

@@ -4,7 +4,6 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Store.DataAccessLayer.Entities;
 using Store.Sharing.Constants;
 using System.Collections.Generic;

@@ -29,10 +29,14 @@ namespace Store.BusinessLogicLayer.Providers
                 return Convert.ToBase64String(randomNumber);
             }
         }
-
         public string GenerateJwt(string name, List<string> roles, string id)
         {
+            var key = _config.GetValue<string>(Constants.JwtProviderConst.KEY);
+            var issuer = _config.GetValue<string>(Constants.JwtProviderConst.ISSUER);
+            var audience = _config.GetValue<string>(Constants.JwtProviderConst.AUDIENCE);
+            var lefetime = _config.GetValue<string>(Constants.JwtProviderConst.LIFETIME);
             string role = $"{(roles.Any(s => s.Contains(Constants.UserConstants.ROLE_ADMIN)) ? Constants.UserConstants.ROLE_ADMIN : Constants.UserConstants.ROLE_USER)}";
+            
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, name),
@@ -43,19 +47,18 @@ namespace Store.BusinessLogicLayer.Providers
             var identity = new ClaimsIdentity(claims, Constants.JwtProviderConst.METHOD_NAME, ClaimsIdentity.DefaultNameClaimType,
                     ClaimsIdentity.DefaultRoleClaimType);
 
-            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config.GetValue<string>(Constants.JwtProviderConst.KEY)));
+            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
-                    issuer: _config.GetValue<string>(Constants.JwtProviderConst.ISSUER),
-                    audience: _config.GetValue<string>(Constants.JwtProviderConst.AUDIENCE),
+                    issuer: issuer,
+                    audience: audience,
                     notBefore: now,
                     claims: identity.Claims,
-                    expires: now.Add(TimeSpan.FromMinutes(double.Parse(_config.GetValue<string>(Constants.JwtProviderConst.LIFETIME)))),
+                    expires: now.Add(TimeSpan.FromMinutes(double.Parse(lefetime))),
                     signingCredentials: credentials);
                     var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-            
             return encodedJwt;
         }
     }

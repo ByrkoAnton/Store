@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Store.DataAccessLayer.Entities;
 using Store.PresentationLayer;
-using System;
-using static Store.DataAccessLayer.Enums.Enums;
 
 namespace Store.DataAccessLayer.AppContext
 {

@@ -1,8 +1,6 @@
 ﻿using Store.BusinessLogicLayer.Models.Authors;
 using Store.BusinessLogicLayer.Models.Base;
-using Store.Sharing.Constants;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
 namespace Store.BusinessLogicLayer.Models.EditionModel

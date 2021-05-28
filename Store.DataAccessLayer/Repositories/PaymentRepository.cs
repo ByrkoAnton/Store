@@ -3,7 +3,6 @@ using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Base;
 using Store.DataAccessLayer.Repositories.Interfaces;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Repositories

@@ -5,7 +5,7 @@ namespace Store.BusinessLogicLayer.Models.OrderItems
 {
     public class OrderItemModel : BaseModel
     {
-        public double Amount { get; set; }
+        public double EditionPrice { get; set; }
         public Currency Currency { get; set; }
         public long PrintingEditionId { get; set; }
         public long OrderId { get; set; }

@@ -1,5 +1,4 @@
-﻿
-namespace Store.DataAccessLayer.Entities
+﻿namespace Store.DataAccessLayer.Entities
 {
     public class Payment : BaseEntity
     {
