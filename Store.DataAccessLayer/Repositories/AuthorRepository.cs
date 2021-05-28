@@ -42,7 +42,7 @@ namespace Store.DataAccessLayer.Repositories
             .Where(n => EF.Functions.Like(n.Name, $"%{model.Name}%"))
             .Where(n => string.IsNullOrEmpty(model.EditionDescription)
             || n.PrintingEditions.Any(t => EF.Functions.Like(t.Description, $"%{model.EditionDescription}%")))
-            .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
+            .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC)}")
             .Skip((model.CurrentPage - Constants.PaginationParams.FIX_PAGINATION) * model.PageSize)
             .Take(model.PageSize).ToListAsync();
 

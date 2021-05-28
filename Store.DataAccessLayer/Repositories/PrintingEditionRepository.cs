@@ -56,7 +56,7 @@ namespace Store.DataAccessLayer.Repositories
             || n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
             .Where(n => n.Price <= model.MaxPrice || model.MaxPrice == null)
             .Where(n => n.Price >= model.MinPrice || model.MinPrice == null)
-            .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
+            .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC)}")
             .Skip((model.CurrentPage - Constants.PaginationParams.FIX_PAGINATION) * model.PageSize).Take(model.PageSize).ToListAsync();
 
             int count = await _dbSet

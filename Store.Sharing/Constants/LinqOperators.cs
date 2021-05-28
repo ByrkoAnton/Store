@@ -5,8 +5,8 @@ namespace Store.Sharing.Constants
     {
         public class LinqOperators
         {
-            public const string ORDER_BY = "OrderBy";
-            public const string ORDER_BY_DSC = "OrderByDescending";
+            public const string ORDER = "OrderBy";
+            public const string ORDER_DSC = "OrderByDescending";
         }
     }
 }

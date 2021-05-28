@@ -10,8 +10,8 @@ namespace Store.Sharing.Constants
     {
         public class RefreshTokenConstants
         {
-            public const int RANDOM_NUMBER_BYTES = 32;
-            public const string REFRESH_TOKENS_NOT_EQUALS = "refresh tokens not equals";
+            public const int BYTES = 32;
+            public const string TOKENS_NOT_EQUALS = "refresh tokens not equals";
         }
     }
 }

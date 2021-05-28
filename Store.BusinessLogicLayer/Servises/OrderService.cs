@@ -31,7 +31,7 @@ namespace Store.BusinessLogicLayer.Servises
             var orders = await _orderRepository.GetAllAsync();
             if (!orders.Any())
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_ORDERS_IN_DB,
+                throw new CustomExeption(Constants.Error.NO_ORDERS_IN_DB,
                    StatusCodes.Status400BadRequest);
             }
             var ordersModels = _mapper.Map<IEnumerable<OrderModel>>(orders);
@@ -47,7 +47,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!ordersCount.orders.Any())
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_ORDERS_IN_DB_WITH_THIS_CONDITIONS,
+                throw new CustomExeption(Constants.Error.WRONG_CONDITIONS_ORDER,
                    StatusCodes.Status400BadRequest);
             }
 
@@ -73,7 +73,7 @@ namespace Store.BusinessLogicLayer.Servises
             var order = await _orderRepository.GetByIdAsync(id);
             if (order is null)
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_ORDERS_IN_DB_WITH_THIS_ID,
+                throw new CustomExeption(Constants.Error.NO_ORDERS_THIS_ID,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -98,7 +98,7 @@ namespace Store.BusinessLogicLayer.Servises
             var order = await _orderRepository.GetByIdAsync(model.Id);
             if (order is null)
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_ORDERS_IN_DB_WITH_THIS_ID,
+                throw new CustomExeption(Constants.Error.NO_ORDERS_THIS_ID,
                     StatusCodes.Status400BadRequest);
             }
             await _orderRepository.RemoveAsync(order);
@@ -121,7 +121,7 @@ namespace Store.BusinessLogicLayer.Servises
             var order = await _orderRepository.GetByIdAsync(model.Id);
             if (order is null)
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_ORDERS_IN_DB_WITH_THIS_ID,
+                throw new CustomExeption(Constants.Error.NO_ORDERS_THIS_ID,
                     StatusCodes.Status400BadRequest);
             }
 

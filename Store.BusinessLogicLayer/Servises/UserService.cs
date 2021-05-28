@@ -50,7 +50,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.ADD_USER_TO_ROLE_FAILD_NO_USER_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.ADD_TO_ROLE_FAILD_NO_USER,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -58,7 +58,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!roleAddingResult.Succeeded)
             {
-                throw new CustomExeption(Constants.Error.ADD_USER_TO_ROLE_FAILD_ROLE_IS_NOT_PROVIDED,
+                throw new CustomExeption(Constants.Error.ROLE_IS_NOT_PROVIDED,
                     StatusCodes.Status400BadRequest);
             }
         }
@@ -80,7 +80,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.BLOCKING_USER_FAILD_NO_USER_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.BLOCKING_FAILD_NO_USER,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -89,7 +89,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!blockRersult.Succeeded)
             {
-                throw new Exception($"{Constants.Error.BLOCKING_USER_FAILD_NO_USER_ID_IN_DB}" +
+                throw new Exception($"{Constants.Error.BLOCKING_FAILD_NO_USER}" +
                     $" {StatusCodes.Status500InternalServerError}");
             }
         }
@@ -114,7 +114,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.DELETE_USER_FAILD_NO_USER_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.DELETE_FAILD_NO_USER,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -122,7 +122,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!result.Succeeded)
             {
-                throw new Exception($"{Constants.Error.DELETE_USER_FAILD_CONTACT_ADMIN}" +
+                throw new Exception($"{Constants.Error.DELETE_USER_FAILD}" +
                     $" {StatusCodes.Status500InternalServerError}");
             }
         }
@@ -143,7 +143,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.UPDATE_USER_FAILD_USER_NOT_FOUND,
+                throw new CustomExeption(Constants.Error.USER_NOT_FOUND,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -166,7 +166,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!updateResult.Succeeded)
             {
-                throw new Exception($"{Constants.Error.UPDATE_USER_FAILD_CONTACT_ADMIN} {StatusCodes.Status500InternalServerError}");
+                throw new Exception($"{Constants.Error.CONTACT_ADMIN} {StatusCodes.Status500InternalServerError}");
             }
         }
         public async Task<string> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel)
@@ -174,13 +174,13 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByEmailAsync(forgotPasswordModel.Email);
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER_WITH_THIS_EMAIL,
+                throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
                     StatusCodes.Status400BadRequest);
             }
 
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
-                throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER_WITH_THIS_EMAIL,
+                throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -191,13 +191,13 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!result.Succeeded)
             {
-                throw new Exception(Constants.Error.PASSWORD_RESET_FAILD_CONTACT_ADMIN);
+                throw new Exception(Constants.Error.PASSWORD_RESET_FAILD);
             }
 
             await _emailService.SendEmailAsync(user.Email, Constants.UserConstants.RESET_PASSWORD_SUBJ,
             String.Format(Constants.UserConstants.RESET_PASSWORD_MSG, newPassword));
 
-            return Constants.UserConstants.CHECK_EMAIL_MSG;
+            return Constants.UserConstants.CHECK_MSG;
         }
         public async Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrationModel model)
         {

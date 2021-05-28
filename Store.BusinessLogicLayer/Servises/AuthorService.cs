@@ -38,7 +38,7 @@ namespace Store.BusinessLogicLayer.Servises
             var authors = await _authorRepository.GetByNameAsync(model.Name);
             if (authors.Any())
             {
-                throw new CustomExeption(Constants.Error.AUTHOR_CREATE_FAILD_AUTHOR_ALREDY_EXISTS_IN_DB,
+                throw new CustomExeption(Constants.Error.AUTHOR_CREATE_FAILD,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -56,7 +56,7 @@ namespace Store.BusinessLogicLayer.Servises
             var author = await _authorRepository.GetByIdAsync(id);
             if (author is null)
             {
-                throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_THIS_ID_DB,
+                throw new CustomExeption(Constants.Error.NO_AUTHOR_ID,
                    StatusCodes.Status400BadRequest);
             }
             var authorModel = _mapper.Map<AuthorModel>(author);
@@ -69,7 +69,7 @@ namespace Store.BusinessLogicLayer.Servises
             (IEnumerable<Author> authors, int count) authorsWithCount = await _authorRepository.GetAsync(authorFiltrPagingSortModelDAL);
             if (!authorsWithCount.authors.Any())
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
+                throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_CONDITIONS,
                    StatusCodes.Status400BadRequest);
             }
             var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCount.authors);
@@ -99,7 +99,7 @@ namespace Store.BusinessLogicLayer.Servises
             var author = await _authorRepository.GetByNameAsync(model.Name);
             if (!author.Any())
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
+                throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_CONDITIONS,
                    StatusCodes.Status400BadRequest);
             }
             var authorModel = _mapper.Map<AuthorModel>(author.First());
@@ -123,7 +123,7 @@ namespace Store.BusinessLogicLayer.Servises
             var authors = await _authorRepository.GetByNameAsync(model.Name);
             if (!authors.Any())
             {
-                throw new CustomExeption(Constants.Error.AUTHOR_REMOVE_FAILD_NO_AUTHOR_IN_DB,
+                throw new CustomExeption(Constants.Error.AUTHOR_REMOVE_FAILD,
                     StatusCodes.Status400BadRequest);
             }
             await _authorRepository.RemoveAsync(authors.First());
@@ -144,7 +144,7 @@ namespace Store.BusinessLogicLayer.Servises
             var author = await _authorRepository.GetByIdAsync(model.Id);
             if (author is null)
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_AUTHOR_IN_DB_WITH_THIS_CONDITIONS,
+                throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_CONDITIONS,
                     StatusCodes.Status400BadRequest);
             }
 

@@ -22,7 +22,7 @@ namespace Store.BusinessLogicLayer.Providers
 
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte[Constants.RefreshTokenConstants.RANDOM_NUMBER_BYTES];
+            var randomNumber = new byte[Constants.RefreshTokenConstants.BYTES];
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);

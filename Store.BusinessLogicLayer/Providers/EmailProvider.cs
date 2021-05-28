@@ -18,7 +18,7 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress(_config[Constants.EmailProviderConst.NAME_FROM], 
-                _config[Constants.EmailProviderConst.ADR_FROM]));
+                _config[Constants.EmailProviderConst.ADDRESS_FROM]));
             emailMessage.To.Add(new MailboxAddress(_config[Constants.EmailProviderConst.NAME_TO], email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -29,7 +29,7 @@ namespace Store.BusinessLogicLayer.Servises
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync(_config[Constants.EmailProviderConst.SMTP]);
-                await client.AuthenticateAsync(_config[Constants.EmailProviderConst.ADR_FROM], 
+                await client.AuthenticateAsync(_config[Constants.EmailProviderConst.ADDRESS_FROM], 
                     _config[Constants.EmailProviderConst.PASSWORD]);
                 await client.SendAsync(emailMessage);
                 await client.DisconnectAsync(true);

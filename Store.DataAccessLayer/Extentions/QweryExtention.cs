@@ -17,7 +17,7 @@ namespace Store.DataAccessLayer.Extentions
             Expression queryExpr = source.Expression;
 
             queryExpr = Expression.Call
-                (typeof(Queryable), asc ? Constants.LinqOperators.ORDER_BY : Constants.LinqOperators.ORDER_BY_DSC, new Type[] 
+                (typeof(Queryable), asc ? Constants.LinqOperators.ORDER : Constants.LinqOperators.ORDER_DSC, new Type[] 
                 { source.ElementType, prop.PropertyType }, queryExpr, selectorExpr);
 
             return source.Provider.CreateQuery<T>(queryExpr);

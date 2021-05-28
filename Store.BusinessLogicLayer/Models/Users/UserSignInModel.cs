@@ -4,7 +4,7 @@ namespace Store.BusinessLogicLayer.Models
 {
     public class UserSignInModel
     {
-        [Required(ErrorMessage = Constants.Error.LOGIN_FAILD_NO_USER_WITH_THIS_EMAIL)]
+        [Required(ErrorMessage = Constants.Error.LOGIN_FAILD_EMAIL)]
         public string Email { get; set; }
 
         [Required(ErrorMessage = Constants.Error.LOGIN_FAILD_WRONG_PASSWORD)]

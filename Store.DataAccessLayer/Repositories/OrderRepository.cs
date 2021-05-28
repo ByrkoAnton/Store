@@ -31,7 +31,7 @@ namespace Store.DataAccessLayer.Repositories
                .Where(o => string.IsNullOrEmpty(model.Discription)
                || EF.Functions.Like(o.Discription, $"%{model.Discription}%"))
                .Where(o => model.Status == null || o.Status == model.Status)
-                .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
+                .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC)}")
                 .Skip((model.CurrentPage - Constants.PaginationParams.FIX_PAGINATION) * model.PageSize).Take(model.PageSize).ToListAsync();
 
             int count = await _dbSet

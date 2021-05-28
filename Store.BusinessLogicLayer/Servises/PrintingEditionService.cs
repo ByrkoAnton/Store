@@ -37,7 +37,7 @@ namespace Store.BusinessLogicLayer.Servises
             var edition = await _printingEditionRepository.GetByIdAsync(id);
             if (edition is null)
             {
-                throw new CustomExeption(Constants.Error.NO_EDITION_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.NO_EDITION_IN_DB,
                    StatusCodes.Status400BadRequest);
             }
             var editionModel = _mapper.Map<PrintingEditionModel>(edition);
@@ -68,7 +68,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!_authorRepository.IsAuthorsInDb(model.AuthorModels.Select(a => a.Id).ToList()))
             {
-                throw new CustomExeption(Constants.Error.NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST,
+                throw new CustomExeption(Constants.Error.ADD_AUTHOR_FIRST,
                 StatusCodes.Status400BadRequest);
             }
 
@@ -80,7 +80,7 @@ namespace Store.BusinessLogicLayer.Servises
             var edition = await _printingEditionRepository.GetByTitle(model.Title);
             if (!edition.Any())
             {
-                throw new CustomExeption(Constants.Error.EDITION_BY_ID_NOT_FOUND,
+                throw new CustomExeption(Constants.Error.EDITION_NOT_FOUND,
                     StatusCodes.Status400BadRequest);
             }
             await _printingEditionRepository.RemoveAsync(edition.First());
@@ -98,7 +98,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!editionsCount.editions.Any()) 
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS,
+                throw new CustomExeption(Constants.Error.WRONG_CONDITIONS_EDITION,
                    StatusCodes.Status400BadRequest);
             }
 
@@ -123,7 +123,7 @@ namespace Store.BusinessLogicLayer.Servises
             var editions = await _printingEditionRepository.GetByTitle(model.Title);
             if (!editions.Any())
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS,
+                throw new CustomExeption(Constants.Error.WRONG_CONDITIONS_EDITION,
                    StatusCodes.Status400BadRequest);
             }
             var editionModel = _mapper.Map<PrintingEditionModel>(editions.First());
@@ -141,7 +141,7 @@ namespace Store.BusinessLogicLayer.Servises
             var edition = await _printingEditionRepository.GetByIdAsync(model.Id);
             if (edition is null)
             {
-                throw new CustomExeption(Constants.Error.NO_EDITION_ID_IN_DB,
+                throw new CustomExeption(Constants.Error.NO_EDITION_IN_DB,
                     StatusCodes.Status400BadRequest);
             }
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Store.Sharing.Constants
+﻿namespace Store.Sharing.Constants
 {
     public partial class Constants
     {
@@ -14,8 +8,8 @@ namespace Store.Sharing.Constants
             public const string USER_DEF_SORT_PROP = "LastName";
             public const string EDITION_DEF_SORT_PROP = "Description";
             public const string ORDER_DEF_SORT_PROP = "id";
-            public const string SORT_ASC_DIRECTION = "ASC";
-            public const string SORT_DESC_DIRECTION = "DESC";
+            public const string SORT_ASC = "ASC";
+            public const string SORT_DESC = "DESC";
         }
     }
 }

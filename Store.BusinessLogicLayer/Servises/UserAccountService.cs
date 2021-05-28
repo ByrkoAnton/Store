@@ -49,7 +49,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!result.Succeeded)
             {
-                throw new CustomExeption(Constants.Error.REGISRATION_FAILD_USER_DID_NOT_CREATED,
+                throw new CustomExeption(Constants.Error.REGISRATION_USER_NOT_CREATED,
                    StatusCodes.Status400BadRequest);
             }
 
@@ -71,7 +71,7 @@ namespace Store.BusinessLogicLayer.Servises
             Uri finalUrl = callbackUrl.Uri;
 
             await _emailService.SendEmailAsync(user.Email, Constants.UserConstants.CONFIRM_EMAIL,
-            string.Format(Constants.UserConstants.CONFIRM_REGISRT_LINK, finalUrl));
+            string.Format(Constants.UserConstants.CONFIRM_LINK, finalUrl));
 
             return Constants.UserConstants.REGISTR_SUCCESS;
         }
@@ -80,7 +80,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByNameAsync(signInModel.Email);
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.LOGIN_FAILD_NO_USER_WITH_THIS_EMAIL,
+                throw new CustomExeption(Constants.Error.LOGIN_FAILD_EMAIL,
                     StatusCodes.Status400BadRequest);
             }
 
@@ -95,7 +95,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!roleList.Any())
             {
-                throw new Exception($"{Constants.Error.ERROR_NO_USERROLE} {StatusCodes.Status500InternalServerError}");
+                throw new Exception($"{Constants.Error.NO_USERROLE} {StatusCodes.Status500InternalServerError}");
             }
 
             var result = new TokenResponseModel();
@@ -116,14 +116,14 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByEmailAsync(emailConfirmationModel.Email);
             if (user is null)
             {
-                throw new Exception(Constants.Error.EMAILCONFIRMATION_USER_NOT_FOUND);
+                throw new Exception(Constants.Error.EMAILCONFIRM_NO_USER);
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, emailConfirmationModel.Code);
 
             if (!result.Succeeded)
             {
-                throw new Exception(Constants.Error.EMAILCONFIRMATION_EMAIL_DID_NOT_CONFIRMED);
+                throw new Exception(Constants.Error.EMAIL_DID_NOT_CONFIRMED);
             }
 
             return Constants.UserConstants.EMAIL_CONFIRMED;
@@ -144,7 +144,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (refreshToken != user.RefreshToken)
             {
-                throw new CustomExeption(Constants.RefreshTokenConstants.REFRESH_TOKENS_NOT_EQUALS,
+                throw new CustomExeption(Constants.RefreshTokenConstants.TOKENS_NOT_EQUALS,
                     StatusCodes.Status400BadRequest);
             }
             TokenResponseModel tokenResponseModel = new TokenResponseModel();
