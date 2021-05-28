@@ -59,6 +59,7 @@ namespace Store.PresentationLayer
             services.AddTransient<IPaymentRepository, PaymentRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IOrderItemRepository, OrderItemRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddTransient<IUserAccountService, UserAccountService>();
             services.AddTransient<IRoleService, RoleService>();
@@ -68,8 +69,7 @@ namespace Store.PresentationLayer
             services.AddTransient<IAuthorService, AuthorService>();
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();
             services.AddTransient<IPaymentService, PaymentService>();
-            services.AddTransient<IOrderService, BusinessLogicLayer.Servises.OrderService>();
-            services.AddTransient<IOrderItemService, OrderItemService>();
+            services.AddTransient<IOrderService, BusinessLogicLayer.Servises.OrderService>();        
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),

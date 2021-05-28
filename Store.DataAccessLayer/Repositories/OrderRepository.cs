@@ -25,16 +25,17 @@ namespace Store.DataAccessLayer.Repositories
 
         public async Task<(IEnumerable<Order>, int)> GetAsync(OrderFiltrationModelDAL model)
         {
-            var order = await _dbSet.Where(o => o.UserId == model.UserId || model.UserId == null)
-               .Where(o=> model.EditionId==null || o.OrderItems.Any(i => i.PrintingEditionId == model.EditionId))
+            var order = await _dbSet
+               .Where(o => model.UserId == null || o.UserId == model.UserId)
+               .Where(o => model.EditionId == null || o.OrderItems.Any(i => i.PrintingEditionId == model.EditionId))
                .Where(o => string.IsNullOrEmpty(model.Discription)
                || EF.Functions.Like(o.Discription, $"%{model.Discription}%"))
                .Where(o => model.Status == null || o.Status == model.Status)
-                .OrderBy($"{model.PropertyForSort} " +
-                $"{(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
-                .Skip((model.CurrentPage - Constants.PaginationParams.STARTS_ONE) * model.PageSize).Take(model.PageSize).ToListAsync();
+                .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
+                .Skip((model.CurrentPage - Constants.PaginationParams.FIX_PAGINATION) * model.PageSize).Take(model.PageSize).ToListAsync();
 
-            int count = await _dbSet.Where(o => o.UserId == model.UserId || model.UserId == null)
+            int count = await _dbSet
+               .Where(o => o.UserId == model.UserId || model.UserId == null)
                .Where(o => model.EditionId == null || o.OrderItems.Any(i => i.PrintingEditionId == model.EditionId))
                .Where(o => string.IsNullOrEmpty(model.Discription)
                || EF.Functions.Like(o.Discription, $"%{model.Discription}%"))

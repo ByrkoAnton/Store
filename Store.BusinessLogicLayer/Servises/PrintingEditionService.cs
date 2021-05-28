@@ -29,6 +29,11 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task<PrintingEditionModel> GetByIdAsync(long id)
         {
+            if (id == Constants.Variables.WRONG_ID)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                                    StatusCodes.Status400BadRequest);
+            }
             var edition = await _printingEditionRepository.GetByIdAsync(id);
             if (edition is null)
             {
@@ -39,15 +44,21 @@ namespace Store.BusinessLogicLayer.Servises
             return editionModel;
         }
         public async Task CreateAsync(PrintingEditionModel model)
-
         {
             if (!model.AuthorModels.Any())
             {
-                throw new CustomExeption(Constants.Error.EDITION_MUST_HAVE_AUTHOR,
+                throw new CustomExeption(Constants.Error.NO_AUTHOR,
                     StatusCodes.Status400BadRequest);
             }
 
-            var editions = await _printingEditionRepository.GetByDescriptionAsync(model.Description);
+
+            if (model.Title is null)
+            {
+                throw new CustomExeption(Constants.Error.NO_TITLE,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            var editions = await _printingEditionRepository.GetByTitle(model.Title);
 
             if (editions.Any())
             {
@@ -55,11 +66,7 @@ namespace Store.BusinessLogicLayer.Servises
                     StatusCodes.Status400BadRequest);
             }
 
-            var allAuthors = await _authorRepository.GetAuthorsListByIdListAsync(model.AuthorModels.Select(x => x.Id).ToList());
-
-            var autors = allAuthors.Where(a => model.AuthorModels.Exists(p => p.Id == a.Id)).ToList();
-
-            if (model.AuthorModels.Count != autors.Count)
+            if (!_authorRepository.IsAuthorsInDb(model.AuthorModels.Select(a => a.Id).ToList()))
             {
                 throw new CustomExeption(Constants.Error.NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST,
                 StatusCodes.Status400BadRequest);
@@ -70,7 +77,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task RemoveAsync(PrintingEditionModel model)
         {
-            var edition = await _printingEditionRepository.GetByDescriptionAsync(model.Description);
+            var edition = await _printingEditionRepository.GetByTitle(model.Title);
             if (!edition.Any())
             {
                 throw new CustomExeption(Constants.Error.EDITION_BY_ID_NOT_FOUND,
@@ -105,9 +112,15 @@ namespace Store.BusinessLogicLayer.Servises
             };
             return result;
         }
-        public async Task<PrintingEditionModel> GetByDescriptionAsync(PrintingEditionModel model)
+        public async Task<PrintingEditionModel> GetByTitleAsync(PrintingEditionModel model)
         {
-            var editions = await _printingEditionRepository.GetByDescriptionAsync(model.Description);
+            if (model.Title is null)
+            {
+                throw new CustomExeption(Constants.Error.NO_TITLE,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            var editions = await _printingEditionRepository.GetByTitle(model.Title);
             if (!editions.Any())
             {
                 throw new CustomExeption(Constants.Error.NO_ANY_EDITIONS_IN_DB_WITH_THIS_CONDITIONS,
@@ -119,6 +132,12 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task UpdateAsync(PrintingEditionModel model)
         {
+            if (model is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
             var edition = await _printingEditionRepository.GetByIdAsync(model.Id);
             if (edition is null)
             {

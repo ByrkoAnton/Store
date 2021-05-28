@@ -14,6 +14,7 @@ using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.Sharing.Constants;
 using clearwaterstream.Security;
 using Store.DataAccessLayer.Extentions;
+using Store.DataAccessLayer.Repositories.Interfaces;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -22,17 +23,31 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly UserManager<User> _userManager;
         private readonly IEmailProvider _emailService;
         private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(UserManager<User> userManager, IEmailProvider emailService, IMapper mapper)
+        public UserService(UserManager<User> userManager, IEmailProvider emailService, IMapper mapper, IUserRepository userRepository)
         {
             _userManager = userManager;
             _emailService = emailService;
             _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         public async Task AddUserToRoleAsync(UserUpdateModel updateModel)
         {
-            var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
+            if (updateModel is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            if (updateModel.Id == Constants.Variables.WRONG_ID)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.ADD_USER_TO_ROLE_FAILD_NO_USER_ID_IN_DB,
@@ -47,40 +62,22 @@ namespace Store.BusinessLogicLayer.Servises
                     StatusCodes.Status400BadRequest);
             }
         }
-        public async Task<IList<string>> GetUserRoleAsync(UserUpdateModel updateModel)
-        {
-            var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
-            if (user is null)
-            {
-                throw new CustomExeption(Constants.Error.GET_USER_ROLE_FAILD_NO_USER_ID_IN_DB,
-                    StatusCodes.Status400BadRequest);
-            }
-
-            var userRoles = await _userManager.GetRolesAsync(user);
-            if (!userRoles.Any())
-            {
-                throw new CustomExeption(Constants.Error.ERROR_NO_USERROLE,
-                    StatusCodes.Status400BadRequest);
-            }
-
-            return userRoles;
-        }
-        public async Task<bool> IsUserInRoleAsync(UserUpdateModel updateModel)
-        {
-            var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
-            if (user is null)
-            {
-                throw new CustomExeption(Constants.Error.IS_USER_IN_ROLE_FAILD_NO_USER_ID_IN_DB,
-                    StatusCodes.Status400BadRequest);
-            }
-
-            var isUserInRole = _userManager.IsInRoleAsync(user, updateModel.Role);
-
-            return true;
-        }
+         
         public async Task UserBlockStatusChangingAsync(UserUpdateModel updateModel)
         {
-            var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
+            if(updateModel is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            if (updateModel.Id == Constants.Variables.WRONG_ID)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.BLOCKING_USER_FAILD_NO_USER_ID_IN_DB,
@@ -98,30 +95,32 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task DeleteAllBlockedUserAsync()
         {
-
-            var users = _userManager.Users.Where(i => i.IsBlocked).ToList();
-
-            if (!users.Any())
-            {
-                return;   
-            }
-            foreach (var i in users)
-            {
-                await _userManager.DeleteAsync(i);
-            }
+            await _userRepository.RemoveRangeAsync(_userManager.Users.Where(i => i.IsBlocked).ToList());
         }
         public async Task UserDeleteAsync(UserUpdateModel updateModel)
         {
-            var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
+            if (updateModel is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            if (updateModel.Id == Constants.Variables.WRONG_ID)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.DELETE_USER_FAILD_NO_USER_ID_IN_DB,
                     StatusCodes.Status400BadRequest);
             }
 
-            var delResult = await _userManager.DeleteAsync(user);
+            var result = await _userManager.DeleteAsync(user);
 
-            if (!delResult.Succeeded)
+            if (!result.Succeeded)
             {
                 throw new Exception($"{Constants.Error.DELETE_USER_FAILD_CONTACT_ADMIN}" +
                     $" {StatusCodes.Status500InternalServerError}");
@@ -129,7 +128,19 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task UserUpdateAsync(UserUpdateModel updateModel)
         {
-            var user = await _userManager.FindByIdAsync(updateModel.id.ToString());
+            if (updateModel is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            if (updateModel.Id == Constants.Variables.WRONG_ID)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.UPDATE_USER_FAILD_USER_NOT_FOUND,
@@ -155,8 +166,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!updateResult.Succeeded)
             {
-                throw new Exception($"{Constants.Error.UPDATE_USER_FAILD_CONTACT_ADMIN}" +
-                    $" {StatusCodes.Status500InternalServerError}");
+                throw new Exception($"{Constants.Error.UPDATE_USER_FAILD_CONTACT_ADMIN} {StatusCodes.Status500InternalServerError}");
             }
         }
         public async Task<string> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel)
@@ -198,13 +208,13 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomExeption(Constants.Error.NO_ANY_PROP_NAME, StatusCodes.Status400BadRequest);
             }
 
-            var users = await _userManager.Users.
-                Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
-                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
-                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
-                && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null))
+            var users = await _userManager.Users
+                .Where(n => model.Id == null || n.Id == model.Id)
+                .Where(n => EF.Functions.Like(n.LastName, $"%{model.LastName}%"))
+                .Where(n => EF.Functions.Like(n.FirstName, $"%{model.FirstName}%"))
+                .Where(n => model.IsBlocked == null || n.IsBlocked == model.IsBlocked)
                 .OrderBy(propertyForSort, model.IsAscending)
-                .Skip((model.CurrentPage - Constants.PaginationParams.STARTS_ONE) * model.PageSize)
+                .Skip((model.CurrentPage - Constants.PaginationParams.FIX_PAGINATION) * model.PageSize)
                 .Take(model.PageSize).ToListAsync();
 
             if (!users.Any())
@@ -213,11 +223,11 @@ namespace Store.BusinessLogicLayer.Servises
                    StatusCodes.Status400BadRequest);
             }
 
-            int usersCount = await _userManager.Users.
-                Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%")
-                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
-                && EF.Functions.Like(n.LastName, $"%{model.LastName}%")
-                && (n.IsBlocked == model.IsBlocked || model.IsBlocked == null)).CountAsync();
+            int usersCount = await _userManager.Users
+                .Where(n => model.Id == null || n.Id == model.Id)
+                .Where(n => EF.Functions.Like(n.LastName, $"%{model.LastName}%"))
+                .Where(n => EF.Functions.Like(n.FirstName, $"%{model.FirstName}%"))
+                .Where(n => n.IsBlocked == model.IsBlocked || model.IsBlocked == null).CountAsync();
 
             var userModels = _mapper.Map<IEnumerable<UserModel>>(users).ToList();
 

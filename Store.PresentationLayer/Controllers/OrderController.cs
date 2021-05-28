@@ -16,12 +16,6 @@ namespace Store.PresentationLayer.Controllers
             _orderServise = orderServise;
         }
 
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] OrderModel model)
-        {
-            await _orderServise.CreateAsync(model);
-            return Ok();
-        }
 
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById([FromBody] OrderModel model)

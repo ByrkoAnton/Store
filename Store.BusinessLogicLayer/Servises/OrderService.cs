@@ -17,32 +17,15 @@ namespace Store.BusinessLogicLayer.Servises
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
-        private readonly IPaymentRepository _paymentRepository;
         private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
 
         public OrderService(IOrderRepository orderRepository, IMapper maper, UserManager<User> userManager,
             IPaymentRepository paymentRepository)
         {
             _orderRepository = orderRepository;
-            _mapper = maper;
-            _userManager = userManager;
-            _paymentRepository = paymentRepository;
+            _mapper = maper;   
         }
-        public async Task CreateAsync(OrderModel model)
-        {
-            var user = await _userManager.FindByIdAsync(model.UserId.ToString());
-            if (user is null)
-            {
-                throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB,
-                    StatusCodes.Status400BadRequest);
-            }
-            var order = _mapper.Map<Order>(model);
-
-            await _paymentRepository.CreateAsync(new Payment());
-           
-            await _orderRepository.CreateAsync(order);
-        }
+        
         public async Task<List<OrderModel>> GetAll()
         {
             var orders = await _orderRepository.GetAllAsync();
@@ -81,6 +64,12 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task<OrderModel> GetById(long id)
         {
+            if (id == Constants.Variables.WRONG_ID)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                                    StatusCodes.Status400BadRequest);
+            }
+
             var order = await _orderRepository.GetByIdAsync(id);
             if (order is null)
             {
@@ -94,6 +83,18 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task RemoveAsync(OrderModel model)
         {
+            if (model is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                                    StatusCodes.Status400BadRequest);
+            }
+
+            if (model.Id == Constants.Variables.WRONG_ID)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                                    StatusCodes.Status400BadRequest);
+            }
+
             var order = await _orderRepository.GetByIdAsync(model.Id);
             if (order is null)
             {
@@ -105,6 +106,18 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task UpdateAsync(OrderModel model)
         {
+            if (model is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                                    StatusCodes.Status400BadRequest);
+            }
+
+            if (model.Id == Constants.Variables.WRONG_ID)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                                    StatusCodes.Status400BadRequest);
+            }
+
             var order = await _orderRepository.GetByIdAsync(model.Id);
             if (order is null)
             {
@@ -113,7 +126,6 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             order = _mapper.Map<Order>(model);
-
             await _orderRepository.UpdateAsync(order);
         }
     }

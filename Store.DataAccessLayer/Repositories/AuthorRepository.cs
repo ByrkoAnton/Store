@@ -29,19 +29,25 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
+        public bool IsAuthorsInDb(List<long> id)
+        {
+            var res = id.All(x => _dbSet.Select(d => d.Id).Contains(x));
+            return res;
+        }
+
         public async Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrationModelDAL model)
         {
             var authors = await _dbSet.Include(n => n.PrintingEditions).AsNoTracking()
-            .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
+            .Where(n => model.Id == null || n.Id == model.Id)
             .Where(n => EF.Functions.Like(n.Name, $"%{model.Name}%"))
             .Where(n => string.IsNullOrEmpty(model.EditionDescription)
             || n.PrintingEditions.Any(t => EF.Functions.Like(t.Description, $"%{model.EditionDescription}%")))
-            .OrderBy($"{model.PropertyForSort} " +
-            $"{(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
-            .Skip((model.CurrentPage - Constants.PaginationParams.STARTS_ONE) * model.PageSize)
+            .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
+            .Skip((model.CurrentPage - Constants.PaginationParams.FIX_PAGINATION) * model.PageSize)
             .Take(model.PageSize).ToListAsync();
 
-            int count = await _dbSet.Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
+            int count = await _dbSet
+            .Where(n => model.Id == null || n.Id == model.Id)
             .Where(n => EF.Functions.Like(n.Name, $"%{model.Name}%"))
             .Where(n => string.IsNullOrEmpty(model.EditionDescription)
             || n.PrintingEditions.Any(t => EF.Functions.Like(t.Description, $"%{model.EditionDescription}%")))

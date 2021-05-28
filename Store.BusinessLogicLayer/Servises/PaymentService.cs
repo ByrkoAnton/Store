@@ -47,22 +47,21 @@ namespace Store.BusinessLogicLayer.Servises
 
             await _orderRepository.CreateAsync(order);
 
-            List<long> EditionsId = model.EditionsIdAndQuant.Select(id => id.EditionId).ToList();
+            List<long> EditionsId = model.Editions.Select(id => id.EditionId).ToList();
 
             var editions = await _printingEditionRepository.GetEditionsListByIdListAsync(EditionsId);
 
             List<DataAccessLayer.Entities.OrderItem> orderItems = new List<DataAccessLayer.Entities.OrderItem>();
 
-            foreach (var i in model.EditionsIdAndQuant)
-            {
-                var edition = editions.FirstOrDefault(e => e.Id == i.EditionId);
+            foreach (var i in editions)
+            {  
                 DataAccessLayer.Entities.OrderItem orderItem = new DataAccessLayer.Entities.OrderItem
                 {
-                    Amount = edition.Price * i.Count,
-                    Currency = edition.Currency,
-                    PrintingEditionId = edition.Id,
+                    EditionPrice = i.Price,
+                    Currency = i.Currency,
+                    PrintingEditionId = i.Id,
                     OrderId = order.Id,
-                    Count = (int)i.Count
+                    Count =(int) model.Editions.FirstOrDefault(c => c.EditionId == i.Id).Count
                 };
                 orderItems.Add(orderItem);
             }
@@ -74,9 +73,9 @@ namespace Store.BusinessLogicLayer.Servises
                 Card = new TokenCardOptions
                 {
                     Number = model.CardNumber,
-                    ExpMonth = model.Month,
-                    ExpYear = model.Year,
-                    Cvc = model.Cvc
+                    ExpMonth = model.CardExpMonth,
+                    ExpYear = model.CardExpYear,
+                    Cvc = model.CardCvc
                 }
             };
 
@@ -85,7 +84,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             var options = new ChargeCreateOptions
             {
-                Amount = (int)order.OrderItems.Sum(s => s.Amount) * Constants.ChargeConstants.GET_CENTS,
+                Amount = (int)order.OrderItems.Sum(s => s.EditionPrice * s.Count) * Constants.ChargeConstants.GET_CENTS,
                 Currency = Constants.ChargeConstants.USD,
                 Description = $"{Constants.ChargeConstants.FROM_USER}{order.UserId}",
                 Source = stripeToken.Id
@@ -112,52 +111,6 @@ namespace Store.BusinessLogicLayer.Servises
             };
             return resultPayModel;
         }
-        public async Task<PaymentModel> GetByTransactionId(PaymentModel model)
-        {
-            var payment = await _paymentRepository.GetByTransactionIdAsync(model.TransactionId);
-            if (payment is null)
-            {
-                throw new CustomExeption(Constants.Error.NO_ANY_PAYMENTS_IN_DB_WITH_THIS_TRANSACTION_ID,
-                   StatusCodes.Status400BadRequest);
-            }
-            var paymentModel = _mapper.Map<PaymentModel>(payment);
-
-            return paymentModel;
-        }
-        public async Task<List<PaymentModel>> GetAll()
-        {
-            var payments = await _paymentRepository.GetAllAsync();
-            if (!payments.Any())
-            {
-                throw new CustomExeption(Constants.Error.NO_ANY_PAYMENTS_IN_DB,
-                   StatusCodes.Status400BadRequest);
-            }
-            var paymentModel = _mapper.Map<IEnumerable<PaymentModel>>(payments);
-
-            return paymentModel.ToList();
-        }
-        public async Task UpdateAsync(PaymentModel model)
-        {
-            var payment = await _paymentRepository.GetByIdAsync(model.Id);
-            if (payment is null)
-            {
-                throw new CustomExeption(Constants.Error.NO_ANY_PAYMENTS_IN_DB_WITH_THIS_ID,
-                    StatusCodes.Status400BadRequest);
-            }
-
-            payment = _mapper.Map<Payment>(model);
-
-            await _paymentRepository.UpdateAsync(payment);
-        }
-        public async Task RemoveAsync(PaymentModel model)
-        {
-            var payment = await _paymentRepository.GetByTransactionIdAsync(model.TransactionId);
-            if (payment is null)
-            {
-                throw new CustomExeption(Constants.Error.NO_ANY_PAYMENTS_IN_DB_WITH_THIS_TRANSACTION_ID,
-                    StatusCodes.Status400BadRequest);
-            }
-            await _paymentRepository.RemoveAsync(payment);
-        }
+        
     }
 }

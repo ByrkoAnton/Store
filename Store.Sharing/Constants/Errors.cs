@@ -19,7 +19,8 @@ namespace Store.Sharing.Constants
             public const string NO_ANY_ORDERS_IN_DB_WITH_THIS_CONDITIONS = "no any orders in db with this conditions";
             public const string NO_ANY_EDITION_IN_DB = "No any edition in db";
             public const string NO_AUTHOR_ID_IN_DB_ADD_AUTHOR_FIRST = "Add author in DB at fitst. Then add edition";
-            public const string EDITION_MUST_HAVE_AUTHOR = "printing edition must to have any author";
+            public const string NO_AUTHOR = "printing edition must to have any author";
+            public const string NO_TITLE = "printing edition must to have title";
             public const string EDITION_BY_ID_NOT_FOUND = "edition with this id not found";
             public const string EDITION_EXISTS_DB = "printing edition with this name already exists in db";
             public const string NO_EDITION_ID_IN_DB = "no any printing edition in db with this id";
@@ -30,6 +31,7 @@ namespace Store.Sharing.Constants
             public const string AUTHOR_CREATE_FAILD_AUTHOR_ALREDY_EXISTS_IN_DB = "author creation faild - author alredy exists in db";
             public const string PASSWORD_RESET_FAILD_CONTACT_ADMIN = "password reset faild contact admin";
             public const string PASSWORD_RESET_FAILD_NO_USER_WITH_THIS_EMAIL = "password reset faild no user with this email";
+            public const string WRONG_MODEL = "wrong model";
             public const string LOGIN_FAILD_MODELI_IS_NULL = "login faild - model is NULL";
             public const string LOGIN_FAILD_MODEL_IS_NOT_CORECT = "login faild - model is not corect";
             public const string PASSWORD_FAILD_MODEL_IS_NOT_CORECT = "password faild - model is not corect";

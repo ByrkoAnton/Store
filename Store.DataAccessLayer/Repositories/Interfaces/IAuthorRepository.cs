@@ -1,9 +1,7 @@
 ﻿using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Base;
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Repositories.Interfaces
@@ -14,5 +12,6 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
         public Task<Author> GetByIdAsync(long id);
         public Task<IEnumerable<Author>> GetByNameAsync(string name);
         public Task<List<Author>> GetAuthorsListByIdListAsync(List<long> id);
+        public bool IsAuthorsInDb(List<long> id);
     }
 }

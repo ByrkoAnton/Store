@@ -192,7 +192,7 @@ namespace Store.DataAccessLayer.Migrations
                         new
                         {
                             Id = 1L,
-                            DateOfCreation = new DateTime(2021, 5, 26, 16, 58, 4, 240, DateTimeKind.Local).AddTicks(8074),
+                            DateOfCreation = new DateTime(2021, 5, 28, 10, 56, 51, 542, DateTimeKind.Local).AddTicks(1363),
                             Name = "FirstAuthor"
                         });
                 });
@@ -233,9 +233,6 @@ namespace Store.DataAccessLayer.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
@@ -244,6 +241,9 @@ namespace Store.DataAccessLayer.Migrations
 
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("EditionPrice")
+                        .HasColumnType("float");
 
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
@@ -316,11 +316,12 @@ namespace Store.DataAccessLayer.Migrations
                         {
                             Id = 1L,
                             Currency = 1,
-                            DateOfCreation = new DateTime(2021, 5, 26, 16, 58, 4, 247, DateTimeKind.Local).AddTicks(4586),
+                            DateOfCreation = new DateTime(2021, 5, 28, 10, 56, 51, 545, DateTimeKind.Local).AddTicks(5881),
                             Description = "FirstEdition",
                             IsRemoved = false,
                             Price = 5.0,
                             Status = "Avalible",
+                            Title = "FirstEdition",
                             Type = 1
                         });
                 });

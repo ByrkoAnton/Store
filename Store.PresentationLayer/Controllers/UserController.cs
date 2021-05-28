@@ -37,13 +37,6 @@ namespace Store.PresentationLayer.Controllers
             return Ok();
         }
 
-        [HttpPost("GetUserRole")]
-        public async Task<IActionResult> GetUserRole([FromBody] UserUpdateModel updateModel)
-        {
-            var result = await _userService.GetUserRoleAsync(updateModel);
-            return Ok(result);
-        }
-
         [HttpPost("AddUserToRole")]
         public async Task<IActionResult> AddUserToRole([FromBody] UserUpdateModel updateModel)
         {

@@ -7,7 +7,6 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
 {
     public interface IOrderService
     {
-        public Task CreateAsync(OrderModel model);
         public Task<List<OrderModel>> GetAll();
         public Task<OrderModel> GetById(long id);
         public Task UpdateAsync(OrderModel model);

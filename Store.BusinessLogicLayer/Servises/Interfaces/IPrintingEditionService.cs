@@ -9,7 +9,7 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
     {
         public Task<PrintingEditionModel> GetByIdAsync(long id);
         public Task<NavigationModel<PrintingEditionModel>> GetAsync(EditionFiltrationModel model);
-        public Task<PrintingEditionModel> GetByDescriptionAsync(PrintingEditionModel model);
+        public Task<PrintingEditionModel> GetByTitleAsync(PrintingEditionModel model);
         public Task CreateAsync(PrintingEditionModel model);
         public Task RemoveAsync(PrintingEditionModel model);
         public Task UpdateAsync(PrintingEditionModel model);

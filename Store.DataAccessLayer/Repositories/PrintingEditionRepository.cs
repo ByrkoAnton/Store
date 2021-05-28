@@ -37,7 +37,7 @@ namespace Store.DataAccessLayer.Repositories
             var result = await _dbSet.Where(x => id.Contains(x.Id)).ToListAsync();
             return result;
         }
-        public async Task<IEnumerable<PrintingEdition>> GetByDescriptionAsync(string description)
+        public async Task<IEnumerable<PrintingEdition>> GetByTitle(string description)
         {
             var result = await _dbSet.Where(edition => edition.Description == description)
                 .Include(pe => pe.Authors).AsNoTracking().ToListAsync();
@@ -46,29 +46,30 @@ namespace Store.DataAccessLayer.Repositories
         public async Task<(IEnumerable<PrintingEdition>, int)> GetAsync(EditionFiltrationModelDAL model)
         {
             var editions = await _dbSet.Include(pe => pe.Authors).AsNoTracking()
-            .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
+            .Where(n => model.Id == null || n.Id == model.Id)
             .Where(n => EF.Functions.Like(n.Description, $"%{model.Description}%"))
             .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
             .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
             .Where(n => n.Currency == model.Currency || model.Currency == null)
             .Where(n => n.Type == model.Type || model.Type == null)
-            .Where(n => n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
+            .Where(n => string.IsNullOrEmpty(model.AuthorName)
+            || n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
             .Where(n => n.Price <= model.MaxPrice || model.MaxPrice == null)
             .Where(n => n.Price >= model.MinPrice || model.MinPrice == null)
-            .OrderBy($"{model.PropertyForSort} " +
-            $"{(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
-            .Skip((model.CurrentPage - Constants.PaginationParams.STARTS_ONE) * model.PageSize).Take(model.PageSize).ToListAsync();
+            .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC_DIRECTION : Constants.SortingParams.SORT_DESC_DIRECTION)}")
+            .Skip((model.CurrentPage - Constants.PaginationParams.FIX_PAGINATION) * model.PageSize).Take(model.PageSize).ToListAsync();
 
             int count = await _dbSet
-            .Where(n => EF.Functions.Like(n.Id.ToString(), $"%{model.Id}%"))
+            .Where(n => model.Id == null || n.Id == model.Id)
             .Where(n => EF.Functions.Like(n.Description, $"%{model.Description}%"))
             .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
             .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
             .Where(n => n.Currency == model.Currency || model.Currency == null)
             .Where(n => n.Type == model.Type || model.Type == null)
-            .Where(n => n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
-            .Where(n => n.Price <= model.MaxPrice || model.MaxPrice == null)
-            .Where(n => n.Price >= model.MinPrice || model.MinPrice == null).CountAsync();
+            .Where(n => string.IsNullOrEmpty(model.AuthorName)
+            || n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
+            .Where(n => model.MaxPrice == null || n.Price <= model.MaxPrice)
+            .Where(n => model.MinPrice == null || n.Price >= model.MinPrice).CountAsync();
 
             var editionsWithCount = (editions: editions, count: count);
 

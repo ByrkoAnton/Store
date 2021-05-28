@@ -13,6 +13,6 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
         public Task<(IEnumerable<PrintingEdition>, int)> GetAsync(EditionFiltrationModelDAL model);
         public Task<PrintingEdition> GetByIdAsync(long id);
         public Task<List<PrintingEdition>> GetEditionsListByIdListAsync(List<long> id);
-        public Task<IEnumerable<PrintingEdition>> GetByDescriptionAsync(string description);
+        public Task<IEnumerable<PrintingEdition>> GetByTitle(string description);
     }
 }

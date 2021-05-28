@@ -11,6 +11,7 @@ namespace Store.Sharing.Constants
         public class Variables
         {
             public const string DEFAULT = "d";
+            public const int WRONG_ID = 1;
         }
     }
 }

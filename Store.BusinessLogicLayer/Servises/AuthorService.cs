@@ -23,6 +23,18 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task CreateAsync(AuthorModel model)
         {
+            if (model is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+            
+            if (model.Name is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
             var authors = await _authorRepository.GetByNameAsync(model.Name);
             if (authors.Any())
             {
@@ -35,6 +47,12 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<AuthorModel> GetByIdAsync(long id)
         {
+            if (id == Constants.Variables.WRONG_ID)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
             var author = await _authorRepository.GetByIdAsync(id);
             if (author is null)
             {
@@ -66,6 +84,18 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<AuthorModel> GetByNameAsync(AuthorModel model)
         {
+            if (model is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            if (model.Name is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
             var author = await _authorRepository.GetByNameAsync(model.Name);
             if (!author.Any())
             {
@@ -78,6 +108,18 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task RemoveAsync(AuthorModel model)
         {
+            if (model is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            if (model.Name is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
             var authors = await _authorRepository.GetByNameAsync(model.Name);
             if (!authors.Any())
             {
@@ -88,6 +130,17 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task UpdateAsync(AuthorModel model)
         {
+            if (model is null)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            if (model.Id == Constants.Variables.WRONG_ID)
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                    StatusCodes.Status400BadRequest);
+            }
             var author = await _authorRepository.GetByIdAsync(model.Id);
             if (author is null)
             {

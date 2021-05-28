@@ -47,7 +47,7 @@ namespace Store.PresentationLayer.Controllers
         [HttpGet("GetByDescription")]
         public async Task<IActionResult> GetByDescription(PrintingEditionModel model)
         {
-            var result = await _editionService.GetByDescriptionAsync(model);
+            var result = await _editionService.GetByTitleAsync(model);
             return Ok(result);
         }
 
