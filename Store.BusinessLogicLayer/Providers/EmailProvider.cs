@@ -16,10 +16,15 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task SendEmailAsync(string email, string subject, string message)
         {
+            var nameFrom = _config[Constants.EmailProviderConst.NAME_FROM];
+            var adressFrom = _config[Constants.EmailProviderConst.ADDRESS_FROM];
+            var nameTo = _config[Constants.EmailProviderConst.NAME_TO];
+            var smtp = _config[Constants.EmailProviderConst.SMTP];
+            var password = _config[Constants.EmailProviderConst.PASSWORD];
+
             var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress(_config[Constants.EmailProviderConst.NAME_FROM], 
-                _config[Constants.EmailProviderConst.ADDRESS_FROM]));
-            emailMessage.To.Add(new MailboxAddress(_config[Constants.EmailProviderConst.NAME_TO], email));
+            emailMessage.From.Add(new MailboxAddress(nameFrom, adressFrom));
+            emailMessage.To.Add(new MailboxAddress(nameTo, email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
@@ -28,9 +33,9 @@ namespace Store.BusinessLogicLayer.Servises
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync(_config[Constants.EmailProviderConst.SMTP]);
-                await client.AuthenticateAsync(_config[Constants.EmailProviderConst.ADDRESS_FROM], 
-                    _config[Constants.EmailProviderConst.PASSWORD]);
+                await client.ConnectAsync(smtp);
+                await client.AuthenticateAsync(adressFrom, 
+                    password);
                 await client.SendAsync(emailMessage);
                 await client.DisconnectAsync(true);
             }

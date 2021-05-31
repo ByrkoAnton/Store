@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Store.DataAccessLayer.Entities;
-using Store.PresentationLayer;
+using Store.DataAccessLayer.Initialization;
 
 namespace Store.DataAccessLayer.AppContext
 {

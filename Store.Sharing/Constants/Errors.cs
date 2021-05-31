@@ -5,6 +5,7 @@ namespace Store.Sharing.Constants
     {
         public class Error
         {
+            public const string ERROR = "/Error";
             public const string NO_ORDERS_IN_DB = "no any orders in DB";
             public const string NO_ORDERS_THIS_ID = "no any orders in DB with this ID";
             public const string NO_ANY_PROP_NAME = "no any property with this name";

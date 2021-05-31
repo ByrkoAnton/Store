@@ -7,7 +7,7 @@ using Store.Sharing.Constants;
 using Microsoft.EntityFrameworkCore;
 using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
-namespace Store.PresentationLayer
+namespace Store.DataAccessLayer.Initialization
 {
     public static class Initialazer
     {

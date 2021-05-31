@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
+using Store.DataAccessLayer.Initialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.BusinessLogicLayer.Servises;
@@ -22,6 +23,7 @@ using Store.DataAccessLayer.Repositories;
 using Store.Sharing.Constants;
 using Stripe;
 using System.Text;
+using Microsoft.OpenApi.Models;
 
 namespace Store.PresentationLayer
 {
@@ -34,9 +36,15 @@ namespace Store.PresentationLayer
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(Constants.SwaggerConstants.VERSION, new OpenApiInfo { Title = Constants.SwaggerConstants.VERSION,
+                    Version = Constants.SwaggerConstants.VERSION });
+            });
+            services.AddSwaggerGen();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -72,8 +80,8 @@ namespace Store.PresentationLayer
             services.AddTransient<IOrderService, BusinessLogicLayer.Servises.OrderService>();        
 
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly("Store.DataAccessLayer"))
+                options.UseSqlServer(Configuration.GetConnectionString(Constants.Variables.CONNECTIONSTRING_NAME),
+                b => b.MigrationsAssembly(Constants.Variables.MIGRATON_ASSMBLY_NAME))
                 .UseLazyLoadingProxies());
 
 
@@ -113,10 +121,15 @@ namespace Store.PresentationLayer
             services.InitialazerAsync().Wait();
 
         }
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["SecretKey"];
+            StripeConfiguration.ApiKey = Configuration.GetValue<string>(Constants.StripeConstants.SECRET_KEY);
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint(Constants.SwaggerConstants.ROUTE, Constants.SwaggerConstants.NAME);
+            });
 
             if (env.IsDevelopment())
             {
@@ -124,8 +137,7 @@ namespace Store.PresentationLayer
             }
             else
             {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseExceptionHandler(Constants.Error.ERROR);
                 app.UseHsts();
             }
 
@@ -141,8 +153,8 @@ namespace Store.PresentationLayer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    name: Constants.MapControllerRouteConstants.NAME,
+                    pattern: Constants.MapControllerRouteConstants.PATERN);
             });
         }
     }

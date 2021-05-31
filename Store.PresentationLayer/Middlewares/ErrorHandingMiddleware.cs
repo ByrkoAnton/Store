@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Store.BusinessLogicLayer;
+using Store.Sharing.Constants;
 
 namespace Store.PresentationLayer.Middlewares
 {
@@ -34,9 +35,9 @@ namespace Store.PresentationLayer.Middlewares
 
             catch (Exception exeption)
             {
-                _loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
-                var logger = _loggerFactory.CreateLogger("FileLogger");
-                string log = $"{DateTime.Now}\n{exeption.Message}\n{exeption.StackTrace}\n{new string ('*',100)}";
+                _loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), Constants.LogerConstants.FILE_NAME));
+                var logger = _loggerFactory.CreateLogger(Constants.LogerConstants.CATEGORY_NAME);
+                string log = $"{DateTime.Now}\n{exeption.Message}\n{exeption.StackTrace}\n{new string (Constants.LogerConstants.LOG_LAYOUT_DELIMITER, Constants.LogerConstants.DELIMITER_COUNT)}";
                 logger.LogError(log);
             }
         }
