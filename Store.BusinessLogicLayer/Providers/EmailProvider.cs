@@ -16,11 +16,11 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task SendEmailAsync(string email, string subject, string message)
         {
-            var nameFrom = _config[Constants.EmailProviderConst.NAME_FROM];
-            var adressFrom = _config[Constants.EmailProviderConst.ADDRESS_FROM];
-            var nameTo = _config[Constants.EmailProviderConst.NAME_TO];
-            var smtp = _config[Constants.EmailProviderConst.SMTP];
-            var password = _config[Constants.EmailProviderConst.PASSWORD];
+            var nameFrom = _config[Constants.EmailProvider.NAME_FROM];
+            var adressFrom = _config[Constants.EmailProvider.ADDRESS_FROM];
+            var nameTo = _config[Constants.EmailProvider.NAME_TO];
+            var smtp = _config[Constants.EmailProvider.SMTP];
+            var password = _config[Constants.EmailProvider.PASSWORD];
 
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress(nameFrom, adressFrom));

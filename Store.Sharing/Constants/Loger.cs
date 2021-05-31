@@ -2,7 +2,7 @@
 {
     public partial class Constants
     {
-        public class LogerConstants
+        public class Loger
         {
             public const string FILE_NAME = "logger.txt";
             public const string CATEGORY_NAME = "logger.txt";

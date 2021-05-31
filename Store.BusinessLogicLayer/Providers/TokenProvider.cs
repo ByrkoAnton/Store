@@ -22,7 +22,7 @@ namespace Store.BusinessLogicLayer.Providers
 
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte[Constants.RefreshTokenConstants.BYTES];
+            var randomNumber = new byte[Constants.RefreshToken.BYTES];
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);
@@ -31,20 +31,20 @@ namespace Store.BusinessLogicLayer.Providers
         }
         public string GenerateJwt(string name, List<string> roles, string id)
         {
-            var key = _config.GetValue<string>(Constants.JwtProviderConst.KEY);
-            var issuer = _config.GetValue<string>(Constants.JwtProviderConst.ISSUER);
-            var audience = _config.GetValue<string>(Constants.JwtProviderConst.AUDIENCE);
-            var lefetime = _config.GetValue<string>(Constants.JwtProviderConst.LIFETIME);
-            string role = $"{(roles.Any(s => s.Contains(Constants.UserConstants.ROLE_ADMIN)) ? Constants.UserConstants.ROLE_ADMIN : Constants.UserConstants.ROLE_USER)}";
+            var key = _config.GetValue<string>(Constants.JwtProvider.KEY);
+            var issuer = _config.GetValue<string>(Constants.JwtProvider.ISSUER);
+            var audience = _config.GetValue<string>(Constants.JwtProvider.AUDIENCE);
+            var lefetime = _config.GetValue<string>(Constants.JwtProvider.LIFETIME);
+            string role = $"{(roles.Any(s => s.Contains(Constants.User.ROLE_ADMIN)) ? Constants.User.ROLE_ADMIN : Constants.User.ROLE_USER)}";
             
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, name),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, role),
-                new Claim(Constants.JwtProviderConst.ID, id)
+                new Claim(Constants.JwtProvider.ID, id)
             };
 
-            var identity = new ClaimsIdentity(claims, Constants.JwtProviderConst.METHOD_NAME, ClaimsIdentity.DefaultNameClaimType,
+            var identity = new ClaimsIdentity(claims, Constants.JwtProvider.METHOD_NAME, ClaimsIdentity.DefaultNameClaimType,
                     ClaimsIdentity.DefaultRoleClaimType);
 
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));

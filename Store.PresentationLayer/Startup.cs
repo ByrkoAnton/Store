@@ -40,8 +40,8 @@ namespace Store.PresentationLayer
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(Constants.SwaggerConstants.VERSION, new OpenApiInfo { Title = Constants.SwaggerConstants.VERSION,
-                    Version = Constants.SwaggerConstants.VERSION });
+                c.SwaggerDoc(Constants.Swagger.VERSION, new OpenApiInfo { Title = Constants.Swagger.VERSION,
+                    Version = Constants.Swagger.VERSION });
             });
             services.AddSwaggerGen();
 
@@ -52,13 +52,13 @@ namespace Store.PresentationLayer
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuer = true,
-                            ValidIssuer = Configuration.GetValue<string>(Constants.JwtProviderConst.ISSUER),
+                            ValidIssuer = Configuration.GetValue<string>(Constants.JwtProvider.ISSUER),
                             ValidateAudience = true,
-                            ValidAudience = Configuration.GetValue<string>(Constants.JwtProviderConst.AUDIENCE),
+                            ValidAudience = Configuration.GetValue<string>(Constants.JwtProvider.AUDIENCE),
                             ValidateLifetime = true,
                             ValidateIssuerSigningKey = true,
                             IssuerSigningKey = new SymmetricSecurityKey
-                            (Encoding.ASCII.GetBytes(Configuration.GetValue<string>(Constants.JwtProviderConst.KEY)))
+                            (Encoding.ASCII.GetBytes(Configuration.GetValue<string>(Constants.JwtProvider.KEY)))
                         };
                     });
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
@@ -92,7 +92,7 @@ namespace Store.PresentationLayer
                     opts.Password.RequireLowercase = true;
                     opts.Password.RequireUppercase = true;
                     opts.Password.RequireNonAlphanumeric = true;
-                    opts.Password.RequiredLength = 8;
+                    opts.Password.RequiredLength = Constants.User.PASSWORD_REQUIRED_LENGHT;
                 })
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
@@ -123,12 +123,12 @@ namespace Store.PresentationLayer
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            StripeConfiguration.ApiKey = Configuration.GetValue<string>(Constants.StripeConstants.SECRET_KEY);
+            StripeConfiguration.ApiKey = Configuration.GetValue<string>(Constants.Stripe.SECRET_KEY);
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint(Constants.SwaggerConstants.ROUTE, Constants.SwaggerConstants.NAME);
+                c.SwaggerEndpoint(Constants.Swagger.ROUTE, Constants.Swagger.NAME);
             });
 
             if (env.IsDevelopment())
@@ -153,8 +153,8 @@ namespace Store.PresentationLayer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: Constants.MapControllerRouteConstants.NAME,
-                    pattern: Constants.MapControllerRouteConstants.PATERN);
+                    name: Constants.MapControllerRoute.NAME,
+                    pattern: Constants.MapControllerRoute.PATERN);
             });
         }
     }

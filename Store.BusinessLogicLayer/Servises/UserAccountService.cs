@@ -53,7 +53,7 @@ namespace Store.BusinessLogicLayer.Servises
                    StatusCodes.Status400BadRequest);
             }
 
-            var addToRoleResult = await _userManager.AddToRoleAsync(user, Constants.UserConstants.ROLE_USER);
+            var addToRoleResult = await _userManager.AddToRoleAsync(user, Constants.User.ROLE_USER);
 
             if (!addToRoleResult.Succeeded)
             {
@@ -65,15 +65,15 @@ namespace Store.BusinessLogicLayer.Servises
 
             var callbackUrl = new UriBuilder(Constants.URLs.URL_CONFIRMEMAIL);
             var parameters = HttpUtility.ParseQueryString(string.Empty);
-            parameters.Add(Constants.UserConstants.EMAIL, user.Email);
-            parameters.Add(Constants.UserConstants.CODE, code);
+            parameters.Add(Constants.User.EMAIL, user.Email);
+            parameters.Add(Constants.User.CODE, code);
             callbackUrl.Query = parameters.ToString();
             Uri finalUrl = callbackUrl.Uri;
 
-            await _emailService.SendEmailAsync(user.Email, Constants.UserConstants.CONFIRM_EMAIL,
-            string.Format(Constants.UserConstants.CONFIRM_LINK, finalUrl));
+            await _emailService.SendEmailAsync(user.Email, Constants.User.CONFIRM_EMAIL,
+            string.Format(Constants.User.CONFIRM_LINK, finalUrl));
 
-            return Constants.UserConstants.REGISTR_SUCCESS;
+            return Constants.User.REGISTR_SUCCESS;
         }
         public async Task<TokenResponseModel> SignInAsync(UserSignInModel signInModel)
         {
@@ -126,14 +126,14 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new Exception(Constants.Error.EMAIL_DID_NOT_CONFIRMED);
             }
 
-            return Constants.UserConstants.EMAIL_CONFIRMED;
+            return Constants.User.EMAIL_CONFIRMED;
         }
 
         public async Task<TokenResponseModel> UpdateTokens(string jwtToken, string refreshToken)
         {
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken.Remove(jwtToken.IndexOf(Constants.JwtProviderConst.BEARER),
-                Constants.JwtProviderConst.BEARER.Length).Trim());
-            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProviderConst.ID).FirstOrDefault().Value);
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken.Remove(jwtToken.IndexOf(Constants.JwtProvider.BEARER),
+                Constants.JwtProvider.BEARER.Length).Trim());
+            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
@@ -144,7 +144,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (refreshToken != user.RefreshToken)
             {
-                throw new CustomExeption(Constants.RefreshTokenConstants.TOKENS_NOT_EQUALS,
+                throw new CustomExeption(Constants.RefreshToken.TOKENS_NOT_EQUALS,
                     StatusCodes.Status400BadRequest);
             }
             TokenResponseModel tokenResponseModel = new TokenResponseModel();

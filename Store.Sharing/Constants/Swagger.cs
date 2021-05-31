@@ -2,7 +2,7 @@
 {
     public partial class Constants
     {
-        public class SwaggerConstants
+        public class Swagger
         {
             public const string ROUTE = "/swagger/v1/swagger.json";
             public const string NAME = "StoreAPI";

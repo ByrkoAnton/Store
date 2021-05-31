@@ -34,9 +34,9 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<ResultPayModel> PayAsync(StripePayModel model, string jwt)
         {
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProviderConst.BEARER),
-                Constants.JwtProviderConst.BEARER.Length).Trim());
-            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProviderConst.ID).FirstOrDefault().Value);
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProvider.BEARER),
+                Constants.JwtProvider.BEARER.Length).Trim());
+            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 
             DataAccessLayer.Entities.Order order = new DataAccessLayer.Entities.Order
             {
@@ -83,9 +83,9 @@ namespace Store.BusinessLogicLayer.Servises
 
             var options = new ChargeCreateOptions
             {
-                Amount = (int)order.OrderItems.Sum(s => s.EditionPrice * s.Count) * Constants.ChargeConstants.GET_CENTS,
-                Currency = Constants.ChargeConstants.USD,
-                Description = $"{Constants.ChargeConstants.FROM_USER}{order.UserId}",
+                Amount = (int)order.OrderItems.Sum(s => s.EditionPrice * s.Count) * Constants.Charge.GET_CENTS,
+                Currency = Constants.Charge.USD,
+                Description = $"{Constants.Charge.FROM_USER}{order.UserId}",
                 Source = stripeToken.Id
             };
 
@@ -105,7 +105,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             var resultPayModel = new ResultPayModel()
             {
-                Message = Constants.ChargeConstants.SUCCESS_MSG,
+                Message = Constants.Charge.SUCCESS_MSG,
                 OrderID = order.Id.ToString()
             };
             return resultPayModel;

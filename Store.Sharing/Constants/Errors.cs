@@ -1,5 +1,4 @@
-﻿
-namespace Store.Sharing.Constants
+﻿namespace Store.Sharing.Constants
 {
     public partial class Constants
     {

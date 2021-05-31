@@ -185,8 +185,8 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var newPassword = PasswordGenerator.GeneratePassword(Constants.UserConstants.PASSWORD_LENGHT,
-                Constants.UserConstants.PASSWORD_DIGETS, Constants.UserConstants.PASSWORD_SPECIAL_CHARS);
+            var newPassword = PasswordGenerator.GeneratePassword(Constants.User.PASSWORD_LENGHT,
+                Constants.User.PASSWORD_DIGETS, Constants.User.PASSWORD_SPECIAL_CHARS);
             var result = await _userManager.ResetPasswordAsync(user, code, newPassword);
 
             if (!result.Succeeded)
@@ -194,10 +194,10 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new Exception(Constants.Error.PASSWORD_RESET_FAILD);
             }
 
-            await _emailService.SendEmailAsync(user.Email, Constants.UserConstants.RESET_PASSWORD_SUBJ,
-            String.Format(Constants.UserConstants.RESET_PASSWORD_MSG, newPassword));
+            await _emailService.SendEmailAsync(user.Email, Constants.User.RESET_PASSWORD_SUBJ,
+            String.Format(Constants.User.RESET_PASSWORD_MSG, newPassword));
 
-            return Constants.UserConstants.CHECK_MSG;
+            return Constants.User.CHECK_MSG;
         }
         public async Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrationModel model)
         {

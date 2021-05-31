@@ -16,10 +16,10 @@ namespace Store.DataAccessLayer.Initialization
             var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
             var rolesManager = services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole<long>>>();
 
-            string email = Constants.UserConstants.EMAIL_INIT;
-            string password = Constants.UserConstants.PASSWORD;
-            string firstName = Constants.UserConstants.FIRST_NAME;
-            string lastName = Constants.UserConstants.LAST_NAME;
+            string email = Constants.User.EMAIL_INIT;
+            string password = Constants.User.PASSWORD;
+            string firstName = Constants.User.FIRST_NAME;
+            string lastName = Constants.User.LAST_NAME;
 
             var roleAdmin = await rolesManager.FindByNameAsync(UserRole.Admin.ToString().ToLower());
             if (roleAdmin is null)
@@ -39,7 +39,7 @@ namespace Store.DataAccessLayer.Initialization
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(admin, Constants.UserConstants.ROLE_ADMIN);
+                    await userManager.AddToRoleAsync(admin, Constants.User.ROLE_ADMIN);
                 }
             }
         }

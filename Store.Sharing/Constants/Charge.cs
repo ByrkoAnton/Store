@@ -2,7 +2,7 @@
 {
     public partial class Constants
     {
-        public class ChargeConstants
+        public class Charge
         {
             public const string USD = "usd";
             public const string SUCCESS_MSG = "Payment success";

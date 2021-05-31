@@ -1,9 +1,8 @@
-﻿
-namespace Store.Sharing.Constants
+﻿namespace Store.Sharing.Constants
 {
     public partial class Constants
     {
-        public class JwtProviderConst
+        public class JwtProvider
         {
             public const string BEARER = "Bearer";
             public const string ID = "Id";

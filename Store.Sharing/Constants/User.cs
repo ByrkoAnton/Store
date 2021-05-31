@@ -1,9 +1,8 @@
-﻿
-namespace Store.Sharing.Constants
+﻿namespace Store.Sharing.Constants
 {
     public partial class Constants
     {
-       public class UserConstants
+       public class User
         {
             public const string EMAIL_INIT = "nexeve3047@tripaco.com";
             public const string PASSWORD = "1_Aa123456";
@@ -23,7 +22,7 @@ namespace Store.Sharing.Constants
             public const int PASSWORD_DIGETS = 2;
             public const int PASSWORD_SPECIAL_CHARS = 2;
             public const string CHECK_MSG = "check your email";
-
+            public const int PASSWORD_REQUIRED_LENGHT = 8;
         }
     }
 }

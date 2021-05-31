@@ -1,9 +1,8 @@
-﻿
-namespace Store.Sharing.Constants
+﻿namespace Store.Sharing.Constants
 {
     public partial class Constants
     {
-        public class EmailProviderConst
+        public class EmailProvider
         {
             public const string NAME_FROM = "EmailProvider:NameFrom";
             public const string ADDRESS_FROM = "EmailProvider:AdressFrom";
