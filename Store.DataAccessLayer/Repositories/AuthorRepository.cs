@@ -43,7 +43,7 @@ namespace Store.DataAccessLayer.Repositories
             .Where(n => string.IsNullOrEmpty(model.EditionDescription)
             || n.PrintingEditions.Any(t => EF.Functions.Like(t.Description, $"%{model.EditionDescription}%")))
             .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC)}")
-            .Skip((model.CurrentPage - Constants.PaginationParams.FIX_PAGINATION) * model.PageSize)
+            .Skip((model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize)
             .Take(model.PageSize).ToListAsync();
 
             int count = await _dbSet

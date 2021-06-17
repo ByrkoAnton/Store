@@ -2,6 +2,7 @@
 using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Servises.Interfaces;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Store.PresentationLayer.Controllers
@@ -55,7 +56,7 @@ namespace Store.PresentationLayer.Controllers
         public async Task<IActionResult> ForgotPassword(ForgotPasswordModel forgotPasswordModel)
         {
             var result = await _userService.ForgotPasswordAsync(forgotPasswordModel);
-            return Ok(result);
+            return Json(result);
         }
 
         [HttpGet("GetUsers")]
@@ -63,6 +64,14 @@ namespace Store.PresentationLayer.Controllers
         {  
             var result = await _userService.GetUsersAsync(model);
             return Ok(result);
+        }
+
+        [HttpGet("GetUserById")]
+        public async Task<IActionResult> GetUserById()
+        {
+            var accessToken = HttpContext.Request.Headers["Authorization"];
+            var result = await _userService.GetUserById(accessToken);
+            return Json(result);
         }
     }
 }

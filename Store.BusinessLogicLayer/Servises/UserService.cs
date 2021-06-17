@@ -15,6 +15,7 @@ using Store.Sharing.Constants;
 using clearwaterstream.Security;
 using Store.DataAccessLayer.Extentions;
 using Store.DataAccessLayer.Repositories.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -159,7 +160,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!string.IsNullOrWhiteSpace(updateModel.LastName))
             {
-                user.LastName = updateModel.FirstName;
+                user.LastName = updateModel.LastName;
             }
 
             var updateResult = await _userManager.UpdateAsync(user);
@@ -199,6 +200,22 @@ namespace Store.BusinessLogicLayer.Servises
 
             return Constants.User.CHECK_MSG;
         }
+
+        public async Task<UserModel> GetUserById(string jwt)
+        {
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProvider.BEARER),
+               Constants.JwtProvider.BEARER.Length).Trim());
+            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
+
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user is null)
+            {
+                throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB, StatusCodes.Status400BadRequest);
+            }
+
+            return _mapper.Map<UserModel>(user);
+
+        }
         public async Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrationModel model)
         {
             var propertyForSort = typeof(User).GetProperty(model.PropertyForSort);
@@ -214,7 +231,7 @@ namespace Store.BusinessLogicLayer.Servises
                 .Where(n => EF.Functions.Like(n.FirstName, $"%{model.FirstName}%"))
                 .Where(n => model.IsBlocked == null || n.IsBlocked == model.IsBlocked)
                 .OrderBy(propertyForSort, model.IsAscending)
-                .Skip((model.CurrentPage - Constants.PaginationParams.FIX_PAGINATION) * model.PageSize)
+                .Skip((model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize)
                 .Take(model.PageSize).ToListAsync();
 
             if (!users.Any())

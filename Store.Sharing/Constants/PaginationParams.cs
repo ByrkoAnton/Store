@@ -6,7 +6,7 @@
         {
             public const int CURRENT_PAGE = 1;
             public const int PAGE_SIZE = 5;
-            public const int FIX_PAGINATION = 1;
+            public const int DEFAULT_OFFSET = 1;
         }
     }
 }

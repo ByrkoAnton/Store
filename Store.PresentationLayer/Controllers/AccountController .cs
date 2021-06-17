@@ -19,10 +19,10 @@ namespace Store.PresentationLayer.Controllers
         }
 
         [HttpPost("signUp")]
-        public async Task<IActionResult> SignUp([FromBody] UserModel signUpModel)
+        public async Task<IActionResult> SignUp(UserModel signUpModel)
         {
             var result = await _accountService.SignUpAsync(signUpModel);
-            return Ok(result);
+            return Json(result);
             
         }
 
@@ -33,6 +33,13 @@ namespace Store.PresentationLayer.Controllers
 
             return Ok(result);
 
+        }
+
+        [HttpGet("signOut")]
+        public async Task<IActionResult> SignOut()
+        {
+            await _accountService.SignOutAsync();
+            return Ok();
         }
 
         [HttpGet("confirmEmail")]

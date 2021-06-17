@@ -38,10 +38,14 @@ namespace Store.PresentationLayer
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(Constants.Swagger.VERSION, new OpenApiInfo { Title = Constants.Swagger.VERSION,
-                    Version = Constants.Swagger.VERSION });
+                c.SwaggerDoc(Constants.Swagger.VERSION, new OpenApiInfo
+                {
+                    Title = Constants.Swagger.VERSION,
+                    Version = Constants.Swagger.VERSION
+                });
             });
             services.AddSwaggerGen();
 
@@ -77,13 +81,12 @@ namespace Store.PresentationLayer
             services.AddTransient<IAuthorService, AuthorService>();
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();
             services.AddTransient<IPaymentService, PaymentService>();
-            services.AddTransient<IOrderService, BusinessLogicLayer.Servises.OrderService>();        
+            services.AddTransient<IOrderService, BusinessLogicLayer.Servises.OrderService>();
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(Constants.Variables.CONNECTIONSTRING_NAME),
                 b => b.MigrationsAssembly(Constants.Variables.MIGRATON_ASSMBLY_NAME))
                 .UseLazyLoadingProxies());
-
 
             services.AddIdentity<User, IdentityRole<long>>(
                 opts =>
@@ -99,7 +102,6 @@ namespace Store.PresentationLayer
 
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -123,6 +125,10 @@ namespace Store.PresentationLayer
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(builder => builder.AllowAnyOrigin()//WithOrigins("https://localhost:42000")
+                             .AllowAnyHeader()
+                             .AllowAnyMethod());
+
             StripeConfiguration.ApiKey = Configuration.GetValue<string>(Constants.Stripe.SECRET_KEY);
 
             app.UseSwagger();

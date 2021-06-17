@@ -96,7 +96,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             Payment payment = new Payment
             {
-                TransactionId = charge.PaymentMethod,
+                TransactionId = charge.Id,
             };
             await _paymentRepository.CreateAsync(payment);
             order.PaymentId = payment.Id;

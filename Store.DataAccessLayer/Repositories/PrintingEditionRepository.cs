@@ -57,7 +57,7 @@ namespace Store.DataAccessLayer.Repositories
             .Where(n => n.Price <= model.MaxPrice || model.MaxPrice == null)
             .Where(n => n.Price >= model.MinPrice || model.MinPrice == null)
             .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC)}")
-            .Skip((model.CurrentPage - Constants.PaginationParams.FIX_PAGINATION) * model.PageSize).Take(model.PageSize).ToListAsync();
+            .Skip((model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize).Take(model.PageSize).ToListAsync();
 
             int count = await _dbSet
             .Where(n => model.Id == null || n.Id == model.Id)
