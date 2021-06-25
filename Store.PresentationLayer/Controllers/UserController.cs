@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Servises.Interfaces;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Store.PresentationLayer.Controllers
@@ -18,9 +18,11 @@ namespace Store.PresentationLayer.Controllers
         }
 
         [HttpPost("UserUpdate")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UserUpdate([FromBody] UserUpdateModel updateModel)
         {
-            await _userService.UserUpdateAsync(updateModel);
+            var accessToken = HttpContext.Request.Headers["Authorization"];
+            await _userService.UserUpdateAsync(updateModel, accessToken);
             return Ok();
         }
 
@@ -67,10 +69,11 @@ namespace Store.PresentationLayer.Controllers
         }
 
         [HttpGet("GetUserById")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetUserById()
         {
             var accessToken = HttpContext.Request.Headers["Authorization"];
-            var result = await _userService.GetUserById(accessToken);
+            var result = await _userService.GetUserByIdAsync(accessToken);
             return Json(result);
         }
     }

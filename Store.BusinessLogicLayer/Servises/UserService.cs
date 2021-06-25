@@ -16,6 +16,7 @@ using clearwaterstream.Security;
 using Store.DataAccessLayer.Extentions;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
+using System.Web;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -127,30 +128,48 @@ namespace Store.BusinessLogicLayer.Servises
                     $" {StatusCodes.Status500InternalServerError}");
             }
         }
-        public async Task UserUpdateAsync(UserUpdateModel updateModel)
+        public async Task<string> UserUpdateAsync(UserUpdateModel updateModel, string jwt)
         {
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProvider.BEARER),
+              Constants.JwtProvider.BEARER.Length).Trim());
+
+            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
             if (updateModel is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     StatusCodes.Status400BadRequest);
             }
 
-            if (updateModel.Id == Constants.Variables.WRONG_ID)
+            if (id == Constants.Variables.WRONG_ID)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     StatusCodes.Status400BadRequest);
             }
 
-            var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
+            var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.USER_NOT_FOUND,
                     StatusCodes.Status400BadRequest);
             }
 
+            bool isEmailChanging = user.Email != updateModel.Email;
+
+            if (isEmailChanging && await _userManager.FindByEmailAsync(updateModel.Email) is not null)
+            {
+                throw new CustomExeption(Constants.Error.EMAIL_EXIST_DB,
+                   StatusCodes.Status400BadRequest);
+            }
+
+            if (isEmailChanging)
+            {
+                user.EmailConfirmed = false;
+            }
+
             if (!string.IsNullOrWhiteSpace(updateModel.Email))
             {
                 user.Email = updateModel.Email;
+                user.UserName = updateModel.Email;
             }
 
             if (!string.IsNullOrWhiteSpace(updateModel.FirstName))
@@ -169,6 +188,25 @@ namespace Store.BusinessLogicLayer.Servises
             {
                 throw new Exception($"{Constants.Error.CONTACT_ADMIN} {StatusCodes.Status500InternalServerError}");
             }
+
+            if (isEmailChanging)
+            {
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                var callbackUrl = new UriBuilder(Constants.URLs.URL_CONFIRMEMAIL);
+                var parameters = HttpUtility.ParseQueryString(string.Empty);
+                parameters.Add(Constants.User.EMAIL, user.Email);
+                parameters.Add(Constants.User.CODE, code);
+                callbackUrl.Query = parameters.ToString();
+                Uri finalUrl = callbackUrl.Uri;
+
+                await _emailService.SendEmailAsync(user.Email, Constants.User.CONFIRM_EMAIL,
+                string.Format(Constants.User.CONFIRM_LINK, finalUrl));
+
+                return Constants.User.UPDATE_SUCCES_EMAIL;
+            }
+
+            return Constants.User.UPDATE_SUCCES;
         }
         public async Task<string> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel)
         {
@@ -201,7 +239,34 @@ namespace Store.BusinessLogicLayer.Servises
             return Constants.User.CHECK_MSG;
         }
 
-        public async Task<UserModel> GetUserById(string jwt)
+        public async Task ChangePasswordAsync(ChangePasswordModel model, string jwt)
+        {
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProvider.BEARER),
+             Constants.JwtProvider.BEARER.Length).Trim());
+
+            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
+
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user is null)
+            {
+                throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB,
+                    StatusCodes.Status400BadRequest);
+            }
+
+            if (!await _userManager.CheckPasswordAsync(user, model.CurrentPassword))
+            {
+                throw new Exception(Constants.Error.WRONG_PASSWORD);
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+           
+            if (!result.Succeeded)
+            {
+                throw new Exception(Constants.Error.PASSWORD_RESET_FAILD);
+            }   
+        }
+
+        public async Task<UserModel> GetUserByIdAsync(string jwt)
         {
             var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProvider.BEARER),
                Constants.JwtProvider.BEARER.Length).Trim());

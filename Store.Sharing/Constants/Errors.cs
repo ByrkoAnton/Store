@@ -21,6 +21,7 @@
             public const string AUTHOR_REMOVE_FAILD = "author remove faild - no in db";
             public const string AUTHOR_CREATE_FAILD = "author creation faild - author alredy exists in db";
             public const string PASSWORD_RESET_FAILD = "password reset faild contact admin";
+            public const string WRONG_PASSWORD = "Wrong current password";
             public const string PASSWORD_RESET_FAILD_NO_USER = "password reset faild no user with this email";
             public const string WRONG_MODEL = "wrong model";
             public const string LOGIN_FAILD_MODEL = "login faild - model is NULL";
@@ -38,6 +39,7 @@
             public const string REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE = "regisration faild this email is already in use";
             public const string USER_ROLE_DID_NOT_ADDED = "user role did not added";
             public const string EMAILCONFIRM_CODE_NULL = "emailConfirmationModel - code is null";
+            public const string EMAIL_EXIST_DB = "This email in use";
             public const string EMAILCONFIRM_NO_USER = "emailConfirmation - user not found";
             public const string EMAIL_DID_NOT_CONFIRMED = "emailConfirmation - email did not confirmed";
             public const string USER_NOT_FOUND = "update user faild user not found";
