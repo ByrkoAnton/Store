@@ -77,38 +77,36 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task RemoveAsync(PrintingEditionModel model)
         {
-            var edition = await _printingEditionRepository.GetByTitle(model.Title);
-            if (!edition.Any())
+            var edition = await _printingEditionRepository.GetByIdAsync(model.Id);
+            if (edition is null)
             {
                 throw new CustomExeption(Constants.Error.EDITION_NOT_FOUND,
                     StatusCodes.Status400BadRequest);
             }
-            await _printingEditionRepository.RemoveAsync(edition.First());
+            await _printingEditionRepository.RemoveAsync(edition);
         }
-        public async Task<NavigationModel<PrintingEditionModel>> GetAsync(EditionFiltrationModel model)
+        public async Task<EditionNavigationModel> GetAsync(EditionFiltrationModel model)
         {
-            if (model.MinPrise > model.MaxPrise)
+            if (model.MinPrice > model.MaxPrice)
             {
-                model.MaxPrise = null;
-                model.MinPrise = null;
+                model.MaxPrice = null;
+                model.MinPrice = null;
             }
             var editionFiltrPagingSortModelDAL = _mapper.Map<EditionFiltrationModelDAL>(model);
 
-            (IEnumerable<PrintingEdition> editions, int count) editionsCount = await _printingEditionRepository.GetAsync(editionFiltrPagingSortModelDAL);
+            (IEnumerable<PrintingEdition> editions, int count, double minPrice, double maxPrice) editionsCount = await 
+                _printingEditionRepository.GetAsync(editionFiltrPagingSortModelDAL);
 
-            if (!editionsCount.editions.Any()) 
-            {
-                throw new CustomExeption(Constants.Error.WRONG_CONDITIONS_EDITION,
-                   StatusCodes.Status400BadRequest);
-            }
-
-            var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>> (editionsCount.editions);
+            
+            var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>>(editionsCount.editions);
 
             PaginatedPageModel paginatedPage = new PaginatedPageModel(editionsCount.count, model.CurrentPage, model.PageSize);
-            NavigationModel<PrintingEditionModel> result = new NavigationModel<PrintingEditionModel>
+            EditionNavigationModel result = new EditionNavigationModel
             {
                 PageModel = paginatedPage,
-                Models = editionModels
+                Models = editionModels,
+                SliderFloor = editionsCount.minPrice,
+                SliderCeil = editionsCount.maxPrice,
             };
             return result;
         }

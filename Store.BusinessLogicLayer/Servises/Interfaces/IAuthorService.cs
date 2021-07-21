@@ -8,7 +8,7 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
     {
         public Task CreateAsync(AuthorModel model);
         public Task<AuthorModel> GetByIdAsync(long id);
-        public Task<NavigationModel<AuthorModel>> GetAsync(AuthorFiltrationModel model);
+        public Task<NavigationModelBase<AuthorModel>> GetAsync(AuthorFiltrationModel model);
         public Task<AuthorModel> GetByNameAsync(AuthorModel model);
         public Task RemoveAsync(AuthorModel model);
         public Task UpdateAsync(AuthorModel model);

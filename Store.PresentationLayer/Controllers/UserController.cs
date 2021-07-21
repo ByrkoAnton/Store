@@ -61,6 +61,17 @@ namespace Store.PresentationLayer.Controllers
             return Json(result);
         }
 
+        [HttpPost("ChangePassword")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> ChangePassword (ChangePasswordModel changePasswordModel)
+        {
+            var accessToken = HttpContext.Request.Headers["Authorization"];
+            await _userService.ChangePasswordAsync(changePasswordModel, accessToken);
+            return Ok();
+        }
+
+        
+
         [HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsers(UserFiltrationModel model)
         {  

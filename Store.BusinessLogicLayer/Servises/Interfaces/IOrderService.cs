@@ -11,6 +11,6 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
         public Task<OrderModel> GetById(long id);
         public Task UpdateAsync(OrderModel model);
         public Task RemoveAsync(OrderModel model);
-        public Task<NavigationModel<OrderModel>> GetAsync(OrderFiltrationModel model);
+        public Task<NavigationModelBase<OrderModel>> GetAsync(OrderFiltrationModel model);
     }
 }

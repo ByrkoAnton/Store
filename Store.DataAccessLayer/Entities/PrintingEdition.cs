@@ -11,7 +11,7 @@ namespace Store.DataAccessLayer.Entities
         public bool IsRemoved { get; set; }
         public string Status { get; set; }
         public Currency Currency { get; set; }
-        public PrintingEditionType Type { get; set; }
+        public PrintingEditionType EditionType { get; set; }
         public virtual List<Author> Authors { get; set; }
         public PrintingEdition()
         {

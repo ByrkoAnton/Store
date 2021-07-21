@@ -43,37 +43,69 @@ namespace Store.DataAccessLayer.Repositories
                 .Include(pe => pe.Authors).AsNoTracking().ToListAsync();
             return result;
         }
-        public async Task<(IEnumerable<PrintingEdition>, int)> GetAsync(EditionFiltrationModelDAL model)
+        public async Task<(IEnumerable<PrintingEdition>, int, double, double)> GetAsync(EditionFiltrationModelDAL model)
         {
             var editions = await _dbSet.Include(pe => pe.Authors).AsNoTracking()
             .Where(n => model.Id == null || n.Id == model.Id)
-            .Where(n => EF.Functions.Like(n.Description, $"%{model.Description}%"))
+            .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%"))
             .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
             .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
             .Where(n => n.Currency == model.Currency || model.Currency == null)
-            .Where(n => n.Type == model.Type || model.Type == null)
+            .Where(n => model.EditionType.Contains(n.EditionType))
             .Where(n => string.IsNullOrEmpty(model.AuthorName)
             || n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
             .Where(n => n.Price <= model.MaxPrice || model.MaxPrice == null)
             .Where(n => n.Price >= model.MinPrice || model.MinPrice == null)
             .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC)}")
-            .Skip((model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize).Take(model.PageSize).ToListAsync();
+            .Skip((model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize).Take(model.PageSize)
+            .ToListAsync();
 
-            int count = await _dbSet
-            .Where(n => model.Id == null || n.Id == model.Id)
-            .Where(n => EF.Functions.Like(n.Description, $"%{model.Description}%"))
-            .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
-            .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
-            .Where(n => n.Currency == model.Currency || model.Currency == null)
-            .Where(n => n.Type == model.Type || model.Type == null)
-            .Where(n => string.IsNullOrEmpty(model.AuthorName)
-            || n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
-            .Where(n => model.MaxPrice == null || n.Price <= model.MaxPrice)
-            .Where(n => model.MinPrice == null || n.Price >= model.MinPrice).CountAsync();
+            int count = default;
+            double maxPrice = default;
+            double minPrice = default;
+            var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);
 
-            var editionsWithCount = (editions: editions, count: count);
+            if (!editions.Any())
+            {
+                return result;
+            }
 
-            return editionsWithCount;
+            count = await _dbSet
+           .Where(n => model.Id == null || n.Id == model.Id)
+           .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%"))
+           .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
+           .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
+           .Where(n => n.Currency == model.Currency || model.Currency == null)
+           .Where(n => model.EditionType.Contains(n.EditionType))
+           .Where(n => string.IsNullOrEmpty(model.AuthorName)
+           || n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%")))
+           .Where(n => model.MaxPrice == null || n.Price <= model.MaxPrice)
+           .Where(n => model.MinPrice == null || n.Price >= model.MinPrice)
+           .CountAsync();
+
+            maxPrice = await _dbSet
+           .Where(n => model.Id == null || n.Id == model.Id)
+           .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%"))
+           .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
+           .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
+           .Where(n => n.Currency == model.Currency || model.Currency == null)
+           .Where(n => model.EditionType.Contains(n.EditionType))
+           .Where(n => string.IsNullOrEmpty(model.AuthorName)
+           || n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%"))).MaxAsync(n => n.Price);
+
+            minPrice = await _dbSet
+           .Where(n => model.Id == null || n.Id == model.Id)
+           .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%"))
+           .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
+           .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
+           .Where(n => n.Currency == model.Currency || model.Currency == null)
+           .Where(n => model.EditionType.Contains(n.EditionType))
+           .Where(n => string.IsNullOrEmpty(model.AuthorName)
+           || n.Authors.Any(t => EF.Functions.Like(t.Name, $"%{model.AuthorName}%"))).MinAsync(n => n.Price);
+
+            result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);
+
+            return result;
         }
         public override async Task UpdateAsync(PrintingEdition edition)
         {

@@ -23,16 +23,18 @@ namespace Store.BusinessLogicLayer.Servises
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly IEmailProvider _emailService;
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
 
-        public UserService(UserManager<User> userManager, IEmailProvider emailService, IMapper mapper, IUserRepository userRepository)
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, IEmailProvider emailService, IMapper mapper, IUserRepository userRepository)
         {
             _userManager = userManager;
             _emailService = emailService;
             _mapper = mapper;
             _userRepository = userRepository;
+            _signInManager = signInManager;
         }
 
         public async Task AddUserToRoleAsync(UserUpdateModel updateModel)
@@ -64,10 +66,9 @@ namespace Store.BusinessLogicLayer.Servises
                     StatusCodes.Status400BadRequest);
             }
         }
-         
         public async Task UserBlockStatusChangingAsync(UserUpdateModel updateModel)
         {
-            if(updateModel is null)
+            if (updateModel is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     StatusCodes.Status400BadRequest);
@@ -253,17 +254,24 @@ namespace Store.BusinessLogicLayer.Servises
                     StatusCodes.Status400BadRequest);
             }
 
+            if (await _userManager.CheckPasswordAsync(user, model.NewPassword))
+            {
+                throw new CustomExeption(Constants.Error.PASSWORD_IN_USE, StatusCodes.Status400BadRequest);
+            }
+
             if (!await _userManager.CheckPasswordAsync(user, model.CurrentPassword))
             {
-                throw new Exception(Constants.Error.WRONG_PASSWORD);
+                throw new CustomExeption(Constants.Error.WRONG_PASSWORD, StatusCodes.Status400BadRequest);
             }
 
             var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-           
+
             if (!result.Succeeded)
             {
                 throw new Exception(Constants.Error.PASSWORD_RESET_FAILD);
-            }   
+            }
+
+            await _signInManager.SignOutAsync();
         }
 
         public async Task<UserModel> GetUserByIdAsync(string jwt)
@@ -281,7 +289,7 @@ namespace Store.BusinessLogicLayer.Servises
             return _mapper.Map<UserModel>(user);
 
         }
-        public async Task<NavigationModel<UserModel>> GetUsersAsync(UserFiltrationModel model)
+        public async Task<NavigationModelBase<UserModel>> GetUsersAsync(UserFiltrationModel model)
         {
             var propertyForSort = typeof(User).GetProperty(model.PropertyForSort);
 
@@ -314,7 +322,7 @@ namespace Store.BusinessLogicLayer.Servises
             var userModels = _mapper.Map<IEnumerable<UserModel>>(users).ToList();
 
             PaginatedPageModel paginatedPage = new PaginatedPageModel(usersCount, model.CurrentPage, model.PageSize);
-            NavigationModel<UserModel> navigation = new NavigationModel<UserModel>
+            NavigationModelBase<UserModel> navigation = new NavigationModelBase<UserModel>
             {
                 PageModel = paginatedPage,
                 Models = userModels

@@ -22,6 +22,7 @@
             public const string AUTHOR_CREATE_FAILD = "author creation faild - author alredy exists in db";
             public const string PASSWORD_RESET_FAILD = "password reset faild contact admin";
             public const string WRONG_PASSWORD = "Wrong current password";
+            public const string PASSWORD_IN_USE = "New password is in use. Choose other password";
             public const string PASSWORD_RESET_FAILD_NO_USER = "password reset faild no user with this email";
             public const string WRONG_MODEL = "wrong model";
             public const string LOGIN_FAILD_MODEL = "login faild - model is NULL";
@@ -31,6 +32,8 @@
             public const string ROLE_EXISTS = "role did not added - role already exists";
             public const string REGISRATION_FAILD_NO_IMAIL = "regisration faild no imail in model";
             public const string REGISRATION_FAILD_NO_PASSWORD = "regisration faild no password in model"; 
+            public const string NO_PASSWORD = "No password"; 
+            public const string NO_PASSWORD_CONFIRM = "No password confirmation"; 
             public const string REGISRATION_FAILD_NO_FIRST_NAME = "regisration faild no first name in model";
             public const string REGISRATION_FAILD_NO_LAST_NAME = "regisration faild no last name in model";
             public const string REGISRATION_USER_NOT_CREATED = "regisration faild user did not created";

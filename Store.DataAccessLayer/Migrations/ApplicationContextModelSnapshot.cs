@@ -192,7 +192,7 @@ namespace Store.DataAccessLayer.Migrations
                         new
                         {
                             Id = 1L,
-                            DateOfCreation = new DateTime(2021, 5, 28, 10, 56, 51, 542, DateTimeKind.Local).AddTicks(1363),
+                            DateOfCreation = new DateTime(2021, 7, 8, 10, 15, 3, 74, DateTimeKind.Local).AddTicks(3848),
                             Name = "FirstAuthor"
                         });
                 });
@@ -292,6 +292,9 @@ namespace Store.DataAccessLayer.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EditionType")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
 
@@ -304,9 +307,6 @@ namespace Store.DataAccessLayer.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("PrintingEditions");
@@ -316,13 +316,13 @@ namespace Store.DataAccessLayer.Migrations
                         {
                             Id = 1L,
                             Currency = 1,
-                            DateOfCreation = new DateTime(2021, 5, 28, 10, 56, 51, 545, DateTimeKind.Local).AddTicks(5881),
+                            DateOfCreation = new DateTime(2021, 7, 8, 10, 15, 3, 77, DateTimeKind.Local).AddTicks(5084),
                             Description = "FirstEdition",
+                            EditionType = 1,
                             IsRemoved = false,
                             Price = 5.0,
                             Status = "Avalible",
-                            Title = "FirstEdition",
-                            Type = 1
+                            Title = "FirstEdition"
                         });
                 });
 

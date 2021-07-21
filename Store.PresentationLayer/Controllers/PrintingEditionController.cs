@@ -37,7 +37,7 @@ namespace Store.PresentationLayer.Controllers
             return Ok();
         }
 
-        [HttpGet("GetEditions")]
+        [HttpPost("GetEditions")]
         public async Task<IActionResult> GetEditions(EditionFiltrationModel model)
         {
             var result = await _editionService.GetAsync(model);

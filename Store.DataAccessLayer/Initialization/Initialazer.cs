@@ -65,7 +65,7 @@ namespace Store.DataAccessLayer.Initialization
                 Currency = Currency.USD,
                 Price = 5,
                 Status = "Avalible",
-                Type = PrintingEditionType.Book,
+                EditionType = PrintingEditionType.Book,
             });
 
             modelBuilder.Entity<Author>()

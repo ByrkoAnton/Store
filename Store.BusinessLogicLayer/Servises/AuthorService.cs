@@ -62,7 +62,7 @@ namespace Store.BusinessLogicLayer.Servises
             var authorModel = _mapper.Map<AuthorModel>(author);
             return authorModel;
         }
-        public async Task<NavigationModel<AuthorModel>> GetAsync(AuthorFiltrationModel model)
+        public async Task<NavigationModelBase<AuthorModel>> GetAsync(AuthorFiltrationModel model)
         {
             var authorFiltrPagingSortModelDAL = _mapper.Map<AuthorFiltrationModelDAL>(model);
 
@@ -75,7 +75,7 @@ namespace Store.BusinessLogicLayer.Servises
             var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCount.authors);
 
             PaginatedPageModel paginatedPage = new PaginatedPageModel(authorsWithCount.count, model.CurrentPage, model.PageSize);
-            NavigationModel<AuthorModel> result = new NavigationModel<AuthorModel>
+            NavigationModelBase<AuthorModel> result = new NavigationModelBase<AuthorModel>
             {
                 PageModel = paginatedPage,
                 Models = authorModels

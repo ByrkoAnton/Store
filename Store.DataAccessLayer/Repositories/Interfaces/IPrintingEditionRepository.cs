@@ -10,7 +10,7 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
 {
     public interface IPrintingEditionRepository : IBaseRepository<PrintingEdition>
     {
-        public Task<(IEnumerable<PrintingEdition>, int)> GetAsync(EditionFiltrationModelDAL model);
+        public Task<(IEnumerable<PrintingEdition>, int, double, double)> GetAsync(EditionFiltrationModelDAL model);
         public Task<PrintingEdition> GetByIdAsync(long id);
         public Task<List<PrintingEdition>> GetEditionsListByIdListAsync(List<long> id);
         public Task<IEnumerable<PrintingEdition>> GetByTitle(string description);
