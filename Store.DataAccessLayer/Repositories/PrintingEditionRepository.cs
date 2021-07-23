@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Store.Sharing.Constants;
+using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
 namespace Store.DataAccessLayer.Repositories
 {
@@ -37,12 +38,28 @@ namespace Store.DataAccessLayer.Repositories
             var result = await _dbSet.Where(x => id.Contains(x.Id)).ToListAsync();
             return result;
         }
-        public async Task<IEnumerable<PrintingEdition>> GetByTitle(string description)
+        public async Task<IEnumerable<PrintingEdition>> GetByTitle(string title)
         {
-            var result = await _dbSet.Where(edition => edition.Description == description)
+            var result = await _dbSet.Where(edition => edition.Title == title)
                 .Include(pe => pe.Authors).AsNoTracking().ToListAsync();
             return result;
         }
+
+        //public async Task<bool> FindByTitle(string title)
+        //{
+        //    return await _dbSet.AnyAsync(n => EF.Functions.Like(n.Title, $"%{title}%"));
+        //}
+
+        //public async Task<bool> FindByCurrency(Currency? currency)
+        //{
+        //    return await _dbSet.AnyAsync(edition => edition.Currency == currency);
+        //}
+
+        //public async Task<bool> FindByEditionType(List<PrintingEditionType> types)
+        //{
+        //    return await _dbSet.AnyAsync(n => types.Contains(n.EditionType));
+        //}
+
         public async Task<(IEnumerable<PrintingEdition>, int, double, double)> GetAsync(EditionFiltrationModelDAL model)
         {
             var editions = await _dbSet.Include(pe => pe.Authors).AsNoTracking()
@@ -82,7 +99,7 @@ namespace Store.DataAccessLayer.Repositories
            .Where(n => model.MaxPrice == null || n.Price <= model.MaxPrice)
            .Where(n => model.MinPrice == null || n.Price >= model.MinPrice)
            .CountAsync();
-
+            
             maxPrice = await _dbSet
            .Where(n => model.Id == null || n.Id == model.Id)
            .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%"))

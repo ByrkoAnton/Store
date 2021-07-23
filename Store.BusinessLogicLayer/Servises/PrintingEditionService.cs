@@ -7,9 +7,11 @@ using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -87,27 +89,40 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<EditionNavigationModel> GetAsync(EditionFiltrationModel model)
         {
-            if (model.MinPrice > model.MaxPrice)
-            {
-                model.MaxPrice = null;
-                model.MinPrice = null;
-            }
+            //EditionNavigationModel result = new EditionNavigationModel();
+
+            //if (!model.EditionType.Any() && !await _printingEditionRepository.FindByEditionType(model.EditionType))
+            //{
+            //    return result;
+            //}
+
+            //if (!String.IsNullOrEmpty(model.Title) && !await _printingEditionRepository.FindByTitle(model.Title))
+            //{
+            //    return result;
+            //}
+
+            //if (!await _printingEditionRepository.FindByCurrency(model.Currency))
+            //{
+            //    return result;
+            //}
+
             var editionFiltrPagingSortModelDAL = _mapper.Map<EditionFiltrationModelDAL>(model);
 
-            (IEnumerable<PrintingEdition> editions, int count, double minPrice, double maxPrice) editionsCount = await 
+            (IEnumerable<PrintingEdition> editions, int count, double minPrice, double maxPrice) editionsCount = await
                 _printingEditionRepository.GetAsync(editionFiltrPagingSortModelDAL);
 
-            
+
             var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>>(editionsCount.editions);
 
             PaginatedPageModel paginatedPage = new PaginatedPageModel(editionsCount.count, model.CurrentPage, model.PageSize);
-            EditionNavigationModel result = new EditionNavigationModel
+            EditionNavigationModel result = new EditionNavigationModel()
             {
                 PageModel = paginatedPage,
                 Models = editionModels,
                 SliderFloor = editionsCount.minPrice,
                 SliderCeil = editionsCount.maxPrice,
             };
+
             return result;
         }
         public async Task<PrintingEditionModel> GetByTitleAsync(PrintingEditionModel model)
