@@ -63,8 +63,8 @@ namespace Store.DataAccessLayer.Repositories
             .ToListAsync();
 
             int count = default;
-            double minPrice = model.currentSliderFlor;
-            double maxPrice = model.currentSliderCeil;
+            double minPrice = model.CurrentSliderFlor;
+            double maxPrice = model.CurrentSliderCeil;
             var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);
 
             if (!editions.Any())

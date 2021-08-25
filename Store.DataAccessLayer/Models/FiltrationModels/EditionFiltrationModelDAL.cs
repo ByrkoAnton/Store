@@ -15,8 +15,8 @@ namespace Store.DataAccessLayer.FiltrationModels
         public bool? IsRemoved { get; set; }
         public string Status { get; set; }
         public CurrencyType? Currency { get; set; }
-        public int currentSliderFlor { get; set; }
-        public int currentSliderCeil { get; set; }
+        public int CurrentSliderFlor { get; set; }
+        public int CurrentSliderCeil { get; set; }
         public List<PrintingEditionType> EditionType { get; set; }
         public string AuthorName { get; set; }
     }
