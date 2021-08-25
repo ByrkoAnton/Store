@@ -15,7 +15,7 @@ namespace Store.BusinessLogicLayer.Servises
         {
             _roleManager = roleManager;
         }
-        public async Task AddNewRoleToRolesTable(UserRoleModel roleModel)
+        public async Task AddNewRole(UserRoleModel roleModel)
         {
             var role = await _roleManager.FindByNameAsync(roleModel.RoleName);
             if (role is not null)

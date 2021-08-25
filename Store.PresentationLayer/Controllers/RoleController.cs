@@ -17,9 +17,9 @@ namespace Store.PresentationLayer.Controllers
         }
 
         [HttpPost("AddNewRoleToTable")]
-        public async Task<IActionResult> AddNewRoleToTable([FromBody] UserRoleModel role)
+        public async Task<IActionResult> AddNewRoleToDb([FromBody] UserRoleModel role)
         {
-            await _roleService.AddNewRoleToRolesTable(role);
+            await _roleService.AddNewRole(role);
             return Ok();
         }
     }

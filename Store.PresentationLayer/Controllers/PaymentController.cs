@@ -20,7 +20,7 @@ namespace Store.PresentationLayer.Controllers
 
 
         [HttpPost("Pay")]
-        [Authorize(AuthenticationSchemes = "Bearer", Roles ="user")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Pay([FromBody] StripePayModel model)
         {
             var accessToken = HttpContext.Request.Headers["Authorization"];

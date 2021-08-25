@@ -5,6 +5,6 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
 {
     public interface IRoleService
     {
-        public Task AddNewRoleToRolesTable(UserRoleModel roleModel);
+        public Task AddNewRole(UserRoleModel roleModel);
     }
 }

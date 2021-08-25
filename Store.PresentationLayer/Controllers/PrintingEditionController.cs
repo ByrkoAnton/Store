@@ -16,7 +16,7 @@ namespace Store.PresentationLayer.Controllers
             _editionService = editionService;
         }
 
-        [HttpGet("GetById")]
+        [HttpPost("GetById")]
         public async Task<IActionResult> GetById([FromBody] PrintingEditionModel model)
         {
             var result = await _editionService.GetByIdAsync(model.Id);

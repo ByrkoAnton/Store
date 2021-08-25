@@ -67,32 +67,18 @@ namespace Store.BusinessLogicLayer.Servises
 
             await _orderItemRepository.CreateAsync(orderItems);
 
-            var optionsToken = new TokenCreateOptions
-            {
-                Card = new TokenCardOptions
-                {
-                    Number = model.CardNumber,
-                    ExpMonth = model.CardExpMonth,
-                    ExpYear = model.CardExpYear,
-                    Cvc = model.CardCvc
-                }
-            };
-
-            var serviceToken = new TokenService();
-            Token stripeToken = await serviceToken.CreateAsync(optionsToken);
-
             var options = new ChargeCreateOptions
             {
                 Amount = (int)order.OrderItems.Sum(s => s.EditionPrice * s.Count) * Constants.Charge.GET_CENTS,
                 Currency = Constants.Charge.USD,
                 Description = $"{Constants.Charge.FROM_USER}{order.UserId}",
-                Source = stripeToken.Id
+                Source = model.Token
             };
 
             var service = new ChargeService();
             Charge charge = await service.CreateAsync(options);
 
-            var stratus = charge.Paid ? OrderStatusState.Payed : OrderStatusState.Unpayed;
+            var status = charge.Paid ? OrderStatusState.Payed : OrderStatusState.Unpayed;
 
             Payment payment = new Payment
             {
@@ -100,7 +86,7 @@ namespace Store.BusinessLogicLayer.Servises
             };
             await _paymentRepository.CreateAsync(payment);
             order.PaymentId = payment.Id;
-            order.Status = stratus;
+            order.Status = status;
             await _orderRepository.UpdateAsync(order);
 
             var resultPayModel = new ResultPayModel()

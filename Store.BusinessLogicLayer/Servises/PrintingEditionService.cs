@@ -89,23 +89,6 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<EditionNavigationModel> GetAsync(EditionFiltrationModel model)
         {
-            //EditionNavigationModel result = new EditionNavigationModel();
-
-            //if (!model.EditionType.Any() && !await _printingEditionRepository.FindByEditionType(model.EditionType))
-            //{
-            //    return result;
-            //}
-
-            //if (!String.IsNullOrEmpty(model.Title) && !await _printingEditionRepository.FindByTitle(model.Title))
-            //{
-            //    return result;
-            //}
-
-            //if (!await _printingEditionRepository.FindByCurrency(model.Currency))
-            //{
-            //    return result;
-            //}
-
             var editionFiltrPagingSortModelDAL = _mapper.Map<EditionFiltrationModelDAL>(model);
 
             (IEnumerable<PrintingEdition> editions, int count, double minPrice, double maxPrice) editionsCount = await

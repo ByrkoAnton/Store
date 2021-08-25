@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Store.DataAccessLayer.AppContext;
@@ -47,9 +46,8 @@ namespace Store.PresentationLayer
                     Version = Constants.Swagger.VERSION
                 });
             });
-            services.AddSwaggerGen();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication()
                     .AddJwtBearer(options =>
                     {
                         options.RequireHttpsMetadata = false;
@@ -64,7 +62,13 @@ namespace Store.PresentationLayer
                             IssuerSigningKey = new SymmetricSecurityKey
                             (Encoding.ASCII.GetBytes(Configuration.GetValue<string>(Constants.JwtProvider.KEY)))
                         };
+
                     });
+                    //.AddCookie(options => {
+                    //    options.LoginPath = "/Account/Unauthorized/";
+                    //    options.AccessDeniedPath = "/Account/Forbidden/";
+                    //});
+
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IAuthorRepository, AuthorRepository>();
             services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
@@ -125,27 +129,27 @@ namespace Store.PresentationLayer
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(builder => builder.AllowAnyOrigin()//WithOrigins("https://localhost:42000")
+            app.UseCors(builder => builder.AllowAnyOrigin()
                              .AllowAnyHeader()
                              .AllowAnyMethod());
 
             StripeConfiguration.ApiKey = Configuration.GetValue<string>(Constants.Stripe.SECRET_KEY);
-
+           
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint(Constants.Swagger.ROUTE, Constants.Swagger.NAME);
             });
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler(Constants.Error.ERROR);
-                app.UseHsts();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler(Constants.Error.ERROR);
+            //    app.UseHsts();!!!!!!!!!!!!!!!!!!!!
+            //}
 
             app.UseMiddleware<ErrorHandingMiddleware>();
             app.UseHttpsRedirection();

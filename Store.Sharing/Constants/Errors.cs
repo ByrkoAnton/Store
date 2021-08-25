@@ -4,6 +4,7 @@
     {
         public class Error
         {
+            public const string SERVER_ERROR = "Internal Server Error";
             public const string ERROR = "/Error";
             public const string NO_ORDERS_IN_DB = "no any orders in DB";
             public const string NO_ORDERS_THIS_ID = "no any orders in DB with this ID";

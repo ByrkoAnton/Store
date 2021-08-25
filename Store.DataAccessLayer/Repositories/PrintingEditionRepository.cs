@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Store.Sharing.Constants;
-using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
 namespace Store.DataAccessLayer.Repositories
 {
@@ -36,6 +35,7 @@ namespace Store.DataAccessLayer.Repositories
         public async Task<List<PrintingEdition>> GetEditionsListByIdListAsync(List<long> id)
         {
             var result = await _dbSet.Where(x => id.Contains(x.Id)).ToListAsync();
+           
             return result;
         }
         public async Task<IEnumerable<PrintingEdition>> GetByTitle(string title)
@@ -44,21 +44,6 @@ namespace Store.DataAccessLayer.Repositories
                 .Include(pe => pe.Authors).AsNoTracking().ToListAsync();
             return result;
         }
-
-        //public async Task<bool> FindByTitle(string title)
-        //{
-        //    return await _dbSet.AnyAsync(n => EF.Functions.Like(n.Title, $"%{title}%"));
-        //}
-
-        //public async Task<bool> FindByCurrency(Currency? currency)
-        //{
-        //    return await _dbSet.AnyAsync(edition => edition.Currency == currency);
-        //}
-
-        //public async Task<bool> FindByEditionType(List<PrintingEditionType> types)
-        //{
-        //    return await _dbSet.AnyAsync(n => types.Contains(n.EditionType));
-        //}
 
         public async Task<(IEnumerable<PrintingEdition>, int, double, double)> GetAsync(EditionFiltrationModelDAL model)
         {
@@ -78,8 +63,8 @@ namespace Store.DataAccessLayer.Repositories
             .ToListAsync();
 
             int count = default;
-            double maxPrice = default;
-            double minPrice = default;
+            double minPrice = model.currentSliderFlor;
+            double maxPrice = model.currentSliderCeil;
             var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);
 
             if (!editions.Any())
