@@ -64,11 +64,7 @@ namespace Store.PresentationLayer
                         };
 
                     });
-                    //.AddCookie(options => {
-                    //    options.LoginPath = "/Account/Unauthorized/";
-                    //    options.AccessDeniedPath = "/Account/Forbidden/";
-                    //});
-
+                   
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IAuthorRepository, AuthorRepository>();
             services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();

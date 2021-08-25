@@ -12,7 +12,7 @@ namespace Store.DataAccessLayer.Enums
                 Magazine = 2,
                 Newspaper = 3
             }
-            public enum Currency
+            public enum CurrencyType
             {
                 None = 0,
                 USD = 1,

@@ -13,7 +13,7 @@ namespace Store.BusinessLogicLayer.Models.EditionModel
         public int? MaxPrice { get; set; }
         public bool? IsRemoved { get; set; }
         public string Status { get; set; }
-        public Currency? Currency { get; set; }
+        public CurrencyType? Currency { get; set; }
         public int currentSliderFlor { get; set; }
         public int currentSliderCeil { get; set; }
 

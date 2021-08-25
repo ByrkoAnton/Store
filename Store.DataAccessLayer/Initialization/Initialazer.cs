@@ -62,7 +62,7 @@ namespace Store.DataAccessLayer.Initialization
                 Id = 1L,
                 Title = "FirstEdition",
                 Description = "FirstEdition",
-                Currency = Currency.USD,
+                Currency = CurrencyType.USD,
                 Price = 5,
                 Status = "Avalible",
                 EditionType = PrintingEditionType.Book,
