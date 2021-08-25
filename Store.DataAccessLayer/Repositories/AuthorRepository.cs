@@ -23,7 +23,6 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
-
         public bool IsAuthorsInDb(List<long> id)
         {
             var res = id.All(x => _dbSet.Select(d => d.Id).Contains(x));

@@ -50,8 +50,6 @@ namespace Store.DataAccessLayer.Repositories
             var editions = await _dbSet.Include(pe => pe.Authors).AsNoTracking()
             .Where(n => model.Id == null || n.Id == model.Id)
             .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%"))
-            .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
-            .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
             .Where(n => n.Currency == model.Currency || model.Currency == null)
             .Where(n => model.EditionType.Contains(n.EditionType))
             .Where(n => string.IsNullOrEmpty(model.AuthorName)
@@ -74,9 +72,7 @@ namespace Store.DataAccessLayer.Repositories
 
             count = await _dbSet
            .Where(n => model.Id == null || n.Id == model.Id)
-           .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%"))
-           .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
-           .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
+           .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%")) 
            .Where(n => n.Currency == model.Currency || model.Currency == null)
            .Where(n => model.EditionType.Contains(n.EditionType))
            .Where(n => string.IsNullOrEmpty(model.AuthorName)
@@ -88,8 +84,6 @@ namespace Store.DataAccessLayer.Repositories
             maxPrice = await _dbSet
            .Where(n => model.Id == null || n.Id == model.Id)
            .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%"))
-           .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
-           .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
            .Where(n => n.Currency == model.Currency || model.Currency == null)
            .Where(n => model.EditionType.Contains(n.EditionType))
            .Where(n => string.IsNullOrEmpty(model.AuthorName)
@@ -98,8 +92,6 @@ namespace Store.DataAccessLayer.Repositories
             minPrice = await _dbSet
            .Where(n => model.Id == null || n.Id == model.Id)
            .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%"))
-           .Where(n => EF.Functions.Like(n.Price.ToString(), $"%{model.Price}%"))
-           .Where(n => EF.Functions.Like(n.Status, $"%{model.Status}%"))
            .Where(n => n.Currency == model.Currency || model.Currency == null)
            .Where(n => model.EditionType.Contains(n.EditionType))
            .Where(n => string.IsNullOrEmpty(model.AuthorName)
