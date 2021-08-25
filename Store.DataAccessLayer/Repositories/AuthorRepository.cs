@@ -23,11 +23,6 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
-        public async Task<List<Author>> GetAuthorsListByIdListAsync(List<long> id)
-        {
-            var result = await _dbSet.Where(x => id.Contains(x.Id)).AsNoTracking().ToListAsync();
-            return result;
-        }
 
         public bool IsAuthorsInDb(List<long> id)
         {
