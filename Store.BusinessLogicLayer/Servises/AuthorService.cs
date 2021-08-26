@@ -8,6 +8,7 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Servises
@@ -26,20 +27,20 @@ namespace Store.BusinessLogicLayer.Servises
             if (model is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
             
             if (model.Name is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                   HttpStatusCode.BadRequest);
             }
 
             var authors = await _authorRepository.GetByNameAsync(model.Name);
             if (authors.Any())
             {
                 throw new CustomExeption(Constants.Error.AUTHOR_CREATE_FAILD,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             var author = _mapper.Map<Author>(model);
@@ -47,17 +48,17 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<AuthorModel> GetByIdAsync(long id)
         {
-            if (id == Constants.Variables.WRONG_ID)
+            if (id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                   HttpStatusCode.BadRequest);
             }
 
             var author = await _authorRepository.GetByIdAsync(id);
             if (author is null)
             {
                 throw new CustomExeption(Constants.Error.NO_AUTHOR_ID,
-                   StatusCodes.Status400BadRequest);
+                   HttpStatusCode.BadRequest);
             }
             var authorModel = _mapper.Map<AuthorModel>(author);
             return authorModel;
@@ -70,7 +71,7 @@ namespace Store.BusinessLogicLayer.Servises
             if (!authorsWithCount.authors.Any())
             {
                 throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_CONDITIONS,
-                   StatusCodes.Status400BadRequest);
+                   HttpStatusCode.BadRequest);
             }
             var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCount.authors);
 
@@ -87,20 +88,20 @@ namespace Store.BusinessLogicLayer.Servises
             if (model is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                   HttpStatusCode.BadRequest);
             }
 
             if (model.Name is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             var author = await _authorRepository.GetByNameAsync(model.Name);
             if (!author.Any())
             {
                 throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_CONDITIONS,
-                   StatusCodes.Status400BadRequest);
+                   HttpStatusCode.BadRequest);
             }
             var authorModel = _mapper.Map<AuthorModel>(author.First());
 
@@ -111,20 +112,20 @@ namespace Store.BusinessLogicLayer.Servises
             if (model is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             if (model.Name is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             var authors = await _authorRepository.GetByNameAsync(model.Name);
             if (!authors.Any())
             {
                 throw new CustomExeption(Constants.Error.AUTHOR_REMOVE_FAILD,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
             await _authorRepository.RemoveAsync(authors.First());
         }
@@ -133,19 +134,19 @@ namespace Store.BusinessLogicLayer.Servises
             if (model is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             if (model.Id == Constants.Variables.WRONG_ID)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
             var author = await _authorRepository.GetByIdAsync(model.Id);
             if (author is null)
             {
                 throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_CONDITIONS,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             author = _mapper.Map<Author>(model);

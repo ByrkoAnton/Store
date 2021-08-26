@@ -10,6 +10,7 @@ using Store.Sharing.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
@@ -34,13 +35,13 @@ namespace Store.BusinessLogicLayer.Servises
             if (id == Constants.Variables.WRONG_ID)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                                    StatusCodes.Status400BadRequest);
+                                     HttpStatusCode.BadRequest);
             }
             var edition = await _printingEditionRepository.GetByIdAsync(id);
             if (edition is null)
             {
                 throw new CustomExeption(Constants.Error.NO_EDITION_IN_DB,
-                   StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
             var editionModel = _mapper.Map<PrintingEditionModel>(edition);
             return editionModel;
@@ -50,14 +51,14 @@ namespace Store.BusinessLogicLayer.Servises
             if (!model.AuthorModels.Any())
             {
                 throw new CustomExeption(Constants.Error.NO_AUTHOR,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
 
             if (model.Title is null)
             {
                 throw new CustomExeption(Constants.Error.NO_TITLE,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
             var editions = await _printingEditionRepository.GetByTitle(model.Title);
@@ -65,13 +66,13 @@ namespace Store.BusinessLogicLayer.Servises
             if (editions.Any())
             {
                 throw new CustomExeption(Constants.Error.EDITION_EXISTS_DB,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
             if (!_authorRepository.IsAuthorsInDb(model.AuthorModels.Select(a => a.Id).ToList()))
             {
                 throw new CustomExeption(Constants.Error.ADD_AUTHOR_FIRST,
-                StatusCodes.Status400BadRequest);
+                 HttpStatusCode.BadRequest);
             }
 
             var printingEdition = _mapper.Map<PrintingEdition>(model);
@@ -83,7 +84,7 @@ namespace Store.BusinessLogicLayer.Servises
             if (edition is null)
             {
                 throw new CustomExeption(Constants.Error.EDITION_NOT_FOUND,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
             await _printingEditionRepository.RemoveAsync(edition);
         }
@@ -113,14 +114,14 @@ namespace Store.BusinessLogicLayer.Servises
             if (model.Title is null)
             {
                 throw new CustomExeption(Constants.Error.NO_TITLE,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             var editions = await _printingEditionRepository.GetByTitle(model.Title);
             if (!editions.Any())
             {
                 throw new CustomExeption(Constants.Error.WRONG_CONDITIONS_EDITION,
-                   StatusCodes.Status400BadRequest);
+                   HttpStatusCode.BadRequest);
             }
             var editionModel = _mapper.Map<PrintingEditionModel>(editions.First());
 
@@ -131,14 +132,14 @@ namespace Store.BusinessLogicLayer.Servises
             if (model is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             var edition = await _printingEditionRepository.GetByIdAsync(model.Id);
             if (edition is null)
             {
                 throw new CustomExeption(Constants.Error.NO_EDITION_IN_DB,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             edition = _mapper.Map<PrintingEdition>(model);

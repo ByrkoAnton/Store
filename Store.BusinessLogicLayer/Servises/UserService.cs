@@ -17,6 +17,7 @@ using Store.DataAccessLayer.Extentions;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Web;
+using System.Net;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -42,20 +43,20 @@ namespace Store.BusinessLogicLayer.Servises
             if (updateModel is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             if (updateModel.Id == Constants.Variables.WRONG_ID)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.ADD_TO_ROLE_FAILD_NO_USER,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             var roleAddingResult = await _userManager.AddToRoleAsync(user, updateModel.Role);
@@ -63,7 +64,7 @@ namespace Store.BusinessLogicLayer.Servises
             if (!roleAddingResult.Succeeded)
             {
                 throw new CustomExeption(Constants.Error.ROLE_IS_NOT_PROVIDED,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
         }
         public async Task UserBlockStatusChangingAsync(UserUpdateModel updateModel)
@@ -71,20 +72,20 @@ namespace Store.BusinessLogicLayer.Servises
             if (updateModel is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             if (updateModel.Id == Constants.Variables.WRONG_ID)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.BLOCKING_FAILD_NO_USER,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
             user.IsBlocked = !user.IsBlocked;
@@ -105,20 +106,20 @@ namespace Store.BusinessLogicLayer.Servises
             if (updateModel is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
             if (updateModel.Id == Constants.Variables.WRONG_ID)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.DELETE_FAILD_NO_USER,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
             var result = await _userManager.DeleteAsync(user);
@@ -138,20 +139,20 @@ namespace Store.BusinessLogicLayer.Servises
             if (updateModel is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
             if (id == Constants.Variables.WRONG_ID)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.USER_NOT_FOUND,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
             bool isEmailChanging = user.Email != updateModel.Email;
@@ -159,7 +160,7 @@ namespace Store.BusinessLogicLayer.Servises
             if (isEmailChanging && await _userManager.FindByEmailAsync(updateModel.Email) is not null)
             {
                 throw new CustomExeption(Constants.Error.EMAIL_EXIST_DB,
-                   StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             if (isEmailChanging)
@@ -215,13 +216,13 @@ namespace Store.BusinessLogicLayer.Servises
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
             if (!await _userManager.IsEmailConfirmedAsync(user))
             {
                 throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -251,17 +252,17 @@ namespace Store.BusinessLogicLayer.Servises
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB,
-                    StatusCodes.Status400BadRequest);
+                     HttpStatusCode.BadRequest);
             }
 
             if (await _userManager.CheckPasswordAsync(user, model.NewPassword))
             {
-                throw new CustomExeption(Constants.Error.PASSWORD_IN_USE, StatusCodes.Status400BadRequest);
+                throw new CustomExeption(Constants.Error.PASSWORD_IN_USE, HttpStatusCode.BadRequest);
             }
 
             if (!await _userManager.CheckPasswordAsync(user, model.CurrentPassword))
             {
-                throw new CustomExeption(Constants.Error.WRONG_PASSWORD, StatusCodes.Status400BadRequest);
+                throw new CustomExeption(Constants.Error.WRONG_PASSWORD, HttpStatusCode.BadRequest);
             }
 
             var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
@@ -283,7 +284,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB, StatusCodes.Status400BadRequest);
+                throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB, HttpStatusCode.BadRequest);
             }
 
             return _mapper.Map<UserModel>(user);
@@ -295,7 +296,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (propertyForSort is null)
             {
-                throw new CustomExeption(Constants.Error.NO_ANY_PROP_NAME, StatusCodes.Status400BadRequest);
+                throw new CustomExeption(Constants.Error.NO_ANY_PROP_NAME, HttpStatusCode.BadRequest);
             }
 
             var users = await _userManager.Users
@@ -310,7 +311,7 @@ namespace Store.BusinessLogicLayer.Servises
             if (!users.Any())
             {
                 throw new CustomExeption(Constants.Error.NO_USER_THIS_CONDITIONS,
-                   StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             int usersCount = await _userManager.Users

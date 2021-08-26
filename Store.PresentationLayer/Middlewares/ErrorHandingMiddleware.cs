@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +30,7 @@ namespace Store.PresentationLayer.Middlewares
             catch (CustomExeption customExeption)
             {
                 string jsonString = JsonSerializer.Serialize(customExeption.ErrorList);
-                context.Response.StatusCode = customExeption.StatusCode;
+                context.Response.StatusCode = (int)customExeption.StatusCode;
                 await context.Response.WriteAsync(jsonString);
             }
 
@@ -39,7 +40,7 @@ namespace Store.PresentationLayer.Middlewares
                 var logger = _loggerFactory.CreateLogger(Constants.Loger.CATEGORY_NAME);
                 string log = $"{DateTime.Now}\n{exeption.Message}\n{exeption.StackTrace}\n{new string (Constants.Loger.LOG_LAYOUT_DELIMITER, Constants.Loger.DELIMITER_COUNT)}";
                 logger.LogError(log);
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsync(Constants.Error.SERVER_ERROR);
 
             }

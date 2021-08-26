@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.Sharing.Constants;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Servises
@@ -21,7 +22,7 @@ namespace Store.BusinessLogicLayer.Servises
             if (role is not null)
             {
                 throw new CustomExeption(Constants.Error.ROLE_EXISTS,
-                   StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             await _roleManager.CreateAsync(new IdentityRole<long>(roleModel.RoleName));

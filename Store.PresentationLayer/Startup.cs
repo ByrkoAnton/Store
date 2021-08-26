@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Initialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.BusinessLogicLayer.Servises;
 using Store.PresentationLayer.Middlewares;
@@ -137,20 +136,14 @@ namespace Store.PresentationLayer
                 c.SwaggerEndpoint(Constants.Swagger.ROUTE, Constants.Swagger.NAME);
             });
 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-            //else
-            //{
-            //    app.UseExceptionHandler(Constants.Error.ERROR);
-            //    app.UseHsts();!!!!!!!!!!!!!!!!!!!!
-            //}
+           
+            app.UseHsts();
+            
 
             app.UseMiddleware<ErrorHandingMiddleware>();
+            
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
+           
             app.UseRouting();
 
             app.UseAuthentication();

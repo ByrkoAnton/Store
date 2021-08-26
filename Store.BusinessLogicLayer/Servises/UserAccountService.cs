@@ -14,6 +14,7 @@ using Store.Sharing.Constants;
 using AutoMapper;
 using System.IdentityModel.Tokens.Jwt;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -40,7 +41,7 @@ namespace Store.BusinessLogicLayer.Servises
             if (EmailCheck != null)
             {
                 throw new CustomExeption(Constants.Error.REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             User user = _mapper.Map<User>(signUpModel);
@@ -50,7 +51,7 @@ namespace Store.BusinessLogicLayer.Servises
             if (!result.Succeeded)
             {
                 throw new CustomExeption(Constants.Error.REGISRATION_USER_NOT_CREATED,
-                   StatusCodes.Status400BadRequest);
+                   HttpStatusCode.BadRequest);
             }
 
             var addToRoleResult = await _userManager.AddToRoleAsync(user, Constants.User.ROLE_USER);
@@ -58,7 +59,7 @@ namespace Store.BusinessLogicLayer.Servises
             if (!addToRoleResult.Succeeded)
             {
                 throw new CustomExeption(Constants.Error.USER_ROLE_DID_NOT_ADDED,
-                   StatusCodes.Status400BadRequest);
+                   HttpStatusCode.BadRequest);
             }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -81,14 +82,14 @@ namespace Store.BusinessLogicLayer.Servises
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.LOGIN_FAILD_EMAIL,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             var signIn = await _signInManager.PasswordSignInAsync(signInModel.Email, signInModel.Password, false, false);
 
             if (!signIn.Succeeded)
             {
-                throw new CustomExeption(Constants.Error.LOGIN_FAILD_WRONG_PASSWORD, StatusCodes.Status400BadRequest);
+                throw new CustomExeption(Constants.Error.LOGIN_FAILD_WRONG_PASSWORD, HttpStatusCode.BadRequest);
             }
 
             var roleList = await _userManager.GetRolesAsync(user);
@@ -139,13 +140,13 @@ namespace Store.BusinessLogicLayer.Servises
             if (user is null)
             {
                 throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
 
             if (refreshToken != user.RefreshToken)
             {
                 throw new CustomExeption(Constants.RefreshToken.TOKENS_NOT_EQUALS,
-                    StatusCodes.Status400BadRequest);
+                    HttpStatusCode.BadRequest);
             }
             TokenResponseModel tokenResponseModel = new TokenResponseModel();
 
