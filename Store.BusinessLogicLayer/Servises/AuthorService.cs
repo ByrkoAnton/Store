@@ -37,15 +37,15 @@ namespace Store.BusinessLogicLayer.Servises
                    HttpStatusCode.BadRequest);
             }
 
-            var authors = await _authorRepository.GetByNameAsync(model.Name);
-            if (authors.Any())
+            var author = await _authorRepository.GetByNameAsync(model.Name);
+            if (author is not null)
             {
                 throw new CustomExeption(Constants.Error.AUTHOR_CREATE_FAILD,
                     HttpStatusCode.BadRequest);
             }
 
-            var author = _mapper.Map<Author>(model);
-            await _authorRepository.CreateAsync(author);
+            var newAuthor = _mapper.Map<Author>(model);
+            await _authorRepository.CreateAsync(newAuthor);
         }
         public async Task<AuthorModel> GetByIdAsync(long id)
         {
@@ -99,12 +99,12 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             var author = await _authorRepository.GetByNameAsync(model.Name);
-            if (!author.Any())
+            if (author is null)
             {
                 throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_CONDITIONS,
                    HttpStatusCode.BadRequest);
             }
-            var authorModel = _mapper.Map<AuthorModel>(author.First());
+            var authorModel = _mapper.Map<AuthorModel>(author);
 
             return authorModel;
         }
@@ -122,13 +122,13 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
 
-            var authors = await _authorRepository.GetByNameAsync(model.Name);
-            if (!authors.Any())
+            var author = await _authorRepository.GetByNameAsync(model.Name);
+            if (author is null)
             {
                 throw new CustomExeption(Constants.Error.AUTHOR_REMOVE_FAILD,
                     HttpStatusCode.BadRequest);
             }
-            await _authorRepository.RemoveAsync(authors.First());
+            await _authorRepository.RemoveAsync(author);
         }
         public async Task UpdateAsync(AuthorModel model)
         {

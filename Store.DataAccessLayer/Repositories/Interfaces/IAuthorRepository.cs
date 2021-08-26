@@ -10,7 +10,7 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
     {
         public Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrationModelDAL model);
         public Task<Author> GetByIdAsync(long id);
-        public Task<IEnumerable<Author>> GetByNameAsync(string name);
+        public Task<Author> GetByNameAsync(string name);
         public bool IsAuthorsInDb(List<long> id);
     }
 }

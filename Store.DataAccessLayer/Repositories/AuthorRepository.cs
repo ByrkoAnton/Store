@@ -51,10 +51,13 @@ namespace Store.DataAccessLayer.Repositories
 
             return AuthorsWithCount;
         }
-        public async Task<IEnumerable<Author>> GetByNameAsync(string name)
+        public async Task<Author> GetByNameAsync(string name)
         {
-            var result = await _dbSet.Where(Authors => Authors.Name == name)
-                .Include(author => author.PrintingEditions).AsNoTracking().ToListAsync();
+            //var result = await _dbSet.Where(Authors => Authors.Name == name)
+            //   .Include(author => author.PrintingEditions).AsNoTracking().ToListAsync();
+
+            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(Authors => Authors.Name == name);   
+
             return result;
         }
         public override async Task UpdateAsync(Author author)
