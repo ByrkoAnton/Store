@@ -65,7 +65,7 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task<OrderModel> GetById(long id)
         {
-            if (id == Constants.Variables.WRONG_ID)
+            if (id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                                     HttpStatusCode.BadRequest);
@@ -90,7 +90,7 @@ namespace Store.BusinessLogicLayer.Servises
                                     HttpStatusCode.BadRequest);
             }
 
-            if (model.Id == Constants.Variables.WRONG_ID)
+            if (model.Id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                                     HttpStatusCode.BadRequest);
@@ -113,7 +113,7 @@ namespace Store.BusinessLogicLayer.Servises
                                     HttpStatusCode.BadRequest);
             }
 
-            if (model.Id == Constants.Variables.WRONG_ID)
+            if (model.Id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                                    HttpStatusCode.BadRequest);

@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -32,7 +31,7 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task<PrintingEditionModel> GetByIdAsync(long id)
         {
-            if (id == Constants.Variables.WRONG_ID)
+            if (id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                                      HttpStatusCode.BadRequest);
@@ -55,7 +54,7 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
 
-            if (model.Title is null)
+            if (String.IsNullOrWhiteSpace(model.Title))
             {
                 throw new CustomExeption(Constants.Error.NO_TITLE,
                      HttpStatusCode.BadRequest);
@@ -111,7 +110,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<PrintingEditionModel> GetByTitleAsync(PrintingEditionModel model)
         {
-            if (model.Title is null)
+            if (String.IsNullOrWhiteSpace(model.Title))
             {
                 throw new CustomExeption(Constants.Error.NO_TITLE,
                     HttpStatusCode.BadRequest);

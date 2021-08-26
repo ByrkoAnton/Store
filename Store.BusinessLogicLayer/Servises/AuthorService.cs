@@ -6,6 +6,7 @@ using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -30,7 +31,7 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
             
-            if (model.Name is null)
+            if (String.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                    HttpStatusCode.BadRequest);
@@ -91,7 +92,7 @@ namespace Store.BusinessLogicLayer.Servises
                    HttpStatusCode.BadRequest);
             }
 
-            if (model.Name is null)
+            if (String.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
@@ -115,7 +116,7 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
 
-            if (model.Name is null)
+            if ( String.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
@@ -137,7 +138,7 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
 
-            if (model.Id == Constants.Variables.WRONG_ID)
+            if (model.Id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);

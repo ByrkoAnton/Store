@@ -38,7 +38,7 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task<string> SignUpAsync(UserModel signUpModel)
         {
             var EmailCheck = await _userManager.FindByEmailAsync(signUpModel.Email);
-            if (EmailCheck != null)
+            if (EmailCheck is not null)
             {
                 throw new CustomExeption(Constants.Error.REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE,
                     HttpStatusCode.BadRequest);

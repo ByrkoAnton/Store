@@ -46,7 +46,7 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
 
-            if (updateModel.Id == Constants.Variables.WRONG_ID)
+            if (updateModel.Id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
@@ -75,7 +75,7 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
 
-            if (updateModel.Id == Constants.Variables.WRONG_ID)
+            if (updateModel.Id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
@@ -94,7 +94,7 @@ namespace Store.BusinessLogicLayer.Servises
             if (!blockRersult.Succeeded)
             {
                 throw new Exception($"{Constants.Error.BLOCKING_FAILD_NO_USER}" +
-                    $" {StatusCodes.Status500InternalServerError}");
+                    $" {HttpStatusCode.InternalServerError}");
             }
         }
         public async Task DeleteAllBlockedUserAsync()
@@ -109,7 +109,7 @@ namespace Store.BusinessLogicLayer.Servises
                      HttpStatusCode.BadRequest);
             }
 
-            if (updateModel.Id == Constants.Variables.WRONG_ID)
+            if (updateModel.Id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
@@ -136,13 +136,14 @@ namespace Store.BusinessLogicLayer.Servises
               Constants.JwtProvider.BEARER.Length).Trim());
 
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
+
             if (updateModel is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                      HttpStatusCode.BadRequest);
             }
 
-            if (id == Constants.Variables.WRONG_ID)
+            if (id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                      HttpStatusCode.BadRequest);
@@ -188,7 +189,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!updateResult.Succeeded)
             {
-                throw new Exception($"{Constants.Error.CONTACT_ADMIN} {StatusCodes.Status500InternalServerError}");
+                throw new Exception($"{Constants.Error.CONTACT_ADMIN} {HttpStatusCode.InternalServerError}");
             }
 
             if (isEmailChanging)
@@ -248,6 +249,12 @@ namespace Store.BusinessLogicLayer.Servises
 
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 
+            if (id is default(long))
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                     HttpStatusCode.BadRequest);
+            }
+
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
             {
@@ -280,6 +287,12 @@ namespace Store.BusinessLogicLayer.Servises
             var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProvider.BEARER),
                Constants.JwtProvider.BEARER.Length).Trim());
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
+
+            if (id is default(long))
+            {
+                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                     HttpStatusCode.BadRequest);
+            }
 
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
