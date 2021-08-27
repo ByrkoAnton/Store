@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogicLayer.Models.Orders;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
@@ -46,7 +45,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             (IEnumerable<Order> orders, int count) ordersCount = await _orderRepository.GetAsync(orderFiltrPagingSortModelDAL);
 
-            if (!ordersCount.orders.Any())
+            if (ordersCount.count is default(int))
             {
                 throw new CustomExeption(Constants.Error.WRONG_CONDITIONS_ORDER,
                    HttpStatusCode.BadRequest);

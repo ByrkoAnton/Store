@@ -60,9 +60,9 @@ namespace Store.BusinessLogicLayer.Servises
                      HttpStatusCode.BadRequest);
             }
 
-            var editions = await _printingEditionRepository.GetByTitle(model.Title);
+            var edition = await _printingEditionRepository.GetByTitle(model.Title);
 
-            if (editions.Any())
+            if (edition is not null)
             {
                 throw new CustomExeption(Constants.Error.EDITION_EXISTS_DB,
                      HttpStatusCode.BadRequest);
@@ -116,13 +116,13 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
 
-            var editions = await _printingEditionRepository.GetByTitle(model.Title);
-            if (!editions.Any())
+            var edition = await _printingEditionRepository.GetByTitle(model.Title);
+            if (edition is null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_CONDITIONS_EDITION,
                    HttpStatusCode.BadRequest);
             }
-            var editionModel = _mapper.Map<PrintingEditionModel>(editions.First());
+            var editionModel = _mapper.Map<PrintingEditionModel>(edition);
 
             return editionModel;
         }

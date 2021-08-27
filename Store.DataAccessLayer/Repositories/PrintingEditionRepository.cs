@@ -36,13 +36,15 @@ namespace Store.DataAccessLayer.Repositories
         public async Task<List<PrintingEdition>> GetEditionsListByIdListAsync(List<long> id)
         {
             var result = await _dbSet.Where(x => id.Contains(x.Id)).ToListAsync();
-           
+
             return result;
         }
-        public async Task<IEnumerable<PrintingEdition>> GetByTitle(string title)
+        public async Task<PrintingEdition> GetByTitle(string title)
         {
-            var result = await _dbSet.Where(edition => edition.Title == title)
-                .Include(pe => pe.Authors).AsNoTracking().ToListAsync();
+          
+
+            var result = await _dbSet.Include(pe => pe.Authors).AsNoTracking().FirstOrDefaultAsync(edition =>
+            edition.Title == title);
             return result;
         }
 
@@ -73,7 +75,7 @@ namespace Store.DataAccessLayer.Repositories
 
             count = await _dbSet
            .Where(n => model.Id == null || n.Id == model.Id)
-           .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%")) 
+           .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%"))
            .Where(n => n.Currency == model.Currency || model.Currency == null)
            .Where(n => model.EditionType.Contains(n.EditionType))
            .Where(n => string.IsNullOrEmpty(model.AuthorName)
@@ -81,7 +83,7 @@ namespace Store.DataAccessLayer.Repositories
            .Where(n => model.MaxPrice == null || n.Price <= model.MaxPrice)
            .Where(n => model.MinPrice == null || n.Price >= model.MinPrice)
            .CountAsync();
-            
+
             maxPrice = await _dbSet
            .Where(n => model.Id == null || n.Id == model.Id)
            .Where(n => EF.Functions.Like(n.Title, $"%{model.Title}%"))
