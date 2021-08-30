@@ -31,7 +31,7 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
             
-            if (String.IsNullOrWhiteSpace(model.Name))
+            if (string.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                    HttpStatusCode.BadRequest);

@@ -11,6 +11,7 @@
             public const string ISSUER = "Jwt:Issuer";
             public const string AUDIENCE = "Jwt:AUDIENCE";
             public const string LIFETIME = "Jwt:LIFETIME";
+            public const string JWT_SECTION = "Jwt";
         }
     }
 }

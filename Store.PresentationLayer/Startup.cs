@@ -22,6 +22,7 @@ using Store.Sharing.Constants;
 using Stripe;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Store.BusinessLogicLayer.Configuration;
 
 namespace Store.PresentationLayer
 {
@@ -120,6 +121,9 @@ namespace Store.PresentationLayer
 
             services.AddMvc();
             services.InitialazerAsync().Wait();
+
+            services.Configure<EmailConfig>(Configuration.GetSection(Constants.EmailProvider.EMAIL_SECTION));
+            services.Configure<TokenConfig>(Configuration.GetSection(Constants.JwtProvider.JWT_SECTION));
 
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
