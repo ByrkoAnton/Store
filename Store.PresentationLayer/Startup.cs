@@ -83,10 +83,18 @@ namespace Store.PresentationLayer
             services.AddTransient<IPaymentService, PaymentService>();
             services.AddTransient<IOrderService, BusinessLogicLayer.Servises.OrderService>();
 
+            services.Scan(scan => scan
+                .FromExecutingAssembly()
+                .FromApplicationDependencies(a => a.FullName.StartsWith("JrTech"))
+                .AddClasses(publicOnly: true)
+                .AsMatchingInterface((service, filter) =>
+                    filter.Where(implementation => implementation.Name.Equals($"I{service.Name}", StringComparison.OrdinalIgnoreCase)))
+                .WithTransientLifetime());
+
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(Constants.Variables.CONNECTIONSTRING_NAME),
                 b => b.MigrationsAssembly(Constants.Variables.MIGRATON_ASSMBLY_NAME))
-                .UseLazyLoadingProxies());
+               .UseLazyLoadingProxies());
 
             services.AddIdentity<User, IdentityRole<long>>(
                 opts =>
@@ -106,21 +114,6 @@ namespace Store.PresentationLayer
             var configuration = new MapperConfiguration(cfg => cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
             IMapper mapper = configuration.CreateMapper();
             services.AddSingleton(mapper);
-
-            //var mappingConfig = new MapperConfiguration(mc =>
-            //{
-            //    mc.AddProfile(new AuthorMappingProfile());
-            //    mc.AddProfile(new PrintingEditionMappingProfile());
-            //    mc.AddProfile(new UserMappingProfile());
-            //    mc.AddProfile(new PrintingEditionFiltrationMappingProfile());
-            //    mc.AddProfile(new AuthorFiltrationMappingProfile());
-            //    mc.AddProfile(new PaymentMappingProfile());
-            //    mc.AddProfile(new OrderMappingProfile());
-            //    mc.AddProfile(new OrderItemMappingProfile());
-            //    mc.AddProfile(new OrderFiltrationMappingProfile());
-            //});
-            //IMapper mapper = mappingConfig.CreateMapper();
-            //services.AddSingleton(mapper);
 
             services.AddMvc();
             services.InitialazerAsync().Wait();

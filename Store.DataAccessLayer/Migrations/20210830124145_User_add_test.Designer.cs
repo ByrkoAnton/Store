@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210830124145_User_add_test")]
+    partial class User_add_test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,7 +194,7 @@ namespace Store.DataAccessLayer.Migrations
                         new
                         {
                             Id = 1L,
-                            DateOfCreation = new DateTime(2021, 8, 30, 17, 12, 52, 497, DateTimeKind.Local).AddTicks(4525),
+                            DateOfCreation = new DateTime(2021, 8, 30, 15, 41, 44, 340, DateTimeKind.Local).AddTicks(683),
                             Name = "FirstAuthor"
                         });
                 });
@@ -268,6 +270,9 @@ namespace Store.DataAccessLayer.Migrations
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Transac")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TransactionId")
                         .HasColumnType("nvarchar(max)");
 
@@ -316,7 +321,7 @@ namespace Store.DataAccessLayer.Migrations
                         {
                             Id = 1L,
                             Currency = 1,
-                            DateOfCreation = new DateTime(2021, 8, 30, 17, 12, 52, 500, DateTimeKind.Local).AddTicks(5263),
+                            DateOfCreation = new DateTime(2021, 8, 30, 15, 41, 44, 343, DateTimeKind.Local).AddTicks(644),
                             Description = "FirstEdition",
                             EditionType = 1,
                             IsRemoved = false,
@@ -351,9 +356,6 @@ namespace Store.DataAccessLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsBlocked")
@@ -408,7 +410,7 @@ namespace Store.DataAccessLayer.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("AspNetUsers", t => t.ExcludeFromMigrations());
                 });
 
             modelBuilder.Entity("AuthorPrintingEdition", b =>

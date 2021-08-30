@@ -9,7 +9,9 @@ namespace Store.BusinessLogicLayer.Mappings
         public UserMappingProfile()
         {
             CreateMap<User, UserModel>();
-            CreateMap<UserModel, User>().ForMember(x => x.UserName, opt => opt.MapFrom(src => src.Email));
+            CreateMap<UserModel, User>()
+                .ForMember(x => x.UserName, opt => opt.MapFrom(src => src.Email))
+                .ForMember(x => x.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName));
         }
 
     }
