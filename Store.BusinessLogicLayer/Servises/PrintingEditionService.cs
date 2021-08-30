@@ -54,7 +54,7 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
 
-            if (String.IsNullOrWhiteSpace(model.Title))
+            if (string.IsNullOrWhiteSpace(model.Title))
             {
                 throw new CustomExeption(Constants.Error.NO_TITLE,
                      HttpStatusCode.BadRequest);
@@ -110,7 +110,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<PrintingEditionModel> GetByTitleAsync(PrintingEditionModel model)
         {
-            if (String.IsNullOrWhiteSpace(model.Title))
+            if (string.IsNullOrWhiteSpace(model.Title))
             {
                 throw new CustomExeption(Constants.Error.NO_TITLE,
                     HttpStatusCode.BadRequest);

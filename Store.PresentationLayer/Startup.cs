@@ -13,7 +13,6 @@ using Store.PresentationLayer.Middlewares;
 using Microsoft.IdentityModel.Tokens;
 using Store.BusinessLogicLayer.Providers.Interfaces;
 using Store.BusinessLogicLayer.Providers;
-using Store.BusinessLogicLayer.Mappings;
 using AutoMapper;
 using Store.DataAccessLayer.Repositories.Base;
 using Store.DataAccessLayer.Repositories.Interfaces;
@@ -23,6 +22,7 @@ using Stripe;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Store.BusinessLogicLayer.Configuration;
+using System;
 
 namespace Store.PresentationLayer
 {
@@ -103,21 +103,24 @@ namespace Store.PresentationLayer
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new AuthorMappingProfile());
-                mc.AddProfile(new PrintingEditionMappingProfile());
-                mc.AddProfile(new UserMappingProfile());
-                mc.AddProfile(new PrintingEditionFiltrationMappingProfile());
-                mc.AddProfile(new AuthorFiltrationMappingProfile());
-                mc.AddProfile(new PaymentMappingProfile());
-                mc.AddProfile(new OrderMappingProfile());
-                mc.AddProfile(new OrderItemMappingProfile());
-                mc.AddProfile(new OrderFiltrationMappingProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
+            var configuration = new MapperConfiguration(cfg => cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
+            IMapper mapper = configuration.CreateMapper();
             services.AddSingleton(mapper);
+
+            //var mappingConfig = new MapperConfiguration(mc =>
+            //{
+            //    mc.AddProfile(new AuthorMappingProfile());
+            //    mc.AddProfile(new PrintingEditionMappingProfile());
+            //    mc.AddProfile(new UserMappingProfile());
+            //    mc.AddProfile(new PrintingEditionFiltrationMappingProfile());
+            //    mc.AddProfile(new AuthorFiltrationMappingProfile());
+            //    mc.AddProfile(new PaymentMappingProfile());
+            //    mc.AddProfile(new OrderMappingProfile());
+            //    mc.AddProfile(new OrderItemMappingProfile());
+            //    mc.AddProfile(new OrderFiltrationMappingProfile());
+            //});
+            //IMapper mapper = mappingConfig.CreateMapper();
+            //services.AddSingleton(mapper);
 
             services.AddMvc();
             services.InitialazerAsync().Wait();

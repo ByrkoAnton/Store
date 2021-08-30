@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Store.BusinessLogicLayer.Models.Authors;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.DataAccessLayer.Entities;
@@ -92,7 +91,7 @@ namespace Store.BusinessLogicLayer.Servises
                    HttpStatusCode.BadRequest);
             }
 
-            if (String.IsNullOrWhiteSpace(model.Name))
+            if (string.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
@@ -116,7 +115,7 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
 
-            if ( String.IsNullOrWhiteSpace(model.Name))
+            if ( string.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
