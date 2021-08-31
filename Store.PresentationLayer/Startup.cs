@@ -23,6 +23,7 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Store.BusinessLogicLayer.Configuration;
 using System;
+using Scrutor;
 
 namespace Store.PresentationLayer
 {
@@ -64,32 +65,44 @@ namespace Store.PresentationLayer
                         };
 
                     });
-                   
-            services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddTransient<IAuthorRepository, AuthorRepository>();
-            services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
-            services.AddTransient<IPaymentRepository, PaymentRepository>();
-            services.AddTransient<IOrderRepository, OrderRepository>();
-            services.AddTransient<IOrderItemRepository, OrderItemRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
 
-            services.AddTransient<IUserAccountService, UserAccountService>();
-            services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<IEmailProvider, EmailProvider>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<ITokenProvider, TokenProvider>();
-            services.AddTransient<IAuthorService, AuthorService>();
-            services.AddTransient<IPrintingEditionService, PrintingEditionService>();
-            services.AddTransient<IPaymentService, PaymentService>();
-            services.AddTransient<IOrderService, BusinessLogicLayer.Servises.OrderService>();
+            //services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            //services.AddTransient<IAuthorRepository, AuthorRepository>();
+            //services.AddTransient<IPrintingEditionRepository, PrintingEditionRepository>();
+            //services.AddTransient<IPaymentRepository, PaymentRepository>();
+            //services.AddTransient<IOrderRepository, OrderRepository>();
+            //services.AddTransient<IOrderItemRepository, OrderItemRepository>();
+            //services.AddTransient<IUserRepository, UserRepository>();
+
+            //services.AddTransient<IUserAccountService, UserAccountService>();
+            //services.AddTransient<IRoleService, RoleService>();
+            //services.AddTransient<IEmailProvider, EmailProvider>();
+            //services.AddTransient<IUserService, UserService>();
+            //services.AddTransient<ITokenProvider, TokenProvider>();
+            //services.AddTransient<IAuthorService, AuthorService>();
+            //services.AddTransient<IPrintingEditionService, PrintingEditionService>();
+            //services.AddTransient<IPaymentService, PaymentService>();
+            //services.AddTransient<IOrderService, BusinessLogicLayer.Servises.OrderService>();
 
             services.Scan(scan => scan
-                .FromExecutingAssembly()
-                .FromApplicationDependencies(a => a.FullName.StartsWith("JrTech"))
-                .AddClasses(publicOnly: true)
-                .AsMatchingInterface((service, filter) =>
-                    filter.Where(implementation => implementation.Name.Equals($"I{service.Name}", StringComparison.OrdinalIgnoreCase)))
-                .WithTransientLifetime());
+            .FromAssemblyOf<IUserAccountService>()
+             .AddClasses()
+      .AsMatchingInterface()
+      .WithTransientLifetime());
+
+            services.Scan(scan => scan
+  .FromAssemblyOf<TokenProvider>()
+    .AddClasses()
+      .AsMatchingInterface()
+      .WithTransientLifetime());
+
+            services.Scan(scan => scan
+  .FromAssemblyOf<IAuthorRepository>()
+    .AddClasses()
+      .AsMatchingInterface()
+      .WithTransientLifetime());
+
+
 
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(Constants.Variables.CONNECTIONSTRING_NAME),
@@ -129,21 +142,21 @@ namespace Store.PresentationLayer
                              .AllowAnyMethod());
 
             StripeConfiguration.ApiKey = Configuration.GetValue<string>(Constants.Stripe.SECRET_KEY);
-           
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint(Constants.Swagger.ROUTE, Constants.Swagger.NAME);
             });
 
-           
+
             app.UseHsts();
-            
+
 
             app.UseMiddleware<ErrorHandingMiddleware>();
-            
+
             app.UseHttpsRedirection();
-           
+
             app.UseRouting();
 
             app.UseAuthentication();
