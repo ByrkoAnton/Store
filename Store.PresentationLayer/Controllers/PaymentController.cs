@@ -18,7 +18,6 @@ namespace Store.PresentationLayer.Controllers
             _paymentServise = paymentServise;
         }
 
-
         [HttpPost("Pay")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Pay([FromBody] StripePayModel model)

@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Initialization;
-using Store.Sharing.Constants;
 
 namespace Store.DataAccessLayer.AppContext
 {
@@ -19,7 +17,7 @@ namespace Store.DataAccessLayer.AppContext
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
-           // Database.Migrate();
+           Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,16 +26,4 @@ namespace Store.DataAccessLayer.AppContext
             base.OnModelCreating(modelBuilder);
         }
     }
-
-    //public class DbContextFactory : IDesignTimeDbContextFactory<ApplicationContext>
-    //{
-      
-    //    ApplicationContext IDesignTimeDbContextFactory<ApplicationContext>.CreateDbContext(string[] args)
-    //    {
-    //        var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-    //        optionsBuilder.UseSqlServer(Constants.Variables.CONNECTIONSTRING_NAME);
-
-    //        return new ApplicationContext(optionsBuilder.Options);
-    //    }
-    //}
 }

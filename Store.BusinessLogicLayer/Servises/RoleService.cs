@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.Sharing.Constants;

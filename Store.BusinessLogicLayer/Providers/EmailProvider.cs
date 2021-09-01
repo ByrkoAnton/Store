@@ -29,8 +29,7 @@ namespace Store.BusinessLogicLayer.Servises
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync(_options.Smtp);
-                await client.AuthenticateAsync(_options.AdressFrom,
-                    _options.EmailPassword);
+                await client.AuthenticateAsync(_options.AdressFrom, _options.EmailPassword);
                 await client.SendAsync(emailMessage);
                 await client.DisconnectAsync(true);
             }
