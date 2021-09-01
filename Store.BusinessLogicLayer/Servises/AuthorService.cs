@@ -23,16 +23,11 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task CreateAsync(AuthorModel model)
         {
-            if (model is null)//TODO AB: can simplify to one condition  
+            if (model is null || string.IsNullOrWhiteSpace(model.Name))//TODO AB: can simplify to one condition  
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
-
-            if (string.IsNullOrWhiteSpace(model.Name))
-            {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
-            }
-
+                      
             var author = await _authorRepository.GetByNameAsync(model.Name);
             if (author is not null)
             {
