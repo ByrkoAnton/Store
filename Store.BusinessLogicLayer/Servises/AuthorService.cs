@@ -23,12 +23,12 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task CreateAsync(AuthorModel model)
         {
-            if (model is null)
+            if (model is null && model.Name is not null)
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
             }
-            
+
             if (string.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
@@ -114,7 +114,7 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
 
-            if ( string.IsNullOrWhiteSpace(model.Name))
+            if (string.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
