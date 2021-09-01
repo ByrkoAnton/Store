@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Store.BusinessLogicLayer.Models.EditionModel;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.BusinessLogicLayer.Servises.Interfaces;
@@ -7,7 +6,6 @@ using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;

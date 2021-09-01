@@ -42,7 +42,6 @@ namespace Store.PresentationLayer.Middlewares
                 logger.LogError(log);
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsync(Constants.Error.SERVER_ERROR);
-
             }
         }
     }

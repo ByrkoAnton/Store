@@ -1,5 +1,4 @@
-﻿using Store.DataAccessLayer.Entities;
-using Store.DataAccessLayer.Models.FiltrationModels;
+﻿using Store.DataAccessLayer.Models.FiltrationModels;
 using System.Collections.Generic;
 using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
