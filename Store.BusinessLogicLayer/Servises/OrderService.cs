@@ -26,15 +26,6 @@ namespace Store.BusinessLogicLayer.Servises
             _mapper = maper;
         }
 
-        public void test(int a)
-        {
-            System.Console.WriteLine("sdsdf");
-        }
-
-        public void test2()
-        {
-            System.Console.WriteLine("sdsdf");
-        }
         public async Task<List<OrderModel>> GetAll()
         {
             var orders = await _orderRepository.GetAllAsync();
