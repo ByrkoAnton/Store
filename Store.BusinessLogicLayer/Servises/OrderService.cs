@@ -19,13 +19,21 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IMapper maper, UserManager<User> userManager,//TODO AD:
-            IPaymentRepository paymentRepository)
+        public OrderService(IOrderRepository orderRepository, IMapper maper) //TODO AD:  
         {
             _orderRepository = orderRepository;
             _mapper = maper;
         }
 
+        public void test(int a)
+        {
+            System.Console.WriteLine("sdsdf");
+        }
+
+        public void test2()
+        {
+            System.Console.WriteLine("sdsdf");
+        }
         public async Task<List<OrderModel>> GetAll()
         {
             var orders = await _orderRepository.GetAllAsync();
