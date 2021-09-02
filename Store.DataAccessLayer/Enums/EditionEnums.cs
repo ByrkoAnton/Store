@@ -1,5 +1,4 @@
-﻿
-namespace Store.DataAccessLayer.Enums
+﻿namespace Store.DataAccessLayer.Enums
 {
     public partial class Enums
     {

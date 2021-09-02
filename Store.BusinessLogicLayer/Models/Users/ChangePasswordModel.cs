@@ -1,5 +1,4 @@
-﻿
-using Store.Sharing.Constants;
+﻿using Store.Sharing.Constants;
 using System.ComponentModel.DataAnnotations;
 
 namespace Store.BusinessLogicLayer.Models.Users

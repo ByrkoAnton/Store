@@ -73,12 +73,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<AuthorModel> GetByNameAsync(AuthorModel model)
         {
-            if (model is null)
-            {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
-            }
-
-            if (string.IsNullOrWhiteSpace(model.Name))
+            if (model is null || string.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
@@ -94,12 +89,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task RemoveAsync(AuthorModel model)
         {
-            if (model is null)
-            {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
-            }
-
-            if (string.IsNullOrWhiteSpace(model.Name))
+            if (model is null || string.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
@@ -113,15 +103,11 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task UpdateAsync(AuthorModel model)
         {
-            if (model is null)
+            if (model is null || string.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
-            if (model.Id is default(long))
-            {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
-            }
             var author = await _authorRepository.GetByIdAsync(model.Id);
             if (author is null)
             {

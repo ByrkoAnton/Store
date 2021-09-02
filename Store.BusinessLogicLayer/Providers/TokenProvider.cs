@@ -1,5 +1,4 @@
-﻿
-using Store.BusinessLogicLayer.Providers.Interfaces;
+﻿using Store.BusinessLogicLayer.Providers.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;

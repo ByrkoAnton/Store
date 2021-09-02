@@ -1,6 +1,4 @@
 ﻿using Store.BusinessLogicLayer.Models.EditionModel;
-using Store.BusinessLogicLayer.Models.PaginationsModels;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Servises.Interfaces

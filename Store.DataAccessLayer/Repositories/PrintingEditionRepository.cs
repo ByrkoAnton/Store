@@ -40,8 +40,7 @@ namespace Store.DataAccessLayer.Repositories
         }
         public async Task<PrintingEdition> GetByTitle(string title)
         {
-          
-
+    
             var result = await _dbSet.Include(pe => pe.Authors).AsNoTracking().FirstOrDefaultAsync(edition =>
             edition.Title == title);
             return result;

@@ -19,7 +19,6 @@ namespace Store.DataAccessLayer.AppContext
         {
            Database.Migrate();
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Seed();

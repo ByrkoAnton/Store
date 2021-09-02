@@ -1,5 +1,4 @@
-﻿
-namespace Store.DataAccessLayer.Models.FiltrationModels
+﻿namespace Store.DataAccessLayer.Models.FiltrationModels
 {
     public class AuthorFiltrationModelDAL : BaseFiltrationModelDAL
     {

@@ -40,13 +40,7 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task AddUserToRoleAsync(UserUpdateModel updateModel)
         {
-            if (updateModel is null)
-            {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    HttpStatusCode.BadRequest);
-            }
-
-            if (updateModel.Id is default(long))
+            if (updateModel is null || updateModel.Id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
@@ -69,13 +63,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task UserBlockStatusChangingAsync(UserUpdateModel updateModel)
         {
-            if (updateModel is null)
-            {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    HttpStatusCode.BadRequest);
-            }
-
-            if (updateModel.Id is default(long))
+            if (updateModel is null || updateModel.Id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
@@ -103,16 +91,10 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task UserDeleteAsync(UserUpdateModel updateModel)
         {
-            if (updateModel is null)
+            if (updateModel is null || updateModel.Id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                      HttpStatusCode.BadRequest);
-            }
-
-            if (updateModel.Id is default(long))
-            {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                    HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
@@ -137,13 +119,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 
-            if (updateModel is null)
-            {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
-                     HttpStatusCode.BadRequest);
-            }
-
-            if (id is default(long))
+            if (updateModel is null || id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL,
                      HttpStatusCode.BadRequest);
@@ -214,18 +190,13 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task<string> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel)
         {
             var user = await _userManager.FindByEmailAsync(forgotPasswordModel.Email);
-            if (user is null)
+
+            if (user is null || !await _userManager.IsEmailConfirmedAsync(user))
             {
                 throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
                      HttpStatusCode.BadRequest);
             }
-
-            if (!await _userManager.IsEmailConfirmedAsync(user))
-            {
-                throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
-                     HttpStatusCode.BadRequest);
-            }
-
+ 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var newPassword = PasswordGenerator.GeneratePassword(Constants.User.PASSWORD_LENGHT,
                 Constants.User.PASSWORD_DIGETS, Constants.User.PASSWORD_SPECIAL_CHARS);

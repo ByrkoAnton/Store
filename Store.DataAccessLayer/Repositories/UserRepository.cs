@@ -12,7 +12,6 @@ namespace Store.DataAccessLayer.Repositories
         public UserRepository(ApplicationContext context) : base(context)
         {
         }
-
         public async Task RemoveRangeAsync(List<User> users)
         {
             _dbSet.RemoveRange(users);

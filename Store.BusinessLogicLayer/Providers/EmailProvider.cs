@@ -1,5 +1,4 @@
-﻿
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using Store.BusinessLogicLayer.Configuration;

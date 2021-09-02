@@ -1,6 +1,5 @@
 ﻿using Store.BusinessLogicLayer.Models.Payments;
 using Store.BusinessLogicLayer.Models.Stripe;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Servises.Interfaces

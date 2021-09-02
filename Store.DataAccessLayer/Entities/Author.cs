@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-
 namespace Store.DataAccessLayer.Entities
 {
     public class Author : BaseEntity

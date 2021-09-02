@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogicLayer.Models.Orders;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.BusinessLogicLayer.Servises.Interfaces;
@@ -81,12 +80,7 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task RemoveAsync(OrderModel model)
         {
-            if (model is null)
-            {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
-            }
-
-            if (model.Id is default(long))
+            if (model is null || model.Id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
@@ -101,12 +95,7 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task UpdateAsync(OrderModel model)
         {
-            if (model is null)
-            {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
-            }
-
-            if (model.Id is default(long))
+            if (model is null || model.Id is default(long))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
