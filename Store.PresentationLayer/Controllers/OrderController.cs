@@ -17,7 +17,7 @@ namespace Store.PresentationLayer.Controllers
         }
 
 
-        [HttpGet("GetById")]
+        [HttpPost("GetById")]
         public async Task<IActionResult> GetById([FromBody] OrderModel model)
         {
             var result = await _orderServise.GetById(model.Id);
@@ -31,7 +31,7 @@ namespace Store.PresentationLayer.Controllers
             return Ok(result);
         }
 
-        [HttpGet("Get")]
+        [HttpPost("Get")]
         public async Task<IActionResult> Get(OrderFiltrationModel model)
         {
             var result = await _orderServise.GetAsync(model);

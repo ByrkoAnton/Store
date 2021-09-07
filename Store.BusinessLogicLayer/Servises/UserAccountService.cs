@@ -79,7 +79,7 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task<TokenResponseModel> SignInAsync(UserSignInModel signInModel)
         {
             var user = await _userManager.FindByNameAsync(signInModel.Email);
-            if (user is not null)
+            if (user is null)
             {
                 throw new CustomExeption(Constants.Error.LOGIN_FAILD_EMAIL,
                     HttpStatusCode.BadRequest);

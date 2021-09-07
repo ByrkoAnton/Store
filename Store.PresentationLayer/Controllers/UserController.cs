@@ -72,7 +72,7 @@ namespace Store.PresentationLayer.Controllers
 
         
 
-        [HttpGet("GetUsers")]
+        [HttpPost("GetUsers")]
         public async Task<IActionResult> GetUsers(UserFiltrationModel model)
         {  
             var result = await _userService.GetUsersAsync(model);

@@ -55,8 +55,7 @@ namespace Store.DataAccessLayer
                              ValidAudience = tokenOptions.Audience,
                              ValidateLifetime = true,
                              ValidateIssuerSigningKey = true,
-                             IssuerSigningKey = new SymmetricSecurityKey
-                             (Encoding.ASCII.GetBytes(tokenOptions.Key))
+                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenOptions.Key))
                          };
 
                      });

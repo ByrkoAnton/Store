@@ -23,21 +23,21 @@ namespace Store.PresentationLayer.Controllers
             return Ok();
         }
 
-        [HttpGet("FindById")]
+        [HttpPost("GetById")]
         public async Task<IActionResult> FindById([FromBody] AuthorModel model)
         {
            var result = await _authorService.GetByIdAsync(model.Id);
             return Ok(result);
         }
 
-        [HttpGet("Get")]
+        [HttpPost("Get")]
         public async Task<IActionResult> Get(AuthorFiltrationModel model)
         {
             var result = await _authorService.GetAsync(model);
             return Ok(result);
         }
 
-        [HttpGet("GetByName")]
+        [HttpPost("GetByName")]
         public async Task<IActionResult> GetByName(AuthorModel model)
         {
             var result = await _authorService.GetByNameAsync(model);

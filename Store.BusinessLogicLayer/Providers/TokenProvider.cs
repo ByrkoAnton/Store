@@ -55,8 +55,8 @@ namespace Store.BusinessLogicLayer.Providers
                     claims: identity.Claims,
                     expires: now.Add(TimeSpan.FromMinutes(double.Parse(_options.Lifetime))),
                     signingCredentials: credentials);
-            var encodedJwt = jwt.ToString();
-            return null;
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return encodedJwt;
         }
     }
 }
