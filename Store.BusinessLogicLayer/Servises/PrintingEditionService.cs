@@ -66,7 +66,7 @@ namespace Store.BusinessLogicLayer.Servises
                      HttpStatusCode.BadRequest);
             }
 
-            if (!_authorRepository.IsAuthorsInDb(model.AuthorModels.Select(a => a.Id).ToList()))
+            if (!_authorRepository.IsAuthorsInDb(model.AuthorModels.Select(a => a.Id).ToList()))//TODO AB:too many actions in one row
             {
                 throw new CustomExeption(Constants.Error.ADD_AUTHOR_FIRST,
                  HttpStatusCode.BadRequest);

@@ -19,7 +19,7 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly IMapper _mapper;
 
         public OrderService(IOrderRepository orderRepository, IMapper maper)//TODO AD:
-            
+
         {
             _orderRepository = orderRepository;
             _mapper = maper;
@@ -61,7 +61,7 @@ namespace Store.BusinessLogicLayer.Servises
             return result;
         }
 
-        public async Task<OrderModel> GetById(long id)
+        public async Task<OrderModel> GetById(long id)//TODO AB:naming
         {
             if (id is default(long))
             {

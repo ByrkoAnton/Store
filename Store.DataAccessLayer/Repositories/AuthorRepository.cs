@@ -7,8 +7,8 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Repositories
 {
@@ -25,7 +25,7 @@ namespace Store.DataAccessLayer.Repositories
 
         public bool IsAuthorsInDb(List<long> id)
         {
-            var res = id.All(x => _dbSet.Select(d => d.Id).Contains(x));
+            var res = id.All(x => _dbSet.Select(d => d.Id).Contains(x));//TODO AB: codestyle
             return res;
         }
 
@@ -53,7 +53,7 @@ namespace Store.DataAccessLayer.Repositories
         }
         public async Task<Author> GetByNameAsync(string name)
         {
-            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(Authors => Authors.Name == name);   
+            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(Authors => Authors.Name == name);
 
             return result;
         }
