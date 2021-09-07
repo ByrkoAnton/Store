@@ -1,23 +1,23 @@
 ﻿using AutoMapper;
+using clearwaterstream.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Store.BusinessLogicLayer.Models.PaginationsModels;
-using Store.Sharing.Constants;
-using clearwaterstream.Security;
 using Store.DataAccessLayer.Extentions;
 using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.Sharing.Constants;
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Web;
+using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -140,7 +140,7 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
 
-            if (isEmailChanging)
+            if (isEmailChanging)//TODO AB: unnecessary if user confirm email before
             {
                 user.EmailConfirmed = false;
             }
@@ -196,7 +196,7 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
                      HttpStatusCode.BadRequest);
             }
- 
+
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var newPassword = PasswordGenerator.GeneratePassword(Constants.User.PASSWORD_LENGHT,
                 Constants.User.PASSWORD_DIGETS, Constants.User.PASSWORD_SPECIAL_CHARS);
@@ -233,7 +233,7 @@ namespace Store.BusinessLogicLayer.Servises
                      HttpStatusCode.BadRequest);
             }
 
-            if (await _userManager.CheckPasswordAsync(user, model.NewPassword))
+            if (await _userManager.CheckPasswordAsync(user, model.NewPassword))//TODO AB: need clarify logic
             {
                 throw new CustomExeption(Constants.Error.PASSWORD_IN_USE, HttpStatusCode.BadRequest);
             }
@@ -278,7 +278,7 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var propertyForSort = typeof(User).GetProperty(model.PropertyForSort);
 
-            if (propertyForSort is null)
+            if (propertyForSort is null)//TODO AB: for what?
             {
                 throw new CustomExeption(Constants.Error.NO_ANY_PROP_NAME, HttpStatusCode.BadRequest);
             }

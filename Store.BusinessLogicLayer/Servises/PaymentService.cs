@@ -1,17 +1,17 @@
-﻿using Store.BusinessLogicLayer.Models.Payments;
-using Store.BusinessLogicLayer.Servises.Interfaces;
-using Store.DataAccessLayer.Repositories.Interfaces;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Store.DataAccessLayer.Entities;
-using Store.Sharing.Constants;
-using System.Collections.Generic;
-using Stripe;
+﻿using AutoMapper;
+using Store.BusinessLogicLayer.Models.Payments;
 using Store.BusinessLogicLayer.Models.Stripe;
-using static Store.DataAccessLayer.Enums.Enums;
+using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.DataAccessLayer.Entities;
+using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.Sharing.Constants;
+using Stripe;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
+using static Store.DataAccessLayer.Enums.Enums;
 
 
 namespace Store.BusinessLogicLayer.Servises
@@ -24,7 +24,7 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly IMapper _mapper;
         public PaymentService(IPaymentRepository paymentRepository, IOrderRepository orderRepository, IMapper maper,
-         IPrintingEditionRepository printingEditionRepository, IOrderItemRepository orderItemRepository)
+         IPrintingEditionRepository printingEditionRepository, IOrderItemRepository orderItemRepository) //TODO AB: unused veriable
         {
             _paymentRepository = paymentRepository;
             _mapper = maper;
@@ -35,7 +35,7 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task<ResultPayModel> PayAsync(StripePayModel model, string jwt)
         {
             var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProvider.BEARER),
-                Constants.JwtProvider.BEARER.Length).Trim());
+                Constants.JwtProvider.BEARER.Length).Trim());//TODO AB: need simplify
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 
             DataAccessLayer.Entities.Order order = new DataAccessLayer.Entities.Order
@@ -50,17 +50,17 @@ namespace Store.BusinessLogicLayer.Servises
 
             var editions = await _printingEditionRepository.GetEditionsListByIdListAsync(EditionsId);
 
-            List<DataAccessLayer.Entities.OrderItem> orderItems = new List<DataAccessLayer.Entities.OrderItem>();
+            List<DataAccessLayer.Entities.OrderItem> orderItems = new List<DataAccessLayer.Entities.OrderItem>();//TODO AB: shouldn't use namespace
 
             foreach (var i in editions)
-            {  
+            {
                 DataAccessLayer.Entities.OrderItem orderItem = new DataAccessLayer.Entities.OrderItem
                 {
                     EditionPrice = i.Price,
                     Currency = i.Currency,
                     PrintingEditionId = i.Id,
                     OrderId = order.Id,
-                    Count =(int) model.Editions.FirstOrDefault(c => c.EditionId == i.Id).Count
+                    Count = (int)model.Editions.FirstOrDefault(c => c.EditionId == i.Id).Count
                 };
                 orderItems.Add(orderItem);
             }
@@ -96,6 +96,6 @@ namespace Store.BusinessLogicLayer.Servises
             };
             return resultPayModel;
         }
-        
+
     }
 }
