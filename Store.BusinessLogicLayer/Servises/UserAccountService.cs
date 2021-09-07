@@ -38,7 +38,7 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task<string> SignUpAsync(UserModel signUpModel)
         {
             var EmailCheck = await _userManager.FindByEmailAsync(signUpModel.Email);
-            if (EmailCheck is not null)
+            if (EmailCheck is null)
             {
                 throw new CustomExeption(Constants.Error.REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE,
                     HttpStatusCode.BadRequest);
@@ -79,7 +79,7 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task<TokenResponseModel> SignInAsync(UserSignInModel signInModel)
         {
             var user = await _userManager.FindByNameAsync(signInModel.Email);
-            if (user is null)
+            if (user is not null)
             {
                 throw new CustomExeption(Constants.Error.LOGIN_FAILD_EMAIL,
                     HttpStatusCode.BadRequest);
