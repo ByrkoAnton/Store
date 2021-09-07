@@ -19,7 +19,6 @@ namespace Store.DataAccessLayer.Repositories.Base
         public virtual async Task CreateAsync(TEntity item)
         {
             await _dbSet.AddAsync(item);
-            await _context.SaveChangesAsync();
         }
 
         public virtual async Task CreateAsync(List<TEntity> item)

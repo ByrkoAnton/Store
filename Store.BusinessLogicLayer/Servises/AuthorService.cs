@@ -23,6 +23,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task CreateAsync(AuthorModel model)
         {
+            throw new System.NullReferenceException();
             if (model is null || string.IsNullOrWhiteSpace(model.Name))//TODO AB: can simplify to one condition  
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
@@ -44,7 +45,7 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
-            var author = await _authorRepository.GetByIdAsync(id);
+            var author = await _authorRepository.GetByIdAsync(default);
             if (author is null)
             {
                 throw new CustomExeption(Constants.Error.NO_AUTHOR_ID, HttpStatusCode.BadRequest);
