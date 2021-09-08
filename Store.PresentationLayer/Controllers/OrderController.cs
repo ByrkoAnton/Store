@@ -20,14 +20,14 @@ namespace Store.PresentationLayer.Controllers
         [HttpPost("GetById")]
         public async Task<IActionResult> GetById([FromBody] OrderModel model)
         {
-            var result = await _orderServise.GetById(model.Id);
+            var result = await _orderServise.GetByIdAsync(model.Id);
             return Ok(result);
         }
 
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _orderServise.GetAll();
+            var result = await _orderServise.GetAllAsync();
             return Ok(result);
         }
 

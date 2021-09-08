@@ -12,7 +12,8 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using static Store.DataAccessLayer.Enums.Enums;
-
+using Order = Store.DataAccessLayer.Entities.Order;
+using OrderItem = Store.DataAccessLayer.Entities.OrderItem;
 
 namespace Store.BusinessLogicLayer.Servises
 {
@@ -22,23 +23,22 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly IOrderRepository _orderRepository;
         private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IOrderItemRepository _orderItemRepository;
-        private readonly IMapper _mapper;
-        public PaymentService(IPaymentRepository paymentRepository, IOrderRepository orderRepository, IMapper maper,
-         IPrintingEditionRepository printingEditionRepository, IOrderItemRepository orderItemRepository) //TODO AB: unused veriable
+        public PaymentService(IPaymentRepository paymentRepository, IOrderRepository orderRepository,
+         IPrintingEditionRepository printingEditionRepository, IOrderItemRepository orderItemRepository) //TODO AB: unused veriable (done)
         {
             _paymentRepository = paymentRepository;
-            _mapper = maper;
             _orderRepository = orderRepository;
             _printingEditionRepository = printingEditionRepository;
             _orderItemRepository = orderItemRepository;
         }
         public async Task<ResultPayModel> PayAsync(StripePayModel model, string jwt)
         {
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProvider.BEARER),
-                Constants.JwtProvider.BEARER.Length).Trim());//TODO AB: need simplify
-            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
+            var jwtTrimed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
 
-            DataAccessLayer.Entities.Order order = new DataAccessLayer.Entities.Order
+            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);//TODO AB
+
+            Order order = new Order
             {
                 Discription = model.OrderDescription,
                 UserId = id,
@@ -50,11 +50,11 @@ namespace Store.BusinessLogicLayer.Servises
 
             var editions = await _printingEditionRepository.GetEditionsListByIdListAsync(EditionsId);
 
-            List<DataAccessLayer.Entities.OrderItem> orderItems = new List<DataAccessLayer.Entities.OrderItem>();//TODO AB: shouldn't use namespace
+            List<OrderItem> orderItems = new List<OrderItem>();//TODO AB: shouldn't use namespace (done)
 
             foreach (var i in editions)
             {
-                DataAccessLayer.Entities.OrderItem orderItem = new DataAccessLayer.Entities.OrderItem
+                OrderItem orderItem = new OrderItem
                 {
                     EditionPrice = i.Price,
                     Currency = i.Currency,

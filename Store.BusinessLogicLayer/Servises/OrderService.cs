@@ -18,14 +18,14 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IMapper maper)//TODO AD:
+        public OrderService(IOrderRepository orderRepository, IMapper maper)
 
         {
             _orderRepository = orderRepository;
             _mapper = maper;
         }
 
-        public async Task<List<OrderModel>> GetAll()
+        public async Task<List<OrderModel>> GetAllAsync()
         {
             var orders = await _orderRepository.GetAllAsync();
             if (!orders.Any())
@@ -61,7 +61,7 @@ namespace Store.BusinessLogicLayer.Servises
             return result;
         }
 
-        public async Task<OrderModel> GetById(long id)//TODO AB:naming
+        public async Task<OrderModel> GetByIdAsync(long id)//TODO AB:naming (all done)
         {
             if (id is default(long))
             {

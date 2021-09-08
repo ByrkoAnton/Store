@@ -23,7 +23,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task CreateAsync(AuthorModel model)
         {
-            if (model is null || string.IsNullOrWhiteSpace(model.Name))//TODO AB: can simplify to one condition  
+            if (model is null || string.IsNullOrWhiteSpace(model.Name))
             {
                 throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }

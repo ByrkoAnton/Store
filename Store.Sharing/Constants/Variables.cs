@@ -6,6 +6,7 @@
         {
             public const string DEFAULT = "d";
             public const int WRONG_ID = 0;
+            public const int ONE_PAGE  = 1;
             public const string CONNECTIONSTRING_NAME = "DefaultConnection";
             public const string MIGRATON_ASSMBLY_NAME = "Store.DataAccessLayer";
         }

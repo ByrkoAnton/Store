@@ -19,7 +19,7 @@ namespace Store.PresentationLayer.Controllers
         [HttpPost("AddNewRoleToTable")]
         public async Task<IActionResult> AddNewRoleToDb([FromBody] UserRoleModel role)
         {
-            await _roleService.AddNewRole(role);
+            await _roleService.AddNewRoleAsync(role);
             return Ok();
         }
     }

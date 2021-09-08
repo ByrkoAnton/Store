@@ -130,10 +130,11 @@ namespace Store.BusinessLogicLayer.Servises
             return Constants.User.EMAIL_CONFIRMED;
         }
 
-        public async Task<TokenResponseModel> UpdateTokens(string jwtToken, string refreshToken)
+        public async Task<TokenResponseModel> UpdateTokensAsync(string jwtToken, string refreshToken)
         {
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtToken.Remove(jwtToken.IndexOf(Constants.JwtProvider.BEARER),
-                Constants.JwtProvider.BEARER.Length).Trim());
+            var jwtTrimed = jwtToken.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
+
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 
             var user = await _userManager.FindByIdAsync(id.ToString());

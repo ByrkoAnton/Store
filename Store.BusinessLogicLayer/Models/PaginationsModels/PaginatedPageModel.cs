@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Store.Sharing.Constants;
+using System;
 
 namespace Store.BusinessLogicLayer.Models.PaginationsModels
 {
@@ -14,7 +15,7 @@ namespace Store.BusinessLogicLayer.Models.PaginationsModels
         }
         public bool HasPreviousPage
         {
-            get => PageNumber > 1;//TODO AB: magic
+            get => PageNumber > Constants.Variables.ONE_PAGE;//TODO AB: magic (done)
         }
         public bool HasNextPage
         {

@@ -54,7 +54,7 @@ namespace Store.PresentationLayer.Controllers
         public async Task<IActionResult> UpdateTokens([FromBody] TokenResponseModel model)
         {
             var accessToken = HttpContext.Request.Headers["Authorization"];
-            var result = await _accountService.UpdateTokens(accessToken, model.RefreshToken);
+            var result = await _accountService.UpdateTokensAsync(accessToken, model.RefreshToken);
             return Ok(result);
         }
     }

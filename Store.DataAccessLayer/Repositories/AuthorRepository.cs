@@ -25,8 +25,8 @@ namespace Store.DataAccessLayer.Repositories
 
         public bool IsAuthorsInDb(List<long> id)
         {
-            var res = id.All(x => _dbSet.Select(d => d.Id).Contains(x));//TODO AB: codestyle
-            return res;
+            var result = id.All(x => _dbSet.Select(d => d.Id).Contains(x));
+            return result;
         }
 
         public async Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrationModelDAL model)

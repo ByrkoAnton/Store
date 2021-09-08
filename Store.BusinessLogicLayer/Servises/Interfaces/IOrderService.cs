@@ -7,8 +7,8 @@ namespace Store.BusinessLogicLayer.Servises.Interfaces
 {
     public interface IOrderService
     {
-        public Task<List<OrderModel>> GetAll();
-        public Task<OrderModel> GetById(long id);
+        public Task<List<OrderModel>> GetAllAsync();
+        public Task<OrderModel> GetByIdAsync(long id);
         public Task UpdateAsync(OrderModel model);
         public Task RemoveAsync(OrderModel model);
         public Task<NavigationModelBase<OrderModel>> GetAsync(OrderFiltrationModel model);

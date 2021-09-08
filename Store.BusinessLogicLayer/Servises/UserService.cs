@@ -114,8 +114,9 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<string> UserUpdateAsync(UserUpdateModel updateModel, string jwt)
         {
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProvider.BEARER),
-              Constants.JwtProvider.BEARER.Length).Trim());
+
+            var jwtTrimed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
 
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 
@@ -140,11 +141,6 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
 
-            if (isEmailChanging)//TODO AB: unnecessary if user confirm email before
-            {
-                user.EmailConfirmed = false;
-            }
-
             if (!string.IsNullOrWhiteSpace(updateModel.Email))
             {
                 user.Email = updateModel.Email;
@@ -166,23 +162,6 @@ namespace Store.BusinessLogicLayer.Servises
             if (!updateResult.Succeeded)
             {
                 throw new Exception($"{Constants.Error.CONTACT_ADMIN} {HttpStatusCode.InternalServerError}");
-            }
-
-            if (isEmailChanging)
-            {
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                var callbackUrl = new UriBuilder(Constants.URLs.URL_CONFIRMEMAIL);
-                var parameters = HttpUtility.ParseQueryString(string.Empty);
-                parameters.Add(Constants.User.EMAIL, user.Email);
-                parameters.Add(Constants.User.CODE, code);
-                callbackUrl.Query = parameters.ToString();
-                Uri finalUrl = callbackUrl.Uri;
-
-                await _emailService.SendEmailAsync(user.Email, Constants.User.CONFIRM_EMAIL,
-                string.Format(Constants.User.CONFIRM_LINK, finalUrl));
-
-                return Constants.User.UPDATE_SUCCES_EMAIL;
             }
 
             return Constants.User.UPDATE_SUCCES;
@@ -215,8 +194,8 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task ChangePasswordAsync(ChangePasswordModel model, string jwt)
         {
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProvider.BEARER),
-             Constants.JwtProvider.BEARER.Length).Trim());
+            var jwtTrimed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
 
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 
@@ -233,16 +212,6 @@ namespace Store.BusinessLogicLayer.Servises
                      HttpStatusCode.BadRequest);
             }
 
-            if (await _userManager.CheckPasswordAsync(user, model.NewPassword))//TODO AB: need clarify logic
-            {
-                throw new CustomExeption(Constants.Error.PASSWORD_IN_USE, HttpStatusCode.BadRequest);
-            }
-
-            if (!await _userManager.CheckPasswordAsync(user, model.CurrentPassword))
-            {
-                throw new CustomExeption(Constants.Error.WRONG_PASSWORD, HttpStatusCode.BadRequest);
-            }
-
             var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
 
             if (!result.Succeeded)
@@ -255,8 +224,9 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task<UserModel> GetUserByIdAsync(string jwt)
         {
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwt.Remove(jwt.IndexOf(Constants.JwtProvider.BEARER),
-               Constants.JwtProvider.BEARER.Length).Trim());
+            var jwtTrimed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
+
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 
             if (id is default(long))
@@ -277,11 +247,6 @@ namespace Store.BusinessLogicLayer.Servises
         public async Task<NavigationModelBase<UserModel>> GetUsersAsync(UserFiltrationModel model)
         {
             var propertyForSort = typeof(User).GetProperty(model.PropertyForSort);
-
-            if (propertyForSort is null)//TODO AB: for what?
-            {
-                throw new CustomExeption(Constants.Error.NO_ANY_PROP_NAME, HttpStatusCode.BadRequest);
-            }
 
             var users = await _userManager.Users
                 .Where(n => model.Id == null || n.Id == model.Id)
