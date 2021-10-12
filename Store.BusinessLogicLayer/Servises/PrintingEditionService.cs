@@ -52,7 +52,7 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
 
-            if (!string.IsNullOrWhiteSpace(model.Title))
+            if (string.IsNullOrWhiteSpace(model.Title))
             {
                 throw new CustomExeption(Constants.Error.NO_TITLE,
                      HttpStatusCode.BadRequest);
@@ -70,7 +70,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             var isAuthorsInDb = _authorRepository.IsAuthorsInDb(authorsId);
 
-            if (isAuthorsInDb)//TODO AB:too many actions in one row (done)
+            if (!isAuthorsInDb)
             {
                 throw new CustomExeption(Constants.Error.ADD_AUTHOR_FIRST,
                  HttpStatusCode.BadRequest);

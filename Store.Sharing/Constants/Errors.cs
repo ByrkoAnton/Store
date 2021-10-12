@@ -28,7 +28,7 @@
             public const string WRONG_MODEL = "wrong model";
             public const string LOGIN_FAILD_MODEL = "login faild - model is NULL";
             public const string LOGIN_FAILD_EMAIL = "login faild - no user with this email";
-            public const string LOGIN_FAILD_WRONG_PASSWORD = "login faild - wrong password";
+            public const string LOGIN_FAILD_WRONG_DATA = "Wrong email or password";
             public const string NO_USERROLE = "login faild - no userRole";
             public const string ROLE_EXISTS = "role did not added - role already exists";
             public const string REGISRATION_FAILD_NO_IMAIL = "regisration faild no imail in model";
@@ -40,7 +40,7 @@
             public const string REGISRATION_USER_NOT_CREATED = "regisration faild user did not created";
             public const string NO_USER_ID_IN_DB = "no user with this id";
             public const string REGISRATION_FAILD_NAME_IN_USE = "regisration faild this name is already in use";
-            public const string REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE = "regisration faild this email is already in use";
+            public const string REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE = "Regisration faild this email is already in use";
             public const string USER_ROLE_DID_NOT_ADDED = "user role did not added";
             public const string EMAILCONFIRM_CODE_NULL = "emailConfirmationModel - code is null";
             public const string EMAIL_EXIST_DB = "This email in use";

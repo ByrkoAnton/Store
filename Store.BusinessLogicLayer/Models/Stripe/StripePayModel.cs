@@ -6,8 +6,9 @@ namespace Store.BusinessLogicLayer.Models.Stripe
 {
     public class StripePayModel
     {
+        //[Required]
         public string Token { get; set; }
-        [Required]
+        //[Required]
         public List<EditionPayModel> Editions { get; set; }
         public string OrderDescription { get; set; }
     }

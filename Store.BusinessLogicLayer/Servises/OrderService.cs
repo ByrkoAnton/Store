@@ -61,7 +61,7 @@ namespace Store.BusinessLogicLayer.Servises
             return result;
         }
 
-        public async Task<OrderModel> GetByIdAsync(long id)//TODO AB:naming (all done)
+        public async Task<OrderModel> GetByIdAsync(long id)
         {
             if (id is default(long))
             {

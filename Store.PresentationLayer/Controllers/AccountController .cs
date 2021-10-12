@@ -50,7 +50,7 @@ namespace Store.PresentationLayer.Controllers
         }
 
         
-        [HttpGet("updateTokens")]
+        [HttpPost("updateTokens")]
         public async Task<IActionResult> UpdateTokens([FromBody] TokenResponseModel model)
         {
             var accessToken = HttpContext.Request.Headers["Authorization"];

@@ -37,8 +37,8 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<string> SignUpAsync(UserModel signUpModel)
         {
-            var EmailCheck = await _userManager.FindByEmailAsync(signUpModel.Email);
-            if (EmailCheck is null)
+            var emailCheck = await _userManager.FindByEmailAsync(signUpModel.Email);
+            if (emailCheck is not null)
             {
                 throw new CustomExeption(Constants.Error.REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE,
                     HttpStatusCode.BadRequest);
@@ -81,7 +81,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByNameAsync(signInModel.Email);
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.LOGIN_FAILD_EMAIL,
+                throw new CustomExeption(Constants.Error.LOGIN_FAILD_WRONG_DATA,
                     HttpStatusCode.BadRequest);
             }
 
@@ -89,7 +89,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!signIn.Succeeded)
             {
-                throw new CustomExeption(Constants.Error.LOGIN_FAILD_WRONG_PASSWORD, HttpStatusCode.BadRequest);
+                throw new CustomExeption(Constants.Error.LOGIN_FAILD_WRONG_DATA, HttpStatusCode.BadRequest);
             }
 
             var roleList = await _userManager.GetRolesAsync(user);

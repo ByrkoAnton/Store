@@ -4,10 +4,10 @@ namespace Store.BusinessLogicLayer.Models
 {
     public class UserSignInModel
     {
-        [Required(ErrorMessage = Constants.Error.LOGIN_FAILD_EMAIL)]
+        [Required(ErrorMessage = Constants.Error.LOGIN_FAILD_WRONG_DATA)]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = Constants.Error.LOGIN_FAILD_WRONG_PASSWORD)]
+        [Required(ErrorMessage = Constants.Error.LOGIN_FAILD_WRONG_DATA)]
         public string Password { get; set; }
     }
 }

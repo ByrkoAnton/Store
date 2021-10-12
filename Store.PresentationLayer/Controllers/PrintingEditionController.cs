@@ -23,15 +23,15 @@ namespace Store.PresentationLayer.Controllers
             return Ok(result);
         }
 
-        [HttpPost("Craete")]
+        [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] PrintingEditionModel model)
         {
             await _editionService.CreateAsync(model);
             return Ok();
         }
 
-        [HttpGet("Remove")]
-        public async Task<IActionResult> Remove([FromQuery] PrintingEditionModel model)
+        [HttpPost("Remove")]
+        public async Task<IActionResult> Remove([FromBody] PrintingEditionModel model)
         {
             await _editionService.RemoveAsync(model);
             return Ok();

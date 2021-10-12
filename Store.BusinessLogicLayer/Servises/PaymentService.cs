@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Store.BusinessLogicLayer.Models.Payments;
+﻿using Store.BusinessLogicLayer.Models.Payments;
 using Store.BusinessLogicLayer.Models.Stripe;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Entities;
@@ -24,7 +23,7 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IOrderItemRepository _orderItemRepository;
         public PaymentService(IPaymentRepository paymentRepository, IOrderRepository orderRepository,
-         IPrintingEditionRepository printingEditionRepository, IOrderItemRepository orderItemRepository) //TODO AB: unused veriable (done)
+         IPrintingEditionRepository printingEditionRepository, IOrderItemRepository orderItemRepository)
         {
             _paymentRepository = paymentRepository;
             _orderRepository = orderRepository;
@@ -36,7 +35,7 @@ namespace Store.BusinessLogicLayer.Servises
             var jwtTrimed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
             var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
 
-            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);//TODO AB
+            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 
             Order order = new Order
             {
@@ -50,7 +49,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             var editions = await _printingEditionRepository.GetEditionsListByIdListAsync(EditionsId);
 
-            List<OrderItem> orderItems = new List<OrderItem>();//TODO AB: shouldn't use namespace (done)
+            List<OrderItem> orderItems = new List<OrderItem>();
 
             foreach (var i in editions)
             {
@@ -92,7 +91,7 @@ namespace Store.BusinessLogicLayer.Servises
             var resultPayModel = new ResultPayModel()
             {
                 Message = Constants.Charge.SUCCESS_MSG,
-                OrderID = order.Id.ToString()
+                OrderId = order.Id.ToString()
             };
             return resultPayModel;
         }
