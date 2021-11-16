@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.BusinessLogicLayer", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.DataAccessLayer", "Store.DataAccessLayer\Store.DataAccessLayer.csproj", "{9792A282-D58B-4E70-935A-5948E41D51B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Sharing", "Store.Sharing\Store.Sharing.csproj", "{A42C71A7-28D1-4B21-837C-942608D37F4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Sharing", "Store.Sharing\Store.Sharing.csproj", "{A42C71A7-28D1-4B21-837C-942608D37F4F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminApp", "Store.AdminApp\AdminApp.csproj", "{F4F9A0D4-AEA3-40ED-8C15-22D1243BBADB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A42C71A7-28D1-4B21-837C-942608D37F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A42C71A7-28D1-4B21-837C-942608D37F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A42C71A7-28D1-4B21-837C-942608D37F4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4F9A0D4-AEA3-40ED-8C15-22D1243BBADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4F9A0D4-AEA3-40ED-8C15-22D1243BBADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4F9A0D4-AEA3-40ED-8C15-22D1243BBADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4F9A0D4-AEA3-40ED-8C15-22D1243BBADB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

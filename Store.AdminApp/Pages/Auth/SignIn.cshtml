@@ -1,0 +1,13 @@
+﻿@page
+@model AdminApp.SignIn.SignInModel
+@{
+    ViewData["Title"] = "Sign In";
+}
+<h2>@ViewData["Title"]</h2>
+<div asp-validation-summary="All"></div>
+<form method="POST">
+    <div><label>Email</label><br /><input asp-for="AuthModel.Email" /></div>
+    <div><label>Password:</label><br /><input asp-for="AuthModel.Password" /></div>
+    <input type="submit" value="Sign In" />
+</form>
+
