@@ -30,7 +30,7 @@ namespace Store.BusinessLogicLayer.Servises
             var orders = await _orderRepository.GetAllAsync();
             if (!orders.Any())
             {
-                throw new CustomExeption(Constants.Error.NO_ORDERS_IN_DB,
+                throw new CustomException(Constants.Error.NO_ORDERS_IN_DB,
                    HttpStatusCode.BadRequest);
             }
             var ordersModels = _mapper.Map<IEnumerable<OrderModel>>(orders);
@@ -46,7 +46,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (ordersCount.count is default(int))
             {
-                throw new CustomExeption(Constants.Error.WRONG_CONDITIONS_ORDER,
+                throw new CustomException(Constants.Error.WRONG_CONDITIONS_ORDER,
                    HttpStatusCode.BadRequest);
             }
 
@@ -65,13 +65,13 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (id is default(long))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
             var order = await _orderRepository.GetByIdAsync(id);
             if (order is null)
             {
-                throw new CustomExeption(Constants.Error.NO_ORDERS_THIS_ID, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.NO_ORDERS_THIS_ID, HttpStatusCode.BadRequest);
             }
 
             var orderModel = _mapper.Map<OrderModel>(order);
@@ -82,13 +82,13 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (model is null || model.Id is default(long))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
             var order = await _orderRepository.GetByIdAsync(model.Id);
             if (order is null)
             {
-                throw new CustomExeption(Constants.Error.NO_ORDERS_THIS_ID, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.NO_ORDERS_THIS_ID, HttpStatusCode.BadRequest);
             }
             await _orderRepository.RemoveAsync(order);
         }
@@ -97,13 +97,13 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (model is null || model.Id is default(long))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
             var order = await _orderRepository.GetByIdAsync(model.Id);
             if (order is null)
             {
-                throw new CustomExeption(Constants.Error.NO_ORDERS_THIS_ID, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.NO_ORDERS_THIS_ID, HttpStatusCode.BadRequest);
             }
 
             order = _mapper.Map<Order>(model);

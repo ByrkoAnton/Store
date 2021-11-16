@@ -25,13 +25,13 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (model is null || string.IsNullOrWhiteSpace(model.Name))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
                       
             var author = await _authorRepository.GetByNameAsync(model.Name);
             if (author is not null)
             {
-                throw new CustomExeption(Constants.Error.AUTHOR_CREATE_FAILD, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.AUTHOR_CREATE_FAILD, HttpStatusCode.BadRequest);
             }
 
             var newAuthor = _mapper.Map<Author>(model);
@@ -41,13 +41,13 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (id is default(long))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
             var author = await _authorRepository.GetByIdAsync(id);
             if (author is null)
             {
-                throw new CustomExeption(Constants.Error.NO_AUTHOR_ID, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.NO_AUTHOR_ID, HttpStatusCode.BadRequest);
             }
             var authorModel = _mapper.Map<AuthorModel>(author);
             return authorModel;
@@ -59,7 +59,7 @@ namespace Store.BusinessLogicLayer.Servises
             (IEnumerable<Author> authors, int count) authorsWithCount = await _authorRepository.GetAsync(authorFiltrPagingSortModelDAL);
             if (!authorsWithCount.authors.Any())
             {
-                throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_CONDITIONS, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.NO_AUTHOR_WITH_CONDITIONS, HttpStatusCode.BadRequest);
             }
             var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCount.authors);
 
@@ -75,13 +75,13 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (model is null || string.IsNullOrWhiteSpace(model.Name))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
             var author = await _authorRepository.GetByNameAsync(model.Name);
             if (author is null)
             {
-                throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_CONDITIONS, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.NO_AUTHOR_WITH_CONDITIONS, HttpStatusCode.BadRequest);
             }
             var authorModel = _mapper.Map<AuthorModel>(author);
 
@@ -91,13 +91,13 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (model is null || string.IsNullOrWhiteSpace(model.Name))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
             var author = await _authorRepository.GetByNameAsync(model.Name);
             if (author is null)
             {
-                throw new CustomExeption(Constants.Error.AUTHOR_REMOVE_FAILD, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.AUTHOR_REMOVE_FAILD, HttpStatusCode.BadRequest);
             }
             await _authorRepository.RemoveAsync(author);
         }
@@ -105,13 +105,13 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (model is null || string.IsNullOrWhiteSpace(model.Name))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
             var author = await _authorRepository.GetByIdAsync(model.Id);
             if (author is null)
             {
-                throw new CustomExeption(Constants.Error.NO_AUTHOR_WITH_CONDITIONS, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.NO_AUTHOR_WITH_CONDITIONS, HttpStatusCode.BadRequest);
             }
 
             author = _mapper.Map<Author>(model);

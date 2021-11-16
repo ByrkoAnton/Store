@@ -20,7 +20,7 @@ namespace Store.BusinessLogicLayer.Servises
             var role = await _roleManager.FindByNameAsync(roleModel.RoleName);
             if (role is not null)
             {
-                throw new CustomExeption(Constants.Error.ROLE_EXISTS,
+                throw new CustomException(Constants.Error.ROLE_EXISTS,
                     HttpStatusCode.BadRequest);
             }
 

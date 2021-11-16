@@ -4,18 +4,18 @@ using System.Net;
 
 namespace Store.BusinessLogicLayer
 {
-    public class CustomExeption : Exception
+    public class CustomException : Exception
     {
         public List<string> ErrorList { get; set; }
         public HttpStatusCode StatusCode { get; set; }
 
-        public CustomExeption(string error, HttpStatusCode statusCode)
+        public CustomException(string error, HttpStatusCode statusCode)
         {
             ErrorList = new List<string>() {error};
             StatusCode = statusCode;
         }
 
-        public CustomExeption(List<string> errorList, HttpStatusCode statusCode)
+        public CustomException(List<string> errorList, HttpStatusCode statusCode)
         {
             ErrorList = errorList;
             StatusCode = statusCode;

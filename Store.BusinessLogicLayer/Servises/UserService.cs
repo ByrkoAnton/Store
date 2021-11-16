@@ -42,14 +42,14 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (updateModel is null || updateModel.Id is default(long))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                throw new CustomException(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.ADD_TO_ROLE_FAILD_NO_USER,
+                throw new CustomException(Constants.Error.ADD_TO_ROLE_FAILD_NO_USER,
                     HttpStatusCode.BadRequest);
             }
 
@@ -57,7 +57,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!roleAddingResult.Succeeded)
             {
-                throw new CustomExeption(Constants.Error.ROLE_IS_NOT_PROVIDED,
+                throw new CustomException(Constants.Error.ROLE_IS_NOT_PROVIDED,
                     HttpStatusCode.BadRequest);
             }
         }
@@ -65,14 +65,14 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (updateModel is null || updateModel.Id is default(long))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                throw new CustomException(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.BLOCKING_FAILD_NO_USER,
+                throw new CustomException(Constants.Error.BLOCKING_FAILD_NO_USER,
                      HttpStatusCode.BadRequest);
             }
 
@@ -93,14 +93,14 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (updateModel is null || updateModel.Id is default(long))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                throw new CustomException(Constants.Error.WRONG_MODEL,
                      HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.DELETE_FAILD_NO_USER,
+                throw new CustomException(Constants.Error.DELETE_FAILD_NO_USER,
                      HttpStatusCode.BadRequest);
             }
 
@@ -122,14 +122,14 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (updateModel is null || id is default(long))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                throw new CustomException(Constants.Error.WRONG_MODEL,
                      HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.USER_NOT_FOUND,
+                throw new CustomException(Constants.Error.USER_NOT_FOUND,
                      HttpStatusCode.BadRequest);
             }
 
@@ -137,7 +137,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (isEmailChanging && await _userManager.FindByEmailAsync(updateModel.Email) is not null)
             {
-                throw new CustomExeption(Constants.Error.EMAIL_EXIST_DB,
+                throw new CustomException(Constants.Error.EMAIL_EXIST_DB,
                     HttpStatusCode.BadRequest);
             }
 
@@ -172,7 +172,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (user is null || !await _userManager.IsEmailConfirmedAsync(user))
             {
-                throw new CustomExeption(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
+                throw new CustomException(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
                      HttpStatusCode.BadRequest);
             }
 
@@ -201,14 +201,14 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (id is default(long))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                throw new CustomException(Constants.Error.WRONG_MODEL,
                      HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB,
+                throw new CustomException(Constants.Error.NO_USER_ID_IN_DB,
                      HttpStatusCode.BadRequest);
             }
 
@@ -231,14 +231,14 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (id is default(long))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                throw new CustomException(Constants.Error.WRONG_MODEL,
                      HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.NO_USER_ID_IN_DB, HttpStatusCode.BadRequest);
             }
 
             return _mapper.Map<UserModel>(user);
@@ -259,7 +259,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!users.Any())
             {
-                throw new CustomExeption(Constants.Error.NO_USER_THIS_CONDITIONS,
+                throw new CustomException(Constants.Error.NO_USER_THIS_CONDITIONS,
                     HttpStatusCode.BadRequest);
             }
 

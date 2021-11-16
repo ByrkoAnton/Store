@@ -31,13 +31,13 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (id is default(long))
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                throw new CustomException(Constants.Error.WRONG_MODEL,
                                      HttpStatusCode.BadRequest);
             }
             var edition = await _printingEditionRepository.GetByIdAsync(id);
             if (edition is null)
             {
-                throw new CustomExeption(Constants.Error.NO_EDITION_IN_DB,
+                throw new CustomException(Constants.Error.NO_EDITION_IN_DB,
                     HttpStatusCode.BadRequest);
             }
             var editionModel = _mapper.Map<PrintingEditionModel>(edition);
@@ -47,14 +47,14 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (!model.AuthorModels.Any())
             {
-                throw new CustomExeption(Constants.Error.NO_AUTHOR,
+                throw new CustomException(Constants.Error.NO_AUTHOR,
                      HttpStatusCode.BadRequest);
             }
 
 
             if (string.IsNullOrWhiteSpace(model.Title))
             {
-                throw new CustomExeption(Constants.Error.NO_TITLE,
+                throw new CustomException(Constants.Error.NO_TITLE,
                      HttpStatusCode.BadRequest);
             }
 
@@ -62,7 +62,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (edition is not null)
             {
-                throw new CustomExeption(Constants.Error.EDITION_EXISTS_DB,
+                throw new CustomException(Constants.Error.EDITION_EXISTS_DB,
                      HttpStatusCode.BadRequest);
             }
 
@@ -72,7 +72,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!isAuthorsInDb)
             {
-                throw new CustomExeption(Constants.Error.ADD_AUTHOR_FIRST,
+                throw new CustomException(Constants.Error.ADD_AUTHOR_FIRST,
                  HttpStatusCode.BadRequest);
             }
 
@@ -84,7 +84,7 @@ namespace Store.BusinessLogicLayer.Servises
             var edition = await _printingEditionRepository.GetByIdAsync(model.Id);
             if (edition is null)
             {
-                throw new CustomExeption(Constants.Error.EDITION_NOT_FOUND,
+                throw new CustomException(Constants.Error.EDITION_NOT_FOUND,
                      HttpStatusCode.BadRequest);
             }
             await _printingEditionRepository.RemoveAsync(edition);
@@ -114,14 +114,14 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (string.IsNullOrWhiteSpace(model.Title))
             {
-                throw new CustomExeption(Constants.Error.NO_TITLE,
+                throw new CustomException(Constants.Error.NO_TITLE,
                     HttpStatusCode.BadRequest);
             }
 
             var edition = await _printingEditionRepository.GetByTitle(model.Title);
             if (edition is null)
             {
-                throw new CustomExeption(Constants.Error.WRONG_CONDITIONS_EDITION,
+                throw new CustomException(Constants.Error.WRONG_CONDITIONS_EDITION,
                    HttpStatusCode.BadRequest);
             }
             var editionModel = _mapper.Map<PrintingEditionModel>(edition);
@@ -132,14 +132,14 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (model is null)
             {
-                throw new CustomExeption(Constants.Error.WRONG_MODEL,
+                throw new CustomException(Constants.Error.WRONG_MODEL,
                     HttpStatusCode.BadRequest);
             }
 
             var edition = await _printingEditionRepository.GetByIdAsync(model.Id);
             if (edition is null)
             {
-                throw new CustomExeption(Constants.Error.NO_EDITION_IN_DB,
+                throw new CustomException(Constants.Error.NO_EDITION_IN_DB,
                     HttpStatusCode.BadRequest);
             }
 

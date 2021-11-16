@@ -40,7 +40,7 @@ namespace Store.BusinessLogicLayer.Servises
             var emailCheck = await _userManager.FindByEmailAsync(signUpModel.Email);
             if (emailCheck is not null)
             {
-                throw new CustomExeption(Constants.Error.REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE,
+                throw new CustomException(Constants.Error.REGISRATION_FAILD_THIS_EMAIL_IS_ALREADY_IN_USE,
                     HttpStatusCode.BadRequest);
             }
 
@@ -50,7 +50,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!result.Succeeded)
             {
-                throw new CustomExeption(Constants.Error.REGISRATION_USER_NOT_CREATED,
+                throw new CustomException(Constants.Error.REGISRATION_USER_NOT_CREATED,
                    HttpStatusCode.BadRequest);
             }
 
@@ -58,7 +58,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!addToRoleResult.Succeeded)
             {
-                throw new CustomExeption(Constants.Error.USER_ROLE_DID_NOT_ADDED,
+                throw new CustomException(Constants.Error.USER_ROLE_DID_NOT_ADDED,
                    HttpStatusCode.BadRequest);
             }
 
@@ -81,7 +81,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByNameAsync(signInModel.Email);
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.LOGIN_FAILD_WRONG_DATA,
+                throw new CustomException(Constants.Error.LOGIN_FAILD_WRONG_DATA,
                     HttpStatusCode.BadRequest);
             }
 
@@ -89,7 +89,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!signIn.Succeeded)
             {
-                throw new CustomExeption(Constants.Error.LOGIN_FAILD_WRONG_DATA, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.LOGIN_FAILD_WRONG_DATA, HttpStatusCode.BadRequest);
             }
 
             var roleList = await _userManager.GetRolesAsync(user);
@@ -140,13 +140,13 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
             {
-                throw new CustomExeption(Constants.Error.NO_USER_ID_IN_DB,
+                throw new CustomException(Constants.Error.NO_USER_ID_IN_DB,
                     HttpStatusCode.BadRequest);
             }
 
             if (refreshToken != user.RefreshToken)
             {
-                throw new CustomExeption(Constants.RefreshToken.TOKENS_NOT_EQUALS,
+                throw new CustomException(Constants.RefreshToken.TOKENS_NOT_EQUALS,
                     HttpStatusCode.BadRequest);
             }
             TokenResponseModel tokenResponseModel = new TokenResponseModel();
