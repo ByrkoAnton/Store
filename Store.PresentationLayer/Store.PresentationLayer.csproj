@@ -20,6 +20,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Scrutor" Version="3.3.0" />
     <PackageReference Include="Stripe.net" Version="39.64.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
@@ -28,6 +29,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Store.BusinessLogicLayer\Store.BusinessLogicLayer.csproj" />
     <ProjectReference Include="..\Store.Sharing\Store.Sharing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Administration\Data\" />
+    <Folder Include="Areas\Administration\Models\" />
   </ItemGroup>
 
 </Project>

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AdminApp.Entities;
 using AdminApp.Models;
 using AdminApp.Providers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Store.BusinessLogicLayer;
+using Store.DataAccessLayer.Entities;
 
 namespace AdminApp.SignIn
 {
@@ -39,14 +39,14 @@ namespace AdminApp.SignIn
                 var user = await _userManager.FindByNameAsync(AuthModel.Email);
                 if (user is null)
                 {
-                    throw new CustomException("No user",HttpStatusCode.Unauthorized);
+                    //throw new CustomException("No user",HttpStatusCode.Unauthorized);
                 }
 
                 var signIn = await _signInManager.PasswordSignInAsync(AuthModel.Email, AuthModel.Password, false, false);
 
                 if (!signIn.Succeeded)
                 {
-                    throw new CustomException("Wrong password", HttpStatusCode.Unauthorized);
+                    //throw new CustomException("Wrong password", HttpStatusCode.Unauthorized);
                 }
                 var roleList = await _userManager.GetRolesAsync(user);
 

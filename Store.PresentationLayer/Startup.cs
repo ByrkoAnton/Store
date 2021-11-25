@@ -61,6 +61,10 @@ namespace Store.PresentationLayer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                name: "MyArea",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
                     name: Constants.MapControllerRoute.NAME,
                     pattern: Constants.MapControllerRoute.PATERN);
             });

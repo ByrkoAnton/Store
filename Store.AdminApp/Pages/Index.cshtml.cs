@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace AdminApp.Pages
 {
@@ -19,7 +16,7 @@ namespace AdminApp.Pages
 
         public IActionResult OnGet()
         {
-            string url = "https://localhost:44340/auth/signin";
+            string url = "https://localhost:5001/auth/signin";
             return Redirect(url);
         }
     }

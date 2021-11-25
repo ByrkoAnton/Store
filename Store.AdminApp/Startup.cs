@@ -1,6 +1,4 @@
 using AdminApp.Config;
-using AdminApp.Entities;
-using AdminApp.Models;
 using AdminApp.Providers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -9,7 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Store.BusinessLogicLayer.Servises;
+using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.DataAccessLayer.AppContext;
+using Store.DataAccessLayer.Entities;
 
 namespace AdminApp
 {
@@ -24,7 +25,8 @@ namespace AdminApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<ITokenProvider, TokenProvider>();
+           //services.AddTransient<IUserAccountService, UserAccountService>();
+           services.AddTransient<ITokenProvider, TokenProvider>();
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
 
@@ -47,8 +49,6 @@ namespace AdminApp
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
-
             app.UseExceptionHandler("/Error");
 
             app.UseHsts();
@@ -65,7 +65,16 @@ namespace AdminApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+
+                endpoints.MapControllerRoute(
+                    name: "MyArea",
+                  pattern: "{area:exists}/{controller=AdminAccount}/{action=SignIn}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=AdminAccount}/{action=SignIn}/{id?}");
             });
+
         }
     }
 }
