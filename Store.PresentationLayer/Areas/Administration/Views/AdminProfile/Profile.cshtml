@@ -1,0 +1,18 @@
+﻿@model Store.BusinessLogicLayer.Models.Users.UserModel
+@{
+    Layout = "~/_Layout.cshtml";
+}
+@{
+    <div class="mainContent">
+    <h2>Profile:</h2>
+        <a>Last Name:</a>
+        <a class="from-query">@Model.LastName</a><br>
+
+        <a>First Name:</a>
+        <a class="from-query">@Model.FirstName</a><br>
+
+        <a>Email:</a>
+        <a class="from-query">@Model.Email</a><br>
+    <input class="button" type="button" value="Update profile" onclick="location.href='@Url.Action("UpdateProfile", "AdminProfile")'" />
+    </div>
+}

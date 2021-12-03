@@ -11,6 +11,7 @@ using Store.Sharing.Constants;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Store.BusinessLogicLayer.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Store.DataAccessLayer
 {
@@ -39,10 +40,13 @@ namespace Store.DataAccessLayer
                     opts.Password.RequireUppercase = true;
                     opts.Password.RequireNonAlphanumeric = true;
                     opts.Password.RequiredLength = Constants.User.PASSWORD_REQUIRED_LENGHT;
+                   
                 })
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(option => option.LoginPath = "/Areas/Administration/AdminAccount/SignIn");//
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);//
             services.AddAuthentication()
                      .AddJwtBearer(options =>
                      {
@@ -59,6 +63,8 @@ namespace Store.DataAccessLayer
                          };
 
                      });
+
+
             services.InitialazerAsync().Wait();
         }
     }

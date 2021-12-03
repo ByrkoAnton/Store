@@ -7,6 +7,9 @@ using Store.Sharing.Constants;
 using Stripe;
 using Microsoft.OpenApi.Models;
 using Store.BusinessLogicLayer;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Store.PresentationLayer
 {
@@ -55,8 +58,23 @@ namespace Store.PresentationLayer
             app.UseMiddleware<ErrorHandingMiddleware>();
             app.UseHttpsRedirection();
             app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(env.ContentRootPath, "./Areas/Administration/Styles")),
+                RequestPath = "/Styles"
+            });
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(env.ContentRootPath, "./Areas/Administration/Views")),
+                RequestPath = "/Views"
+            });
 
             app.UseEndpoints(endpoints =>
             {
@@ -68,6 +86,7 @@ namespace Store.PresentationLayer
                     name: Constants.MapControllerRoute.NAME,
                     pattern: Constants.MapControllerRoute.PATERN);
             });
+
         }
     }
 }

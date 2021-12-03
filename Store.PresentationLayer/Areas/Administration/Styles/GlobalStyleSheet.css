@@ -1,0 +1,26 @@
+﻿body {
+}
+
+h2 {
+  color:olivedrab;
+  margin-bottom:5px;
+
+}
+.mainContent{
+    margin: 0;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+.from-query {
+    color: darkred;
+}
+a{
+    font-size:22px;
+}
+.button{
+    font-size:16px;
+}

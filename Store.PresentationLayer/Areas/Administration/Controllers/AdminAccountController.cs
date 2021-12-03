@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using System.Threading.Tasks;
@@ -26,9 +27,17 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         public async Task<IActionResult> SignIn(UserSignInModel signInModel)
         {
             var result = await _accountService.SignInAsync(signInModel);
+            Response.Cookies.Append("jwt", result.AccessToken);
 
-            return View("Navigation");
+          return RedirectToAction("Navigation");
 
+        }
+
+        [Authorize (Roles = "admin")]
+        [HttpGet]
+        public IActionResult Navigation()
+        {
+            return View();
         }
     }
 }

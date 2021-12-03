@@ -1,0 +1,22 @@
+﻿body {
+}
+
+.navbar {
+    background-color: forestgreen;
+    font-size: 22px;
+    border-radius: 5px;
+}
+
+    .navbar.items {
+        color: antiquewhite;
+        margin-right: 25px;
+        text-decoration: none;
+        vertical-align: 10px;
+    }
+
+    .navbar.title {
+        color: palegreen;
+        font-size: 32px;
+        vertical-align: 10px;
+        margin-right: 25px;
+    }
