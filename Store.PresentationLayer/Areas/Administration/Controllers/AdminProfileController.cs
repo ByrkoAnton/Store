@@ -41,5 +41,25 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             await _userService.UserUpdateAsync(updateModel, accessToken);
             return RedirectToAction("GetProfile");
         }
+
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel changePasswordModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var accessToken = HttpContext.Request.Cookies["jwt"];
+                await _userService.ChangePasswordAsync(changePasswordModel, accessToken);
+                return RedirectToAction("SignIn", "AdminAccount");
+            }
+            return View();
+        }
     }
 }

@@ -212,8 +212,13 @@ namespace Store.BusinessLogicLayer.Servises
                      HttpStatusCode.BadRequest);
             }
 
-            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            var isCurrentPaswordValid = await _userManager.CheckPasswordAsync(user, model.CurrentPassword);
+            if (!isCurrentPaswordValid)
+            {
+                throw new CustomException(Constants.Error.CURRENT_PASSWORD_WRONG, HttpStatusCode.BadRequest);
+            }
 
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
             if (!result.Succeeded)
             {
                 throw new Exception(Constants.Error.PASSWORD_RESET_FAILD);

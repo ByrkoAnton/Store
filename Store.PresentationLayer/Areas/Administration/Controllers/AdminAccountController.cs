@@ -26,11 +26,13 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> SignIn(UserSignInModel signInModel)
         {
-            var result = await _accountService.SignInAsync(signInModel);
-            Response.Cookies.Append("jwt", result.AccessToken);
-
-          return RedirectToAction("Navigation");
-
+            if (ModelState.IsValid)
+            {
+                var result = await _accountService.SignInAsync(signInModel);
+                Response.Cookies.Append("jwt", result.AccessToken);
+                return RedirectToAction("Navigation");
+            }
+            return View();
         }
 
         [Authorize (Roles = "admin")]

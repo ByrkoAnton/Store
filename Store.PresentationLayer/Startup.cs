@@ -9,7 +9,6 @@ using Microsoft.OpenApi.Models;
 using Store.BusinessLogicLayer;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
-using Microsoft.AspNetCore.Http;
 
 namespace Store.PresentationLayer
 {

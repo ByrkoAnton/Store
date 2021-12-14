@@ -81,7 +81,7 @@ namespace Store.BusinessLogicLayer.Servises
             var user = await _userManager.FindByNameAsync(signInModel.Email);
             if (user is null)
             {
-                throw new CustomException(Constants.Error.LOGIN_FAILD_WRONG_DATA,
+                throw new CustomException(Constants.Error.BAD_LOG_DATA_MSG,
                     HttpStatusCode.BadRequest);
             }
 
@@ -89,7 +89,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             if (!signIn.Succeeded)
             {
-                throw new CustomException(Constants.Error.LOGIN_FAILD_WRONG_DATA, HttpStatusCode.BadRequest);
+                throw new CustomException(Constants.Error.BAD_LOG_DATA_MSG, HttpStatusCode.BadRequest);
             }
 
             var roleList = await _userManager.GetRolesAsync(user);

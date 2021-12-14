@@ -6,6 +6,19 @@ h2 {
   margin-bottom:5px;
 
 }
+
+table{
+    border: 1px solid black;
+    width: 100%;
+}
+th, td {
+    border: 1px solid black;
+}
+
+.stardart-font {
+    font-size: 22px;
+}
+
 .mainContent{
     margin: 0;
     position: absolute;
@@ -23,4 +36,9 @@ a{
 }
 .button{
     font-size:16px;
+}
+
+.field-validation-error {
+    color: red;
+    font-size:14px;
 }

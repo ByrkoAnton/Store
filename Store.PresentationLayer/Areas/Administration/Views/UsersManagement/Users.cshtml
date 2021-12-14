@@ -1,0 +1,31 @@
+﻿@model Store.BusinessLogicLayer.Models.PaginationsModels.NavigationModelBase<Store.BusinessLogicLayer.Models.Users.UserModel>
+
+@{
+    Layout = "~/_Layout.cshtml";
+}
+
+@{
+    <form asp-controller="UserManagement" asp-action="GetUsers">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Last name</th>
+                <th>First name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            @foreach (Store.BusinessLogicLayer.Models.Users.UserModel user in Model.Models)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.LastName</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.Email</td>
+                    <td>@user.IsBlocked</td>
+                    <td>Actions</td>
+                </tr>
+            }
+        </table>
+    </form>
+}
