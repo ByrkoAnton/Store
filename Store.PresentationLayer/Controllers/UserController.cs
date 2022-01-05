@@ -26,13 +26,6 @@ namespace Store.PresentationLayer.Controllers
             return Ok();
         }
 
-        [HttpPost("UserDelete")]
-        public async Task<IActionResult> UserDelete(UserUpdateModel updateModel)
-        {
-            await _userService.UserDeleteAsync(updateModel);
-            return Ok();
-        }
-
         [HttpPost("UserBlockUnblok")]
         public async Task<IActionResult> UserBlockUnblok(UserUpdateModel updateModel)
         {

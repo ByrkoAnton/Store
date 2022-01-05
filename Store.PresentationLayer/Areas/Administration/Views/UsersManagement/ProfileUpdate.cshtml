@@ -1,0 +1,40 @@
+﻿@model Store.BusinessLogicLayer.Models.Users.UserModel
+
+@{
+    Layout = "~/_Layout.cshtml";
+}
+
+@{
+    <div class="mainContent">
+        <h2>Update profile</h2>
+        <form class="stardart-font" asp-controller="UsersManagement" asp-action="UpdateProfile">
+            <div class="form-group">
+                <label asp-for="Id " class="control-label">ID</label>
+                <input type="text" disabled="disabled" value="@Model.Id" class="form-control stardart-font from-query" />
+
+                <input type="text" hidden="hidden" asp-for="Id"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName " class="control-label">Last name</label>
+                <input type="text" asp-for="LastName" class="form-control stardart-font from-query" />
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName " class="control-label">First name</label>
+                <input type="text" asp-for="FirstName" class="form-control stardart-font from-query" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email " class="control-label">Email</label>
+                <input type="email" asp-for="Email" class="form-control stardart-font from-query" />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default button" />
+                <input class="button" type="button" value="Cancel" onclick="location.reload();" />
+                <input class="button" type="button" value="Reset password" onclick="location.href='@Url.Action("ResetPassword", "UsersManagement")?id=' + @Model.Id"/>
+            </div>
+        </form>
+    </div>
+}
+
+

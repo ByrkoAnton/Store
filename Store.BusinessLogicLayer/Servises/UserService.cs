@@ -89,15 +89,15 @@ namespace Store.BusinessLogicLayer.Servises
         {
             await _userRepository.RemoveRangeAsync(_userManager.Users.Where(i => i.IsBlocked).ToList());
         }
-        public async Task UserDeleteAsync(UserUpdateModel updateModel)
+        public async Task UserDeleteAsync(long id)
         {
-            if (updateModel is null || updateModel.Id is default(long))
+            if (id is default(long))
             {
                 throw new CustomException(Constants.Error.WRONG_MODEL,
                      HttpStatusCode.BadRequest);
             }
 
-            var user = await _userManager.FindByIdAsync(updateModel.Id.ToString());
+            var user = await _userManager.FindByIdAsync(id.ToString());
             if (user is null)
             {
                 throw new CustomException(Constants.Error.DELETE_FAILD_NO_USER,
@@ -112,13 +112,15 @@ namespace Store.BusinessLogicLayer.Servises
                     $" {StatusCodes.Status500InternalServerError}");
             }
         }
-        public async Task<string> UserUpdateAsync(UserUpdateModel updateModel, string jwt)
+        public async Task<string> UserUpdateAsync(UserUpdateModel updateModel, string authentication)
         {
+            if (!long.TryParse(authentication, out long id))
+            {
+                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+                var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
 
-            var jwtTrimed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
-
-            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
+                id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
+            }
 
             if (updateModel is null || id is default(long))
             {
@@ -191,13 +193,38 @@ namespace Store.BusinessLogicLayer.Servises
 
             return Constants.User.CHECK_MSG;
         }
-
-        public async Task ChangePasswordAsync(ChangePasswordModel model, string jwt)
+        public async Task ResetPasswordByAdminAsync(string id)
         {
-            var jwtTrimed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
+            var user = await _userManager.FindByIdAsync(id);
 
-            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
+            if (user is null || !await _userManager.IsEmailConfirmedAsync(user))
+            {
+                throw new CustomException(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
+                     HttpStatusCode.BadRequest);
+            }
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var newPassword = PasswordGenerator.GeneratePassword(Constants.User.PASSWORD_LENGHT,
+                Constants.User.PASSWORD_DIGETS, Constants.User.PASSWORD_SPECIAL_CHARS);
+            var result = await _userManager.ResetPasswordAsync(user, code, newPassword);
+
+            if (!result.Succeeded)
+            {
+                throw new Exception(Constants.Error.PASSWORD_RESET_FAILD);
+            }
+
+            await _emailService.SendEmailAsync(user.Email, Constants.User.RESET_PASSWORD_SUBJ,
+            String.Format(Constants.User.RESET_PASSWORD_MSG, newPassword));    
+        }
+        public async Task ChangePasswordAsync(ChangePasswordModel model, string authentication)
+        {
+            if (!long.TryParse(authentication, out long id))
+            {
+                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+                var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
+
+                id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
+            }
 
             if (id is default(long))
             {
@@ -226,13 +253,15 @@ namespace Store.BusinessLogicLayer.Servises
 
             await _signInManager.SignOutAsync();
         }
-
-        public async Task<UserModel> GetUserByIdAsync(string jwt)
+        public async Task<UserModel> GetUserByIdAsync(string authentication)
         {
-            var jwtTrimed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
+            if (!long.TryParse(authentication, out long id))
+            {
+                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+                var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
 
-            var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
+                id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
+            }
 
             if (id is default(long))
             {
@@ -247,7 +276,6 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             return _mapper.Map<UserModel>(user);
-
         }
         public async Task<NavigationModelBase<UserModel>> GetUsersAsync(UserFiltrationModel model)
         {
@@ -257,22 +285,22 @@ namespace Store.BusinessLogicLayer.Servises
                 .Where(n => model.Id == null || n.Id == model.Id)
                 .Where(n => EF.Functions.Like(n.LastName, $"%{model.LastName}%"))
                 .Where(n => EF.Functions.Like(n.FirstName, $"%{model.FirstName}%"))
+                .Where(n => EF.Functions.Like(n.Email, $"%{model.Email}%"))
                 .Where(n => model.IsBlocked == null || n.IsBlocked == model.IsBlocked)
                 .OrderBy(propertyForSort, model.IsAscending)
                 .Skip((model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize)
                 .Take(model.PageSize).ToListAsync();
 
-            if (!users.Any())
+            int usersCount = default;
+            if (users.Any())
             {
-                throw new CustomException(Constants.Error.NO_USER_THIS_CONDITIONS,
-                    HttpStatusCode.BadRequest);
-            }
-
-            int usersCount = await _userManager.Users
+                usersCount = await _userManager.Users
                 .Where(n => model.Id == null || n.Id == model.Id)
                 .Where(n => EF.Functions.Like(n.LastName, $"%{model.LastName}%"))
                 .Where(n => EF.Functions.Like(n.FirstName, $"%{model.FirstName}%"))
+                .Where(n => EF.Functions.Like(n.Email, $"%{model.Email}%"))
                 .Where(n => n.IsBlocked == model.IsBlocked || model.IsBlocked == null).CountAsync();
+            }
 
             var userModels = _mapper.Map<IEnumerable<UserModel>>(users).ToList();
 

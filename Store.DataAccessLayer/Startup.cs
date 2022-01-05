@@ -45,8 +45,8 @@ namespace Store.DataAccessLayer
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
-            services.ConfigureApplicationCookie(option => option.LoginPath = "/Areas/Administration/AdminAccount/SignIn");//
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);//
+            services.ConfigureApplicationCookie(option => option.LoginPath = "/Areas/Administration/AdminAccount/SignIn");
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
             services.AddAuthentication()
                      .AddJwtBearer(options =>
                      {

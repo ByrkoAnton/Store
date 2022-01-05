@@ -45,12 +45,19 @@ namespace Store.BusinessLogicLayer.Servises
 
             await _orderRepository.CreateAsync(order);
 
-            List<long> EditionsId = model.Editions.Select(id => id.EditionId).ToList();
+            List<long> editionIds = model.Editions.Select(id => id.EditionId).ToList();
 
-            var editions = await _printingEditionRepository.GetEditionsListByIdListAsync(EditionsId);
+            var editions = await _printingEditionRepository.GetEditionsListByIdListAsync(editionIds);
 
             List<OrderItem> orderItems = new List<OrderItem>();
-
+            //List<OrderItem> test = editions.Select(edition => new OrderItem
+            //{
+            //    EditionPrice = edition.Price,
+            //    Currency = edition.Currency,
+            //    PrintingEditionId = edition.Id,
+            //    OrderId = order.Id,
+            //    Count = (int)model.Editions.FirstOrDefault(c => c.EditionId == edition.Id).Count
+            //}).ToList(); 
             foreach (var i in editions)
             {
                 OrderItem orderItem = new OrderItem

@@ -1,18 +1,53 @@
 ﻿@model Store.BusinessLogicLayer.Models.PaginationsModels.NavigationModelBase<Store.BusinessLogicLayer.Models.Users.UserModel>
-
 @{
     Layout = "~/_Layout.cshtml";
 }
 
+@section AddToHead
+{
+    <link href="~/Styles/UserManagementStyleSheet.css" rel="stylesheet" type="text/css" />
+}
 @{
-    <form asp-controller="UserManagement" asp-action="GetUsers">
+
+
+    <form id="usersForm" class="stardart-font" asp-controller="UsersManagement" asp-action="GetUsers">
         <table>
             <tr>
-                <th>Id</th>
-                <th>Last name</th>
-                <th>First name</th>
-                <th>Email</th>
-                <th>Status</th>
+                <th>
+                    Id
+                    <span class="sort-button">
+                        <input type="button" value="1-9" class="btn btn-default button" onclick="sort(`Id`,`asc`);" />
+                        <input type="button" value="9-1" class="btn btn-default button" onclick="sort(`Id`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    Last name
+                    <span class="sort-button">
+                        <input type="button" value="a-z" class="btn btn-default button" onclick="sort(`LastName`,`asc`);" />
+                        <input type="button" value="z-a" class="btn btn-default button" onclick="sort(`LastName`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    First name
+                    <span class="sort-button">
+                        <input type="button" value="a-z" class="btn btn-default button" onclick="sort(`FirstName`,`asc`);" />
+                        <input type="button" value="z-a" class="btn btn-default button" onclick="sort(`FirstName`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    Email
+                    <span class="sort-button">
+                        <input type="button" value="a-z" class="btn btn-default button" onclick="sort(`Email`,`asc`);" />
+                        <input type="button" value="z-a" class="btn btn-default button" onclick="sort(`Email`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    Status
+                    <span class="sort-button">
+                        <input type="button" value="&#10004;" class="btn btn-default button" onclick="sort(`IsBlocked`,`asc`);" />
+                        <input type="button" value="&#10008;" class="btn btn-default button" onclick="sort(`IsBlocked`,`dsc`);" />
+                    </span>
+                </th>
                 <th>Actions</th>
             </tr>
             @foreach (Store.BusinessLogicLayer.Models.Users.UserModel user in Model.Models)
@@ -22,10 +57,152 @@
                     <td>@user.LastName</td>
                     <td>@user.FirstName</td>
                     <td>@user.Email</td>
-                    <td>@user.IsBlocked</td>
-                    <td>Actions</td>
+                    <td>
+                        @if (@user.IsBlocked == true)
+                        {
+                            <a style="color:red">&#10008;</a>
+                        }
+                        else
+                        {
+                            <a style="color:forestgreen">&#10004;</a>
+                        }
+
+                    </td>
+                    <td>
+                        <input type="button" value="Edit" class="btn btn-default button" onclick="update(@user.Id);" />
+                        <input type="button" value="&#10004;/&#10008;" class="btn btn-default button" onclick="statusChange(@user.Id);" />
+                        <input type="button" value="Del" class="btn btn-default button" onclick="deleteUser(@user.Id);" />
+                    </td>
                 </tr>
             }
+            <tr>
+                <td style="text-align:center;">
+                    SEARCH
+                </td>
+                <td>
+                    <input class="search" type="text" id="LastName" />
+                    <script type="text/javascript">
+                        document.getElementById("LastName").value = JSON.parse(localStorage.getItem('lastNameForSearch'));
+                    </script>
+                </td>
+                <td>
+                    <input class="search" type="text" id="FirstName" />
+                    <script type="text/javascript">
+                        document.getElementById("FirstName").value = JSON.parse(localStorage.getItem('firstNameForSearch'));
+                    </script>
+                </td>
+                <td>
+                    <input class="search" type="text" id="Email" />
+                    <script type="text/javascript">
+                        document.getElementById("Email").value = JSON.parse(localStorage.getItem('emailForSearch'));
+                    </script>
+                </td>
+                <td colspan="2">
+                    <input style="width: 100%" type="button" value="SEARCH" class="btn btn-default button" onclick="sort(`Id`,`asc`);" />
+                </td>
+            </tr>
         </table>
+        <div class="pagination">
+            @if (@Model.PageModel.HasPreviousPage)
+            {
+                <input type="button" value="<<" class="btn btn-default button" onclick="navigateToPage(`1`);" />
+                <input type="button" value="<" class="btn btn-default button" onclick="navigateToPage(`-1`);" />
+            }
+
+            @if (!@Model.PageModel.HasPreviousPage)
+            {
+                <input type="button" disabled="disabled" value="<<" class="btn btn-default button" />
+                <input type="button" disabled="disabled" value="<" class="btn btn-default button" />
+            }
+
+            <input class="current-page" id="current" type="number" value="@Model.PageModel.PageNumber" min="1" step="1" onchange="navigateToPage();" />
+            /@Model.PageModel.TotalPages
+
+            @if (@Model.PageModel.HasNextPage)
+            {
+                <input type="button" value=">" class="btn btn-default button" onclick="navigateToPage(`+1`);" />
+                <input type="button" value=">>" class="btn btn-default button" onclick="navigateToPage(@Model.PageModel.TotalPages);" />
+            }
+
+            @if (!@Model.PageModel.HasNextPage)
+            {
+                <input type="button" disabled="disabled" value=">" class="btn btn-default button" />
+                <input type="button" disabled="disabled" value=">>" class="btn btn-default button" />
+            }
+        </div>
     </form>
+}
+
+@section scripts{
+    <script>
+        function sort(parametr, sortDirection)
+        {
+            var emailForSearch = document.getElementById("Email").value;
+            var firstNameForSearch = document.getElementById("FirstName").value;
+            var lastNameForSearch = document.getElementById("LastName").value;
+            var isAsc = sortDirection == "asc";
+
+            localStorage.setItem("sortParametr", JSON.stringify(parametr));
+            localStorage.setItem("sortDirection", JSON.stringify(isAsc));
+
+            localStorage.setItem("emailForSearch", JSON.stringify(emailForSearch));
+            localStorage.setItem("firstNameForSearch", JSON.stringify(firstNameForSearch));
+            localStorage.setItem("lastNameForSearch", JSON.stringify(lastNameForSearch));
+
+            document.cookie = "emailForSearch" + "=" + encodeURIComponent(emailForSearch);
+            document.cookie = "firstNameForSearch" + "=" + encodeURIComponent(firstNameForSearch);
+            document.cookie = "lastNameForSearch" + "=" + encodeURIComponent(lastNameForSearch);
+
+            return window.location.href = '@Url.Action("GetUsers", "UsersManagement")?sortBy=' + parametr + '&isAsc=' + isAsc;
+        }
+
+        function navigateToPage(page) {
+            if (page === "+1" || page === "-1") {
+                page = parseInt(document.getElementById("current").value) + parseInt(page);
+            }
+            if (page === undefined) {
+                page = document.getElementById("current").value;
+            }
+
+            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
+            var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
+            return window.location.href = '@Url.Action("GetUsers", "UsersManagement")?sortBy=' + sortParametr + '&isAsc=' + sortDirection + '&page=' + page;
+        }
+
+        function statusChange(id) {
+            var currentURL = encodeURIComponent(window.location.href);
+            return window.location.href = '@Url.Action("ChangeStatus", "UsersManagement")?id=' + id + '&url=' + currentURL;
+        }
+
+        function isSortTypeActive(parametr, direction) {
+            debugger
+            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
+            var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
+            if (parametr === sortParametr && sortDirection == direction) {
+                return true;
+            }
+            return false;
+        }
+
+        function update(id) {
+            return window.location.href = '@Url.Action("UpdateProfile", "UsersManagement")?id=' + id;
+        }
+
+        function deleteUser(id) {
+            if(window.confirm("Do you really want to delete this user?")){
+            var currentURL = encodeURIComponent(window.location.href);
+            return window.location.href = '@Url.Action("DeleteUser", "UsersManagement")?id=' + id + '&url=' + currentURL;
+            };
+        }
+
+
+        function getCookie(name) {
+            debugger
+            let matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            let result = matches ? decodeURIComponent(matches[1]) : undefined;
+            return result;
+        }
+    </script>
 }
