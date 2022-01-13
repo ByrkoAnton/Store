@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Servises.Interfaces;
@@ -30,7 +29,6 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
                 Email = HttpContext.Request.Cookies["emailForSearch"],
                 CurrentPage = page,
             };
-            var a = sortModel.LastName;
             var result = await _userService.GetUsersAsync(sortModel);
            
             return View("Users", result);

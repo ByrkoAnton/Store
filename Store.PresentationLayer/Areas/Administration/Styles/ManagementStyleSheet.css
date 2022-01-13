@@ -1,0 +1,38 @@
+﻿body {
+}
+th {
+    text-align: left;
+}
+
+.sort-button {
+    float: right;
+    font-size: 0;
+}
+
+.search {
+    width: 97.9%;
+    font-size: 20px;
+    color:red;
+}
+
+.current-page {
+    width: 50px;
+    font-size: 20px;
+    text-align: center;
+
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.pagination {
+    text-align: center;
+    padding-top: 20px;
+}

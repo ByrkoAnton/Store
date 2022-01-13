@@ -1,0 +1,21 @@
+﻿@model Store.BusinessLogicLayer.Models.Authors.AuthorModel
+@{
+    Layout = "~/_Layout.cshtml";
+}
+
+@section AddToHead
+{
+    <link href="~/Styles/ManagementStyleSheet.css" rel="stylesheet" type="text/css" />
+}
+@{
+    <div class=mainContent>
+        <h2>Add new author</h2>
+        <form class="stardart-font" asp-controller="AuthorsManagement" asp-action="AddNewAuthor">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Author name</label>
+                <input type="text" asp-for="Name" />
+                <input type="submit" value="Add" class="btn btn-default button" />
+            </div>
+        </form>
+    </div>
+}

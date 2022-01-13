@@ -1,0 +1,127 @@
+﻿@model Store.BusinessLogicLayer.Models.PaginationsModels.NavigationModelBase<Store.BusinessLogicLayer.Models.Authors.AuthorModel>
+@{
+    Layout = "~/_Layout.cshtml";
+}
+
+@section AddToHead
+{
+    <link href="~/Styles/ManagementStyleSheet.css" rel="stylesheet" type="text/css" />
+}
+@{
+
+
+    <form id="usersForm" class="stardart-font" asp-controller="AuthorsManagement" asp-action="GetAuthors">
+        <table>
+            <tr>
+                <th>
+                    Id
+                    <span class="sort-button">
+                        <input type="button" value="1-9" class="btn btn-default button" onclick="sort(`Id`,`asc`);" />
+                        <input type="button" value="9-1" class="btn btn-default button" onclick="sort(`Id`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    Name
+                    <span class="sort-button">
+                        <input type="button" value="a-z" class="btn btn-default button" onclick="sort(`Name`,`asc`);" />
+                        <input type="button" value="z-a" class="btn btn-default button" onclick="sort(`Name`,`dsc`);" />
+                    </span>
+                </th>
+
+                <th>Actions</th>
+            </tr>
+            @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.Models)
+            {
+                <tr>
+                    <td>@author.Id</td>
+                    <td>@author.Name</td>
+                    <td>
+                        <input type="button" value="Profile" class="btn btn-default button" onclick="getProfile(@author.Id);" />
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td style="text-align:center;">
+                    SEARCH
+                </td>
+                <td>
+                    <input style="width: 99.2%" class="search" type="text" id="AuthorName" />
+                    <script type="text/javascript">
+                        document.getElementById("AuthorName").value = JSON.parse(localStorage.getItem('authorNameForSearch'));
+                    </script>
+                </td>
+
+                <td colspan="2">
+                    <input style="width: 100%" type="button" value="SEARCH" class="btn btn-default button" onclick="sort(`Id`,`asc`);" />
+                </td>
+            </tr>
+        </table>
+        <input style="width: 100%" type="button" value="ADD NEW AUTHOR" class="btn btn-default button" onclick="location.href='@Url.Action("AddNewAuthor", "AuthorsManagement")'" />
+        <div class="pagination">
+            @if (@Model.PageModel.HasPreviousPage)
+            {
+                <input type="button" value="<<" class="btn btn-default button" onclick="navigateToPage(`1`);" />
+                <input type="button" value="<" class="btn btn-default button" onclick="navigateToPage(`-1`);" />
+            }
+
+            @if (!@Model.PageModel.HasPreviousPage)
+            {
+                <input type="button" disabled="disabled" value="<<" class="btn btn-default button" />
+                <input type="button" disabled="disabled" value="<" class="btn btn-default button" />
+            }
+
+            <input class="current-page" id="current" type="number" value="@Model.PageModel.PageNumber" min="1" step="1" onchange="navigateToPage();" />
+            /@Model.PageModel.TotalPages
+
+            @if (@Model.PageModel.HasNextPage)
+            {
+                <input type="button" value=">" class="btn btn-default button" onclick="navigateToPage(`+1`);" />
+                <input type="button" value=">>" class="btn btn-default button" onclick="navigateToPage(@Model.PageModel.TotalPages);" />
+            }
+
+            @if (!@Model.PageModel.HasNextPage)
+            {
+                <input type="button" disabled="disabled" value=">" class="btn btn-default button" />
+                <input type="button" disabled="disabled" value=">>" class="btn btn-default button" />
+            }
+        </div>
+    </form>
+}
+
+@section scripts{
+    <script>
+        function sort(parametr, sortDirection)
+        {
+            var authorNameForSearch = document.getElementById("AuthorName").value;
+
+            var isAsc = sortDirection == "asc";
+
+            localStorage.setItem("sortParametr", JSON.stringify(parametr));
+            localStorage.setItem("sortDirection", JSON.stringify(isAsc));
+
+            localStorage.setItem("authorNameForSearch", JSON.stringify(authorNameForSearch));
+            document.cookie = "authorNameForSearch" + "=" + encodeURIComponent(authorNameForSearch);
+            
+            return window.location.href = '@Url.Action("GetAuthors", "AuthorsManagement")?sortBy=' + parametr + '&isAsc=' + isAsc;
+        }
+
+        function navigateToPage(page) {
+            if (page === "+1" || page === "-1") {
+                page = parseInt(document.getElementById("current").value) + parseInt(page);
+            }
+            if (page === undefined) {
+                page = document.getElementById("current").value;
+            }
+
+            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
+            var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
+            return window.location.href = '@Url.Action("GetAuthors", "AuthorsManagement")?sortBy=' + sortParametr + '&isAsc=' + sortDirection + '&page=' + page;
+        }
+
+        function getProfile(id) {
+            return window.location.href = '@Url.Action("GetAuthorProfile", "AuthorsManagement")?id=' + id;
+        }
+
+  
+    </script>
+}

@@ -1,0 +1,43 @@
+﻿@model Store.BusinessLogicLayer.Models.Authors.AuthorModel
+@{
+    Layout = "~/_Layout.cshtml";
+}
+
+@section AddToHead
+{
+    <link href="~/Styles/ManagementStyleSheet.css" rel="stylesheet" type="text/css" />
+}
+@{
+    <div class=mainContent>
+        <h2>Author profile:</h2>
+        <form class="stardart-font" asp-controller="AuthorsManagement" asp-action="UpdateAuthor">
+            <div class="form-group">
+                <label asp-for="Id " class="control-label">ID</label>
+                <input type="text" disabled="disabled" value="@Model.Id" class="form-control stardart-font from-query" />
+                <input type="text" hidden="hidden" asp-for="Id" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DateOfCreation" class="control-label">Created at: </label>
+                <input type="text" disabled="disabled" asp-for="DateOfCreation" class="form-control stardart-font from-query" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Last name</label>
+                <input type="text" asp-for="Name" class="form-control stardart-font from-query" />
+                <input type="submit" value="Change name" class="btn btn-default button" />
+                <input class="button" type="button" value="Cancel" onclick="location.reload();" /><br>
+            </div>
+
+            <a>Editions:</a>
+            <select style="font-size: 16px" id="edition">
+
+                @foreach (Store.BusinessLogicLayer.Models.EditionModel.PrintingEditionModel edition in Model.PrintingEditionModels)
+                {
+                    <option value="@edition.Id" class="from-query">@edition.Title</option>
+                }
+            </select>
+            <input class="button" type="button" value="Open edition profile" onclick="" />
+        </form>
+    </div>
+}
