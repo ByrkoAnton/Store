@@ -1,0 +1,161 @@
+﻿@model Store.BusinessLogicLayer.Models.EditionModel.EditionUpdateViewModel
+@{
+    Layout = "~/_Layout.cshtml";
+}
+
+@section AddToHead
+{
+    <link href="~/Styles/ManagementStyleSheet.css" rel="stylesheet" type="text/css" />
+}
+@{
+    <div class=mainContent>
+        <h2>Update edition</h2>
+        <form class="stardart-font" asp-controller="EditionManagement" asp-action="UpdateEdition">
+            <div class="form-group">
+                <label asp-for="PrintingEdition.Id" class="control-label">Id</label>
+                <input type="number" disabled="disabled" value="@Model.PrintingEdition.Id" />
+                <input type="number" hidden="hidden" value="@Model.PrintingEdition.Id" asp-for="PrintingEdition.Id" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PrintingEdition.DateOfCreation" class="control-label">Created at</label>
+                <input type="datetime" disabled="disabled" value="@Model.PrintingEdition.DateOfCreation" />
+                <input type="datetime" hidden="hidden" value="@Model.PrintingEdition.DateOfCreation" asp-for="PrintingEdition.DateOfCreation" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PrintingEdition.Title" class="control-label">Title</label>
+                <input type="text" value="@Model.PrintingEdition.Title" asp-for="PrintingEdition.Title" />
+            </div>
+            <div class="form-group">
+                <label asp-for="PrintingEdition.Description" class="control-label">Description</label>
+                <input type="text" value="@Model.PrintingEdition.Description" asp-for="PrintingEdition.Description" />
+            </div>
+            <div class="form-group">
+                <label asp-for="PrintingEdition.EditionType" class="control-label">Edition Type</label>
+                <select style="font-size: 16px" asp-for="PrintingEdition.EditionType">
+                    <option selectedselected="selected">
+                        @Model.PrintingEdition.EditionType
+                    </option>
+                    @if (@Model.PrintingEdition.EditionType.ToString() != "Book")
+                    {
+                        <option value="Book">Book</option>
+                    }
+                    @if (@Model.PrintingEdition.EditionType.ToString() != "Magazine")
+                    {
+                        <option value="Magazine">Magazine</option>
+                    }
+                    @if (@Model.PrintingEdition.EditionType.ToString() != "Newspaper")
+                    {
+                        <option value="Newspaper">Newspaper</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewAuthorsNames" class="control-label">Authors</label>
+                <input id="newAuthors" hidden="hidden" type="text" value="" asp-for="NewAuthorsNames" />
+                <input id="deletedAuthors" hidden="hidden" type="text" value="" asp-for="DeletedAuthorsNames" />
+                <select style="font-size: 16px" id="authorForDel">
+                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.PrintingEdition.AuthorModels)
+                    {
+                        <option value="@author.Name">@author.Name</option>
+                    }
+                </select>
+                <input type="button" value="Del Author" class="btn btn-default button" onclick="delAuthor();" />
+
+                <select style="font-size: 16px" id="authorForAdd">
+                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.AllAuthorModels)
+                    {
+                        <option value="@author.Name">@author.Name</option>
+                    }
+                </select>
+                <input type="button" value="Add author" class="btn btn-default button" onclick="addAuthor()" />
+            </div>
+            <div class="form-group">
+                <label asp-for="PrintingEdition.Currency" class="control-label">Currency</label>
+                <select style="font-size: 16px" asp-for="PrintingEdition.Currency">
+                    <option selectedselected="selected">
+                        @Model.PrintingEdition.Currency
+                    </option>
+                    @if (@Model.PrintingEdition.Currency.ToString() != "GBP")
+                    {
+                        <option value="GBP">GBP</option>
+                    }
+                    @if (@Model.PrintingEdition.Currency.ToString() != "USD")
+                    {
+                        <option value="USD">USD</option>
+                    }
+                    @if (@Model.PrintingEdition.Currency.ToString() != "EUR")
+                    {
+                        <option value="EUR">EUR</option>
+                    }
+                    @if (@Model.PrintingEdition.Currency.ToString() != "CHF")
+                    {
+                        <option value="CHF">CHF</option>
+                    }
+                    @if (@Model.PrintingEdition.Currency.ToString() != "JPY")
+                    {
+                        <option value="JPY">JPY</option>
+                    }
+                    @if (@Model.PrintingEdition.Currency.ToString() != "UAH")
+                    {
+                        <option value="UAH">UAH</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrintingEdition.Price" class="control-label">Price</label>
+                <input type="text" value="@Model.PrintingEdition.Price" asp-for="PrintingEdition.Price" />
+            </div>
+            <div class="form-group">
+                <label asp-for="PrintingEdition.Status" class="control-label">Status</label>
+                <select style="font-size: 16px" asp-for="PrintingEdition.Status">
+                    <option selected="selected" value="@Model.PrintingEdition.Status">@Model.PrintingEdition.Status</option>
+                    @if (@Model.PrintingEdition.Status == "Avaleble")
+                    {
+                        <option value="Unavaleble">Unavaleble</option>
+                    }
+
+                    @if (@Model.PrintingEdition.Status == "Unavaleble")
+                    {
+                        <option value="Avaleble">Avaleble</option>
+                    }
+                </select>
+            </div>
+            <input type="submit" value="Update" class="btn btn-default button" />
+        </form>
+    </div>
+}
+@section scripts{
+    <script>
+
+        function addAuthor() {
+            var authors = document.getElementById("newAuthors").value + ""
+
+            if (authors === "") {
+                document.getElementById("newAuthors").value = document.getElementById("authorForAdd").value;
+                return;
+            }
+
+            var authorForAdd = document.getElementById("authorForAdd").value + "";
+
+            if (!authors.includes(authorForAdd)) {
+                document.getElementById("newAuthors").value = authors + ", " + authorForAdd;
+            }
+        }
+        function delAuthor() {
+            var authors = document.getElementById("deletedAuthors").value + ""
+
+            if (authors === "") {
+                document.getElementById("deletedAuthors").value = document.getElementById("authorForDel").value;
+                return;
+            }
+
+            var authorForDel = document.getElementById("authorForDel").value + "";
+
+            if (!authors.includes(authorForDel)) {
+                document.getElementById("deletedAuthors").value = authors + ", " + authorForDel;
+            }
+        }
+    </script>
+}

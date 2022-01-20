@@ -1,0 +1,77 @@
+﻿@model Store.BusinessLogicLayer.Models.EditionModel.EditionCreateViewModel
+@{
+    Layout = "~/_Layout.cshtml";
+}
+
+@section AddToHead
+{
+    <link href="~/Styles/ManagementStyleSheet.css" rel="stylesheet" type="text/css" />
+}
+@{
+    <div class=mainContent>
+        <h2>Add new edition</h2>
+        <form class="stardart-font" asp-controller="EditionManagement" asp-action="AddNewEdition">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label">Title</label>
+                <input type="text" asp-for="Title" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Description</label>
+                <input type="text" asp-for="Description" />
+            </div>
+            <div class="form-group">
+                <label asp-for="EditionType" class="control-label">Edition Type</label>
+                <select style="font-size: 16px" asp-for="EditionType" asp-items="Html.GetEnumSelectList<Store.DataAccessLayer.Enums.Enums.EditionEnums.PrintingEditionType>()"></select>
+
+            </div>
+            <div class="form-group">
+                <label asp-for="AuthorsNames" class="control-label">Authors</label>
+                <input id="authorsAdded" type="text" asp-for="AuthorsNames"/>
+                <select style="font-size: 16px" id="authorFromList">
+                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.AllAuthorModels)
+                    {
+                        <option value="@author.Name">@author.Name</option>
+                    }
+                </select>
+                <input type="button" value="Add author" class="btn btn-default button" onclick="addAuthor()" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Currency" class="control-label">Currency</label>
+                <select style="font-size: 16px" asp-for="Currency" asp-items="Html.GetEnumSelectList<Store.DataAccessLayer.Enums.Enums.EditionEnums.CurrencyType>()"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label">Price</label>
+                <input type="text" asp-for="Price" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label">Status</label>
+                <select style="font-size: 16px" asp-for="Status">
+                    <option selected="selected" value="Available">Available</option>
+                    <option value="Unavailable">Unavailable</option>
+                </select>
+            </div>
+            <input type="submit" value="Add" class="btn btn-default button" />
+        </form>
+    </div>
+}
+@section scripts{
+    <script>
+        function addAuthor() {
+            var authors = document.getElementById("authorsAdded").value + "";
+            if (authors === "") {
+                document.getElementById("authorsAdded").value = document.getElementById("authorFromList").value;
+                document.getElementById("authorsAdded").focus();
+                
+                return;
+            }
+
+            var authorFromList = document.getElementById("authorFromList").value + "";
+
+            if (!authors.includes(authorFromList)) {
+                document.getElementById("authorsAdded").value = authors + ", " + authorFromList;
+                document.getElementById("authorsAdded").focus();
+            }
+        }
+
+    </script>
+}

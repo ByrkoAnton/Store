@@ -29,6 +29,11 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
+        public override async Task<IEnumerable<Author>> GetAllAsync()
+        {
+            return await _dbSet.Include(n => n.PrintingEditions).AsNoTracking().ToListAsync();
+        }
+
         public async Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrationModelDAL model)
         {
             var authors = await _dbSet.Include(n => n.PrintingEditions).AsNoTracking()
@@ -57,6 +62,15 @@ namespace Store.DataAccessLayer.Repositories
 
             return result;
         }
+
+        public async Task<List<Author>> GetAuthorsListByNamesListAsync(List<string> names)
+        {
+            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().Where(x => names.Contains(x.Name)).ToListAsync();
+
+            return result;
+        }
+
+
         public override async Task UpdateAsync(Author author)
         {
             var editions = new List<PrintingEdition>(author.PrintingEditions);

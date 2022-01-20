@@ -1,4 +1,4 @@
-﻿@model Store.BusinessLogicLayer.Models.Authors.AuthorModel
+﻿@model Store.BusinessLogicLayer.Models.EditionModel.PrintingEditionModel
 @{
     Layout = "~/_Layout.cshtml";
 }
@@ -9,8 +9,8 @@
 }
 @{
     <div class=mainContent>
-        <h2>Author profile:</h2>
-        <form class="stardart-font" asp-controller="AuthorsManagement" asp-action="UpdateAuthor">
+        <h2>Edition profile:</h2>
+        <form class="stardart-font" asp-controller="EditionsManagement" asp-action="UpdateEdition">
             <div class="form-group">
                 <label asp-for="Id " class="control-label">ID</label>
                 <input type="text" disabled="disabled" value="@Model.Id" class="form-control stardart-font from-query" />
@@ -23,21 +23,58 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Name" class="control-label">Last name</label>
-                <input type="text" asp-for="Name" class="form-control stardart-font from-query" />
-                <input type="submit" value="Change name" class="btn btn-default button" />
-                <input class="button" type="button" value="Cancel" onclick="location.reload();" /><br>
+                <label asp-for="Title" class="control-label">Title</label>
+                <input type="text" disabled="disabled" asp-for="Title" class="form-control stardart-font from-query" />
             </div>
 
-            <a>Editions:</a>
-            <select style="font-size: 16px" id="edition">
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Discription</label>
+                <input type="text" disabled="disabled" asp-for="Description" class="form-control stardart-font from-query" />
+            </div>
 
-                @foreach (Store.BusinessLogicLayer.Models.EditionModel.PrintingEditionModel edition in Model.PrintingEditionModels)
+            <div class="form-group">
+                <label asp-for="Status" class="control-label">Status</label>
+                <input type="text" disabled="disabled" asp-for="Status" class="form-control stardart-font from-query" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EditionType" class="control-label">Type</label>
+                <input type="text" disabled="disabled" asp-for="EditionType" class="form-control stardart-font from-query" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Currency" class="control-label">Currency</label>
+                <input type="text" disabled="disabled" asp-for="Currency" class="form-control stardart-font from-query" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label">Price</label>
+                <input type="text" disabled="disabled" asp-for="Price" class="form-control stardart-font from-query" />
+            </div>
+
+            <a>Authors:</a>
+            <select style="font-size: 16px" id="author">
+
+                @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.AuthorModels)
                 {
-                    <option value="@edition.Id" class="from-query">@edition.Title</option>
+                    <option value="@author.Id" class="from-query">@author.Name</option>
                 }
             </select>
-            <input class="button" type="button" value="Open edition profile" onclick="" />
+            <input class="button" type="button" value="Open author profile" onclick="goToAuthorProfile();" /><br>
+            <input type="button" value="Update" class="btn btn-default button" onclick="update(@Model.Id);" />
         </form>
     </div>
+}
+@section scripts{
+    <script>
+        function goToAuthorProfile()
+        {
+            var id = document.getElementById("author").value;
+            return window.location.href = '@Url.Action("GetAuthorProfile", "AuthorsManagement")?Id=' + id;
+        }
+
+        function update(id) {
+            return window.location.href = '@Url.Action("UpdateEdition", "EditionManagement")?id=' + id;
+        }
+    </script>
 }

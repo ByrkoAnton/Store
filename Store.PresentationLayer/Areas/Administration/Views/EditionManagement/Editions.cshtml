@@ -1,0 +1,172 @@
+﻿@model Store.BusinessLogicLayer.Models.PaginationsModels.NavigationModelBase<Store.BusinessLogicLayer.Models.EditionModel.PrintingEditionModel>
+@{
+    Layout = "~/_Layout.cshtml";
+}
+
+@section AddToHead
+{
+    <link href="~/Styles/ManagementStyleSheet.css" rel="stylesheet" type="text/css" />
+}
+@{
+
+
+    <form class="stardart-font" asp-controller="AuthorsManagement" asp-action="GetAuthors">
+        <table>
+            <tr>
+                <th>
+                    Id
+                    <span class="sort-button">
+                        <input type="button" value="1-9" class="btn btn-default button" onclick="sort(`Id`,`asc`);" />
+                        <input type="button" value="9-1" class="btn btn-default button" onclick="sort(`Id`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    Title
+                    <span class="sort-button">
+                        <input type="button" value="a-z" class="btn btn-default button" onclick="sort(`Title`,`asc`);" />
+                        <input type="button" value="z-a" class="btn btn-default button" onclick="sort(`Title`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                   Authors
+                </th>
+                <th>
+                    Price
+                    <span class="sort-button">
+                        <input type="button" value="a-z" class="btn btn-default button" onclick="sort(`Price`,`asc`);" />
+                        <input type="button" value="z-a" class="btn btn-default button" onclick="sort(`Price`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    Currency
+                    <span class="sort-button">
+                        <input type="button" value="a-z" class="btn btn-default button" onclick="sort(`Currency`,`asc`);" />
+                        <input type="button" value="z-a" class="btn btn-default button" onclick="sort(`Currency`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    Status
+                    <span class="sort-button">
+                        <input type="button" value="a-z" class="btn btn-default button" onclick="sort(`Status`,`asc`);" />
+                        <input type="button" value="z-a" class="btn btn-default button" onclick="sort(`Status`,`dsc`);" />
+                    </span>
+                </th>
+                <th>Actions</th>
+            </tr>
+            @foreach (Store.BusinessLogicLayer.Models.EditionModel.PrintingEditionModel edition in Model.Models)
+            {
+        <tr>
+            <td>@edition.Id</td>
+            <td>@edition.Title</td>
+            <td>
+                <select style="font-size: 16px" id="edition">
+
+                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in edition.AuthorModels)
+                    {
+                        <option>@author.Name</option>
+                    }
+                </select>
+            </td>
+            <td>@edition.Price</td>
+            <td>@edition.Currency</td>
+            <td>@edition.Status</td>
+            <td>
+                <input type="button" value="Profile" class="btn btn-default button" onclick="getProfile(@edition.Id);" />
+            </td>
+        </tr>
+            }
+        <tr>
+            <td style="text-align:center;">
+                SEARCH
+            </td>
+            <td>
+                <input style="width: 98.3%" class="search" type="text" id="Title" />
+                <script type="text/javascript">
+                    document.getElementById("Title").value = JSON.parse(localStorage.getItem('editionTitleForSearch'));
+                </script>
+            </td>
+            <td>
+                <input style="width: 98.3%" class="search" type="text" id="Author" />
+                <script type="text/javascript">
+                    document.getElementById("Author").value = JSON.parse(localStorage.getItem('editionsAuthorForSearch'));
+                </script>
+            </td>
+            <td colspan="4">
+                <input style="width: 100%" type="button" value="SEARCH" class="btn btn-default button" onclick="sort(`Id`,`asc`);" />
+            </td>
+        </tr>
+        </table>
+        <input style="width: 100%" type="button" value="ADD NEW EDITION" class="btn btn-default button" onclick="location.href='@Url.Action("AddNewEdition", "EditionManagement")'" />
+        
+        <div class="pagination">
+            @if (@Model.PageModel.HasPreviousPage)
+            {
+                <input type="button" value="<<" class="btn btn-default button" onclick="navigateToPage(`1`);" />
+                <input type="button" value="<" class="btn btn-default button" onclick="navigateToPage(`-1`);" />
+            }
+
+            @if (!@Model.PageModel.HasPreviousPage)
+            {
+                <input type="button" disabled="disabled" value="<<" class="btn btn-default button" />
+                <input type="button" disabled="disabled" value="<" class="btn btn-default button" />
+            }
+
+            <input class="current-page" id="current" type="number" value="@Model.PageModel.PageNumber" min="1" step="1" onchange="navigateToPage();" />
+            /@Model.PageModel.TotalPages
+
+            @if (@Model.PageModel.HasNextPage)
+            {
+                <input type="button" value=">" class="btn btn-default button" onclick="navigateToPage(`+1`);" />
+                <input type="button" value=">>" class="btn btn-default button" onclick="navigateToPage(@Model.PageModel.TotalPages);" />
+            }
+
+            @if (!@Model.PageModel.HasNextPage)
+            {
+                <input type="button" disabled="disabled" value=">" class="btn btn-default button" />
+                <input type="button" disabled="disabled" value=">>" class="btn btn-default button" />
+            }
+        </div>
+    </form>
+}
+
+@section scripts{
+    <script>
+        function sort(parametr, sortDirection)
+        {
+            var editionTitleForSearch = document.getElementById("Title").value;
+            var editionsAuthorForSearch = document.getElementById("Author").value;
+
+            var isAsc = sortDirection == "asc";
+
+            localStorage.setItem("sortParametr", JSON.stringify(parametr));
+            localStorage.setItem("sortDirection", JSON.stringify(isAsc));
+
+            localStorage.setItem("editionTitleForSearch", JSON.stringify(editionTitleForSearch));
+            document.cookie = "editionTitleForSearch" + "=" + encodeURIComponent(editionTitleForSearch);
+
+            localStorage.setItem("editionsAuthorForSearch", JSON.stringify(editionsAuthorForSearch));
+            document.cookie = "editionsAuthorForSearch" + "=" + encodeURIComponent(editionsAuthorForSearch);
+
+            return window.location.href = '@Url.Action("GetEditions", "EditionManagement")?sortBy=' + parametr + '&isAsc=' + isAsc;
+        }
+
+        function navigateToPage(page) {
+            if (page === "+1" || page === "-1") {
+                page = parseInt(document.getElementById("current").value) + parseInt(page);
+            }
+            if (page === undefined) {
+                page = document.getElementById("current").value;
+            }
+
+            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
+            var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
+            return window.location.href = '@Url.Action("GetEditions", "EditionManagement")?sortBy=' + sortParametr + '&isAsc=' + sortDirection + '&page=' + page;
+        }
+
+        function getProfile(id) {
+            return window.location.href = '@Url.Action("GetEditionProfile", "EditionManagement")?id=' + id;
+        }
+
+
+    </script>
+}

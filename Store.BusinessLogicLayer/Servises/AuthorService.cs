@@ -52,6 +52,22 @@ namespace Store.BusinessLogicLayer.Servises
             var authorModel = _mapper.Map<AuthorModel>(author);
             return authorModel;
         }
+
+        public async Task<List<AuthorModel>> GetListOfAuthorsAsync(List<string> authorsNames)
+        {
+            var authors = await _authorRepository.GetAuthorsListByNamesListAsync(authorsNames);
+            var authorsModels = _mapper.Map<IEnumerable<AuthorModel>>(authors).ToList();
+            authorsModels.ForEach(x => x.PrintingEditionModels = null);
+            return authorsModels;
+        }
+
+        public async Task<List<AuthorModel>> GetAllAsync()
+        {
+            var authors = await _authorRepository.GetAllAsync();
+            var authorsModels = _mapper.Map<IEnumerable<AuthorModel>>(authors);
+            
+            return authorsModels.ToList();
+        }
         public async Task<NavigationModelBase<AuthorModel>> GetAsync(AuthorFiltrationModel model)
         {
             var authorFiltrPagingSortModelDAL = _mapper.Map<AuthorFiltrationModelDAL>(model);

@@ -37,7 +37,16 @@
                     <option value="@edition.Id" class="from-query">@edition.Title</option>
                 }
             </select>
-            <input class="button" type="button" value="Open edition profile" onclick="" />
+            <input class="button" type="button" value="Open edition profile" onclick="goToEditionProfile();" />
         </form>
     </div>
+}
+@section scripts{
+    <script>
+        function goToEditionProfile()
+        {
+            var id = document.getElementById("edition").value;
+            return window.location.href = '@Url.Action("GetEditionProfile", "EditionManagement")?Id=' + id;
+    }
+    </script>
 }
