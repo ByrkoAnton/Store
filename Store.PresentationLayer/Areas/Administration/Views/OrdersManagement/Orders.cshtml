@@ -1,0 +1,197 @@
+﻿@model Store.BusinessLogicLayer.Models.PaginationsModels.NavigationModelBase<Store.BusinessLogicLayer.Models.Orders.OrderModel>
+@{
+    Layout = "~/_Layout.cshtml";
+}
+
+@section AddToHead
+{
+    <link href="~/Styles/ManagementStyleSheet.css" rel="stylesheet" type="text/css" />
+}
+@{
+
+
+    <form id="ordersForm" class="stardart-font" asp-controller="OrdersManagement" asp-action="GetOrderes">
+        <table>
+            <tr>
+                <th>
+                    Id
+                    <span class="sort-button">
+                        <input type="button" value="1-9" class="btn btn-default button" onclick="sort(`Id`,`asc`);" />
+                        <input type="button" value="9-1" class="btn btn-default button" onclick="sort(`Id`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    Created at
+                    <span class="sort-button">
+                        <input type="button" value="1-9" class="btn btn-default button" onclick="sort(`DateOfCreation`,`asc`);" />
+                        <input type="button" value="9-1" class="btn btn-default button" onclick="sort(`DateOfCreation`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    User Id
+                    <span class="sort-button">
+                        <input type="button" value="1-9" class="btn btn-default button" onclick="sort(`UserId`,`asc`);" />
+                        <input type="button" value="9-1" class="btn btn-default button" onclick="sort(`UserId`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Order items id
+                </th>
+                <th>
+                    Payment Id
+                    <span class="sort-button">
+                        <input type="button" value="1-9" class="btn btn-default button" onclick="sort(`PaymentId`,`asc`);" />
+                        <input type="button" value="9-1" class="btn btn-default button" onclick="sort(`PaymentId`,`dsc`);" />
+                    </span>
+                </th>
+                <th>
+                    Order sratus
+                    <span class="sort-button">
+                        <input type="button" value="1-9" class="btn btn-default button" onclick="sort(`Status`,`asc`);" />
+                        <input type="button" value="9-1" class="btn btn-default button" onclick="sort(`Status`,`dsc`);" />
+                    </span>
+                </th>
+
+                <th>
+                    Actions
+                </th>
+            </tr>
+            @foreach (Store.BusinessLogicLayer.Models.Orders.OrderModel order in Model.Models)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.DateOfCreation</td>
+                    <td>@order.UserId</td>
+                    <td>@order.Discription</td>
+                    <td>
+                        <select style="font-size: 16px" id="orderItem">
+
+                            @foreach (Store.BusinessLogicLayer.Models.OrderItems.OrderItemModel orderItem in order.OrderItems)
+                            {
+                                <option>@orderItem.Id</option>
+                            }
+                        </select>
+                    </td>
+                    <td>@order.PaymentId</td>
+                    <td>@order.Status</td>
+                    <td>
+                        <input type="button" value="Datails" class="btn btn-default button" onclick="getProfile(@order.Id);" />
+                        <input type="button" value="Del" class="btn btn-default button" onclick="deleteOrder(@order.Id);" />
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td style="text-align:center;">
+                    SEARCH
+                </td>
+                <td>
+                    <input class="search" disabled="disabled" type="text" />
+                </td>
+                <td>
+                    <input class="search" type="text" id="UserId" />
+                    <script type="text/javascript">
+                        document.getElementById("UserId").value = JSON.parse(localStorage.getItem('UserIdInOrder'));
+                    </script>
+                </td>
+                <td>
+                    <input class="search" type="text" id="Description" />
+                    <script type="text/javascript">
+                        document.getElementById("Description").value = JSON.parse(localStorage.getItem('descriptionForSearch'));
+                    </script>
+                </td>
+                <td>
+                    <input class="search" type="text" id="EditionId" />
+                    <script type="text/javascript">
+                        document.getElementById("EditionId").value = JSON.parse(localStorage.getItem('editionIdForSearch'));
+                    </script>
+                </td>
+
+                <td colspan="3">
+                    <input style="width: 100%" type="button" value="SEARCH" class="btn btn-default button" onclick="sort(`Id`,`asc`);" />
+                </td>
+            </tr>
+        </table>
+        <div class="pagination">
+            @if (@Model.PageModel.HasPreviousPage)
+            {
+                <input type="button" value="<<" class="btn btn-default button" onclick="navigateToPage(`1`);" />
+                <input type="button" value="<" class="btn btn-default button" onclick="navigateToPage(`-1`);" />
+            }
+
+            @if (!@Model.PageModel.HasPreviousPage)
+            {
+                <input type="button" disabled="disabled" value="<<" class="btn btn-default button" />
+                <input type="button" disabled="disabled" value="<" class="btn btn-default button" />
+            }
+
+            <input class="current-page" id="current" type="number" value="@Model.PageModel.PageNumber" min="1" step="1" onchange="navigateToPage();" />
+            /@Model.PageModel.TotalPages
+
+            @if (@Model.PageModel.HasNextPage)
+            {
+                <input type="button" value=">" class="btn btn-default button" onclick="navigateToPage(`+1`);" />
+                <input type="button" value=">>" class="btn btn-default button" onclick="navigateToPage(@Model.PageModel.TotalPages);" />
+            }
+
+            @if (!@Model.PageModel.HasNextPage)
+            {
+                <input type="button" disabled="disabled" value=">" class="btn btn-default button" />
+                <input type="button" disabled="disabled" value=">>" class="btn btn-default button" />
+            }
+        </div>
+    </form>
+}
+@section scripts{
+    <script>
+        function sort(parametr, sortDirection)
+        {
+            var userIdForSearch = document.getElementById("UserId").value;
+            var descriptionForSearch = document.getElementById("Description").value;
+            var editionIdForSearch = document.getElementById("EditionId").value;
+
+            debugger
+            var isAsc = sortDirection == "asc";
+
+            localStorage.setItem("sortParametr", JSON.stringify(parametr));
+            localStorage.setItem("sortDirection", JSON.stringify(isAsc));
+
+            localStorage.setItem("UserIdInOrder", JSON.stringify(userIdForSearch));
+            document.cookie = "UserIdInOrder" + "=" + encodeURIComponent(userIdForSearch);
+
+            localStorage.setItem("descriptionForSearch", JSON.stringify(descriptionForSearch));
+            document.cookie = "descriptionForSearch" + "=" + encodeURIComponent(descriptionForSearch);
+
+            localStorage.setItem("editionIdForSearch", JSON.stringify(editionIdForSearch));
+            document.cookie = "editionIdForSearch" + "=" + encodeURIComponent(editionIdForSearch);
+
+            return window.location.href = '@Url.Action("GetOrders", "OrdersManagement")?sortBy=' + parametr + '&isAsc=' + isAsc;
+        }
+
+        function navigateToPage(page) {
+            if (page === "+1" || page === "-1") {
+                page = parseInt(document.getElementById("current").value) + parseInt(page);
+            }
+            if (page === undefined) {
+                page = document.getElementById("current").value;
+            }
+
+            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
+            var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
+            return window.location.href = '@Url.Action("GetOrders", "OrdersManagement")?sortBy=' + sortParametr + '&isAsc=' + sortDirection + '&page=' + page;
+        }
+
+        function getProfile(id) {
+            return window.location.href = '@Url.Action("GetOrder", "OrdersManagement")?id=' + id;
+
+        } function deleteOrder(id) {
+            if(window.confirm("Do you really want to delete this order?")){
+            return window.location.href = '@Url.Action("DeleteOrder", "OrdersManagement")?id=' + id;
+            };
+        }
+
+
+    </script>
+}

@@ -1,0 +1,42 @@
+﻿@model Store.BusinessLogicLayer.Models.Orders.OrderDetailsModel
+@{
+    Layout = "~/_Layout.cshtml";
+}
+@{
+    <div style="margin-left: 40%">
+        <h2>Order datails:</h2>
+        <a>Order Id:</a>
+        <a class="from-query">@Model.OrderId</a><br>
+        <a>Created at:</a>
+        <a class="from-query">@Model.DateOfCreation</a><br>
+        <a>User Id:</a>
+        <a class="from-query">@Model.UserId</a><br>
+        <a>User Name:</a>
+        <a class="from-query">@Model.UserName</a><br>
+        <a>Order items:</a>
+        <ul>
+            @foreach (Store.BusinessLogicLayer.Models.Orders.EditionInOrderDatails edition in Model.Editions)
+            {
+                <li>
+                    Id:@edition.EditionId
+                    <ul>
+                        <li>Title: @edition.EditionTitle </li>
+                        <li>Price: @edition.EditionPrice</li>
+                        <li> Quantity: @edition.Count</li>                        
+                        <li>Total @edition.PriceForAllEditions</li>
+                    </ul>
+                </li>
+            }
+        </ul>
+        <a>Final total:</a>
+        <a class="from-query">@Model.TotalPrice</a><br>
+        <a>Status</a>
+        <a class="from-query">@Model.OrderStatus</a><br>
+        @if (@Model.Description != null)
+        {
+
+            <a>Order Description:</a>
+            <a class="from-query">@Model.Description</a><br>
+        }
+    </div>
+}

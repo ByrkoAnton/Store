@@ -16,13 +16,17 @@ namespace Store.BusinessLogicLayer.Servises
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IPrintingEditionRepository _printingEditionRepository;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IMapper maper)
+        public OrderService(IOrderRepository orderRepository, IUserService userService, IPrintingEditionRepository printingEditionRepository, IMapper maper)
 
         {
             _orderRepository = orderRepository;
             _mapper = maper;
+            _userService = userService;
+            _printingEditionRepository = printingEditionRepository;
         }
 
         public async Task<List<OrderModel>> GetAllAsync()
@@ -43,13 +47,7 @@ namespace Store.BusinessLogicLayer.Servises
             var orderFiltrPagingSortModelDAL = _mapper.Map<OrderFiltrationModelDAL>(model);
 
             (IEnumerable<Order> orders, int count) ordersCount = await _orderRepository.GetAsync(orderFiltrPagingSortModelDAL);
-
-            if (ordersCount.count is default(int))
-            {
-                throw new CustomException(Constants.Error.WRONG_CONDITIONS_ORDER,
-                   HttpStatusCode.BadRequest);
-            }
-
+           
             var orderModels = _mapper.Map<IEnumerable<OrderModel>>(ordersCount.orders);
 
             PaginatedPageModel paginatedPage = new PaginatedPageModel(ordersCount.count, model.CurrentPage, model.PageSize);
@@ -78,14 +76,45 @@ namespace Store.BusinessLogicLayer.Servises
             return orderModel;
         }
 
-        public async Task RemoveAsync(OrderModel model)
+        public async Task<OrderDetailsModel> GetOrderDetails(long id)
         {
-            if (model is null || model.Id is default(long))
+            var order = await GetByIdAsync(id);
+            var editionsId = order.OrderItems.Select(x => x.PrintingEditionId).ToList();
+            var editions = await _printingEditionRepository.GetEditionsListByIdListAsync(editionsId);
+            var user = await _userService.GetUserByIdAsync(order.UserId.ToString());
+            var editionsOrderDetails = _mapper.Map<IEnumerable<EditionInOrderDatails>>(editions).ToList();
+
+            for (int i = 0; i < editionsOrderDetails.Count; i++)
+            {
+                editionsOrderDetails[i].EditionPrice = order.OrderItems[i].EditionPrice;
+                editionsOrderDetails[i].Count = order.OrderItems[i].Count;
+                editionsOrderDetails[i].PriceForAllEditions = editionsOrderDetails[i].EditionPrice * editionsOrderDetails[i].Count;
+            }
+
+            var orderDetails = new OrderDetailsModel()
+            {
+                OrderId = order.Id,
+                DateOfCreation = order.DateOfCreation,
+                Description = order.Discription,
+                OrderStatus = order.Status.ToString(),
+                PaymentId = order.PaymentId,
+                UserId = order.UserId,
+                Editions = editionsOrderDetails,
+                TotalPrice = editionsOrderDetails.Sum(x => x.PriceForAllEditions),
+                UserName = user.LastName
+            };
+
+            return orderDetails;
+        }
+
+        public async Task RemoveAsync(long id)
+        {
+            if (id is default(long))
             {
                 throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
-            var order = await _orderRepository.GetByIdAsync(model.Id);
+            var order = await _orderRepository.GetByIdAsync(id);
             if (order is null)
             {
                 throw new CustomException(Constants.Error.NO_ORDERS_THIS_ID, HttpStatusCode.BadRequest);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using System.Threading.Tasks;
+using Store.Sharing.Constants;
 
 namespace Store.PresentationLayer.Areas.Administration.Controllers
 {
@@ -19,27 +20,27 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetProfile()
         {
-            var accessToken = HttpContext.Request.Cookies["jwt"];
+            var accessToken = HttpContext.Request.Cookies[Constants.AreaConstants.JWT];
             var result = await _userService.GetUserByIdAsync(accessToken);
-            return View("Profile", result);
+            return View(Constants.AreaConstants.VIEW_PROFILE, result);
         }
 
         [HttpGet]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateProfile()
         {
-            var accessToken = HttpContext.Request.Cookies["jwt"];
+            var accessToken = HttpContext.Request.Cookies[Constants.AreaConstants.JWT];
             var result = await _userService.GetUserByIdAsync(accessToken);
-            return View("ProfileUpdate", result);
+            return View(Constants.AreaConstants.VIEW_PROFILE_UPDATE, result);
         }
 
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateProfile(UserUpdateModel updateModel)
         {
-            var accessToken = HttpContext.Request.Cookies["jwt"];
+            var accessToken = HttpContext.Request.Cookies[Constants.AreaConstants.JWT];
             await _userService.UserUpdateAsync(updateModel, accessToken);
-            return RedirectToAction("GetProfile");
+            return RedirectToAction(Constants.AreaConstants.ACTION_GETPROFILE);
         }
 
 
@@ -55,9 +56,9 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         {
             if (ModelState.IsValid)
             {
-                var accessToken = HttpContext.Request.Cookies["jwt"];
+                var accessToken = HttpContext.Request.Cookies[Constants.AreaConstants.JWT];
                 await _userService.ChangePasswordAsync(changePasswordModel, accessToken);
-                return RedirectToAction("SignIn", "AdminAccount");
+                return RedirectToAction(Constants.AreaConstants.ACTION_SIGN_IN, Constants.AreaConstants.CONTROLLER_ADMIN_ACCount);
             }
             return View();
         }

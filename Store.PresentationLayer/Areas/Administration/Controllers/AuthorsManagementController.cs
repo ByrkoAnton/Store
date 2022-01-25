@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.Authors;
 using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.Sharing.Constants;
 
 using System.Threading.Tasks;
 
@@ -18,28 +19,19 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
 
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> GetAuthors(string sortBy = "Name", bool isAsc = true, int page = 1)
+        public async Task<IActionResult> GetAuthors(string sortBy = Constants.AreaConstants.AUTHOR_DEF_SORT_PARAMS, bool isAsc = true, int page = Constants.AreaConstants.FIRST_PAGE)
         {
             var sortModel = new AuthorFiltrationModel
             {
-                Name = HttpContext.Request.Cookies["authorNameForSearch"],
+                Name = HttpContext.Request.Cookies[Constants.AreaConstants.AUTHOR_NAME_COOKIES],
                 PropertyForSort = sortBy,
                 IsAscending = isAsc,
                 CurrentPage = page,
             };
             var result = await _authorService.GetAsync(sortModel);
 
-            return View("Authors", result);
+            return View(Constants.AreaConstants.VIEW_AUTHORS, result);
 
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "admin")]
-        public async Task<IActionResult> GetAuthors(AuthorFiltrationModel model)
-        {
-
-            var result = await _authorService.GetAsync(model);
-            return View("Users", result);
         }
 
         [HttpGet]
@@ -48,7 +40,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         {
             var result = await _authorService.GetByIdAsync(id);
 
-            return View("AuthorProfile", result);
+            return View(Constants.AreaConstants.VIEW_AUTHOR_PROFILE, result);
 
         }
 
@@ -59,7 +51,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             var result = await _authorService.GetByIdAsync(updateModel.Id);
             result.Name = updateModel.Name;
             await _authorService.UpdateAsync(result);
-            var qwery = HttpContext.Request.Headers["Referer"].ToString();
+            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();
             return Redirect(qwery); 
         }
 

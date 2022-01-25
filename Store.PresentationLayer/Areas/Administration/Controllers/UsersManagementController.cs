@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.Sharing.Constants;
 using System.Threading.Tasks;
 
 namespace Store.PresentationLayer.Areas.Administration.Controllers
@@ -19,19 +20,19 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
 
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> GetUsers(string sortBy="LastName", bool isAsc = true, int page = 1)
+        public async Task<IActionResult> GetUsers(string sortBy=Constants.AreaConstants.USER_DEF_SORT_PARAMS, bool isAsc = true, int page = Constants.AreaConstants.FIRST_PAGE)
         {
             var sortModel = new UserFiltrationModel {
                 PropertyForSort = sortBy,
                 IsAscending = isAsc,
-                LastName = HttpContext.Request.Cookies["lastNameForSearch"],
-                FirstName = HttpContext.Request.Cookies["firstNameForSearch"],
-                Email = HttpContext.Request.Cookies["emailForSearch"],
+                LastName = HttpContext.Request.Cookies[Constants.AreaConstants.USER_L_NAME_COOKIES],
+                FirstName = HttpContext.Request.Cookies[Constants.AreaConstants.USER_F_NAME_COOKIES],
+                Email = HttpContext.Request.Cookies[Constants.AreaConstants.USER_EMAIL_COOKIES],
                 CurrentPage = page,
             };
             var result = await _userService.GetUsersAsync(sortModel);
            
-            return View("Users", result);
+            return View(Constants.AreaConstants.VIEW_USERS, result);
             
         }
 
@@ -41,7 +42,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         {
 
             var result = await _userService.GetUsersAsync(model);
-            return View("Users", result);
+            return View(Constants.AreaConstants.VIEW_USERS, result);
         }
 
         [HttpGet]
@@ -58,14 +59,14 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         public async Task<IActionResult> UpdateProfile(string id)
         {
             var result = await _userService.GetUserByIdAsync(id);
-            return View("ProfileUpdate", result);
+            return View(Constants.AreaConstants.VIEW_PROFILE_UPDATE, result);
         }
 
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateProfile(UserUpdateModel updateModel)
         {
-            var qwery = HttpContext.Request.Headers["Referer"].ToString();
+            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();
            
             await _userService.UserUpdateAsync(updateModel, updateModel.Id.ToString());
             return Redirect(qwery);    
@@ -76,7 +77,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         public async Task<IActionResult> ResetPassword(string id)
         {
             await _userService.ResetPasswordByAdminAsync(id);
-            return Ok("Password reseted successfully");
+            return Ok(Constants.AreaConstants.RESET_PESSWORD_MSG);
         }
 
         [HttpGet]

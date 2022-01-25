@@ -32,12 +32,12 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
 
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> GetEditions(string sortBy = "Price", bool isAsc = true, int page = 1)
+        public async Task<IActionResult> GetEditions(string sortBy = Constants.AreaConstants.EDITION_DEF_SORT_PARAMS, bool isAsc = true, int page = Constants.AreaConstants.FIRST_PAGE)
         {
             var sortModel = new EditionFiltrationModel
             {
-                Title = HttpContext.Request.Cookies["editionTitleForSearch"],
-                AuthorName = HttpContext.Request.Cookies["editionsAuthorForSearch"],
+                Title = HttpContext.Request.Cookies[Constants.AreaConstants.EDITION_TITLE_COOKIES],
+                AuthorName = HttpContext.Request.Cookies[Constants.AreaConstants.EDITION_AUTHOR_COOKIES],
                 PropertyForSort = sortBy,
                 IsAscending = isAsc,
                 CurrentPage = page,
@@ -45,7 +45,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             };
             var result = await _editionService.GetAsync(sortModel);
 
-            return View("Editions", result);
+            return View(Constants.AreaConstants.VIEW_EDITIONS, result);
 
         }
 
@@ -54,7 +54,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         public async Task<IActionResult> GetEditions(EditionFiltrationModel model)
         {
             var result = await _editionService.GetAsync(model);
-            return View("Editions", result);
+            return View(Constants.AreaConstants.VIEW_EDITIONS, result);
         }
 
         [HttpGet]
@@ -63,7 +63,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         {
             var result = await _editionService.GetByIdAsync(id);
 
-            return View("EditionProfile", result);
+            return View(Constants.AreaConstants.VIEW_EDITION_PROFILE, result);
 
         }
 
@@ -81,7 +81,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddNewEdition(EditionCreateViewModel model)
         {
-            var authorsList = model.AuthorsNames.Replace(" ", string.Empty).Split(',').ToList();
+            var authorsList = model.AuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
             var authorsModels = await _authorService.GetListOfAuthorsAsync(authorsList);
             if (authorsList.Count == authorsModels.Count)
             {
@@ -91,12 +91,12 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
 
                 var allAuthors = await _authorService.GetAllAsync();
                 var createModel = new EditionCreateViewModel() { AllAuthorModels = allAuthors };
-                return View("AddNewEdition", createModel);
+                return View(Constants.AreaConstants.VIEW_ADD_EDITION, createModel);
             }
 
             var wrongAuthorsList = authorsList.Except(authorsModels.Select(x => x.Name)).ToList();
-            string wrongAuthors = string.Join(", ", wrongAuthorsList.ToArray());
-            throw new CustomException($"At first add this authors to DB: {wrongAuthors}", HttpStatusCode.BadRequest);
+            string wrongAuthors = string.Join(Constants.AreaConstants.WRONG_AUTHORS_DELIMETR, wrongAuthorsList.ToArray());
+            throw new CustomException($"{Constants.AreaConstants.WRONG_AUTHORS_MSG} {wrongAuthors}", HttpStatusCode.BadRequest);
         }
 
         [HttpGet]
@@ -106,7 +106,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             var result = await _editionService.GetByIdAsync(id);
             var allAuthors = await _authorService.GetAllAsync();
             var updateViewModel = new EditionUpdateViewModel() { PrintingEdition = result, AllAuthorModels = allAuthors };
-            return View("UpdateEdition", updateViewModel);
+            return View(Constants.AreaConstants.VIEW_UPDATE_EDITION, updateViewModel);
 
         }
 
@@ -117,13 +117,13 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             List<string> newAuthorsList = new();
             if (model.NewAuthorsNames is not null)
             {
-                newAuthorsList = model.NewAuthorsNames.Replace(" ", string.Empty).Split(',').ToList();
+                newAuthorsList = model.NewAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
             }
 
             List<string> delAuthorsList = new();
             if (model.DeletedAuthorsNames is not null)
             {
-                delAuthorsList = model.DeletedAuthorsNames.Replace(" ", string.Empty).Split(',').ToList();
+                delAuthorsList = model.DeletedAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
             }
 
             var edition = await _editionService.GetByIdAsync(model.PrintingEdition.Id);
@@ -138,7 +138,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
 
             await _editionService.UpdateAsync(model.PrintingEdition);
 
-            var qwery = HttpContext.Request.Headers["Referer"].ToString();
+            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();
             return Redirect(qwery);
         }
     }

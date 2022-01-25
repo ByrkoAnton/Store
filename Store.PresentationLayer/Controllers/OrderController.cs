@@ -44,12 +44,5 @@ namespace Store.PresentationLayer.Controllers
             await _orderServise.UpdateAsync(model);
             return Ok();
         }
-
-        [HttpPost("Remove")]
-        public async Task<IActionResult> Remove([FromBody] OrderModel model)
-        {
-            await _orderServise.RemoveAsync(model);
-            return Ok();
-        }
     }
 }

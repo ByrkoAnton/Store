@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using System.Threading.Tasks;
+using Store.Sharing.Constants;
+
 
 namespace Store.PresentationLayer.Areas.Administration.Controllers
 {
@@ -29,8 +31,8 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _accountService.SignInAsync(signInModel);
-                Response.Cookies.Append("jwt", result.AccessToken);
-                return RedirectToAction("Navigation");
+                Response.Cookies.Append(Constants.AreaConstants.JWT, result.AccessToken);
+                return RedirectToAction(Constants.AreaConstants.ACTION_NAVIGATION);
             }
             return View();
         }
