@@ -115,10 +115,10 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         public async Task<IActionResult> UpdateEdition(EditionUpdateViewModel model)
         {
             List<string> newAuthorsList = new();
-            if (model.NewAuthorsNames is not null)
-            {
-                newAuthorsList = model.NewAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
-            }
+            //if (model.NewAuthorsNames is not null)
+            //{
+            //    newAuthorsList = model.NewAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
+            //}
 
             List<string> delAuthorsList = new();
             if (model.DeletedAuthorsNames is not null)
