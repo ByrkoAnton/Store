@@ -7,6 +7,7 @@ using Store.Sharing.Constants;
 using Store.BusinessLogicLayer.Configuration;
 using System;
 using Store.DataAccessLayer;
+using Store.Sharing.Configuration;
 
 namespace Store.BusinessLogicLayer
 {
@@ -32,6 +33,7 @@ namespace Store.BusinessLogicLayer
 
             services.Configure<EmailConfig>(config.GetSection(Constants.EmailProvider.EMAIL_SECTION));
             services.Configure<TokenConfig>(config.GetSection(Constants.JwtProvider.JWT_SECTION));
+            services.Configure<ConnectionStringConfig>(config.GetSection(Constants.ConnectionsConstants.CONNECTION_SECTION));
 
             services.InitDal(config);
         }

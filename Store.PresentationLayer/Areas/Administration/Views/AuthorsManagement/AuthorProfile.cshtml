@@ -34,7 +34,10 @@
 
                 @foreach (Store.BusinessLogicLayer.Models.EditionModel.PrintingEditionModel edition in Model.PrintingEditionModels)
                 {
+                    if (edition != null)
+                    {
                     <option value="@edition.Id" class="from-query">@edition.Title</option>
+                    }
                 }
             </select>
             <input class="button" type="button" value="Open edition profile" onclick="goToEditionProfile();" />

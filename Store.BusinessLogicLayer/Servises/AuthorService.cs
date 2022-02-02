@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Store.BusinessLogicLayer.Models.Authors;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
+using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Interfaces;
@@ -15,10 +16,12 @@ namespace Store.BusinessLogicLayer.Servises
     public class AuthorService : IAuthorService
     {
         private readonly IAuthorRepository _authorRepository;
+        private readonly IAuthorRepositoryDapper _authorRepositoryDapper;
         private readonly IMapper _mapper;
-        public AuthorService(IAuthorRepository authorRepository, IMapper mapper)
+        public AuthorService(IAuthorRepository authorRepository, IMapper mapper, IAuthorRepositoryDapper authorRepositoryDapper)
         {
             _authorRepository = authorRepository;
+            _authorRepositoryDapper = authorRepositoryDapper;
             _mapper = mapper;
         }
         public async Task CreateAsync(AuthorModel model)
@@ -44,12 +47,12 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
-            var author = await _authorRepository.GetByIdAsync(id);
-            if (author is null)
+            var authorDaper = await _authorRepositoryDapper.GetByIdAsync(id);
+            if (authorDaper is null)
             {
                 throw new CustomException(Constants.Error.NO_AUTHOR_ID, HttpStatusCode.BadRequest);
             }
-            var authorModel = _mapper.Map<AuthorModel>(author);
+            var authorModel = _mapper.Map<AuthorModel>(authorDaper);
             return authorModel;
         }
 
