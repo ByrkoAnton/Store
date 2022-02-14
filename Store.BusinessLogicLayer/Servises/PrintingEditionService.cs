@@ -2,6 +2,7 @@
 using Store.BusinessLogicLayer.Models.EditionModel;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Interfaces;
@@ -17,14 +18,16 @@ namespace Store.BusinessLogicLayer.Servises
     {
         private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IAuthorRepository _authorRepository;
+        private readonly IAuthorRepositoryDapper _authorRepositoryDapper;
 
         private readonly IMapper _mapper;
         public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, IMapper mapper,
-            IAuthorRepository authorRepository)
+            IAuthorRepository authorRepository, IAuthorRepositoryDapper authorRepositoryDapper)
         {
             _printingEditionRepository = printingEditionRepository;
             _mapper = mapper;
             _authorRepository = authorRepository;
+            _authorRepositoryDapper = authorRepositoryDapper;
         }
 
         public async Task<PrintingEditionModel> GetByIdAsync(long id)
@@ -50,7 +53,6 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomException(Constants.Error.NO_AUTHOR,
                      HttpStatusCode.BadRequest);
             }
-
 
             if (string.IsNullOrWhiteSpace(model.Title))
             {

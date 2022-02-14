@@ -19,7 +19,7 @@ namespace Store.DataAccessLayer.Repositories
         }
         public async Task<Author> GetByIdAsync(long id)
         {
-            var resultq = _dbSet.Include(author => author.PrintingEditions).AsNoTracking().Where(Authors => Authors.Id == id);
+            var query = _dbSet.Include(author => author.PrintingEditions).AsNoTracking().Where(Authors => Authors.Id == id);
             var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(Authors => Authors.Id == id);
             return result;
         }
@@ -37,6 +37,7 @@ namespace Store.DataAccessLayer.Repositories
 
         public async Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrationModelDAL model)
         {
+
             var authors = await _dbSet.Include(n => n.PrintingEditions).AsNoTracking()
             .Where(n => model.Id == null || n.Id == model.Id)
             .Where(n => EF.Functions.Like(n.Name, $"%{model.Name}%"))
@@ -45,7 +46,6 @@ namespace Store.DataAccessLayer.Repositories
             .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC)}")
             .Skip((model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize)
             .Take(model.PageSize).ToListAsync();
-
 
 
             int count = await _dbSet

@@ -57,8 +57,8 @@ namespace Store.BusinessLogicLayer.Servises
         }
 
         public async Task<List<AuthorModel>> GetListOfAuthorsAsync(List<string> authorsNames)
-        {
-            var authors = await _authorRepository.GetAuthorsListByNamesListAsync(authorsNames);
+        {        
+            var authors = await _authorRepositoryDapper.GetAuthorsListByNamesListAsync(authorsNames);
             var authorsModels = _mapper.Map<IEnumerable<AuthorModel>>(authors).ToList();
             authorsModels.ForEach(x => x.PrintingEditionModels = null);
             return authorsModels;
@@ -75,11 +75,12 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var authorFiltrPagingSortModelDAL = _mapper.Map<AuthorFiltrationModelDAL>(model);
 
-            (IEnumerable<Author> authors, int count) authorsWithCount = await _authorRepository.GetAsync(authorFiltrPagingSortModelDAL);
+            (IEnumerable<Author> authors, int count) authorsWithCountDap = await _authorRepositoryDapper.GetAsync(authorFiltrPagingSortModelDAL);
+            
 
-            var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCount.authors);
+            var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCountDap.authors);
 
-            PaginatedPageModel paginatedPage = new PaginatedPageModel(authorsWithCount.count, model.CurrentPage, model.PageSize);
+            PaginatedPageModel paginatedPage = new PaginatedPageModel(authorsWithCountDap.count, model.CurrentPage, model.PageSize);
             NavigationModelBase<AuthorModel> result = new NavigationModelBase<AuthorModel>
             {
                 PageModel = paginatedPage,
