@@ -70,7 +70,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             var authorsId = model.AuthorModels.Select(a => a.Id).ToList();
 
-            var isAuthorsInDb = _authorRepository.IsAuthorsInDb(authorsId);
+            var isAuthorsInDb = await _authorRepositoryDapper.IsAuthorsInDbAsync(authorsId);
 
             if (!isAuthorsInDb)
             {

@@ -11,6 +11,8 @@ namespace Store.DataAccessLayer.Dapper.Interfaces
         public Task<Author> GetByIdAsync(long id);
         public Task<Author> GetByNameAsync(string name);
         public Task<List<Author>> GetAuthorsListByNamesListAsync(List<string> names);
-        public bool IsAuthorsInDb(List<long> id);
+        public Task<bool> IsAuthorsInDbAsync(List<long> id);
+        public Task CreateAsync(Author author);
+        public Task UpdateAsync(Author author);
     }
 }

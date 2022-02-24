@@ -29,30 +29,21 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
             using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
             {
-                //var queryGetAuthors = $"SELECT author.Id, author.DateOfCreation, author.Name, editionAuthorPrintingEdition.Id, editionAuthorPrintingEdition.Currency, editionAuthorPrintingEdition.DateOfCreation, editionAuthorPrintingEdition.Description, editionAuthorPrintingEdition.EditionType, editionAuthorPrintingEdition.IsRemoved, editionAuthorPrintingEdition.Price, editionAuthorPrintingEdition.Title FROM(SELECT Id, DateOfCreation, Name FROM Authors WHERE Name LIKE N'%{model.Name}%' ORDER BY {model.PropertyForSort} OFFSET {skip} ROWS FETCH NEXT {model.PageSize} ROWS ONLY) AS author LEFT JOIN(SELECT edition.Id, edition.Currency, edition.DateOfCreation, edition.Description, edition.EditionType, edition.IsRemoved, edition.Price, edition.Status, edition.Title, AuthorPrintingEdition.AuthorsId, AuthorPrintingEdition.PrintingEditionsId FROM AuthorPrintingEdition INNER JOIN PrintingEditions AS edition ON AuthorPrintingEdition.PrintingEditionsId = edition.Id) AS editionAuthorPrintingEdition ON author.Id = editionAuthorPrintingEdition.AuthorsId ORDER BY author.{model.PropertyForSort}";
-
-                //var queryGetAuthors = $"SET @sqlText = N'SELECT author.Id, author.DateOfCreation, author.Name, editionAuthorPrintingEdition.Id, editionAuthorPrintingEdition.Currency, editionAuthorPrintingEdition.DateOfCreation, editionAuthorPrintingEdition.Description, editionAuthorPrintingEdition.EditionType, editionAuthorPrintingEdition.IsRemoved, editionAuthorPrintingEdition.Price, editionAuthorPrintingEdition.Title FROM(SELECT Id, DateOfCreation, Name FROM Authors ORDER BY {model.PropertyForSort} OFFSET ' + @skip + ' ROWS FETCH NEXT @pageSize ROWS ONLY) AS author LEFT JOIN(SELECT edition.Id, edition.Currency, edition.DateOfCreation, edition.Description, edition.EditionType, edition.IsRemoved, edition.Price, edition.Status, edition.Title,AuthorPrintingEdition.AuthorsId, AuthorPrintingEdition.PrintingEditionsId FROM AuthorPrintingEdition INNER JOIN PrintingEditions AS edition ON AuthorPrintingEdition.PrintingEditionsId = edition.Id) AS editionAuthorPrintingEdition ON author.Id = editionAuthorPrintingEdition.AuthorsId ORDER BY author.{model.PropertyForSort}' Exec(@sqlText)";
-
-                int sortParam = model.PropertyForSort == "Id" ? 1 : 2;
-
                 string sortDirection = model.IsAscending ? "ASC" : "DESC";
+
                 var queryGetAuthors = "IF @propertyForSort = 'Name' AND @sortDirection = 'ASC' SELECT* FROM( SELECT * FROM Authors WHERE Authors.Name LIKE @nameForSearch ORDER BY Name ASC OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY ) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id ORDER BY author.Name ASC IF @propertyForSort = 'Name' AND @sortDirection = 'DESC' SELECT* FROM( SELECT * FROM Authors WHERE Authors.Name LIKE @nameForSearch ORDER BY Name DESC OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id ORDER BY author.Name DESC IF @propertyForSort = 'Id' AND @sortDirection = 'ASC' SELECT* FROM( SELECT * FROM Authors WHERE Authors.Name LIKE @nameForSearch ORDER BY Id ASC OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id ORDER BY author.Id ASC IF @propertyForSort = 'Id' AND @sortDirection = 'DESC' SELECT* FROM( SELECT * FROM Authors WHERE Authors.Name LIKE @nameForSearch ORDER BY Id DESC OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id ORDER BY author.Id DESC";
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@propertyForSort", model.PropertyForSort);
-                parameters.Add("@skip", skip);
-                parameters.Add("@pageSize", model.PageSize);
-                parameters.Add("@nameForSearch", $"%{model.Name}%");
-                parameters.Add("@sortDirection", sortDirection);
-
-
-                
+                var authorsParameters = new DynamicParameters();
+                authorsParameters.Add("@propertyForSort", model.PropertyForSort);
+                authorsParameters.Add("@skip", skip);
+                authorsParameters.Add("@pageSize", model.PageSize);
+                authorsParameters.Add("@nameForSearch", $"%{model.Name}%");
+                authorsParameters.Add("@sortDirection", sortDirection);
 
                 var authorDictionary = new Dictionary<long, Author>();
 
-                var q = db.Query(queryGetAuthors, parameters);
                 var authors =
-                    await db.QueryAsync<Author, PrintingEdition, Author>(queryGetAuthors,
+                    (await db.QueryAsync<Author, PrintingEdition, Author>(queryGetAuthors,
                     (author, editions) =>
                     {
                         Author authorEntry;
@@ -65,15 +56,13 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                         authorEntry.PrintingEditions.Add(editions);
                         return authorEntry;
                     },
-                    parameters);
+                    authorsParameters)).Distinct().ToList();
 
-                //.Distinct()
-                //.ToList();
+                var countParameters = new DynamicParameters();
+                countParameters.Add("@nameForSearch", $"%{model.Name}%");
 
-                authors = authors.Distinct().ToList();
-
-                var queryGetAuthorsCount = $"SELECT Authors.Id FROM Authors WHERE Name LIKE N'%{model.Name}%'";
-                var authorsCount = db.Query(queryGetAuthorsCount).Count();
+                var queryGetAuthorsCount = "SELECT COUNT (Authors.Id) FROM Authors WHERE Name LIKE @nameForSearch";
+                var authorsCount = (await db.QueryAsync<int>(queryGetAuthorsCount, countParameters)).FirstOrDefault();
 
                 var authorsWithCount = (authors: authors, count: authorsCount);
                 return authorsWithCount;
@@ -82,32 +71,17 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task<List<Author>> GetAuthorsListByNamesListAsync(List<string> names)
         {
-            for (int i = 0; i < names.Count; i++)
-            {
-                names[i] = $"'{names[i]}'";
-            }
-            string authorsNames = String.Join(',', names);
-
             using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
             {
-                var query = $"SELECT Authors.Id, Authors.Name, Authors.DateOfCreation, t.Id, t.Currency, t.DateOfCreation, t.Description, t.EditionType, t.Price, t.Status,t.IsRemoved, t.Title, t.AuthorsId, t.PrintingEditionsId FROM Authors LEFT JOIN (SELECT PrintingEditions.Id, PrintingEditions.Currency, PrintingEditions.DateOfCreation, PrintingEditions.Description, PrintingEditions.EditionType, PrintingEditions.Price, PrintingEditions.Status, PrintingEditions.IsRemoved, PrintingEditions.Title, AuthorPrintingEdition.AuthorsId, AuthorPrintingEdition.PrintingEditionsId FROM AuthorPrintingEdition INNER JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id) AS[t] ON Authors.Id = t.AuthorsId WHERE Authors.Name in ({authorsNames})";
+                var query = "SELECT * FROM Authors WHERE Authors.Name IN @authors ORDER BY Name";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@authors", names);
 
                 var authorDictionary = new Dictionary<long, Author>();
 
-                var author = await db.QueryAsync<Author, PrintingEdition, Author>(query,
-                    (author, editions) =>
-                    {
-                        Author authorEntry;
-                        if (!authorDictionary.TryGetValue(author.Id, out authorEntry))
-                        {
-                            authorEntry = author;
-                            authorEntry.PrintingEditions = new List<PrintingEdition>();
-                            authorDictionary.Add(authorEntry.Id, authorEntry);
-                        }
-                        authorEntry.PrintingEditions.Add(editions);
-                        return authorEntry;
-                    },
-                    splitOn: "Id");
+                var author = await db.QueryAsync<Author>(query,
+                    parameters);
 
                 return author.Distinct().ToList();
             }
@@ -115,20 +89,76 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task<Author> GetByIdAsync(long id)
         {
-            //using (var connection = new SqlConnection(_options.DefaultConnection))
-            //{
-            //    connection.Open();
-            //    var invoice = connection.Get<Author>(id);
-            //    return invoice;
-            //}
+            var query = "SELECT* FROM(SELECT* FROM Authors WHERE Authors.Id = @Id) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", id);
+            return await GetAuthorFromDb(query, parameters);
+
+        }
+
+        public async Task<Author> GetByNameAsync(string name)
+        {
+                var query = "SELECT* FROM(SELECT* FROM Authors WHERE Authors.Name = @Name) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@Name", name);
+            return await GetAuthorFromDb(query, parameters);
+            
+        }
+
+        public async Task<bool> IsAuthorsInDbAsync(List<long> ids)
+        {
+            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
+            {
+                var query = "SELECT COUNT(Authors.Id) FROM Authors WHERE Authors.Id IN @idList";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@idList", ids);
+
+                int authorsCunt = (await db.QueryAsync<int>(query, parameters)).FirstOrDefault();
+
+                return authorsCunt == ids.Count;
+            }
+        }
+        public async Task CreateAsync(Author author)
+        {
 
             using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
             {
-                var query = $"SELECT Authors.Id, Authors.Name, Authors.DateOfCreation, t.Id, t.Currency, t.DateOfCreation, t.Description, t.EditionType, t.Price, t.Status,t.IsRemoved, t.Title, t.AuthorsId, t.PrintingEditionsId FROM Authors LEFT JOIN(SELECT PrintingEditions.Id, PrintingEditions.Currency, PrintingEditions.DateOfCreation, PrintingEditions.Description, PrintingEditions.EditionType, PrintingEditions.Price, PrintingEditions.Status,PrintingEditions.IsRemoved, PrintingEditions.Title, AuthorPrintingEdition.AuthorsId, AuthorPrintingEdition.PrintingEditionsId FROM AuthorPrintingEdition INNER JOIN  PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id)AS[t] ON Authors.Id = t.AuthorsId WHERE Authors.Id = {id}";
+                var query = "INSERT INTO Authors(Name, DateOfCreation) VALUES(@Name, @Date); ";
 
+                var parameters = new DynamicParameters();
+                parameters.Add("@Name", author.Name);
+                parameters.Add("@Date", author.DateOfCreation);
+
+                await db.QueryAsync(query, parameters);
+            }
+        }
+
+
+        public async Task UpdateAsync(Author author)
+        {
+
+            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
+            {
+                var query = "UPDATE Authors SET Name = @Name WHERE Authors.Id = @Id;";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@Name", author.Name);
+                parameters.Add("@Id", author.Id);
+                await db.QueryAsync(query, parameters);
+            }
+        }
+
+        private async Task<Author> GetAuthorFromDb(string query, DynamicParameters parameters)
+        {
+            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
+            {
                 var authorDictionary = new Dictionary<long, Author>();
 
-                var author = await db.QueryAsync<Author, PrintingEdition, Author>(query,
+                var author =
+                    (await db.QueryAsync<Author, PrintingEdition, Author>(query,
                     (author, editions) =>
                     {
                         Author authorEntry;
@@ -141,20 +171,10 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                         authorEntry.PrintingEditions.Add(editions);
                         return authorEntry;
                     },
-                    splitOn: "Id");
+                    parameters)).Distinct().FirstOrDefault();
 
-                return author.Distinct().FirstOrDefault();
+                return author;
             }
-        }
-
-        public Task<Author> GetByNameAsync(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsAuthorsInDb(List<long> id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

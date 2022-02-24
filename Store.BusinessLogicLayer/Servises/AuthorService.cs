@@ -31,14 +31,14 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
                       
-            var author = await _authorRepository.GetByNameAsync(model.Name);
+            var author = await _authorRepositoryDapper.GetByNameAsync(model.Name);
             if (author is not null)
             {
                 throw new CustomException(Constants.Error.AUTHOR_CREATE_FAILD, HttpStatusCode.BadRequest);
             }
 
             var newAuthor = _mapper.Map<Author>(model);
-            await _authorRepository.CreateAsync(newAuthor);
+            await _authorRepositoryDapper.CreateAsync(newAuthor);
         }
         public async Task<AuthorModel> GetByIdAsync(long id)
         {
@@ -60,7 +60,6 @@ namespace Store.BusinessLogicLayer.Servises
         {        
             var authors = await _authorRepositoryDapper.GetAuthorsListByNamesListAsync(authorsNames);
             var authorsModels = _mapper.Map<IEnumerable<AuthorModel>>(authors).ToList();
-            authorsModels.ForEach(x => x.PrintingEditionModels = null);
             return authorsModels;
         }
 
@@ -95,7 +94,7 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
-            var author = await _authorRepository.GetByNameAsync(model.Name);
+            var author = await _authorRepositoryDapper.GetByNameAsync(model.Name);
             if (author is null)
             {
                 throw new CustomException(Constants.Error.NO_AUTHOR_WITH_CONDITIONS, HttpStatusCode.BadRequest);
@@ -111,7 +110,7 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
-            var author = await _authorRepository.GetByNameAsync(model.Name);
+            var author = await _authorRepositoryDapper.GetByNameAsync(model.Name);
             if (author is null)
             {
                 throw new CustomException(Constants.Error.AUTHOR_REMOVE_FAILD, HttpStatusCode.BadRequest);
@@ -125,7 +124,7 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
-            var author = await _authorRepository.GetByIdAsync(model.Id);
+            var author = await _authorRepositoryDapper.GetByIdAsync(model.Id);
             if (author is null)
             {
                 throw new CustomException(Constants.Error.NO_AUTHOR_WITH_CONDITIONS, HttpStatusCode.BadRequest);
@@ -133,7 +132,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             author = _mapper.Map<Author>(model);
 
-            await _authorRepository.UpdateAsync(author);
+            await _authorRepositoryDapper.UpdateAsync(author);
         }
     }
 }
