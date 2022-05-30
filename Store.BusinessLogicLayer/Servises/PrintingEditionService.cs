@@ -17,16 +17,15 @@ namespace Store.BusinessLogicLayer.Servises
     public class PrintingEditionService : IPrintingEditionService
     {
         private readonly IPrintingEditionRepository _printingEditionRepository;
-        private readonly IAuthorRepository _authorRepository;
         private readonly IAuthorRepositoryDapper _authorRepositoryDapper;
+        private readonly IPrintingEditionRepositiryDapper _printingEditionRepositoryDapper;
 
         private readonly IMapper _mapper;
-        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, IMapper mapper,
-            IAuthorRepository authorRepository, IAuthorRepositoryDapper authorRepositoryDapper)
+        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, IPrintingEditionRepositiryDapper printingEditionRepositoryDapper, IMapper mapper, IAuthorRepositoryDapper authorRepositoryDapper)
         {
+            _printingEditionRepositoryDapper = printingEditionRepositoryDapper;
             _printingEditionRepository = printingEditionRepository;
             _mapper = mapper;
-            _authorRepository = authorRepository;
             _authorRepositoryDapper = authorRepositoryDapper;
         }
 
@@ -37,7 +36,7 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomException(Constants.Error.WRONG_MODEL,
                                      HttpStatusCode.BadRequest);
             }
-            var edition = await _printingEditionRepository.GetByIdAsync(id);
+            var edition = await _printingEditionRepositoryDapper.GetByIdAsync(id);
             if (edition is null)
             {
                 throw new CustomException(Constants.Error.NO_EDITION_IN_DB,

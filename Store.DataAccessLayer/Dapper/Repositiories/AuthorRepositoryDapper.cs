@@ -1,13 +1,10 @@
 ﻿using Dapper;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Options;
-using Store.BusinessLogicLayer.Configuration;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.Sharing.Configuration;
 using Store.Sharing.Constants;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -94,7 +91,6 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
             var parameters = new DynamicParameters();
             parameters.Add("@Id", id);
             return await GetAuthorFromDb(query, parameters);
-
         }
 
         public async Task<Author> GetByNameAsync(string name)
@@ -103,8 +99,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
                 var parameters = new DynamicParameters();
                 parameters.Add("@Name", name);
-            return await GetAuthorFromDb(query, parameters);
-            
+            return await GetAuthorFromDb(query, parameters);   
         }
 
         public async Task<bool> IsAuthorsInDbAsync(List<long> ids)
@@ -116,9 +111,9 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 var parameters = new DynamicParameters();
                 parameters.Add("@idList", ids);
 
-                int authorsCunt = (await db.QueryAsync<int>(query, parameters)).FirstOrDefault();
+                int authorsCount = (await db.QueryAsync<int>(query, parameters)).FirstOrDefault();
 
-                return authorsCunt == ids.Count;
+                return authorsCount == ids.Count;
             }
         }
         public async Task CreateAsync(Author author)
