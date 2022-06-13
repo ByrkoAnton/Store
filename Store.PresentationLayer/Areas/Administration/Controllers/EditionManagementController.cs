@@ -141,5 +141,14 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();
             return Redirect(qwery);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> DeleteEdition(long id, string url)
+        {
+            await _editionService.RemoveAsync(id);
+            return Redirect(url);
+
+        }
     }
 }

@@ -59,7 +59,7 @@ namespace Store.BusinessLogicLayer.Servises
                      HttpStatusCode.BadRequest);
             }
 
-            var edition = await _printingEditionRepository.GetByTitle(model.Title);
+            var edition = await _printingEditionRepositoryDapper.GetByTitleAsync(model.Title);
 
             if (edition is not null)
             {
@@ -67,9 +67,9 @@ namespace Store.BusinessLogicLayer.Servises
                      HttpStatusCode.BadRequest);
             }
 
-            var authorsId = model.AuthorModels.Select(a => a.Id).ToList();
+            var authorsIds = model.AuthorModels.Select(a => a.Id).ToList();
 
-            var isAuthorsInDb = await _authorRepositoryDapper.IsAuthorsInDbAsync(authorsId);
+            var isAuthorsInDb = await _authorRepositoryDapper.IsAuthorsInDbAsync(authorsIds);
 
             if (!isAuthorsInDb)
             {
@@ -78,25 +78,24 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             var printingEdition = _mapper.Map<PrintingEdition>(model);
-            await _printingEditionRepository.CreateAsync(printingEdition);
+            await _printingEditionRepositoryDapper.CreateAsync(printingEdition);
         }
-        public async Task RemoveAsync(PrintingEditionModel model)
+        public async Task RemoveAsync(long id)
         {
-            var edition = await _printingEditionRepository.GetByIdAsync(model.Id);
+            var edition = await _printingEditionRepository.GetByIdAsync(id);
             if (edition is null)
             {
                 throw new CustomException(Constants.Error.EDITION_NOT_FOUND,
                      HttpStatusCode.BadRequest);
             }
-            await _printingEditionRepository.RemoveAsync(edition);
+            await _printingEditionRepositoryDapper.DeleteAsync(id);
         }
         public async Task<EditionNavigationModel> GetAsync(EditionFiltrationModel model)
         {
             var editionFiltrPagingSortModelDAL = _mapper.Map<EditionFiltrationModelDAL>(model);
 
             (IEnumerable<PrintingEdition> editions, int count, double minPrice, double maxPrice) editionsCount = await
-                _printingEditionRepository.GetAsync(editionFiltrPagingSortModelDAL);
-
+                _printingEditionRepositoryDapper.GetAsync(editionFiltrPagingSortModelDAL);
 
             var editionModels = _mapper.Map<IEnumerable<PrintingEditionModel>>(editionsCount.editions);
 
@@ -137,7 +136,7 @@ namespace Store.BusinessLogicLayer.Servises
                     HttpStatusCode.BadRequest);
             }
 
-            var edition = await _printingEditionRepository.GetByIdAsync(model.Id);
+            var edition = await _printingEditionRepositoryDapper.GetByIdAsync(model.Id);
             if (edition is null)
             {
                 throw new CustomException(Constants.Error.NO_EDITION_IN_DB,
@@ -146,7 +145,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             edition = _mapper.Map<PrintingEdition>(model);
 
-            await _printingEditionRepository.UpdateAsync(edition);
+            await _printingEditionRepositoryDapper.UpdateAsync(edition);
         }
     }
 

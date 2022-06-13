@@ -33,7 +33,7 @@ namespace Store.PresentationLayer.Controllers
         [HttpPost("Remove")]
         public async Task<IActionResult> Remove([FromBody] PrintingEditionModel model)
         {
-            await _editionService.RemoveAsync(model);
+            await _editionService.RemoveAsync(model.Id);
             return Ok();
         }
 

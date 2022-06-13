@@ -72,6 +72,7 @@
             <td>@edition.Status</td>
             <td>
                 <input type="button" value="Profile" class="btn btn-default button" onclick="getProfile(@edition.Id);" />
+                <input type="button" value="Delete" class="btn btn-default button" onclick="deleteEdition(@edition.Id);" />
             </td>
         </tr>
             }
@@ -165,6 +166,13 @@
 
         function getProfile(id) {
             return window.location.href = '@Url.Action("GetEditionProfile", "EditionManagement")?id=' + id;
+        }
+
+         function deleteEdition(id) {
+            if(window.confirm("Do you really want to delete this edition?")){
+            var currentURL = encodeURIComponent(window.location.href);
+            return window.location.href = '@Url.Action("DeleteEdition", "EditionManagement")?id=' + id + '&url=' + currentURL;
+            };
         }
 
 

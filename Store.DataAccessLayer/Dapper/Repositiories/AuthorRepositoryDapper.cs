@@ -59,7 +59,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 countParameters.Add("@nameForSearch", $"%{model.Name}%");
 
                 var queryGetAuthorsCount = "SELECT COUNT (Authors.Id) FROM Authors WHERE Name LIKE @nameForSearch";
-                var authorsCount = (await db.QueryAsync<int>(queryGetAuthorsCount, countParameters)).FirstOrDefault();
+                int authorsCount = (await db.QueryAsync<int>(queryGetAuthorsCount, countParameters)).FirstOrDefault();
 
                 var authorsWithCount = (authors: authors, count: authorsCount);
                 return authorsWithCount;
@@ -99,7 +99,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
                 var parameters = new DynamicParameters();
                 parameters.Add("@Name", name);
-            return await GetAuthorFromDb(query, parameters);   
+                return await GetAuthorFromDb(query, parameters);   
         }
 
         public async Task<bool> IsAuthorsInDbAsync(List<long> ids)
@@ -130,7 +130,6 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 await db.QueryAsync(query, parameters);
             }
         }
-
 
         public async Task UpdateAsync(Author author)
         {
