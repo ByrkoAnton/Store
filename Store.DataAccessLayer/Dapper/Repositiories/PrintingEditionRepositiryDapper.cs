@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Dapper.Repositiories
@@ -379,14 +378,27 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                     authorsIdsEditionsIds.Add(authorIdEditionId);
                 }
 
-                string queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)";
+                var queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)";
                 db.Execute(queryAddAuthorEditon, authorsIdsEditionsIds);
             }
         }
 
-        public Task<List<PrintingEdition>> GetEditionsListByIdListAsync(List<long> id)
+        public async Task<List<PrintingEdition>> GetEditionsListByIdListAsync(List<long> ids)
         {
-            throw new NotImplementedException();
+            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
+            {
+                string queryGetEditions =
+                @"
+                SELECT*
+                FROM PrintingEditions WHERE PrintingEditions.Id IN @ids
+                ORDER BY Id ASC";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@ids", ids);
+
+                List<PrintingEdition> editions = (await db.QueryAsync<PrintingEdition>(queryGetEditions, parameters)).ToList();
+                return editions;
+            } 
         }
 
         private async Task<PrintingEdition> GetEditionFromDb(string query, DynamicParameters parameters)

@@ -1,6 +1,7 @@
 ﻿using Store.BusinessLogicLayer.Models.Payments;
 using Store.BusinessLogicLayer.Models.Stripe;
 using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
@@ -19,16 +20,24 @@ namespace Store.BusinessLogicLayer.Servises
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepository _paymentRepository;
+        private readonly IPaymentRepositoryDapper _paymentRepositoryDapper;
         private readonly IOrderRepository _orderRepository;
+        private readonly IOrderRepositoryDapper _orderRepositoryDapper;
         private readonly IPrintingEditionRepository _printingEditionRepository;
+        private readonly IPrintingEditionRepositiryDapper _printingEditionRepositoryDapper;
         private readonly IOrderItemRepository _orderItemRepository;
-        public PaymentService(IPaymentRepository paymentRepository, IOrderRepository orderRepository,
-         IPrintingEditionRepository printingEditionRepository, IOrderItemRepository orderItemRepository)
+        private readonly IOrderItemRepositoryDapper _orderItemRepositoryDapper;
+        public PaymentService(IPaymentRepository paymentRepository, IPaymentRepositoryDapper paymentRepositoryDapper, IOrderRepository orderRepository, IOrderRepositoryDapper orderRepositoryDapper, IPrintingEditionRepository printingEditionRepository, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IOrderItemRepository orderItemRepository, IOrderItemRepositoryDapper orderItemRepositoryDapper)
         {
+            _paymentRepositoryDapper = paymentRepositoryDapper;
             _paymentRepository = paymentRepository;
             _orderRepository = orderRepository;
             _printingEditionRepository = printingEditionRepository;
+            _printingEditionRepositoryDapper = printingEditionRepositiryDapper;
             _orderItemRepository = orderItemRepository;
+            _orderItemRepositoryDapper = orderItemRepositoryDapper;
+            _orderRepositoryDapper = orderRepositoryDapper;
+
         }
         public async Task<ResultPayModel> PayAsync(StripePayModel model, string jwt)
         {
@@ -43,21 +52,14 @@ namespace Store.BusinessLogicLayer.Servises
                 UserId = id,
             };
 
-            await _orderRepository.CreateAsync(order);
+            await _orderRepositoryDapper.CreateAsync(order);
 
             List<long> editionIds = model.Editions.Select(id => id.EditionId).ToList();
 
-            var editions = await _printingEditionRepository.GetEditionsListByIdListAsync(editionIds);
+            var editions = await _printingEditionRepositoryDapper.GetEditionsListByIdListAsync(editionIds);
 
             List<OrderItem> orderItems = new List<OrderItem>();
-            //List<OrderItem> test = editions.Select(edition => new OrderItem
-            //{
-            //    EditionPrice = edition.Price,
-            //    Currency = edition.Currency,
-            //    PrintingEditionId = edition.Id,
-            //    OrderId = order.Id,
-            //    Count = (int)model.Editions.FirstOrDefault(c => c.EditionId == edition.Id).Count
-            //}).ToList(); 
+          
             foreach (var i in editions)
             {
                 OrderItem orderItem = new OrderItem
@@ -71,11 +73,11 @@ namespace Store.BusinessLogicLayer.Servises
                 orderItems.Add(orderItem);
             }
 
-            await _orderItemRepository.CreateAsync(orderItems);
+            await _orderItemRepositoryDapper.CreateAsync(orderItems);
 
             var options = new ChargeCreateOptions
             {
-                Amount = (int)order.OrderItems.Sum(s => s.EditionPrice * s.Count) * Constants.Charge.GET_CENTS,
+                Amount = (int)orderItems.Sum(s => s.EditionPrice * s.Count) * Constants.Charge.GET_CENTS,
                 Currency = Constants.Charge.USD,
                 Description = $"{Constants.Charge.FROM_USER}{order.UserId}",
                 Source = model.Token
@@ -90,10 +92,10 @@ namespace Store.BusinessLogicLayer.Servises
             {
                 TransactionId = charge.Id,
             };
-            await _paymentRepository.CreateAsync(payment);
+            await _paymentRepositoryDapper.CreateAsync(payment);
             order.PaymentId = payment.Id;
             order.Status = status;
-            await _orderRepository.UpdateAsync(order);
+            await _orderRepositoryDapper.UpdateAsync(order);
 
             var resultPayModel = new ResultPayModel()
             {
