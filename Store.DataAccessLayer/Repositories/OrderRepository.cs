@@ -26,8 +26,7 @@ namespace Store.DataAccessLayer.Repositories
         public async Task<(IEnumerable<Order>, int)> GetAsync(OrderFiltrationModelDAL model)
         {
             var order = await _dbSet
-               .Where(o => model.UserId == null || o.UserId == model.UserId)
-               .Where(o => model.EditionId == null || o.OrderItems.Any(i => i.PrintingEditionId == model.EditionId))
+               .Where(o => model.UserId == null || o.UserId == model.UserId)  
                .Where(o => string.IsNullOrEmpty(model.Discription)
                || EF.Functions.Like(o.Discription, $"%{model.Discription}%"))
                .Where(o => model.Status == null || o.Status == model.Status)
@@ -36,7 +35,6 @@ namespace Store.DataAccessLayer.Repositories
 
             int count = await _dbSet
                .Where(o => o.UserId == model.UserId || model.UserId == null)
-               .Where(o => model.EditionId == null || o.OrderItems.Any(i => i.PrintingEditionId == model.EditionId))
                .Where(o => string.IsNullOrEmpty(model.Discription)
                || EF.Functions.Like(o.Discription, $"%{model.Discription}%"))
                .Where(o => model.Status == null || o.Status == model.Status).CountAsync();

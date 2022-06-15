@@ -7,7 +7,6 @@ using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.FiltrationModels;
 using Store.Sharing.Configuration;
 using Store.Sharing.Constants;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;

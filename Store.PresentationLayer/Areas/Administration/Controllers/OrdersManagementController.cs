@@ -25,11 +25,9 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         {
   
             bool isUserId = long.TryParse(HttpContext.Request.Cookies[Constants.AreaConstants.USER_ID_COOKIES], out long userId);
-            bool isEditionId = long.TryParse(HttpContext.Request.Cookies[Constants.AreaConstants.EDITION_ID_COOKIES], out long editionId);
             var sortModel = new OrderFiltrationModel
             {
                 UserId = isUserId ? userId : null,
-                EditionId = isEditionId ? editionId : null,
                 PropertyForSort = sortBy,
                 IsAscending = isAsc,
                 CurrentPage = page,

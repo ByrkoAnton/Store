@@ -2,6 +2,7 @@
 using Store.BusinessLogicLayer.Models.Orders;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Interfaces;
@@ -16,13 +17,15 @@ namespace Store.BusinessLogicLayer.Servises
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IOrderRepositoryDapper _orderRepositoryDapper;
         private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IUserService userService, IPrintingEditionRepository printingEditionRepository, IMapper maper)
+        public OrderService(IOrderRepository orderRepository, IOrderRepositoryDapper orderRepositoryDapper, IUserService userService, IPrintingEditionRepository printingEditionRepository, IMapper maper)
 
         {
+            _orderRepositoryDapper = orderRepositoryDapper;
             _orderRepository = orderRepository;
             _mapper = maper;
             _userService = userService;
@@ -46,7 +49,7 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var orderFiltrPagingSortModelDAL = _mapper.Map<OrderFiltrationModelDAL>(model);
 
-            (IEnumerable<Order> orders, int count) ordersCount = await _orderRepository.GetAsync(orderFiltrPagingSortModelDAL);
+            (IEnumerable<Order> orders, int count) ordersCount = await _orderRepositoryDapper.GetAsync(orderFiltrPagingSortModelDAL);
            
             var orderModels = _mapper.Map<IEnumerable<OrderModel>>(ordersCount.orders);
 

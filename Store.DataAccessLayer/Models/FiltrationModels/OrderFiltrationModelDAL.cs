@@ -7,6 +7,5 @@ namespace Store.DataAccessLayer.Models.FiltrationModels
         public string Discription { get; set; }
         public long? UserId { get; set; }
         public OrderStatusState? Status { get; set; }
-        public long? EditionId { get; set; }
     }
 }

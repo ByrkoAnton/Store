@@ -37,9 +37,9 @@
                 <th>
                     Description
                 </th>
-                <th>
+                @*<th>
                     Order items id
-                </th>
+                </th>*@
                 <th>
                     Payment Id
                     <span class="sort-button">
@@ -66,7 +66,7 @@
                     <td>@order.DateOfCreation</td>
                     <td>@order.UserId</td>
                     <td>@order.Discription</td>
-                    <td>
+                    @*<td>
                         <select style="font-size: 16px" id="orderItem">
 
                             @foreach (Store.BusinessLogicLayer.Models.OrderItems.OrderItemModel orderItem in order.OrderItems)
@@ -74,7 +74,7 @@
                                 <option>@orderItem.Id</option>
                             }
                         </select>
-                    </td>
+                    </td>*@
                     <td>@order.PaymentId</td>
                     <td>@order.Status</td>
                     <td>
@@ -102,13 +102,6 @@
                         document.getElementById("Description").value = JSON.parse(localStorage.getItem('descriptionForSearch'));
                     </script>
                 </td>
-                <td>
-                    <input class="search" type="text" id="EditionId" />
-                    <script type="text/javascript">
-                        document.getElementById("EditionId").value = JSON.parse(localStorage.getItem('editionIdForSearch'));
-                    </script>
-                </td>
-
                 <td colspan="3">
                     <input style="width: 100%" type="button" value="SEARCH" class="btn btn-default button" onclick="sort(`Id`,`asc`);" />
                 </td>
@@ -150,7 +143,6 @@
         {
             var userIdForSearch = document.getElementById("UserId").value;
             var descriptionForSearch = document.getElementById("Description").value;
-            var editionIdForSearch = document.getElementById("EditionId").value;
 
             debugger
             var isAsc = sortDirection == "asc";
@@ -163,9 +155,6 @@
 
             localStorage.setItem("descriptionForSearch", JSON.stringify(descriptionForSearch));
             document.cookie = "descriptionForSearch" + "=" + encodeURIComponent(descriptionForSearch);
-
-            localStorage.setItem("editionIdForSearch", JSON.stringify(editionIdForSearch));
-            document.cookie = "editionIdForSearch" + "=" + encodeURIComponent(editionIdForSearch);
 
             return window.location.href = '@Url.Action("GetOrders", "OrdersManagement")?sortBy=' + parametr + '&isAsc=' + isAsc;
         }
