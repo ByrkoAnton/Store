@@ -143,8 +143,42 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
             }
         }
 
-        public Task<Order> GetByIdAsync(long id)
+        public async Task<Order> GetByIdAsync(long id)
         {
+            var query = @"SELECT* 
+                        FROM(
+                        SELECT *
+                        FROM Orders 
+                        WHERE Orders.Id = @id
+                        ) AS o
+                        JOIN OrderItems ON OrderItems.OrderId = o.Id";
+
+            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
+            {
+                var orderDictionary = new Dictionary<long, Order>();
+               
+                var parameters = new DynamicParameters();
+                parameters.Add("@Id", id);
+
+                var result =
+                    (await db.QueryAsync<Order, OrderItem, Order>(query,
+                    (order, orderItem) =>
+                    {
+                        Order orderEntry;
+                        if (!orderDictionary.TryGetValue(order.Id, out orderEntry))
+                        {
+                            orderEntry = order;
+                            orderEntry.OrderItems = new List<OrderItem>();
+                            orderDictionary.Add(orderEntry.Id, orderEntry);
+                        }
+                        orderEntry.OrderItems.Add(orderItem);
+                        return orderEntry;
+                    },
+                    parameters)).Distinct().FirstOrDefault();
+
+                return result;
+            }
+
             throw new System.NotImplementedException();
         }
 

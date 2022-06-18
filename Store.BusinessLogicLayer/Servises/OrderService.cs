@@ -18,11 +18,12 @@ namespace Store.BusinessLogicLayer.Servises
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderRepositoryDapper _orderRepositoryDapper;
+        private readonly IPrintingEditionRepositiryDapper _printingEditionRepositiryDapper;
         private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IOrderRepositoryDapper orderRepositoryDapper, IUserService userService, IPrintingEditionRepository printingEditionRepository, IMapper maper)
+        public OrderService(IOrderRepository orderRepository, IOrderRepositoryDapper orderRepositoryDapper, IUserService userService, IPrintingEditionRepository printingEditionRepository, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IMapper maper)
 
         {
             _orderRepositoryDapper = orderRepositoryDapper;
@@ -30,6 +31,7 @@ namespace Store.BusinessLogicLayer.Servises
             _mapper = maper;
             _userService = userService;
             _printingEditionRepository = printingEditionRepository;
+            _printingEditionRepositiryDapper = printingEditionRepositiryDapper;
         }
 
         public async Task<List<OrderModel>> GetAllAsync()
@@ -69,7 +71,7 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
-            var order = await _orderRepository.GetByIdAsync(id);
+            var order = await _orderRepositoryDapper.GetByIdAsync(id);
             if (order is null)
             {
                 throw new CustomException(Constants.Error.NO_ORDERS_THIS_ID, HttpStatusCode.BadRequest);
@@ -83,7 +85,7 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var order = await GetByIdAsync(id);
             var editionsId = order.OrderItems.Select(x => x.PrintingEditionId).ToList();
-            var editions = await _printingEditionRepository.GetEditionsListByIdListAsync(editionsId);
+            var editions = await _printingEditionRepositiryDapper.GetEditionsListByIdListAsync(editionsId);
             var user = await _userService.GetUserByIdAsync(order.UserId.ToString());
             var editionsOrderDetails = _mapper.Map<IEnumerable<EditionInOrderDatails>>(editions).ToList();
 

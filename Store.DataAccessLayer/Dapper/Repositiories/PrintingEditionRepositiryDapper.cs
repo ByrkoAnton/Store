@@ -246,7 +246,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 parameters.Add("@skip", skip);
                 parameters.Add("@pageSize", model.PageSize);
                 parameters.Add("@title", $"%{model.Title}%");
-                parameters.Add("@id", null);
+                parameters.Add("@id", model.Id);
                 parameters.Add("@currency", model.Currency);
                 parameters.Add("@sortDirection", sortDirection);
                 parameters.Add("@minPrice", model.MinPrice);
