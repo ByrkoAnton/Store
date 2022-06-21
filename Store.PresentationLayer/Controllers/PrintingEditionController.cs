@@ -44,13 +44,6 @@ namespace Store.PresentationLayer.Controllers
             return Ok(result);
         }
 
-        [HttpPost("GetByDescription")]
-        public async Task<IActionResult> GetByTitle(PrintingEditionModel model)
-        {
-            var result = await _editionService.GetByTitleAsync(model);
-            return Ok(result);
-        }
-
         [HttpPost("Update")]
         public async Task<IActionResult> Update(PrintingEditionModel model)
         {

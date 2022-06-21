@@ -3,7 +3,6 @@ using Store.BusinessLogicLayer.Models.Stripe;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
-using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using Stripe;
 using System.Collections.Generic;
@@ -19,25 +18,16 @@ namespace Store.BusinessLogicLayer.Servises
 {
     public class PaymentService : IPaymentService
     {
-        private readonly IPaymentRepository _paymentRepository;
         private readonly IPaymentRepositoryDapper _paymentRepositoryDapper;
-        private readonly IOrderRepository _orderRepository;
         private readonly IOrderRepositoryDapper _orderRepositoryDapper;
-        private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IPrintingEditionRepositiryDapper _printingEditionRepositoryDapper;
-        private readonly IOrderItemRepository _orderItemRepository;
         private readonly IOrderItemRepositoryDapper _orderItemRepositoryDapper;
-        public PaymentService(IPaymentRepository paymentRepository, IPaymentRepositoryDapper paymentRepositoryDapper, IOrderRepository orderRepository, IOrderRepositoryDapper orderRepositoryDapper, IPrintingEditionRepository printingEditionRepository, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IOrderItemRepository orderItemRepository, IOrderItemRepositoryDapper orderItemRepositoryDapper)
+        public PaymentService(IPaymentRepositoryDapper paymentRepositoryDapper, IOrderRepositoryDapper orderRepositoryDapper, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IOrderItemRepositoryDapper orderItemRepositoryDapper)
         {
             _paymentRepositoryDapper = paymentRepositoryDapper;
-            _paymentRepository = paymentRepository;
-            _orderRepository = orderRepository;
-            _printingEditionRepository = printingEditionRepository;
             _printingEditionRepositoryDapper = printingEditionRepositiryDapper;
-            _orderItemRepository = orderItemRepository;
             _orderItemRepositoryDapper = orderItemRepositoryDapper;
             _orderRepositoryDapper = orderRepositoryDapper;
-
         }
         public async Task<ResultPayModel> PayAsync(StripePayModel model, string jwt)
         {

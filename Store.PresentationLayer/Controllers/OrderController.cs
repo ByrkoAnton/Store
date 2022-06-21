@@ -23,26 +23,12 @@ namespace Store.PresentationLayer.Controllers
             var result = await _orderServise.GetByIdAsync(model.Id);
             return Ok(result);
         }
-
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _orderServise.GetAllAsync();
-            return Ok(result);
-        }
-
+ 
         [HttpPost("Get")]
         public async Task<IActionResult> Get(OrderFiltrationModel model)
         {
             var result = await _orderServise.GetAsync(model);
             return Ok(result);
-        }
-
-        [HttpPost("Update")]
-        public async Task<IActionResult> Update([FromBody] OrderModel model)
-        {
-            await _orderServise.UpdateAsync(model);
-            return Ok();
         }
     }
 }

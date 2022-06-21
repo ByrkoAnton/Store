@@ -64,22 +64,22 @@ namespace Store.PresentationLayer
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                Path.Combine(env.ContentRootPath, "./Areas/Administration/Styles")),
-                RequestPath = "/Styles"
+                Path.Combine(env.ContentRootPath, Constants.AreaConstants.AREAS_STYLES_PATH)),
+                RequestPath = Constants.AreaConstants.AREAS_STYLES_SHORT_PATH
             });
 
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                Path.Combine(env.ContentRootPath, "./Areas/Administration/Views")),
-                RequestPath = "/Views"
+                Path.Combine(env.ContentRootPath, Constants.AreaConstants.AREAS_VIEVS_PATH)),
+                RequestPath = Constants.AreaConstants.AREAS_VIEWS_SHORT_PATH
             });
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                name: "MyArea",
-                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                name: Constants.AreaConstants.AREA_NAME,
+                pattern: Constants.AreaConstants.AREA_PATTERN);
 
                 endpoints.MapControllerRoute(
                     name: Constants.MapControllerRoute.NAME,

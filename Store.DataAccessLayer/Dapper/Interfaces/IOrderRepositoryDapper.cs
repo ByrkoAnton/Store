@@ -11,5 +11,6 @@ namespace Store.DataAccessLayer.Dapper.Interfaces
         public Task UpdateAsync(Order order);
         public Task<Order> GetByIdAsync(long id);
         public Task<(IEnumerable<Order>, int)> GetAsync(OrderFiltrationModelDAL model);
+        public Task DeleteAsync(long id);
     }
 }

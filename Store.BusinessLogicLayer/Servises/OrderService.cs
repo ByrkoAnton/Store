@@ -5,7 +5,6 @@ using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models.FiltrationModels;
-using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,35 +15,18 @@ namespace Store.BusinessLogicLayer.Servises
 {
     public class OrderService : IOrderService
     {
-        private readonly IOrderRepository _orderRepository;
         private readonly IOrderRepositoryDapper _orderRepositoryDapper;
         private readonly IPrintingEditionRepositiryDapper _printingEditionRepositiryDapper;
-        private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IOrderRepositoryDapper orderRepositoryDapper, IUserService userService, IPrintingEditionRepository printingEditionRepository, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IMapper maper)
+        public OrderService(IOrderRepositoryDapper orderRepositoryDapper, IUserService userService, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IMapper maper)
 
         {
             _orderRepositoryDapper = orderRepositoryDapper;
-            _orderRepository = orderRepository;
             _mapper = maper;
             _userService = userService;
-            _printingEditionRepository = printingEditionRepository;
             _printingEditionRepositiryDapper = printingEditionRepositiryDapper;
-        }
-
-        public async Task<List<OrderModel>> GetAllAsync()
-        {
-            var orders = await _orderRepository.GetAllAsync();
-            if (!orders.Any())
-            {
-                throw new CustomException(Constants.Error.NO_ORDERS_IN_DB,
-                   HttpStatusCode.BadRequest);
-            }
-            var ordersModels = _mapper.Map<IEnumerable<OrderModel>>(orders);
-
-            return ordersModels.ToList();
         }
 
         public async Task<NavigationModelBase<OrderModel>> GetAsync(OrderFiltrationModel model)
@@ -119,29 +101,12 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
-            var order = await _orderRepository.GetByIdAsync(id);
+            var order = await _orderRepositoryDapper.GetByIdAsync(id);
             if (order is null)
             {
                 throw new CustomException(Constants.Error.NO_ORDERS_THIS_ID, HttpStatusCode.BadRequest);
             }
-            await _orderRepository.RemoveAsync(order);
-        }
-
-        public async Task UpdateAsync(OrderModel model)
-        {
-            if (model is null || model.Id is default(long))
-            {
-                throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
-            }
-
-            var order = await _orderRepository.GetByIdAsync(model.Id);
-            if (order is null)
-            {
-                throw new CustomException(Constants.Error.NO_ORDERS_THIS_ID, HttpStatusCode.BadRequest);
-            }
-
-            order = _mapper.Map<Order>(model);
-            await _orderRepository.UpdateAsync(order);
-        }
+            await _orderRepositoryDapper.DeleteAsync(order.Id);
+        } 
     }
 }

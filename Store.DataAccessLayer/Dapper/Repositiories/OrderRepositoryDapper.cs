@@ -6,7 +6,6 @@ using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.Sharing.Configuration;
 using Store.Sharing.Constants;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -33,7 +32,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         public async Task<(IEnumerable<Order>, int)> GetAsync(OrderFiltrationModelDAL model)
         {
             var skip = (model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize;
-            string sortDirection = model.IsAscending ? "ASC" : "DESC";
+            string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
 
             using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
             {
@@ -177,9 +176,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                     parameters)).Distinct().FirstOrDefault();
 
                 return result;
-            }
-
-            throw new System.NotImplementedException();
+            }    
         }
 
         public async Task UpdateAsync(Order order)
@@ -187,6 +184,13 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
             using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
             {
                 await db.UpdateAsync<Order>(order);
+            }
+        } 
+        public async Task DeleteAsync(long id)
+        {
+            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
+            {
+                await db.DeleteAsync<Order>(new Order { Id = id });
             }
         }
     }

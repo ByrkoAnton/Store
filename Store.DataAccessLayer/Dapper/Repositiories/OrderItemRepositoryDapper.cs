@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.Sharing.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -24,11 +23,6 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
             {
                 await db.InsertAsync<List<OrderItem>>(orderItems);
             } 
-        }
-
-        public Task<OrderItem> GetByIdAsync(long id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

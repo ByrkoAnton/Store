@@ -42,6 +42,12 @@ namespace Store.Sharing.Constants
             public const string WRONG_AUTHORS_MSG = "At first add this authors to DB:";
             public const string PATH = "Referer";
             public const string RESET_PESSWORD_MSG = "New password send to email";
+            public const string AREAS_STYLES_PATH = "./Areas/Administration/Styles";
+            public const string AREAS_STYLES_SHORT_PATH = "/Styles";
+            public const string AREAS_VIEVS_PATH = "./Areas/Administration/Views";
+            public const string AREAS_VIEWS_SHORT_PATH = "/Views";
+            public const string AREA_NAME = "MyArea";
+            public const string AREA_PATTERN = "{area:exists}/{controller=Home}/{action=Index}/{id?}";
             public const int FIRST_PAGE = 1;
         }
     }

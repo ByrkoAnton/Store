@@ -1,6 +1,4 @@
-﻿
-
-namespace Store.DataAccessLayer.Dapper.HelperClasses
+﻿namespace Store.DataAccessLayer.Dapper.HelperClasses
 {
     public class AuthorIdEditionId
     {

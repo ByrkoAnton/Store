@@ -16,7 +16,6 @@ namespace Store.BusinessLogicLayer.Servises
 {
     public class PrintingEditionService : IPrintingEditionService
     {
-        private readonly IPrintingEditionRepository _printingEditionRepository;
         private readonly IAuthorRepositoryDapper _authorRepositoryDapper;
         private readonly IPrintingEditionRepositiryDapper _printingEditionRepositoryDapper;
 
@@ -24,7 +23,7 @@ namespace Store.BusinessLogicLayer.Servises
         public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, IPrintingEditionRepositiryDapper printingEditionRepositoryDapper, IMapper mapper, IAuthorRepositoryDapper authorRepositoryDapper)
         {
             _printingEditionRepositoryDapper = printingEditionRepositoryDapper;
-            _printingEditionRepository = printingEditionRepository;
+            //_printingEditionRepository = printingEditionRepository;
             _mapper = mapper;
             _authorRepositoryDapper = authorRepositoryDapper;
         }
@@ -82,7 +81,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task RemoveAsync(long id)
         {
-            var edition = await _printingEditionRepository.GetByIdAsync(id);
+            var edition = await _printingEditionRepositoryDapper.GetByIdAsync(id);
             if (edition is null)
             {
                 throw new CustomException(Constants.Error.EDITION_NOT_FOUND,
@@ -110,24 +109,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             return result;
         }
-        public async Task<PrintingEditionModel> GetByTitleAsync(PrintingEditionModel model)
-        {
-            if (string.IsNullOrWhiteSpace(model.Title))
-            {
-                throw new CustomException(Constants.Error.NO_TITLE,
-                    HttpStatusCode.BadRequest);
-            }
-
-            var edition = await _printingEditionRepository.GetByTitle(model.Title);
-            if (edition is null)
-            {
-                throw new CustomException(Constants.Error.WRONG_CONDITIONS_EDITION,
-                   HttpStatusCode.BadRequest);
-            }
-            var editionModel = _mapper.Map<PrintingEditionModel>(edition);
-
-            return editionModel;
-        }
+        
         public async Task UpdateAsync(PrintingEditionModel model)
         {
             if (model is null)

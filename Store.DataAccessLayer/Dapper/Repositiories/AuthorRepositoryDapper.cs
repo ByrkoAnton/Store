@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Options;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
@@ -70,7 +71,10 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         {
             using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
             {
-                var query = "SELECT * FROM Authors WHERE Authors.Name IN @authors ORDER BY Name";
+                var query = @"SELECT *
+                            FROM
+                            Authors WHERE Authors.Name IN @authors
+                            ORDER BY Name";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("@authors", names);
@@ -84,9 +88,30 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
             }
         }
 
+        public async Task<List<Author>> GetAllAsync()
+        {
+            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
+            {
+                var query = @"SELECT *
+                            FROM
+                            Authors
+                            ORDER BY Id";
+
+
+                var authors = (await db.QueryAsync<Author>(query)).ToList();
+                return authors;
+            }
+        }
+
         public async Task<Author> GetByIdAsync(long id)
         {
-            var query = "SELECT* FROM(SELECT* FROM Authors WHERE Authors.Id = @Id) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id";
+            var query = @"SELECT*
+                        FROM
+                        (SELECT*
+                        FROM Authors WHERE Authors.Id = @Id)
+                        AS author
+                        LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId
+                        LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id";
 
             var parameters = new DynamicParameters();
             parameters.Add("@Id", id);
@@ -95,7 +120,14 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task<Author> GetByNameAsync(string name)
         {
-                var query = "SELECT* FROM(SELECT* FROM Authors WHERE Authors.Name = @Name) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id";
+                var query = @"SELECT*
+                            FROM
+                            (SELECT*
+                            FROM Authors
+                            WHERE Authors.Name = @Name)
+                            AS author
+                            LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId
+                            LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("@Name", name);
@@ -106,7 +138,9 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         {
             using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
             {
-                var query = "SELECT COUNT(Authors.Id) FROM Authors WHERE Authors.Id IN @idList";
+                var query = @"SELECT COUNT(Authors.Id)
+                            FROM Authors
+                            WHERE Authors.Id IN @idList";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("@idList", ids);
@@ -168,6 +202,13 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                     parameters)).Distinct().FirstOrDefault();
 
                 return author;
+            }
+        }
+        public async Task DeleteAsync(long id)
+        {
+            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
+            {
+                await db.DeleteAsync<Author>(new Author { Id = id });
             }
         }
     }

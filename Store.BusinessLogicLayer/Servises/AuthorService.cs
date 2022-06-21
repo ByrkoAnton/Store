@@ -15,12 +15,10 @@ namespace Store.BusinessLogicLayer.Servises
 {
     public class AuthorService : IAuthorService
     {
-        private readonly IAuthorRepository _authorRepository;
         private readonly IAuthorRepositoryDapper _authorRepositoryDapper;
         private readonly IMapper _mapper;
-        public AuthorService(IAuthorRepository authorRepository, IMapper mapper, IAuthorRepositoryDapper authorRepositoryDapper)
+        public AuthorService(IMapper mapper, IAuthorRepositoryDapper authorRepositoryDapper)
         {
-            _authorRepository = authorRepository;
             _authorRepositoryDapper = authorRepositoryDapper;
             _mapper = mapper;
         }
@@ -65,7 +63,7 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task<List<AuthorModel>> GetAllAsync()
         {
-            var authors = await _authorRepository.GetAllAsync();
+            var authors = await _authorRepositoryDapper.GetAllAsync();
             var authorsModels = _mapper.Map<IEnumerable<AuthorModel>>(authors);
             
             return authorsModels.ToList();
@@ -115,7 +113,7 @@ namespace Store.BusinessLogicLayer.Servises
             {
                 throw new CustomException(Constants.Error.AUTHOR_REMOVE_FAILD, HttpStatusCode.BadRequest);
             }
-            await _authorRepository.RemoveAsync(author);
+            await _authorRepositoryDapper.DeleteAsync(author.Id);
         }
         public async Task UpdateAsync(AuthorModel model)
         {

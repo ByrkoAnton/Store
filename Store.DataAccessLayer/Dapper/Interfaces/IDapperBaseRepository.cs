@@ -12,6 +12,4 @@ namespace Store.DataAccessLayer.Dapper.Interfaces
         public Task UpdateAsync(TEntity item);
         public Task SaveChangesAsync();
     }
-
-
 }

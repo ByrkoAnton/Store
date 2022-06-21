@@ -61,7 +61,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         public async Task<(IEnumerable<PrintingEdition>, int, double, double)> GetAsync(EditionFiltrationModelDAL model)
         {
             var skip = (model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize;
-            string sortDirection = model.IsAscending ? "ASC" : "DESC";
+            string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
 
             using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
             {
@@ -240,7 +240,6 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 JOIN Authors ON AuthorPrintingEdition.AuthorsId = Authors.Id
                 ORDER BY edition.Status DESC";
 
-
                 var parameters = new DynamicParameters();
                 parameters.Add("@propertyForSort", model.PropertyForSort);
                 parameters.Add("@skip", skip);
@@ -317,7 +316,14 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task<PrintingEdition> GetByIdAsync(long id)
         {
-            var query = "SELECT* FROM(SELECT * FROM PrintingEditions WHERE PrintingEditions.Id = @Id) AS edition JOIN AuthorPrintingEdition ON edition.Id = AuthorPrintingEdition.PrintingEditionsId JOIN Authors ON AuthorPrintingEdition.AuthorsId = Authors.Id";
+            var query = @"SELECT*
+                        FROM(
+                        SELECT *
+                        FROM PrintingEditions
+                        WHERE PrintingEditions.Id = @Id)
+                        AS edition
+                        JOIN AuthorPrintingEdition ON edition.Id = AuthorPrintingEdition.PrintingEditionsId
+                        JOIN Authors ON AuthorPrintingEdition.AuthorsId = Authors.Id";
 
             var parameters = new DynamicParameters();
             parameters.Add("@Id", id);
@@ -385,10 +391,8 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         public async Task<List<PrintingEdition>> GetEditionsListByIdListAsync(List<long> ids)
         {
             using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                string queryGetEditions =
-                @"
-                SELECT*
+            { 
+               string queryGetEditions = @"SELECT*
                 FROM PrintingEditions WHERE PrintingEditions.Id IN @ids
                 ORDER BY Id ASC";
 
