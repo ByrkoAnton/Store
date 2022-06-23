@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Store.BusinessLogicLayer;
+using Store.BusinessLogicLayer.AdminServises.Interfeces;
 using Store.BusinessLogicLayer.Models.EditionModel;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
@@ -19,15 +18,14 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
     {
 
         private readonly IPrintingEditionService _editionService;
+        private readonly IPrintingEditionServiceAdmin _editionServiceAdmin;
         private readonly IAuthorService _authorService;
 
-        private readonly IMapper _mapper;
-
-        public EditionManagementController(IPrintingEditionService editionService, IAuthorService authorService, IMapper mapper)
+        public EditionManagementController(IPrintingEditionService editionService, IAuthorService authorService, IMapper mapper, IPrintingEditionServiceAdmin editionServiceAdmin)
         {
             _editionService = editionService;
             _authorService = authorService;
-            _mapper = mapper;
+            _editionServiceAdmin = editionServiceAdmin;
         }
 
         [HttpGet]
@@ -37,7 +35,6 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             var sortModel = new EditionFiltrationModel
             {
                 Title = HttpContext.Request.Cookies[Constants.AreaConstants.EDITION_TITLE_COOKIES],
-                AuthorName = HttpContext.Request.Cookies[Constants.AreaConstants.EDITION_AUTHOR_COOKIES],
                 PropertyForSort = sortBy,
                 IsAscending = isAsc,
                 CurrentPage = page,
@@ -61,9 +58,8 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetEditionProfile(long id)
         {
-            var result = await _editionService.GetByIdAsync(id);
-
-            return View(Constants.AreaConstants.VIEW_EDITION_PROFILE, result);
+            var editionModel = await _editionService.GetByIdAsync(id);
+            return View(Constants.AreaConstants.VIEW_EDITION_PROFILE, editionModel);
 
         }
 
@@ -71,8 +67,8 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddNewEdition()
         {
-            var allAuthors = await _authorService.GetAllAsync();
-            var createModel = new EditionCreateViewModel() { AllAuthorModels = allAuthors };
+            var allAuthorsModels = await _authorService.GetAllAsync();
+            var createModel = new EditionCreateViewModel() { AllAuthorModels = allAuthorsModels };
             return View(createModel);
 
         }
@@ -81,65 +77,26 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddNewEdition(EditionCreateViewModel model)
         {
-            var authorsList = model.AuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
-            var authorsModels = await _authorService.GetListOfAuthorsAsync(authorsList);
-            if (authorsList.Count == authorsModels.Count)
-            {
-                var editionModel = _mapper.Map<PrintingEditionModel>(model);
-                editionModel.AuthorModels = authorsModels;
-                await _editionService.CreateAsync(editionModel);
-
-                var allAuthors = await _authorService.GetAllAsync();
-                var createModel = new EditionCreateViewModel() { AllAuthorModels = allAuthors };
-                return View(Constants.AreaConstants.VIEW_ADD_EDITION, createModel);
-            }
-
-            var wrongAuthorsList = authorsList.Except(authorsModels.Select(x => x.Name)).ToList();
-            string wrongAuthors = string.Join(Constants.AreaConstants.WRONG_AUTHORS_DELIMETR, wrongAuthorsList.ToArray());
-            throw new CustomException($"{Constants.AreaConstants.WRONG_AUTHORS_MSG} {wrongAuthors}", HttpStatusCode.BadRequest);
+            await _editionServiceAdmin.CreateEditionByAdminAsync(model);
+            return Ok($"{model.Title} {Constants.AreaConstants.EDITION_CREATE_MSG}");  
         }
 
         [HttpGet]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateEdition(long id)
         {
-            var result = await _editionService.GetByIdAsync(id);
-            var allAuthors = await _authorService.GetAllAsync();
-            var updateViewModel = new EditionUpdateViewModel() { PrintingEdition = result, AllAuthorModels = allAuthors };
+            var editionModel = await _editionService.GetByIdAsync(id);
+            var allAuthorsModels = await _authorService.GetAllAsync();
+            var updateViewModel = new EditionUpdateViewModel() { PrintingEdition = editionModel, AllAuthorModels = allAuthorsModels };
             return View(Constants.AreaConstants.VIEW_UPDATE_EDITION, updateViewModel);
-
         }
 
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateEdition(EditionUpdateViewModel model)
         {
-            List<string> newAuthorsList = new();
-            if (model.NewAuthorsNames is not null)
-            {
-                newAuthorsList = model.NewAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
-            }
-
-            List<string> delAuthorsList = new();
-            if (model.DeletedAuthorsNames is not null)
-            {
-                delAuthorsList = model.DeletedAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
-            }
-
-            var edition = await _editionService.GetByIdAsync(model.PrintingEdition.Id);
-            var authorsNames = edition.AuthorModels.Select(x => x.Name).ToList();
-            newAuthorsList.RemoveAll(x => authorsNames.Contains(x));
-            authorsNames.AddRange(newAuthorsList);
-            authorsNames.RemoveAll(x => delAuthorsList.Contains(x));
-
-            var authorsModels = await _authorService.GetListOfAuthorsAsync(authorsNames);
-
-            model.PrintingEdition.AuthorModels = authorsModels;
-
-            await _editionService.UpdateAsync(model.PrintingEdition);
-
-            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();
-            return Redirect(qwery);
+            await _editionServiceAdmin.UpdateEditionByAdminAsync(model);
+            return View(Constants.AreaConstants.VIEW_EDITION_PROFILE, await _editionService.GetByIdAsync(model.PrintingEdition.Id));
         }
 
         [HttpGet]

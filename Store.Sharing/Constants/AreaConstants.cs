@@ -48,6 +48,7 @@ namespace Store.Sharing.Constants
             public const string AREAS_VIEWS_SHORT_PATH = "/Views";
             public const string AREA_NAME = "MyArea";
             public const string AREA_PATTERN = "{area:exists}/{controller=Home}/{action=Index}/{id?}";
+            public const string EDITION_CREATE_MSG = " successfully created ";
             public const int FIRST_PAGE = 1;
         }
     }

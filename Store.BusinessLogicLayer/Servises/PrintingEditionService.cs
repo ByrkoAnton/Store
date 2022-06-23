@@ -5,7 +5,6 @@ using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.FiltrationModels;
-using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +19,9 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly IPrintingEditionRepositiryDapper _printingEditionRepositoryDapper;
 
         private readonly IMapper _mapper;
-        public PrintingEditionService(IPrintingEditionRepository printingEditionRepository, IPrintingEditionRepositiryDapper printingEditionRepositoryDapper, IMapper mapper, IAuthorRepositoryDapper authorRepositoryDapper)
+        public PrintingEditionService(IPrintingEditionRepositiryDapper printingEditionRepositoryDapper, IMapper mapper, IAuthorRepositoryDapper authorRepositoryDapper)
         {
             _printingEditionRepositoryDapper = printingEditionRepositoryDapper;
-            //_printingEditionRepository = printingEditionRepository;
             _mapper = mapper;
             _authorRepositoryDapper = authorRepositoryDapper;
         }

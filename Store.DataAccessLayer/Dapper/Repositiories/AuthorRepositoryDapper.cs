@@ -27,9 +27,60 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
             using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
             {
-                string sortDirection = model.IsAscending ? "ASC" : "DESC";
+                string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
 
-                var queryGetAuthors = "IF @propertyForSort = 'Name' AND @sortDirection = 'ASC' SELECT* FROM( SELECT * FROM Authors WHERE Authors.Name LIKE @nameForSearch ORDER BY Name ASC OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY ) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id ORDER BY author.Name ASC IF @propertyForSort = 'Name' AND @sortDirection = 'DESC' SELECT* FROM( SELECT * FROM Authors WHERE Authors.Name LIKE @nameForSearch ORDER BY Name DESC OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id ORDER BY author.Name DESC IF @propertyForSort = 'Id' AND @sortDirection = 'ASC' SELECT* FROM( SELECT * FROM Authors WHERE Authors.Name LIKE @nameForSearch ORDER BY Id ASC OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id ORDER BY author.Id ASC IF @propertyForSort = 'Id' AND @sortDirection = 'DESC' SELECT* FROM( SELECT * FROM Authors WHERE Authors.Name LIKE @nameForSearch ORDER BY Id DESC OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY) AS author LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id ORDER BY author.Id DESC";
+                var queryGetAuthors = @"IF @propertyForSort = 'Name' AND @sortDirection = 'ASC'
+                SELECT*
+                FROM(
+                SELECT*
+                FROM Authors
+                WHERE Authors.Name LIKE @nameForSearch
+                ORDER BY Name ASC
+                OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY )
+                AS author
+                LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId 
+                LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id
+                ORDER BY author.Name ASC 
+
+                IF @propertyForSort = 'Name' AND @sortDirection = 'DESC' 
+                SELECT*
+                FROM(
+                SELECT *
+                FROM Authors
+                WHERE Authors.Name LIKE @nameForSearch
+                ORDER BY Name DESC
+                OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY)
+                AS author
+                LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId 
+                LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id 
+                ORDER BY author.Name DESC
+
+
+                IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
+                SELECT*
+                FROM(
+                SELECT*
+                FROM Authors
+                WHERE Authors.Name LIKE @nameForSearch
+                ORDER BY Id
+                ASC OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY)
+                AS author
+                LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId
+                LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id
+                ORDER BY author.Id ASC
+
+                IF @propertyForSort = 'Id' AND @sortDirection = 'DESC'
+                SELECT*
+                FROM(
+                SELECT*
+                FROM Authors
+                WHERE Authors.Name LIKE @nameForSearch
+                ORDER BY Id DESC
+                OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY) 
+                AS author
+                LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId 
+                LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id 
+                ORDER BY author.Id DESC";
 
                 var authorsParameters = new DynamicParameters();
                 authorsParameters.Add("@propertyForSort", model.PropertyForSort);

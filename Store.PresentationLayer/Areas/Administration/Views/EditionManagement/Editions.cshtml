@@ -86,13 +86,7 @@
                     document.getElementById("Title").value = JSON.parse(localStorage.getItem('editionTitleForSearch'));
                 </script>
             </td>
-            <td>
-                <input style="width: 98.3%" class="search" type="text" id="Author" />
-                <script type="text/javascript">
-                    document.getElementById("Author").value = JSON.parse(localStorage.getItem('editionsAuthorForSearch'));
-                </script>
-            </td>
-            <td colspan="4">
+            <td colspan="5">
                 <input style="width: 100%" type="button" value="SEARCH" class="btn btn-default button" onclick="sort(`Id`,`asc`);" />
             </td>
         </tr>
@@ -135,8 +129,6 @@
         function sort(parametr, sortDirection)
         {
             var editionTitleForSearch = document.getElementById("Title").value;
-            var editionsAuthorForSearch = document.getElementById("Author").value;
-
             var isAsc = sortDirection == "asc";
 
             localStorage.setItem("sortParametr", JSON.stringify(parametr));
@@ -144,9 +136,6 @@
 
             localStorage.setItem("editionTitleForSearch", JSON.stringify(editionTitleForSearch));
             document.cookie = "editionTitleForSearch" + "=" + encodeURIComponent(editionTitleForSearch);
-
-            localStorage.setItem("editionsAuthorForSearch", JSON.stringify(editionsAuthorForSearch));
-            document.cookie = "editionsAuthorForSearch" + "=" + encodeURIComponent(editionsAuthorForSearch);
 
             return window.location.href = '@Url.Action("GetEditions", "EditionManagement")?sortBy=' + parametr + '&isAsc=' + isAsc;
         }
