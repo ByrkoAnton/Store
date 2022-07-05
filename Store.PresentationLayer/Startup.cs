@@ -9,6 +9,9 @@ using Microsoft.OpenApi.Models;
 using Store.BusinessLogicLayer;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Store.DataAccessLayer.Repositories.Base;
+using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.DataAccessLayer.Repositories;
 
 namespace Store.PresentationLayer
 {
@@ -22,6 +25,8 @@ namespace Store.PresentationLayer
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IUserRepository, UserRepository>();
+
             services.AddCors();
             services.AddSwaggerGen(c =>
             {

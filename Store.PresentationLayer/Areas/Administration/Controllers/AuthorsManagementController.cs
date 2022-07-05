@@ -31,7 +31,6 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             var result = await _authorService.GetAsync(sortModel);
 
             return View(Constants.AreaConstants.VIEW_AUTHORS, result);
-
         }
 
         [HttpGet]
@@ -41,16 +40,13 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             var result = await _authorService.GetByIdAsync(id);
 
             return View(Constants.AreaConstants.VIEW_AUTHOR_PROFILE, result);
-
         }
 
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateAuthor(AuthorModel updateModel)
         {
-            var result = await _authorService.GetByIdAsync(updateModel.Id);
-            result.Name = updateModel.Name;
-            await _authorService.UpdateAsync(result);
+            await _authorService.UpdateAsync(updateModel);
             var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();
             return Redirect(qwery); 
         }
@@ -60,7 +56,6 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         public IActionResult AddNewAuthor()
         {
             return View();
-
         }
 
         [HttpPost]

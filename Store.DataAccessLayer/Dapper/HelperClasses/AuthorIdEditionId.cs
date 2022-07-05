@@ -5,10 +5,10 @@
         public long AuthorId { get; set; }
         public long EditionId { get; set; }
 
-        public AuthorIdEditionId(long _authorId, long _editionId)
+        public AuthorIdEditionId(long authorId, long editionId)
         {
-            AuthorId = _authorId;
-            EditionId = _editionId;
+            AuthorId = authorId;
+            EditionId = editionId;
         }
     }
 }

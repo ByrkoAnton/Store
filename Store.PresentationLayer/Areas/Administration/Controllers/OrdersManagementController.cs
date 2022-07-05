@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.Orders;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.Sharing.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.PresentationLayer.Areas.Administration.Controllers
@@ -23,7 +20,6 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetOrders(string sortBy = Constants.AreaConstants.ORDER_DEF_SORT_PARAMS, bool isAsc = true, int page = Constants.AreaConstants.FIRST_PAGE)
         {
-  
             bool isUserId = long.TryParse(HttpContext.Request.Cookies[Constants.AreaConstants.USER_ID_COOKIES], out long userId);
             var sortModel = new OrderFiltrationModel
             {

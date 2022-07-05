@@ -32,15 +32,13 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             };
             var result = await _userService.GetUsersAsync(sortModel);
            
-            return View(Constants.AreaConstants.VIEW_USERS, result);
-            
+            return View(Constants.AreaConstants.VIEW_USERS, result);    
         }
 
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetUsers(UserFiltrationModel model)
         {
-
             var result = await _userService.GetUsersAsync(model);
             return View(Constants.AreaConstants.VIEW_USERS, result);
         }
@@ -49,7 +47,6 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> ChangeStatus(long id, string url)
         {
-
             await _userService.UserBlockStatusChangingAsync(new UserUpdateModel() {Id = id });
             return Redirect(url);
         }
@@ -87,7 +84,5 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
             await _userService.UserDeleteAsync( id );
             return Redirect(url);
         }
-
-
     }
 }

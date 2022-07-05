@@ -120,23 +120,21 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task<List<Author>> GetAuthorsListByNamesListAsync(List<string> names)
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                var query = @"SELECT *
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            var query = @"SELECT *
                             FROM
                             Authors WHERE Authors.Name IN @authors
                             ORDER BY Name";
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@authors", names);
+            var parameters = new DynamicParameters();
+            parameters.Add("@authors", names);
 
-                var authorDictionary = new Dictionary<long, Author>();
+            var authorDictionary = new Dictionary<long, Author>();
 
-                var author = await db.QueryAsync<Author>(query,
-                    parameters);
+            var author = await db.QueryAsync<Author>(query,
+                parameters);
 
-                return author.Distinct().ToList();
-            }
+            return author.Distinct().ToList();
         }
 
         public async Task<List<Author>> GetAllAsync()

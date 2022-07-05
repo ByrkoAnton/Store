@@ -7,7 +7,6 @@ using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
@@ -105,7 +104,6 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         {
             await _editionService.RemoveAsync(id);
             return Redirect(url);
-
         }
     }
 }
