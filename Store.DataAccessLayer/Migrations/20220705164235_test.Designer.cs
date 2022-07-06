@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220705164235_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,6 +183,9 @@ namespace Store.DataAccessLayer.Migrations
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MigrationTEST")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -192,7 +197,7 @@ namespace Store.DataAccessLayer.Migrations
                         new
                         {
                             Id = 1L,
-                            DateOfCreation = new DateTime(2022, 7, 5, 19, 47, 34, 544, DateTimeKind.Local).AddTicks(570),
+                            DateOfCreation = new DateTime(2022, 7, 5, 19, 42, 34, 644, DateTimeKind.Local).AddTicks(3669),
                             Name = "FirstAuthor"
                         });
                 });
@@ -316,7 +321,7 @@ namespace Store.DataAccessLayer.Migrations
                         {
                             Id = 1L,
                             Currency = 1,
-                            DateOfCreation = new DateTime(2022, 7, 5, 19, 47, 34, 547, DateTimeKind.Local).AddTicks(746),
+                            DateOfCreation = new DateTime(2022, 7, 5, 19, 42, 34, 647, DateTimeKind.Local).AddTicks(3850),
                             Description = "FirstEdition",
                             EditionType = 1,
                             IsRemoved = false,
