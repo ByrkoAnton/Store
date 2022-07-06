@@ -8,7 +8,7 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
+using static Store.DataAccessLayer.Enums.Enums;
 
 namespace Store.PresentationLayer.Areas.Administration.Controllers
 {

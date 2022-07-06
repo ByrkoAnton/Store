@@ -1,5 +1,5 @@
 ﻿using Store.BusinessLogicLayer.Models.Base;
-using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
+using static Store.DataAccessLayer.Enums.Enums;
 
 namespace Store.BusinessLogicLayer.Models.OrderItems
 {

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using static Store.DataAccessLayer.Enums.Enums;
 using Store.Sharing.Constants;
 using Microsoft.EntityFrameworkCore;
-using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
 
 namespace Store.DataAccessLayer.Initialization
 {

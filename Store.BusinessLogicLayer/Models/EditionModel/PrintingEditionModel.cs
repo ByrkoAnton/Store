@@ -1,7 +1,7 @@
 ﻿using Store.BusinessLogicLayer.Models.Authors;
 using Store.BusinessLogicLayer.Models.Base;
 using System.Collections.Generic;
-using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
+using static Store.DataAccessLayer.Enums.Enums;
 
 namespace Store.BusinessLogicLayer.Models.EditionModel
 { 

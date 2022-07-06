@@ -1,4 +1,4 @@
-﻿using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
+﻿using static Store.DataAccessLayer.Enums.Enums;
 using Dapper.Contrib.Extensions;
 
 namespace Store.DataAccessLayer.Entities
