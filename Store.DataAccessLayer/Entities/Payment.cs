@@ -2,7 +2,6 @@
 {
     public class Payment : BaseEntity
     {
-        public string TransactionId { get; set; } 
-        
+        public string TransactionId { get; set; }     
     }
 }

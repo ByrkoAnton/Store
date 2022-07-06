@@ -1,6 +1,6 @@
 ﻿using Store.BusinessLogicLayer.Models.Authors;
 using System.Collections.Generic;
-using static Store.DataAccessLayer.Enums.Enums.EditionEnums;
+using static Store.DataAccessLayer.Enums.Enums;
 
 namespace Store.BusinessLogicLayer.Models.EditionModel
 {
