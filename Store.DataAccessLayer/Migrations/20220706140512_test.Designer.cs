@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220706140512_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,7 +197,7 @@ namespace Store.DataAccessLayer.Migrations
                         new
                         {
                             Id = 1L,
-                            DateOfCreation = new DateTime(2022, 7, 6, 17, 6, 0, 373, DateTimeKind.Local).AddTicks(4418),
+                            DateOfCreation = new DateTime(2022, 7, 6, 17, 5, 11, 237, DateTimeKind.Local).AddTicks(1200),
                             Name = "FirstAuthor"
                         });
                 });
@@ -319,7 +321,7 @@ namespace Store.DataAccessLayer.Migrations
                         {
                             Id = 1L,
                             Currency = 1,
-                            DateOfCreation = new DateTime(2022, 7, 6, 17, 6, 0, 376, DateTimeKind.Local).AddTicks(4196),
+                            DateOfCreation = new DateTime(2022, 7, 6, 17, 5, 11, 240, DateTimeKind.Local).AddTicks(1282),
                             Description = "FirstEdition",
                             EditionType = 1,
                             IsRemoved = false,

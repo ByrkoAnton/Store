@@ -6,7 +6,7 @@ namespace Store.DataAccessLayer.Entities
     {
         public string Name { get; set; }
         public virtual List<PrintingEdition> PrintingEditions { get; set; }
-        //public string MigrationTEST { get; set; }
+        public string MigrationTEST { get; set; }
         public Author()
         {
             PrintingEditions = new List<PrintingEdition>();
