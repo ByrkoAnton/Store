@@ -24,20 +24,17 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task CreateAsync(Order order)
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                await db.InsertAsync<Order>(order);
-            }
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            await db.InsertAsync<Order>(order);
         }
         public async Task<(IEnumerable<Order>, int)> GetAsync(OrderFiltrationModelDAL model)
         {
             var skip = (model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize;
             string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
 
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                string queryGetOrders =
-                @"IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            string queryGetOrders =
+            @"IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
                 SELECT* 
                 FROM Orders 
                 WHERE (@Userid is null OR Orders.UserId = @userId)
@@ -121,25 +118,24 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 ORDER BY Status DESC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY";
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@propertyForSort", model.PropertyForSort);
-                parameters.Add("@skip", skip);
-                parameters.Add("@pageSize", model.PageSize);
-                parameters.Add("@discription", string.IsNullOrWhiteSpace(model.Discription) ? null : $"%{model.Discription}%");
-                parameters.Add("@UserId", model.UserId);
-                parameters.Add("@sortDirection", sortDirection);
+            var parameters = new DynamicParameters();
+            parameters.Add("@propertyForSort", model.PropertyForSort);
+            parameters.Add("@skip", skip);
+            parameters.Add("@pageSize", model.PageSize);
+            parameters.Add("@discription", string.IsNullOrWhiteSpace(model.Discription) ? null : $"%{model.Discription}%");
+            parameters.Add("@UserId", model.UserId);
+            parameters.Add("@sortDirection", sortDirection);
 
-                List<Order> orders = (await db.QueryAsync<Order>(queryGetOrders, parameters)).ToList();
+            List<Order> orders = (await db.QueryAsync<Order>(queryGetOrders, parameters)).ToList();
 
-                string queryGetCount = @"SELECT COUNT (Orders.Id)
+            string queryGetCount = @"SELECT COUNT (Orders.Id)
                 FROM Orders
                 WHERE(@Userid is null OR Orders.UserId = @userId)
                 AND(@discription is null OR Orders.Discription Like @discription)";
 
-                int count = (await db.QueryAsync<int>(queryGetCount, parameters)).FirstOrDefault();
-                var ordersWithCount = (orders: orders, count: count);
-                return ordersWithCount;
-            }
+            int count = (await db.QueryAsync<int>(queryGetCount, parameters)).FirstOrDefault();
+            var ordersWithCount = (orders: orders, count: count);
+            return ordersWithCount;
         }
 
         public async Task<Order> GetByIdAsync(long id)
@@ -152,46 +148,40 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                         ) AS o
                         JOIN OrderItems ON OrderItems.OrderId = o.Id";
 
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                var orderDictionary = new Dictionary<long, Order>();
-               
-                var parameters = new DynamicParameters();
-                parameters.Add("@Id", id);
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            var orderDictionary = new Dictionary<long, Order>();
 
-                var result =
-                    (await db.QueryAsync<Order, OrderItem, Order>(query,
-                    (order, orderItem) =>
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", id);
+
+            var result =
+                (await db.QueryAsync<Order, OrderItem, Order>(query,
+                (order, orderItem) =>
+                {
+                    Order orderEntry;
+                    if (!orderDictionary.TryGetValue(order.Id, out orderEntry))
                     {
-                        Order orderEntry;
-                        if (!orderDictionary.TryGetValue(order.Id, out orderEntry))
-                        {
-                            orderEntry = order;
-                            orderEntry.OrderItems = new List<OrderItem>();
-                            orderDictionary.Add(orderEntry.Id, orderEntry);
-                        }
-                        orderEntry.OrderItems.Add(orderItem);
-                        return orderEntry;
-                    },
-                    parameters)).Distinct().FirstOrDefault();
+                        orderEntry = order;
+                        orderEntry.OrderItems = new List<OrderItem>();
+                        orderDictionary.Add(orderEntry.Id, orderEntry);
+                    }
+                    orderEntry.OrderItems.Add(orderItem);
+                    return orderEntry;
+                },
+                parameters)).Distinct().FirstOrDefault();
 
-                return result;
-            }    
+            return result;
         }
 
         public async Task UpdateAsync(Order order)
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                await db.UpdateAsync<Order>(order);
-            }
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            await db.UpdateAsync<Order>(order);
         } 
         public async Task DeleteAsync(long id)
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                await db.DeleteAsync<Order>(new Order { Id = id });
-            }
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            await db.DeleteAsync<Order>(new Order { Id = id });
         }
     }
 }

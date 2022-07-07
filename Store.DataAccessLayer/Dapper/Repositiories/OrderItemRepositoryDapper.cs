@@ -19,10 +19,8 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         }
         public async Task CreateAsync(List<OrderItem> orderItems)
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                await db.InsertAsync<List<OrderItem>>(orderItems);
-            } 
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            await db.InsertAsync<List<OrderItem>>(orderItems);
         }
     }
 }

@@ -25,11 +25,10 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         {
             var skip = (model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize;
 
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
 
-                var queryGetAuthors = @"IF @propertyForSort = 'Name' AND @sortDirection = 'ASC'
+            var queryGetAuthors = @"IF @propertyForSort = 'Name' AND @sortDirection = 'ASC'
                 SELECT*
                 FROM(
                 SELECT*
@@ -82,40 +81,39 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id 
                 ORDER BY author.Id DESC";
 
-                var authorsParameters = new DynamicParameters();
-                authorsParameters.Add("@propertyForSort", model.PropertyForSort);
-                authorsParameters.Add("@skip", skip);
-                authorsParameters.Add("@pageSize", model.PageSize);
-                authorsParameters.Add("@nameForSearch", $"%{model.Name}%");
-                authorsParameters.Add("@sortDirection", sortDirection);
+            var authorsParameters = new DynamicParameters();
+            authorsParameters.Add("@propertyForSort", model.PropertyForSort);
+            authorsParameters.Add("@skip", skip);
+            authorsParameters.Add("@pageSize", model.PageSize);
+            authorsParameters.Add("@nameForSearch", $"%{model.Name}%");
+            authorsParameters.Add("@sortDirection", sortDirection);
 
-                var authorDictionary = new Dictionary<long, Author>();
+            var authorDictionary = new Dictionary<long, Author>();
 
-                var authors =
-                    (await db.QueryAsync<Author, PrintingEdition, Author>(queryGetAuthors,
-                    (author, editions) =>
+            var authors =
+                (await db.QueryAsync<Author, PrintingEdition, Author>(queryGetAuthors,
+                (author, editions) =>
+                {
+                    Author authorEntry;
+                    if (!authorDictionary.TryGetValue(author.Id, out authorEntry))
                     {
-                        Author authorEntry;
-                        if (!authorDictionary.TryGetValue(author.Id, out authorEntry))
-                        {
-                            authorEntry = author;
-                            authorEntry.PrintingEditions = new List<PrintingEdition>();
-                            authorDictionary.Add(authorEntry.Id, authorEntry);
-                        }
-                        authorEntry.PrintingEditions.Add(editions);
-                        return authorEntry;
-                    },
-                    authorsParameters)).Distinct().ToList();
+                        authorEntry = author;
+                        authorEntry.PrintingEditions = new List<PrintingEdition>();
+                        authorDictionary.Add(authorEntry.Id, authorEntry);
+                    }
+                    authorEntry.PrintingEditions.Add(editions);
+                    return authorEntry;
+                },
+                authorsParameters)).Distinct().ToList();
 
-                var countParameters = new DynamicParameters();
-                countParameters.Add("@nameForSearch", $"%{model.Name}%");
+            var countParameters = new DynamicParameters();
+            countParameters.Add("@nameForSearch", $"%{model.Name}%");
 
-                var queryGetAuthorsCount = "SELECT COUNT (Authors.Id) FROM Authors WHERE Name LIKE @nameForSearch";
-                int authorsCount = (await db.QueryAsync<int>(queryGetAuthorsCount, countParameters)).FirstOrDefault();
+            var queryGetAuthorsCount = "SELECT COUNT (Authors.Id) FROM Authors WHERE Name LIKE @nameForSearch";
+            int authorsCount = (await db.QueryAsync<int>(queryGetAuthorsCount, countParameters)).FirstOrDefault();
 
-                var authorsWithCount = (authors: authors, count: authorsCount);
-                return authorsWithCount;
-            }
+            var authorsWithCount = (authors: authors, count: authorsCount);
+            return authorsWithCount;
         }
 
         public async Task<List<Author>> GetAuthorsListByNamesListAsync(List<string> names)
@@ -139,17 +137,15 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task<List<Author>> GetAllAsync()
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                var query = @"SELECT *
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            var query = @"SELECT *
                             FROM
                             Authors
                             ORDER BY Id";
 
 
-                var authors = (await db.QueryAsync<Author>(query)).ToList();
-                return authors;
-            }
+            var authors = (await db.QueryAsync<Author>(query)).ToList();
+            return authors;
         }
 
         public async Task<Author> GetByIdAsync(long id)
@@ -185,47 +181,41 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task<bool> IsAuthorsInDbAsync(List<long> ids)
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                var query = @"SELECT COUNT(Authors.Id)
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            var query = @"SELECT COUNT(Authors.Id)
                             FROM Authors
                             WHERE Authors.Id IN @idList";
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@idList", ids);
+            var parameters = new DynamicParameters();
+            parameters.Add("@idList", ids);
 
-                int authorsCount = (await db.QueryAsync<int>(query, parameters)).FirstOrDefault();
+            int authorsCount = (await db.QueryAsync<int>(query, parameters)).FirstOrDefault();
 
-                return authorsCount == ids.Count;
-            }
+            return authorsCount == ids.Count;
         }
         public async Task CreateAsync(Author author)
         {
 
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                var query = "INSERT INTO Authors(Name, DateOfCreation) VALUES(@Name, @Date); ";
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            var query = "INSERT INTO Authors(Name, DateOfCreation) VALUES(@Name, @Date); ";
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@Name", author.Name);
-                parameters.Add("@Date", author.DateOfCreation);
+            var parameters = new DynamicParameters();
+            parameters.Add("@Name", author.Name);
+            parameters.Add("@Date", author.DateOfCreation);
 
-                await db.QueryAsync(query, parameters);
-            }
+            await db.QueryAsync(query, parameters);
         }
 
         public async Task UpdateAsync(Author author)
         {
 
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                var query = "UPDATE Authors SET Name = @Name WHERE Authors.Id = @Id;";
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            var query = "UPDATE Authors SET Name = @Name WHERE Authors.Id = @Id;";
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@Name", author.Name);
-                parameters.Add("@Id", author.Id);
-                await db.QueryAsync(query, parameters);
-            }
+            var parameters = new DynamicParameters();
+            parameters.Add("@Name", author.Name);
+            parameters.Add("@Id", author.Id);
+            await db.QueryAsync(query, parameters);
         }
 
         private async Task<Author> GetAuthorFromDb(string query, DynamicParameters parameters)
@@ -255,10 +245,8 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         }
         public async Task DeleteAsync(long id)
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                await db.DeleteAsync<Author>(new Author { Id = id });
-            }
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            await db.DeleteAsync<Author>(new Author { Id = id });
         }
     }
 }

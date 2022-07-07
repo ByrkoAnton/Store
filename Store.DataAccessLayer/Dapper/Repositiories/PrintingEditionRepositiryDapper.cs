@@ -25,37 +25,35 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task CreateAsync(PrintingEdition edition)
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                var queryAddEdition = @"INSERT INTO PrintingEditions(Title, DateOfCreation, Description, Status, Price, IsRemoved, Currency, EditionType)
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            var queryAddEdition = @"INSERT INTO PrintingEditions(Title, DateOfCreation, Description, Status, Price, IsRemoved, Currency, EditionType)
                   VALUES (@Title, @Date, @Description, @Status, @Price, @IsRemoved, @Currency, @EditionType);
                   SELECT SCOPE_IDENTITY()";
 
-                var editionParameters = new DynamicParameters();
-                editionParameters.Add("@Title", edition.Title);
-                editionParameters.Add("@Date", edition.DateOfCreation);
-                editionParameters.Add("@Description", edition.Description);
-                editionParameters.Add("@Status", edition.Status);
-                editionParameters.Add("@Price", edition.Price);
-                editionParameters.Add("@IsRemoved", edition.IsRemoved);
-                editionParameters.Add("@Currency", edition.Currency);
-                editionParameters.Add("@EditionType", edition.EditionType);
+            var editionParameters = new DynamicParameters();
+            editionParameters.Add("@Title", edition.Title);
+            editionParameters.Add("@Date", edition.DateOfCreation);
+            editionParameters.Add("@Description", edition.Description);
+            editionParameters.Add("@Status", edition.Status);
+            editionParameters.Add("@Price", edition.Price);
+            editionParameters.Add("@IsRemoved", edition.IsRemoved);
+            editionParameters.Add("@Currency", edition.Currency);
+            editionParameters.Add("@EditionType", edition.EditionType);
 
-                long editionId = (await db.QueryAsync<long>(queryAddEdition, editionParameters)).FirstOrDefault();
+            long editionId = (await db.QueryAsync<long>(queryAddEdition, editionParameters)).FirstOrDefault();
 
-                List<long> authorsIds = edition.Authors.Select(id => id.Id).ToList();
+            List<long> authorsIds = edition.Authors.Select(id => id.Id).ToList();
 
-                List<AuthorIdEditionIdModel> authorsIdsEditionsIds = new();
+            List<AuthorIdEditionIdModel> authorsIdsEditionsIds = new();
 
-                foreach (var authorId in authorsIds)
-                {
-                    AuthorIdEditionIdModel authorIdEditionId = new(authorId, editionId);
-                    authorsIdsEditionsIds.Add(authorIdEditionId);
-                }
-
-                string queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)";
-                db.Execute(queryAddAuthorEditon, authorsIdsEditionsIds);
+            foreach (var authorId in authorsIds)
+            {
+                AuthorIdEditionIdModel authorIdEditionId = new(authorId, editionId);
+                authorsIdsEditionsIds.Add(authorIdEditionId);
             }
+
+            string queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)";
+            db.Execute(queryAddAuthorEditon, authorsIdsEditionsIds);
         }
 
         public async Task<(IEnumerable<PrintingEdition>, int, double, double)> GetAsync(EditionFiltrationModelDAL model)
@@ -63,10 +61,9 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
             var skip = (model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize;
             string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
 
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                string queryGetEdition =
-                @"IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            string queryGetEdition =
+            @"IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
                 SELECT*
                 FROM(
                 SELECT *
@@ -240,47 +237,47 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 JOIN Authors ON AuthorPrintingEdition.AuthorsId = Authors.Id
                 ORDER BY edition.Status DESC";
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@propertyForSort", model.PropertyForSort);
-                parameters.Add("@skip", skip);
-                parameters.Add("@pageSize", model.PageSize);
-                parameters.Add("@title", $"%{model.Title}%");
-                parameters.Add("@id", model.Id);
-                parameters.Add("@currency", model.Currency);
-                parameters.Add("@sortDirection", sortDirection);
-                parameters.Add("@minPrice", model.MinPrice);
-                parameters.Add("@maxPrice", model.MaxPrice);
-                parameters.Add("@editionType", model.EditionType);
+            var parameters = new DynamicParameters();
+            parameters.Add("@propertyForSort", model.PropertyForSort);
+            parameters.Add("@skip", skip);
+            parameters.Add("@pageSize", model.PageSize);
+            parameters.Add("@title", $"%{model.Title}%");
+            parameters.Add("@id", model.Id);
+            parameters.Add("@currency", model.Currency);
+            parameters.Add("@sortDirection", sortDirection);
+            parameters.Add("@minPrice", model.MinPrice);
+            parameters.Add("@maxPrice", model.MaxPrice);
+            parameters.Add("@editionType", model.EditionType);
 
-                var editionDictionary = new Dictionary<long, PrintingEdition>();
+            var editionDictionary = new Dictionary<long, PrintingEdition>();
 
-                var editions =
-                    (await db.QueryAsync<PrintingEdition, Author, PrintingEdition>(queryGetEdition,
-                    (edition, author) =>
-                    {
-                        PrintingEdition editionEntry;
-                        if (!editionDictionary.TryGetValue(edition.Id, out editionEntry))
-                        {
-                            editionEntry = edition;
-                            editionEntry.Authors = new List<Author>();
-                            editionDictionary.Add(editionEntry.Id, editionEntry);
-                        }
-                        editionEntry.Authors.Add(author);
-                        return editionEntry;
-                    },
-                    parameters)).Distinct().ToList();
-
-                int count = default;
-                double minPrice = model.CurrentSliderFlor;
-                double maxPrice = model.CurrentSliderCeil;
-                var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);
-
-                if (!editions.Any())
+            var editions =
+                (await db.QueryAsync<PrintingEdition, Author, PrintingEdition>(queryGetEdition,
+                (edition, author) =>
                 {
-                    return result;
-                }
+                    PrintingEdition editionEntry;
+                    if (!editionDictionary.TryGetValue(edition.Id, out editionEntry))
+                    {
+                        editionEntry = edition;
+                        editionEntry.Authors = new List<Author>();
+                        editionDictionary.Add(editionEntry.Id, editionEntry);
+                    }
+                    editionEntry.Authors.Add(author);
+                    return editionEntry;
+                },
+                parameters)).Distinct().ToList();
 
-                string queryGetCount = @"SELECT COUNT (PrintingEditions.Id) 
+            int count = default;
+            double minPrice = model.CurrentSliderFlor;
+            double maxPrice = model.CurrentSliderCeil;
+            var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);
+
+            if (!editions.Any())
+            {
+                return result;
+            }
+
+            string queryGetCount = @"SELECT COUNT (PrintingEditions.Id) 
                 FROM PrintingEditions 
                 WHERE (@id is null OR PrintingEditions.Id = @id)
                 AND PrintingEditions.Title LIKE @title
@@ -289,29 +286,28 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 AND (@maxPrice is null OR PrintingEditions.Price <= @maxPrice) 
                 AND PrintingEditions.EditionType IN @editionType";
 
-                count = (await db.QueryAsync<int>(queryGetCount, parameters)).FirstOrDefault();
+            count = (await db.QueryAsync<int>(queryGetCount, parameters)).FirstOrDefault();
 
-                string queryGetMaxPrice = @"SELECT MAX (PrintingEditions.Price) 
+            string queryGetMaxPrice = @"SELECT MAX (PrintingEditions.Price) 
                 FROM PrintingEditions 
                 WHERE (@id is null OR PrintingEditions.Id = @id)
                 AND PrintingEditions.Title LIKE @title
                 AND (@currency is null OR PrintingEditions.Currency = @currency) 
                 AND PrintingEditions.EditionType IN @editionType";
 
-                maxPrice = (await db.QueryAsync<int>(queryGetMaxPrice, parameters)).FirstOrDefault();
+            maxPrice = (await db.QueryAsync<int>(queryGetMaxPrice, parameters)).FirstOrDefault();
 
-                string queryGetMinPrice = @"SELECT MIN (PrintingEditions.Price) 
+            string queryGetMinPrice = @"SELECT MIN (PrintingEditions.Price) 
                 FROM PrintingEditions 
                 WHERE (@id is null OR PrintingEditions.Id = @id)
                 AND PrintingEditions.Title LIKE @title
                 AND (@currency is null OR PrintingEditions.Currency = @currency)
                 AND PrintingEditions.EditionType IN @editionType";
 
-                minPrice = (await db.QueryAsync<int>(queryGetMinPrice, parameters)).FirstOrDefault();
+            minPrice = (await db.QueryAsync<int>(queryGetMinPrice, parameters)).FirstOrDefault();
 
-                result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);
-                return result;
-            }
+            result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);
+            return result;
         }
 
         public async Task<PrintingEdition> GetByIdAsync(long id)
@@ -349,9 +345,8 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         public async Task UpdateAsync(PrintingEdition edition)
         {
 
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                var queryUpdateEdition = @"UPDATE PrintingEditions 
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            var queryUpdateEdition = @"UPDATE PrintingEditions 
                 SET Title = @Title, 
                 Description = @Description, 
                 Price = @Price,
@@ -362,80 +357,73 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
                 DELETE FROM AuthorPrintingEdition WHERE PrintingEditionsId=@Id;";
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@Title", edition.Title);
-                parameters.Add("@Description", edition.Description  );
-                parameters.Add("@Price", edition.Price);
-                parameters.Add("@EditionType", edition.EditionType);
-                parameters.Add("@Currency", edition.Currency);
-                parameters.Add("@Status", edition.Status);
-                parameters.Add("@Id", edition.Id);
+            var parameters = new DynamicParameters();
+            parameters.Add("@Title", edition.Title);
+            parameters.Add("@Description", edition.Description);
+            parameters.Add("@Price", edition.Price);
+            parameters.Add("@EditionType", edition.EditionType);
+            parameters.Add("@Currency", edition.Currency);
+            parameters.Add("@Status", edition.Status);
+            parameters.Add("@Id", edition.Id);
 
-                await db.QueryAsync(queryUpdateEdition, parameters);
+            await db.QueryAsync(queryUpdateEdition, parameters);
 
-                List<long> authorsIds = edition.Authors.Select(id => id.Id).ToList();
+            List<long> authorsIds = edition.Authors.Select(id => id.Id).ToList();
 
-                List<AuthorIdEditionIdModel> authorsIdsEditionsIds = new();
+            List<AuthorIdEditionIdModel> authorsIdsEditionsIds = new();
 
-                foreach (var authorId in authorsIds)
-                {
-                    AuthorIdEditionIdModel authorIdEditionId = new(authorId, edition.Id);
-                    authorsIdsEditionsIds.Add(authorIdEditionId);
-                }
-
-                var queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)";
-                db.Execute(queryAddAuthorEditon, authorsIdsEditionsIds);
+            foreach (var authorId in authorsIds)
+            {
+                AuthorIdEditionIdModel authorIdEditionId = new(authorId, edition.Id);
+                authorsIdsEditionsIds.Add(authorIdEditionId);
             }
+
+            var queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)";
+            db.Execute(queryAddAuthorEditon, authorsIdsEditionsIds);
         }
 
         public async Task<List<PrintingEdition>> GetEditionsListByIdListAsync(List<long> ids)
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            { 
-               string queryGetEditions = @"SELECT*
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            string queryGetEditions = @"SELECT*
                 FROM PrintingEditions WHERE PrintingEditions.Id IN @ids
                 ORDER BY Id ASC";
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@ids", ids);
+            var parameters = new DynamicParameters();
+            parameters.Add("@ids", ids);
 
-                List<PrintingEdition> editions = (await db.QueryAsync<PrintingEdition>(queryGetEditions, parameters)).ToList();
-                return editions;
-            } 
+            List<PrintingEdition> editions = (await db.QueryAsync<PrintingEdition>(queryGetEditions, parameters)).ToList();
+            return editions;
         }
 
         private async Task<PrintingEdition> GetEditionFromDb(string query, DynamicParameters parameters)
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                var editionDictionary = new Dictionary<long, PrintingEdition>();
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            var editionDictionary = new Dictionary<long, PrintingEdition>();
 
-                var edition =
-                    (await db.QueryAsync<PrintingEdition, Author, PrintingEdition>(query,
-                    (author, editions) =>
+            var edition =
+                (await db.QueryAsync<PrintingEdition, Author, PrintingEdition>(query,
+                (author, editions) =>
+                {
+                    PrintingEdition editionEntry;
+                    if (!editionDictionary.TryGetValue(author.Id, out editionEntry))
                     {
-                        PrintingEdition editionEntry;
-                        if (!editionDictionary.TryGetValue(author.Id, out editionEntry))
-                        {
-                            editionEntry = author;
-                            editionEntry.Authors = new List<Author>();
-                            editionDictionary.Add(editionEntry.Id, editionEntry);
-                        }
-                        editionEntry.Authors.Add(editions);
-                        return editionEntry;
-                    },
-                    parameters)).Distinct().FirstOrDefault();
+                        editionEntry = author;
+                        editionEntry.Authors = new List<Author>();
+                        editionDictionary.Add(editionEntry.Id, editionEntry);
+                    }
+                    editionEntry.Authors.Add(editions);
+                    return editionEntry;
+                },
+                parameters)).Distinct().FirstOrDefault();
 
-                return edition;
-            }
+            return edition;
         }
 
         public async Task DeleteAsync(long id)
         {
-            using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
-            {
-                await db.DeleteAsync<PrintingEdition>(new PrintingEdition {Id = id});  
-            }
+            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+            await db.DeleteAsync<PrintingEdition>(new PrintingEdition { Id = id });
         }
     }
 }
