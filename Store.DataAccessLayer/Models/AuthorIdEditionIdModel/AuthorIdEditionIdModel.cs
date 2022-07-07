@@ -1,11 +1,11 @@
-﻿namespace Store.DataAccessLayer.Dapper.HelperClasses
+﻿namespace Store.DataAccessLayer.Models.AuthorIdEditionIdModel
 {
-    public class AuthorIdEditionId
+    public class AuthorIdEditionIdModel
     {
         public long AuthorId { get; set; }
         public long EditionId { get; set; }
 
-        public AuthorIdEditionId(long authorId, long editionId)
+        public AuthorIdEditionIdModel(long authorId, long editionId)
         {
             AuthorId = authorId;
             EditionId = editionId;

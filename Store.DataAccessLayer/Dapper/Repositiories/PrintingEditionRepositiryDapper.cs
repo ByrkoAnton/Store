@@ -1,10 +1,10 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Options;
-using Store.DataAccessLayer.Dapper.HelperClasses;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.FiltrationModels;
+using Store.DataAccessLayer.Models.AuthorIdEditionIdModel;
 using Store.Sharing.Configuration;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
@@ -45,11 +45,11 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
                 List<long> authorsIds = edition.Authors.Select(id => id.Id).ToList();
 
-                List<AuthorIdEditionId> authorsIdsEditionsIds = new();
+                List<AuthorIdEditionIdModel> authorsIdsEditionsIds = new();
 
                 foreach (var authorId in authorsIds)
                 {
-                    AuthorIdEditionId authorIdEditionId = new(authorId, editionId);
+                    AuthorIdEditionIdModel authorIdEditionId = new(authorId, editionId);
                     authorsIdsEditionsIds.Add(authorIdEditionId);
                 }
 
@@ -375,11 +375,11 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
                 List<long> authorsIds = edition.Authors.Select(id => id.Id).ToList();
 
-                List<AuthorIdEditionId> authorsIdsEditionsIds = new();
+                List<AuthorIdEditionIdModel> authorsIdsEditionsIds = new();
 
                 foreach (var authorId in authorsIds)
                 {
-                    AuthorIdEditionId authorIdEditionId = new(authorId, edition.Id);
+                    AuthorIdEditionIdModel authorIdEditionId = new(authorId, edition.Id);
                     authorsIdsEditionsIds.Add(authorIdEditionId);
                 }
 
