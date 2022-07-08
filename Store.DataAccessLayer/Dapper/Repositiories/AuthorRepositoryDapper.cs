@@ -138,25 +138,17 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         public async Task<List<Author>> GetAllAsync()
         {
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            var query = @"SELECT *
-                            FROM
-                            Authors
-                            ORDER BY Id";
-
-
-            var authors = (await db.QueryAsync<Author>(query)).ToList();
-            return authors;
+            return (await db.GetAllAsync<Author>()).ToList();
         }
 
         public async Task<Author> GetByIdAsync(long id)
         {
             var query = @"SELECT*
                         FROM
-                        (SELECT*
-                        FROM Authors WHERE Authors.Id = @Id)
-                        AS author
-                        LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId
-                        LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id";
+                        Authors 
+                        LEFT JOIN AuthorPrintingEdition ON Authors.Id = AuthorPrintingEdition.AuthorsId
+                        LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id
+                        WHERE Authors.Id = @Id";
 
             var parameters = new DynamicParameters();
             parameters.Add("@Id", id);
@@ -165,14 +157,11 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task<Author> GetByNameAsync(string name)
         {
-                var query = @"SELECT*
-                            FROM
-                            (SELECT*
-                            FROM Authors
-                            WHERE Authors.Name = @Name)
-                            AS author
-                            LEFT JOIN AuthorPrintingEdition ON author.Id = AuthorPrintingEdition.AuthorsId
-                            LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id";
+            var query = @"SELECT*
+                          FROM Authors
+                          LEFT JOIN AuthorPrintingEdition ON Authors.Id = AuthorPrintingEdition.AuthorsId
+                          LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id
+                          WHERE Authors.Name = @Name";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("@Name", name);
@@ -197,25 +186,13 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         {
 
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            var query = "INSERT INTO Authors(Name, DateOfCreation) VALUES(@Name, @Date); ";
-
-            var parameters = new DynamicParameters();
-            parameters.Add("@Name", author.Name);
-            parameters.Add("@Date", author.DateOfCreation);
-
-            await db.QueryAsync(query, parameters);
+            await db.InsertAsync<Author>(author); 
         }
 
         public async Task UpdateAsync(Author author)
         {
-
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            var query = "UPDATE Authors SET Name = @Name WHERE Authors.Id = @Id;";
-
-            var parameters = new DynamicParameters();
-            parameters.Add("@Name", author.Name);
-            parameters.Add("@Id", author.Id);
-            await db.QueryAsync(query, parameters);
+            await db.UpdateAsync<Author>(author);    
         }
 
         private async Task<Author> GetAuthorFromDb(string query, DynamicParameters parameters)

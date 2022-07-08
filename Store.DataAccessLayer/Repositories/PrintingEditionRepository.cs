@@ -108,8 +108,8 @@ namespace Store.DataAccessLayer.Repositories
             edition.Authors.Clear();
             _dbSet.Update(edition);
             var editionForUpdate = _dbSet.Include(e => e.Authors).FirstOrDefault(e => e.Id == edition.Id);
-            editionForUpdate.Authors.RemoveAll(a => !authors.Exists(a2 => a2.Id == a.Id));
-            var result = authors.Where(a => !editionForUpdate.Authors.Exists(a2 => a2.Id == a.Id)).ToList();
+            editionForUpdate.Authors.RemoveAll(a => !authors.Exists(incomingAuthors => incomingAuthors.Id == a.Id));
+            var result = authors.Where(a => !editionForUpdate.Authors.Exists(authorsFromDb => authorsFromDb.Id == a.Id)).ToList();
             editionForUpdate.Authors.AddRange(result);
             _dbSet.Update(editionForUpdate);
             await SaveChangesAsync();
