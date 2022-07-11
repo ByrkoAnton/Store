@@ -312,14 +312,11 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task<PrintingEdition> GetByIdAsync(long id)
         {
-            var query = @"SELECT*
-                        FROM(
-                        SELECT *
+            var query = @"SELECT*  
                         FROM PrintingEditions
-                        WHERE PrintingEditions.Id = @Id)
-                        AS edition
-                        JOIN AuthorPrintingEdition ON edition.Id = AuthorPrintingEdition.PrintingEditionsId
-                        JOIN Authors ON AuthorPrintingEdition.AuthorsId = Authors.Id";
+                        JOIN AuthorPrintingEdition ON PrintingEditions.Id = AuthorPrintingEdition.PrintingEditionsId
+                        JOIN Authors ON AuthorPrintingEdition.AuthorsId = Authors.Id
+                        WHERE PrintingEditions.Id = @Id";
 
             var parameters = new DynamicParameters();
             parameters.Add("@Id", id);
@@ -329,13 +326,10 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         public async Task<PrintingEdition> GetByTitleAsync(string title)
         {
             var query = @"SELECT* 
-            FROM(
-            SELECT *
             FROM PrintingEditions
-            WHERE PrintingEditions.Title = @Title
-            ) AS edition	 
-            JOIN AuthorPrintingEdition ON edition.Id = AuthorPrintingEdition.PrintingEditionsId
-            JOIN Authors ON AuthorPrintingEdition.AuthorsId = Authors.Id";
+            JOIN AuthorPrintingEdition ON PrintingEditions.Id = AuthorPrintingEdition.PrintingEditionsId
+            JOIN Authors ON AuthorPrintingEdition.AuthorsId = Authors.Id
+            WHERE PrintingEditions.Title = @Title";	 
 
             var parameters = new DynamicParameters();
             parameters.Add("@Title", title);
