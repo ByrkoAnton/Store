@@ -140,13 +140,10 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
         public async Task<Order> GetByIdAsync(long id)
         {
-            var query = @"SELECT* 
-                        FROM(
-                        SELECT *
+            var query = @"SELECT*    
                         FROM Orders 
-                        WHERE Orders.Id = @id
-                        ) AS o
-                        JOIN OrderItems ON OrderItems.OrderId = o.Id";
+                        JOIN OrderItems ON OrderItems.OrderId = Orders.Id
+                        WHERE Orders.Id = @id"; 
 
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
             var orderDictionary = new Dictionary<long, Order>();
