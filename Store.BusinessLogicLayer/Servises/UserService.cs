@@ -172,11 +172,11 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var user = await _userManager.FindByEmailAsync(forgotPasswordModel.Email);
 
-            if (user is null || !await _userManager.IsEmailConfirmedAsync(user))
-            {
-                throw new CustomException(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
-                     HttpStatusCode.BadRequest);
-            }
+            //if (user is null || !await _userManager.IsEmailConfirmedAsync(user))
+            //{
+            //    throw new CustomException(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
+            //         HttpStatusCode.BadRequest);
+            //}
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var newPassword = PasswordGenerator.GeneratePassword(Constants.User.PASSWORD_LENGHT,

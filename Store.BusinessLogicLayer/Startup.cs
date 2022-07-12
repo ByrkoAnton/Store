@@ -21,12 +21,6 @@ namespace Store.BusinessLogicLayer
             .AsMatchingInterface()
             .WithTransientLifetime());
 
-            services.Scan(scan => scan
-            .FromAssemblyOf<TokenProvider>()
-            .AddClasses()
-            .AsMatchingInterface()
-            .WithTransientLifetime());
-
             var configuration = new MapperConfiguration(cfg => cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
             IMapper mapper = configuration.CreateMapper();
             services.AddSingleton(mapper);
