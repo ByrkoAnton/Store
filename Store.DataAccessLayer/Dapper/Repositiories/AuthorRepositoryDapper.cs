@@ -27,8 +27,23 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
             string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
+            string queryIsProcedureExists = @"SELECT[name]
+            FROM sys.procedures 
+            WHERE name = 'GetAuthors'";
 
-            var queryGetAuthors = @"IF @propertyForSort = 'Name' AND @sortDirection = 'ASC'
+            var isProcedureExists = (await db.QueryAsync<string>(queryIsProcedureExists)).Any();
+
+            if (!isProcedureExists)
+            {
+                var procedureGetAuthors = @"CREATE PROCEDURE GetAuthors
+                @propertyForSort NVARCHAR(20),
+                @skip INT,
+                @pageSize INT,
+                @nameForSearch NVARCHAR(20),
+                @sortDirection NVARCHAR(5)
+                AS
+
+                IF @propertyForSort = 'Name' AND @sortDirection = 'ASC'
                 SELECT*
                 FROM(
                 SELECT*
@@ -81,6 +96,10 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 LEFT JOIN PrintingEditions ON AuthorPrintingEdition.PrintingEditionsId = PrintingEditions.Id 
                 ORDER BY author.Id DESC";
 
+                await db.ExecuteAsync(procedureGetAuthors);
+            }
+
+
             var authorsParameters = new DynamicParameters();
             authorsParameters.Add("@propertyForSort", model.PropertyForSort);
             authorsParameters.Add("@skip", skip);
@@ -91,7 +110,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
             var authorDictionary = new Dictionary<long, Author>();
 
             var authors =
-                (await db.QueryAsync<Author, PrintingEdition, Author>(queryGetAuthors,
+                (await db.QueryAsync<Author, PrintingEdition, Author>("GetAuthors",
                 (author, editions) =>
                 {
                     Author authorEntry;
@@ -104,7 +123,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                     authorEntry.PrintingEditions.Add(editions);
                     return authorEntry;
                 },
-                authorsParameters)).Distinct().ToList();
+                authorsParameters, commandType:CommandType.StoredProcedure)).Distinct().ToList();
 
             var countParameters = new DynamicParameters();
             countParameters.Add("@nameForSearch", $"%{model.Name}%");
