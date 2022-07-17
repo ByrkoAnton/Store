@@ -72,12 +72,12 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var authorFiltrPagingSortModelDAL = _mapper.Map<AuthorFiltrationModelDAL>(model);
 
-            (IEnumerable<Author> authors, int count) authorsWithCountDap = await _authorRepositoryDapper.GetAsync(authorFiltrPagingSortModelDAL);
+            (IEnumerable<Author> authors, int count) authorsWithCount = await _authorRepositoryDapper.GetAsync(authorFiltrPagingSortModelDAL);
             
 
-            var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCountDap.authors);
+            var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCount.authors);
 
-            PaginatedPageModel paginatedPage = new PaginatedPageModel(authorsWithCountDap.count, model.CurrentPage, model.PageSize);
+            PaginatedPageModel paginatedPage = new PaginatedPageModel(authorsWithCount.count, model.CurrentPage, model.PageSize);
             NavigationModelBase<AuthorModel> result = new NavigationModelBase<AuthorModel>
             {
                 PageModel = paginatedPage,

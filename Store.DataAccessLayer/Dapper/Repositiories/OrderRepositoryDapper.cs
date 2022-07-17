@@ -37,7 +37,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
             @"IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
                 SELECT* 
                 FROM Orders 
-                WHERE (@Userid is null OR Orders.UserId = @userId)
+                WHERE (@userId is null OR Orders.UserId = @userId)
                 AND (@discription is null OR Orders.Discription Like @discription)
                 ORDER BY Id ASC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
@@ -45,7 +45,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 IF @propertyForSort = 'Id' AND @sortDirection = 'DESC'
                 SELECT* 
                 FROM Orders 
-                WHERE (@Userid is null OR Orders.UserId = @userId)
+                WHERE (@userId is null OR Orders.UserId = @userId)
                 AND (@discription is null OR Orders.Discription Like @discription)
                 ORDER BY Id DESC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
@@ -54,7 +54,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 IF @propertyForSort = 'DateOfCreation' AND @sortDirection = 'ASC'
                 SELECT* 
                 FROM Orders 
-                WHERE (@Userid is null OR Orders.UserId = @userId)
+                WHERE (@userId is null OR Orders.UserId = @userId)
                 AND (@discription is null OR Orders.Discription Like @discription)
                 ORDER BY DateOfCreation ASC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
@@ -62,7 +62,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 IF @propertyForSort = 'DateOfCreation' AND @sortDirection = 'DESC'
                 SELECT* 
                 FROM Orders 
-                WHERE (@Userid is null OR Orders.UserId = @userId)
+                WHERE (@userId is null OR Orders.UserId = @userId)
                 AND (@discription is null OR Orders.Discription Like @discription)
                 ORDER BY DateOfCreation DESC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
@@ -71,7 +71,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 IF @propertyForSort = 'UserId' AND @sortDirection = 'ASC'
                 SELECT* 
                 FROM Orders 
-                WHERE (@Userid is null OR Orders.UserId = @userId)
+                WHERE (@userId is null OR Orders.UserId = @userId)
                 AND (@discription is null OR Orders.Discription Like @discription)
                 ORDER BY UserId ASC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
@@ -79,7 +79,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 IF @propertyForSort = 'UserId' AND @sortDirection = 'DESC'
                 SELECT* 
                 FROM Orders 
-                WHERE (@Userid is null OR Orders.UserId = @userId)
+                WHERE (@userId is null OR Orders.UserId = @userId)
                 AND (@discription is null OR Orders.Discription Like @discription)
                 ORDER BY UserId DESC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
@@ -88,7 +88,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 IF @propertyForSort = 'PaymentId' AND @sortDirection = 'ASC'
                 SELECT* 
                 FROM Orders 
-                WHERE (@Userid is null OR Orders.UserId = @userId)
+                WHERE (@userId is null OR Orders.UserId = @userId)
                 AND (@discription is null OR Orders.Discription Like @discription)
                 ORDER BY PaymentId ASC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
@@ -96,7 +96,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 IF @propertyForSort = 'PaymentId' AND @sortDirection = 'DESC'
                 SELECT* 
                 FROM Orders 
-                WHERE (@Userid is null OR Orders.UserId = @userId)
+                WHERE (@userId is null OR Orders.UserId = @userId)
                 AND (@discription is null OR Orders.Discription Like @discription)
                 ORDER BY PaymentId DESC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
@@ -105,7 +105,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 IF @propertyForSort = 'Status' AND @sortDirection = 'ASC'
                 SELECT* 
                 FROM Orders 
-                WHERE (@Userid is null OR Orders.UserId = @userId)
+                WHERE (@userId is null OR Orders.UserId = @userId)
                 AND (@discription is null OR Orders.Discription Like @discription)
                 ORDER BY Status ASC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
@@ -113,7 +113,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 IF @propertyForSort = 'Status' AND @sortDirection = 'DESC'
                 SELECT* 
                 FROM Orders 
-                WHERE (@Userid is null OR Orders.UserId = @userId)
+                WHERE (@userId is null OR Orders.UserId = @userId)
                 AND (@discription is null OR Orders.Discription Like @discription)
                 ORDER BY Status DESC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY";
@@ -123,7 +123,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
             parameters.Add("@skip", skip);
             parameters.Add("@pageSize", model.PageSize);
             parameters.Add("@discription", string.IsNullOrWhiteSpace(model.Discription) ? null : $"%{model.Discription}%");
-            parameters.Add("@UserId", model.UserId);
+            parameters.Add("@userId", model.UserId);
             parameters.Add("@sortDirection", sortDirection);
 
             List<Order> orders = (await db.QueryAsync<Order>(queryGetOrders, parameters)).ToList();

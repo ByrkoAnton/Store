@@ -189,9 +189,9 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             await _emailService.SendEmailAsync(user.Email, Constants.User.RESET_PASSWORD_SUBJ,
-            String.Format(Constants.User.RESET_PASSWORD_MSG, newPassword));
+            String.Format(Constants.User.RESET_PASSWORD_MASSAGE, newPassword));
 
-            return Constants.User.CHECK_MSG;
+            return Constants.User.CHECK_MASSAGE;
         }
         public async Task ResetPasswordByAdminAsync(string id)
         {
@@ -214,7 +214,7 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             await _emailService.SendEmailAsync(user.Email, Constants.User.RESET_PASSWORD_SUBJ,
-            String.Format(Constants.User.RESET_PASSWORD_MSG, newPassword));    
+            String.Format(Constants.User.RESET_PASSWORD_MASSAGE, newPassword));    
         }
         public async Task ChangePasswordAsync(ChangePasswordModel model, string authentication)
         {

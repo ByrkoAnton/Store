@@ -16,7 +16,7 @@ namespace Store.BusinessLogicLayer.Servises
     public class OrderService : IOrderService
     {
         private readonly IOrderRepositoryDapper _orderRepositoryDapper;
-        private readonly IPrintingEditionRepositiryDapper _printingEditionRepositiryDapper;
+        private readonly IPrintingEditionRepositiryDapper _printingEditionRepositoryDapper;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
@@ -26,7 +26,7 @@ namespace Store.BusinessLogicLayer.Servises
             _orderRepositoryDapper = orderRepositoryDapper;
             _mapper = maper;
             _userService = userService;
-            _printingEditionRepositiryDapper = printingEditionRepositiryDapper;
+            _printingEditionRepositoryDapper = printingEditionRepositiryDapper;
         }
 
         public async Task<NavigationModelBase<OrderModel>> GetAsync(OrderFiltrationModel model)
@@ -67,7 +67,7 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var order = await GetByIdAsync(id);
             var editionsId = order.OrderItems.Select(x => x.PrintingEditionId).ToList();
-            var editions = await _printingEditionRepositiryDapper.GetEditionsListByIdListAsync(editionsId);
+            var editions = await _printingEditionRepositoryDapper.GetEditionsListByIdListAsync(editionsId);
             var user = await _userService.GetUserByIdAsync(order.UserId.ToString());
             var editionsOrderDetails = _mapper.Map<IEnumerable<EditionInOrderDatails>>(editions).ToList();
 

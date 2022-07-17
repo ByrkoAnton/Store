@@ -50,15 +50,15 @@ namespace Store.BusinessLogicLayer.Servises
 
             List<OrderItem> orderItems = new List<OrderItem>();
           
-            foreach (var i in editions)
+            foreach (var edition in editions)
             {
                 OrderItem orderItem = new OrderItem
                 {
-                    EditionPrice = i.Price,
-                    Currency = i.Currency,
-                    PrintingEditionId = i.Id,
+                    EditionPrice = edition.Price,
+                    Currency = edition.Currency,
+                    PrintingEditionId = edition.Id,
                     OrderId = order.Id,
-                    Count = (int)model.Editions.FirstOrDefault(c => c.EditionId == i.Id).Count
+                    Count = (int)model.Editions.FirstOrDefault(c => c.EditionId == edition.Id).Count
                 };
                 orderItems.Add(orderItem);
             }
@@ -89,7 +89,7 @@ namespace Store.BusinessLogicLayer.Servises
 
             var resultPayModel = new ResultPayModel()
             {
-                Message = Constants.Charge.SUCCESS_MSG,
+                Message = Constants.Charge.SUCCESS_MASSAGE,
                 OrderId = order.Id.ToString()
             };
             return resultPayModel;
