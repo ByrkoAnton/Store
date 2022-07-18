@@ -37,9 +37,10 @@ namespace Store.Sharing.Constants
             public const string EDITION_ID_COOKIES = "editionIdForSearch"; //TODO never used constant
             public const string EDITION_DESC_COOKIES = "descriptionForSearch";
             public const string SPACE_IN_MODEl = " ";
+            public const string WRONG_AUTHORS_MESSAGE = "At first add this authors to DB:";
+            public const string WRONG_AUTHORS_DELIMETR_MESSAGE = "Wrong delimetr in model";
             public const char DELIMETR_IN_MODEL = ','; //TODO same constant
             public const string WRONG_AUTHORS_DELIMETR = ", "; //TODO same constant you can use ',' with .Trim() method
-            public const string WRONG_AUTHORS_MSG = "At first add this authors to DB:";
             public const string PATH = "Referer";
             public const string RESET_PESSWORD_MSG = "New password send to email";
             public const string AREAS_STYLES_PATH = "./Areas/Administration/Styles";
