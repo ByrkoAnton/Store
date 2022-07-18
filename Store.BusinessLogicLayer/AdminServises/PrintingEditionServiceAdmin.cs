@@ -25,6 +25,10 @@ namespace Store.BusinessLogicLayer.AdminServises
         }
         public async Task CreateEditionByAdminAsync(EditionCreateViewModel model)
         {
+            if (!model.AuthorsNames.Contains(Constants.AreaConstants.DELIMETR_IN_MODEL))
+            {
+                throw new CustomException($"{Constants.AreaConstants.WRONG_AUTHORS_DELIMETR_MESSAGE}", HttpStatusCode.BadRequest);
+            }
             var authorsList = model.AuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
             var authorsModels = await _authorService.GetListOfAuthorsAsync(authorsList);
 
@@ -32,7 +36,7 @@ namespace Store.BusinessLogicLayer.AdminServises
             {
                 var wrongAuthorsList = authorsList.Except(authorsModels.Select(x => x.Name)).ToList();
                 string wrongAuthors = string.Join(Constants.AreaConstants.WRONG_AUTHORS_DELIMETR, wrongAuthorsList.ToArray());
-                throw new CustomException($"{Constants.AreaConstants.WRONG_AUTHORS_MSG} {wrongAuthors}", HttpStatusCode.BadRequest);
+                throw new CustomException($"{Constants.AreaConstants.WRONG_AUTHORS_MESSAGE} {wrongAuthors}", HttpStatusCode.BadRequest);
             }
                
                 var editionModel = _mapper.Map<PrintingEditionModel>(model);

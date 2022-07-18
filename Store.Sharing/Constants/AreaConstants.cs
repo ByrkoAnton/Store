@@ -39,7 +39,8 @@ namespace Store.Sharing.Constants
             public const string SPACE_IN_MODEl = " ";
             public const char DELIMETR_IN_MODEL = ',';
             public const string WRONG_AUTHORS_DELIMETR = ", ";
-            public const string WRONG_AUTHORS_MSG = "At first add this authors to DB:";
+            public const string WRONG_AUTHORS_MESSAGE = "At first add this authors to DB:";
+            public const string WRONG_AUTHORS_DELIMETR_MESSAGE = "Wrong delimetr in model";
             public const string PATH = "Referer";
             public const string RESET_PESSWORD_MSG = "New password send to email";
             public const string AREAS_STYLES_PATH = "./Areas/Administration/Styles";
