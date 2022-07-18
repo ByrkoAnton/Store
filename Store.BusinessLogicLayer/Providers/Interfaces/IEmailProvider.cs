@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises.Interfaces
+namespace Store.BusinessLogicLayer.Servises.Interfaces//TODO wrong namespace
 {
     public interface IEmailProvider
     {

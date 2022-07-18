@@ -17,9 +17,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
+using System.Web;//TODO unused directive
 
-namespace Store.BusinessLogicLayer.Servises
+namespace Store.BusinessLogicLayer.Servises// TODO spelling
 {
     public class UserService : IUserService
     {
@@ -77,7 +77,7 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             user.IsBlocked = !user.IsBlocked;
-            var blockRersult = await _userManager.UpdateAsync(user);
+            var blockRersult = await _userManager.UpdateAsync(user);//TODO wrong spelling
 
             if (!blockRersult.Succeeded)
             {
@@ -116,7 +116,7 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (!long.TryParse(authentication, out long id))
             {
-                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
                 var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
 
                 id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
@@ -172,7 +172,7 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var user = await _userManager.FindByEmailAsync(forgotPasswordModel.Email);
 
-            //if (user is null || !await _userManager.IsEmailConfirmedAsync(user))
+            //if (user is null || !await _userManager.IsEmailConfirmedAsync(user))//TODO legacy code
             //{
             //    throw new CustomException(Constants.Error.PASSWORD_RESET_FAILD_NO_USER,
             //         HttpStatusCode.BadRequest);
@@ -214,13 +214,13 @@ namespace Store.BusinessLogicLayer.Servises
             }
 
             await _emailService.SendEmailAsync(user.Email, Constants.User.RESET_PASSWORD_SUBJ,
-            String.Format(Constants.User.RESET_PASSWORD_MASSAGE, newPassword));    
+            String.Format(Constants.User.RESET_PASSWORD_MASSAGE, newPassword));  //TODO please use just string
         }
         public async Task ChangePasswordAsync(ChangePasswordModel model, string authentication)
         {
             if (!long.TryParse(authentication, out long id))
             {
-                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
                 var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
 
                 id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
@@ -239,7 +239,7 @@ namespace Store.BusinessLogicLayer.Servises
                      HttpStatusCode.BadRequest);
             }
 
-            var isCurrentPaswordValid = await _userManager.CheckPasswordAsync(user, model.CurrentPassword);
+            var isCurrentPaswordValid = await _userManager.CheckPasswordAsync(user, model.CurrentPassword);//TODO spelling
             if (!isCurrentPaswordValid)
             {
                 throw new CustomException(Constants.Error.CURRENT_PASSWORD_WRONG, HttpStatusCode.BadRequest);
@@ -257,7 +257,7 @@ namespace Store.BusinessLogicLayer.Servises
         {
             if (!long.TryParse(authentication, out long id))
             {
-                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
                 var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
 
                 id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);

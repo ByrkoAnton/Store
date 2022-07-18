@@ -19,7 +19,7 @@ namespace Store.DataAccessLayer.Repositories
         }
         public async Task<Order> GetByIdAsync(long id)
         {
-            var result = await _dbSet.FirstOrDefaultAsync(Order => Order.Id == id);
+            var result = await _dbSet.FirstOrDefaultAsync(Order => Order.Id == id);//TODO wrong naming
             return result;
         }
 
@@ -31,7 +31,7 @@ namespace Store.DataAccessLayer.Repositories
                || EF.Functions.Like(o.Discription, $"%{model.Discription}%"))
                .Where(o => model.Status == null || o.Status == model.Status)
                 .OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC)}")
-                .Skip((model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize).Take(model.PageSize).ToListAsync();
+                .Skip((model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize).Take(model.PageSize).ToListAsync();// TODO Why single if u get a list
 
             int count = await _dbSet
                .Where(o => o.UserId == model.UserId || model.UserId == null)
@@ -39,7 +39,7 @@ namespace Store.DataAccessLayer.Repositories
                || EF.Functions.Like(o.Discription, $"%{model.Discription}%"))
                .Where(o => model.Status == null || o.Status == model.Status).CountAsync();
 
-            var ordersWithCount = (editions: order, count: count);
+            var ordersWithCount = (editions: order, count: count); //TODO redundant explicit naming
 
             return ordersWithCount;
         }

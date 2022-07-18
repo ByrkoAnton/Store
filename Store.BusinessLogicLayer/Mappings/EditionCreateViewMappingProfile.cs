@@ -3,7 +3,7 @@ using Store.BusinessLogicLayer.Models.EditionModel;
 
 namespace Store.BusinessLogicLayer.Mappings
 {
-    class EditionCreateViewMappingProfile : Profile
+    class EditionCreateViewMappingProfile : Profile //TODO modifier?
     {
         public EditionCreateViewMappingProfile()
         {

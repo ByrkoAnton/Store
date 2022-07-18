@@ -1,7 +1,7 @@
 ﻿using Store.BusinessLogicLayer.Models.EditionModel;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises.Interfaces
+namespace Store.BusinessLogicLayer.Servises.Interfaces//TODO wrong spelling
 {
     public interface IPrintingEditionService
     {

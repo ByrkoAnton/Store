@@ -64,7 +64,7 @@ namespace Store.DataAccessLayer.Repositories
             int count = default;
             double minPrice = model.CurrentSliderFlor;
             double maxPrice = model.CurrentSliderCeil;
-            var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);
+            var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);//TODO redundant explicit name
 
             if (!editions.Any())
             {
@@ -108,7 +108,7 @@ namespace Store.DataAccessLayer.Repositories
             edition.Authors.Clear();
             _dbSet.Update(edition);
             var editionForUpdate = _dbSet.Include(e => e.Authors).FirstOrDefault(e => e.Id == edition.Id);
-            editionForUpdate.Authors.RemoveAll(a => !authors.Exists(incomingAuthors => incomingAuthors.Id == a.Id));
+            editionForUpdate.Authors.RemoveAll(a => !authors.Exists(incomingAuthors => incomingAuthors.Id == a.Id));//TODO possible null reference exception
             var result = authors.Where(a => !editionForUpdate.Authors.Exists(authorsFromDb => authorsFromDb.Id == a.Id)).ToList();
             editionForUpdate.Authors.AddRange(result);
             _dbSet.Update(editionForUpdate);

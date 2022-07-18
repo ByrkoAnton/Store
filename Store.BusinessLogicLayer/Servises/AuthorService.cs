@@ -11,7 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises
+namespace Store.BusinessLogicLayer.Servises//TODO worng spelling
 {
     public class AuthorService : IAuthorService
     {
@@ -45,7 +45,7 @@ namespace Store.BusinessLogicLayer.Servises
                 throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
-            var authorDaper = await _authorRepositoryDapper.GetByIdAsync(id);
+            var authorDaper = await _authorRepositoryDapper.GetByIdAsync(id);//TODO wrong spelling
             if (authorDaper is null)
             {
                 throw new CustomException(Constants.Error.NO_AUTHOR_ID, HttpStatusCode.BadRequest);
@@ -72,8 +72,8 @@ namespace Store.BusinessLogicLayer.Servises
         {
             var authorFiltrPagingSortModelDAL = _mapper.Map<AuthorFiltrationModelDAL>(model);
 
-            (IEnumerable<Author> authors, int count) authorsWithCount = await _authorRepositoryDapper.GetAsync(authorFiltrPagingSortModelDAL);
-            
+            (IEnumerable<Author> authors, int count) authorsWithCount = await _authorRepositoryDapper.GetAsync(authorFiltrPagingSortModelDAL);//TODO u can simplify it var (authors, count) and them use just variable
+
 
             var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCount.authors);
 

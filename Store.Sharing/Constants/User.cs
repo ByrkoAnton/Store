@@ -15,14 +15,14 @@
             public const string CONFIRM_EMAIL  = "confirm email";
             public const string REGISTR_SUCCESS  = "regisrtation success. confirm your email";
             public const string UPDATE_SUCCES  = "Data was updated";
-            public const string UPDATE_SUCCES_EMAIL  = "Data was updated confirm new email";
+            public const string UPDATE_SUCCES_EMAIL  = "Data was updated confirm new email"; //TODO unused constant
             public const string EMAIL_CONFIRMED  = "email confirmed";
             public const string CONFIRM_LINK = "Confirm registration, go to : <a href='{0}'>link</a>";
             public const string RESET_PASSWORD_SUBJ = "reset password";
             public const string RESET_PASSWORD_MASSAGE = "new password is {0}";
             public const int PASSWORD_LENGHT = 10;
             public const int PASSWORD_DIGETS = 2;
-            public const int PASSWORD_SPECIAL_CHARS = 2;
+            public const int PASSWORD_SPECIAL_CHARS = 2; //TODO the same constant
             public const string CHECK_MASSAGE = "check your email";
             public const string VALID_PASSWORD = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_!%&*]).{8,20})";
             public const int PASSWORD_REQUIRED_LENGHT = 8;

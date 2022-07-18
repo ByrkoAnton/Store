@@ -2,7 +2,7 @@
 using Store.BusinessLogicLayer.Models.Stripe;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises.Interfaces
+namespace Store.BusinessLogicLayer.Servises.Interfaces//TODO wrong spelling
 {
     public interface IPaymentService
     {

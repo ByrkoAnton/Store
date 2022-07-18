@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Store.BusinessLogicLayer.Models.Users;
+using Store.BusinessLogicLayer.Models.Users;//TODO add new line
 namespace Store.BusinessLogicLayer.Mappings
 {
-    class UserFiltrationMappingProfile: Profile
+    class UserFiltrationMappingProfile: Profile//TODO modifier?
     {
         public UserFiltrationMappingProfile()
         {

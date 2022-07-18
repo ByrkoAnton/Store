@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Dapper.Interfaces
 {
-   public interface IOrderRepositoryDapper
+   public interface IOrderRepositoryDapper //TODO base interface?
     {
         public Task CreateAsync(Order order);
         public Task UpdateAsync(Order order);

@@ -16,7 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Collections.Generic;
 using System.Net;
 
-namespace Store.BusinessLogicLayer.Servises
+namespace Store.BusinessLogicLayer.Servises//TODO spelling
 {
     public class UserAccountService : IUserAccountService
     {
@@ -132,7 +132,7 @@ namespace Store.BusinessLogicLayer.Servises
 
         public async Task<TokenResponseModel> UpdateTokensAsync(string jwtToken, string refreshToken)
         {
-            var jwtTrimed = jwtToken.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+            var jwtTrimed = jwtToken.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
             var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
 
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);

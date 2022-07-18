@@ -4,7 +4,7 @@
     {
         public class EmailProvider
         {
-            public const string NAME_FROM = "EmailProvider:NameFrom";
+            public const string NAME_FROM = "EmailProvider:NameFrom"; //TODO  a lot of unused constant
             public const string ADDRESS_FROM = "EmailProvider:AdressFrom";
             public const string NAME_TO = "EmailProvider:NameTo";
             public const string SMTP = "EmailProvider:Smtp";

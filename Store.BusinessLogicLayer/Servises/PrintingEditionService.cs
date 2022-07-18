@@ -11,7 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises
+namespace Store.BusinessLogicLayer.Servises//TODO spelling
 {
     public class PrintingEditionService : IPrintingEditionService
     {

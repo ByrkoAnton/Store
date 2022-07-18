@@ -19,12 +19,12 @@ namespace Store.DataAccessLayer.Repositories
         }
         public async Task<Author> GetByIdAsync(long id)
         {
-            var query = _dbSet.Include(author => author.PrintingEditions).AsNoTracking().Where(Authors => Authors.Id == id);
-            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(Authors => Authors.Id == id);
+            var query = _dbSet.Include(author => author.PrintingEditions).AsNoTracking().Where(Authors => Authors.Id == id);//TODO unused variable, wrong naming 'Authors' should start from lowercase
+            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(Authors => Authors.Id == id);//TODO lowercase
             return result;
         }
 
-        public bool IsAuthorsInDb(List<long> id)
+        public bool IsAuthorsInDb(List<long> id)//TODO why single? Check it please in other pleases
         {
             var result = id.All(x => _dbSet.Select(d => d.Id).Contains(x));
             return result;
@@ -55,13 +55,13 @@ namespace Store.DataAccessLayer.Repositories
             || n.PrintingEditions.Any(t => EF.Functions.Like(t.Description, $"%{model.EditionDescription}%")))
             .CountAsync();
 
-            var AuthorsWithCount = (authors: authors, count: count);
+            var AuthorsWithCount = (authors: authors, count: count);//TODO wrong naming, redundant explicit name, no need additional variable, you can just return tuple. In return u can check tuple items
 
             return AuthorsWithCount;
         }
         public async Task<Author> GetByNameAsync(string name)
         {
-            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(Authors => Authors.Name == name);
+            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(Authors => Authors.Name == name);//TODO wrong naming lowercase and single
 
             return result;
         }

@@ -5,7 +5,7 @@
         public enum OrderStatusState
         {
             None = 0,
-            Unpayed = 1,
+            Unpayed = 1,///TODO wrong spelling 'Unpaid'
             Payed = 2,
         }
     }

@@ -1,6 +1,6 @@
-﻿
+﻿//TODO extra lines
 
-namespace Store.BusinessLogicLayer.Configuration
+namespace Store.BusinessLogicLayer.Configuration //TODO wrong namespace
 {
     public class TokenConfig
     {

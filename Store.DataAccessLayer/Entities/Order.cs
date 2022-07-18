@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using static Store.DataAccessLayer.Enums.Enums;
-using Dapper.Contrib.Extensions;
+using Dapper.Contrib.Extensions;//TODO add new line
 namespace Store.DataAccessLayer.Entities
 {
     public class Order : BaseEntity
     {
-        public string Discription { get; set; }
+        public string Discription { get; set; }//TODO wrong spelling 
         public  long UserId { get; set; }
         [Computed]
         public virtual User User { get; set; }

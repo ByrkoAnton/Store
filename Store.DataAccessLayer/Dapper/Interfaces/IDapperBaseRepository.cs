@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Dapper.Interfaces
 {
-    public interface IDapperBaseRepository<TEntity> where TEntity : class
+    public interface IDapperBaseRepository<TEntity> where TEntity : class //TODO unused interface
     {
         public Task CreateAsync(TEntity item);
         public Task CreateAsync(List<TEntity> item);

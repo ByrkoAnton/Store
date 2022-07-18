@@ -3,12 +3,12 @@ using Microsoft.Extensions.Options;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.Sharing.Configuration;
-using System;
+using System; //TODO unused directive
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
-namespace Store.DataAccessLayer.Dapper.Repositiories
+namespace Store.DataAccessLayer.Dapper.Repositiories //TODO wrong spelling
 {
     public class PaymentRepositoryDapper : IPaymentRepositoryDapper
     {
@@ -20,7 +20,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         public async Task CreateAsync(Payment payment)
         {
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.InsertAsync<Payment>(payment);
+            await db.InsertAsync<Payment>(payment); //TODO redundant specification
         }  
     }
 }

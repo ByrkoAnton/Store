@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.AdminServises
+namespace Store.BusinessLogicLayer.AdminServises//TODO wrong spelling
 {
     public class PrintingEditionServiceAdmin : IPrintingEditionServiceAdmin
     {
@@ -25,7 +25,7 @@ namespace Store.BusinessLogicLayer.AdminServises
         }
         public async Task CreateEditionByAdminAsync(EditionCreateViewModel model)
         {
-            var authorsList = model.AuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
+            var authorsList = model.AuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();//TODO please use .Trim() instead of Space_in_model
             var authorsModels = await _authorService.GetListOfAuthorsAsync(authorsList);
 
             if (authorsList.Count != authorsModels.Count)
@@ -34,10 +34,10 @@ namespace Store.BusinessLogicLayer.AdminServises
                 string wrongAuthors = string.Join(Constants.AreaConstants.WRONG_AUTHORS_DELIMETR, wrongAuthorsList.ToArray());
                 throw new CustomException($"{Constants.AreaConstants.WRONG_AUTHORS_MSG} {wrongAuthors}", HttpStatusCode.BadRequest);
             }
-               
-                var editionModel = _mapper.Map<PrintingEditionModel>(model);
-                editionModel.AuthorModels = authorsModels;
-                await _editionService.CreateAsync(editionModel);                   
+             
+                var editionModel = _mapper.Map<PrintingEditionModel>(model);//TODO extra indentation  
+                editionModel.AuthorModels = authorsModels;//TODO extra indentation 
+            await _editionService.CreateAsync(editionModel);//TODO right indentation                   
         }
 
         public async Task UpdateEditionByAdminAsync(EditionUpdateViewModel model)
@@ -45,10 +45,10 @@ namespace Store.BusinessLogicLayer.AdminServises
             List<string> newAuthorsList = new();
             if (model.NewAuthorsNames is not null)
             {
-                newAuthorsList = model.NewAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
+                newAuthorsList = model.NewAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();//TODO please check comment above
             }
 
-            List<string> delAuthorsList = new();
+            List<string> delAuthorsList = new();//TODO wrong naming
             if (model.DeletedAuthorsNames is not null)
             {
                 delAuthorsList = model.DeletedAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();

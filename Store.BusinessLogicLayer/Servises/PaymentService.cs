@@ -14,7 +14,7 @@ using static Store.DataAccessLayer.Enums.Enums;
 using Order = Store.DataAccessLayer.Entities.Order;
 using OrderItem = Store.DataAccessLayer.Entities.OrderItem;
 
-namespace Store.BusinessLogicLayer.Servises
+namespace Store.BusinessLogicLayer.Servises//TODO spelling
 {
     public class PaymentService : IPaymentService
     {
@@ -22,7 +22,7 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly IOrderRepositoryDapper _orderRepositoryDapper;
         private readonly IPrintingEditionRepositiryDapper _printingEditionRepositoryDapper;
         private readonly IOrderItemRepositoryDapper _orderItemRepositoryDapper;
-        public PaymentService(IPaymentRepositoryDapper paymentRepositoryDapper, IOrderRepositoryDapper orderRepositoryDapper, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IOrderItemRepositoryDapper orderItemRepositoryDapper)
+        public PaymentService(IPaymentRepositoryDapper paymentRepositoryDapper, IOrderRepositoryDapper orderRepositoryDapper, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IOrderItemRepositoryDapper orderItemRepositoryDapper)//TODO spelling
         {
             _paymentRepositoryDapper = paymentRepositoryDapper;
             _printingEditionRepositoryDapper = printingEditionRepositiryDapper;
@@ -31,7 +31,7 @@ namespace Store.BusinessLogicLayer.Servises
         }
         public async Task<ResultPayModel> PayAsync(StripePayModel model, string jwt)
         {
-            var jwtTrimed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();
+            var jwtTrimed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
             var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
 
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
@@ -58,7 +58,7 @@ namespace Store.BusinessLogicLayer.Servises
                     Currency = edition.Currency,
                     PrintingEditionId = edition.Id,
                     OrderId = order.Id,
-                    Count = (int)model.Editions.FirstOrDefault(c => c.EditionId == edition.Id).Count
+                    Count = (int)model.Editions.FirstOrDefault(c => c.EditionId == edition.Id).Count//TODO possible null reference
                 };
                 orderItems.Add(orderItem);
             }

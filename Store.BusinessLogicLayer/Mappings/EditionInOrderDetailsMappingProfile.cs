@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Store.BusinessLogicLayer.Models.Orders;
 using Store.DataAccessLayer.Entities;
-
+//TODO extra line
 
 namespace Store.BusinessLogicLayer.Mappings
 {
-    class EditionInOrderDetailsMappingProfile : Profile
+    class EditionInOrderDetailsMappingProfile : Profile//TODO modifier?
     {
         public EditionInOrderDetailsMappingProfile()
         {

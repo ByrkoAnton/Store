@@ -1,8 +1,8 @@
-﻿
+﻿//TODO extra line
 using Store.BusinessLogicLayer.Models.EditionModel;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.AdminServises.Interfeces
+namespace Store.BusinessLogicLayer.AdminServises.Interfeces//TODO wrong spelling
 {
   public interface IPrintingEditionServiceAdmin
     {

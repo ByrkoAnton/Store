@@ -1,5 +1,5 @@
-﻿
-
+﻿//TODO extra lines
+//TODO extra lines
 namespace Store.Sharing.Constants
 {
     public partial class Constants
@@ -12,8 +12,8 @@ namespace Store.Sharing.Constants
             public const string ACTION_SIGN_IN = "SignIn";
             public const string ACTION_GETPROFILE = "GetProfile";
             public const string VIEW_PROFILE = "Profile";
-            public const string VIEW_ADD_AUTHOR = "AddNewAuthor";
-            public const string VIEW_ADD_EDITION = "AddNewEdition";
+            public const string VIEW_ADD_AUTHOR = "AddNewAuthor"; //TODO never used constant
+            public const string VIEW_ADD_EDITION = "AddNewEdition"; //TODO never used constant
             public const string VIEW_AUTHORS = "Authors";
             public const string VIEW_USERS = "Users";
             public const string VIEW_EDITIONS = "Editions";
@@ -32,13 +32,13 @@ namespace Store.Sharing.Constants
             public const string EDITION_DEF_SORT_PARAMS = "Price";
             public const string AUTHOR_NAME_COOKIES = "authorNameForSearch";
             public const string EDITION_TITLE_COOKIES = "editionTitleForSearch";
-            public const string EDITION_AUTHOR_COOKIES = "editionsAuthorForSearch";
+            public const string EDITION_AUTHOR_COOKIES = "editionsAuthorForSearch"; //TODO never used constant
             public const string USER_ID_COOKIES = "UserIdInOrder";
-            public const string EDITION_ID_COOKIES = "editionIdForSearch";
+            public const string EDITION_ID_COOKIES = "editionIdForSearch"; //TODO never used constant
             public const string EDITION_DESC_COOKIES = "descriptionForSearch";
             public const string SPACE_IN_MODEl = " ";
-            public const char DELIMETR_IN_MODEL = ',';
-            public const string WRONG_AUTHORS_DELIMETR = ", ";
+            public const char DELIMETR_IN_MODEL = ','; //TODO same constant
+            public const string WRONG_AUTHORS_DELIMETR = ", "; //TODO same constant you can use ',' with .Trim() method
             public const string WRONG_AUTHORS_MSG = "At first add this authors to DB:";
             public const string PATH = "Referer";
             public const string RESET_PESSWORD_MSG = "New password send to email";

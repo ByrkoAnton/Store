@@ -4,9 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Store.DataAccessLayer.Extentions
+namespace Store.DataAccessLayer.Extentions//TODO wrong spelling 'Extensions'
 {
-    public static class QueryExtention
+    public static class QueryExtention //TODO wrong spelling 'Extensions'
     {
         public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, PropertyInfo property, bool asc) where T: class
         {

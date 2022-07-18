@@ -11,7 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises
+namespace Store.BusinessLogicLayer.Servises//TODO wrong spelling
 {
     public class OrderService : IOrderService
     {
@@ -20,7 +20,7 @@ namespace Store.BusinessLogicLayer.Servises
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepositoryDapper orderRepositoryDapper, IUserService userService, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IMapper maper)
+        public OrderService(IOrderRepositoryDapper orderRepositoryDapper, IUserService userService, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IMapper maper)//TODO spelling
 
         {
             _orderRepositoryDapper = orderRepositoryDapper;

@@ -1,5 +1,5 @@
-﻿
-
+﻿//TODO extra lines
+//TODO extra lines
 namespace Store.Sharing.Constants
 {
     public partial class Constants

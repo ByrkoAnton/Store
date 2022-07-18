@@ -12,7 +12,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Store.DataAccessLayer.Dapper.Repositiories
+namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
 {
     public class AuthorRepositoryDapper : IAuthorRepositoryDapper
     {
@@ -33,9 +33,11 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
             var isProcedureExists = (await db.QueryAsync<string>(queryIsProcedureExists)).Any();
 
-            if (!isProcedureExists)
+            if (!isProcedureExists) //TODO u can use CREATE OR ALTER instead condition https://docs.microsoft.com/en-us/sql/t-sql/statements/create-procedure-transact-sql?view=sql-server-ver16
+            //TODO I think u don't need subquery. Left join don't changes data in this case please check it
+            //TODO please don't use '*' in select. It's affects performance. Check why? 
             {
-                var procedureGetAuthors = @"CREATE PROCEDURE GetAuthors
+                var procedureGetAuthors = @"CREATE PROCEDURE GetAuthors 
                 @propertyForSort NVARCHAR(20),
                 @skip INT,
                 @pageSize INT,

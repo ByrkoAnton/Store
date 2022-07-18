@@ -4,7 +4,7 @@ using Store.BusinessLogicLayer.Models.Users;
 
 namespace Store.BusinessLogicLayer.Mappings
 {
-    class UserNavigationMappingProfile:Profile
+    class UserNavigationMappingProfile: Profile//TODO modifier?
     {
         public UserNavigationMappingProfile()
         {

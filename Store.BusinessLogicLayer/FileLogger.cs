@@ -6,7 +6,7 @@ namespace Store.BusinessLogicLayer
 {
     public class FileLogger : ILogger
     {
-        private string filePath;
+        private string filePath;//TODO wrong code style
         private static object _lock = new object();
         public FileLogger(string path)
         {

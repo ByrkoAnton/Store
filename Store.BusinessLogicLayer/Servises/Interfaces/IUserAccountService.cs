@@ -1,10 +1,10 @@
-﻿
+﻿//TODO extra line
 using System.Threading.Tasks;
 using Store.BusinessLogicLayer.Models;
 using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
 
-namespace Store.BusinessLogicLayer.Servises.Interfaces
+namespace Store.BusinessLogicLayer.Servises.Interfaces//TODO wrong spelling
 {
     public interface IUserAccountService
     {

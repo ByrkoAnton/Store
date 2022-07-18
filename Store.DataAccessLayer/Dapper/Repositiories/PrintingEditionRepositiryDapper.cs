@@ -13,12 +13,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Store.DataAccessLayer.Dapper.Repositiories
+namespace Store.DataAccessLayer.Dapper.Repositiories //TODO wrong spelling
 {
-    public class PrintingEditionRepositiryDapper : IPrintingEditionRepositiryDapper
+    public class PrintingEditionRepositiryDapper : IPrintingEditionRepositiryDapper //TODO wrong spelling
     {
         private readonly ConnectionStringConfig _options;
-        public PrintingEditionRepositiryDapper(IOptions<ConnectionStringConfig> options)
+        public PrintingEditionRepositiryDapper(IOptions<ConnectionStringConfig> options) //TODO wrong spelling
         {
             _options = options.Value;
         }
@@ -52,8 +52,8 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 authorsIdsEditionsIds.Add(authorIdEditionId);
             }
 
-            string queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)";
-            db.Execute(queryAddAuthorEditon, authorsIdsEditionsIds);
+            string queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)";//TODO wrong spelling 'edition'
+            db.Execute(queryAddAuthorEditon, authorsIdsEditionsIds); //TODO please use async method
         }
 
         public async Task<(IEnumerable<PrintingEdition>, int, double, double)> GetAsync(EditionFiltrationModelDAL model)
@@ -62,7 +62,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
             string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
 
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            string queryGetEdition =
+            string queryGetEdition = //TODO please check comment in payment repository. and check subquery
             @"IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
                 SELECT*
                 FROM(
@@ -255,7 +255,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 (await db.QueryAsync<PrintingEdition, Author, PrintingEdition>(queryGetEdition,
                 (edition, author) =>
                 {
-                    PrintingEdition editionEntry;
+                    PrintingEdition editionEntry;//TODO wrong spelling
                     if (!editionDictionary.TryGetValue(edition.Id, out editionEntry))
                     {
                         editionEntry = edition;
@@ -270,7 +270,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
             int count = default;
             double minPrice = model.CurrentSliderFlor;
             double maxPrice = model.CurrentSliderCeil;
-            var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);
+            var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice); //TODO redundant explicit name
 
             if (!editions.Any())
             {
@@ -306,7 +306,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
 
             minPrice = (await db.QueryAsync<int>(queryGetMinPrice, parameters)).FirstOrDefault();
 
-            result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);
+            result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice); //TODO redundant explicit name
             return result;
         }
 
@@ -372,8 +372,8 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 authorsIdsEditionsIds.Add(authorIdEditionId);
             }
 
-            var queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)";
-            db.Execute(queryAddAuthorEditon, authorsIdsEditionsIds);
+            var queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)"; //TODO wrong spelling 
+            db.Execute(queryAddAuthorEditon, authorsIdsEditionsIds); //TODO wrong spelling 
         }
 
         public async Task<List<PrintingEdition>> GetEditionsListByIdListAsync(List<long> ids)
@@ -399,7 +399,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
                 (await db.QueryAsync<PrintingEdition, Author, PrintingEdition>(query,
                 (author, editions) =>
                 {
-                    PrintingEdition editionEntry;
+                    PrintingEdition editionEntry; //TODO declare variable inside condition
                     if (!editionDictionary.TryGetValue(author.Id, out editionEntry))
                     {
                         editionEntry = author;
@@ -417,7 +417,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories
         public async Task DeleteAsync(long id)
         {
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.DeleteAsync<PrintingEdition>(new PrintingEdition { Id = id });
+            await db.DeleteAsync<PrintingEdition>(new PrintingEdition { Id = id });//TODO redundant specification
         }
     }
 }

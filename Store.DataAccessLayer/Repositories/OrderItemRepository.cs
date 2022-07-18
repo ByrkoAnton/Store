@@ -14,7 +14,7 @@ namespace Store.DataAccessLayer.Repositories
         }
         public async Task<OrderItem> GetByIdAsync(long id)
         {
-            var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(Order => Order.Id == id);
+            var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(Order => Order.Id == id);//TODO wrong naming
             return result;
         }
     }

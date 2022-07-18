@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Store.BusinessLogicLayer.Models.PaginationsModels
+namespace Store.BusinessLogicLayer.Models.PaginationsModels//TODO wrong spelling
 {
     public class NavigationModelBase<T>
     {

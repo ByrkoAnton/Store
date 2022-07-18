@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq;//TODO unused directives
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +20,7 @@ namespace Store.BusinessLogicLayer.Models.Orders
 
     }
 
-    public class EditionInOrderDatails
+    public class EditionInOrderDatails//TODO wrong spelling
     {
         public long EditionId { get; set; }
         public string EditionTitle { get; set; }

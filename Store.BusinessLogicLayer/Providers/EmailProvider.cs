@@ -5,7 +5,7 @@ using Store.BusinessLogicLayer.Configuration;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises
+namespace Store.BusinessLogicLayer.Servises //TODO wrong namespace
 {
     public class EmailProvider : IEmailProvider
     {
@@ -25,7 +25,7 @@ namespace Store.BusinessLogicLayer.Servises
                 Text = message
             };
 
-            using (var client = new SmtpClient())
+            using (var client = new SmtpClient()) //TODO please use just declaration , without brackets
             {
                 await client.ConnectAsync(_options.Smtp);
                 await client.AuthenticateAsync(_options.AdressFrom, _options.EmailPassword);
