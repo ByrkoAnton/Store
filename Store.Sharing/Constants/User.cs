@@ -15,7 +15,6 @@
             public const string CONFIRM_EMAIL  = "confirm email";
             public const string REGISTR_SUCCESS  = "regisrtation success. confirm your email";
             public const string UPDATE_SUCCES  = "Data was updated";
-            public const string UPDATE_SUCCES_EMAIL  = "Data was updated confirm new email"; //TODO unused constant
             public const string EMAIL_CONFIRMED  = "email confirmed";
             public const string CONFIRM_LINK = "Confirm registration, go to : <a href='{0}'>link</a>";
             public const string RESET_PASSWORD_SUBJ = "reset password";

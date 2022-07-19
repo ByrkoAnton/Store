@@ -10,8 +10,6 @@
             public const string ACTION_SIGN_IN = "SignIn";
             public const string ACTION_GETPROFILE = "GetProfile";
             public const string VIEW_PROFILE = "Profile";
-            public const string VIEW_ADD_AUTHOR = "AddNewAuthor"; //TODO never used constant
-            public const string VIEW_ADD_EDITION = "AddNewEdition"; //TODO never used constant
             public const string VIEW_AUTHORS = "Authors";
             public const string VIEW_USERS = "Users";
             public const string VIEW_EDITIONS = "Editions";
@@ -30,9 +28,7 @@
             public const string EDITION_DEF_SORT_PARAMS = "Price";
             public const string AUTHOR_NAME_COOKIES = "authorNameForSearch";
             public const string EDITION_TITLE_COOKIES = "editionTitleForSearch";
-            public const string EDITION_AUTHOR_COOKIES = "editionsAuthorForSearch"; //TODO never used constant
             public const string USER_ID_COOKIES = "UserIdInOrder";
-            public const string EDITION_ID_COOKIES = "editionIdForSearch"; //TODO never used constant
             public const string EDITION_DESC_COOKIES = "descriptionForSearch";
             public const string SPACE_IN_MODEl = " ";
             public const string WRONG_AUTHORS_MESSAGE = "At first add this authors to DB:";
