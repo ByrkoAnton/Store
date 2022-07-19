@@ -17,7 +17,7 @@ namespace Store.DataAccessLayer.Entities
 
         public Order()
         {
-            Status = OrderStatusState.Unpayed;
+            Status = OrderStatusState.Unpaid;
         }
     }
 }

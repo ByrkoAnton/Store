@@ -9,7 +9,7 @@ using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Providers.Interfaces;
 using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using Store.DataAccessLayer.Entities;
-using Store.DataAccessLayer.Extentions;
+using Store.DataAccessLayer.Extensions;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System;

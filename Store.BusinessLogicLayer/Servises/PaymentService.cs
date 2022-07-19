@@ -76,7 +76,7 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO spelling
             var service = new ChargeService();
             Charge charge = await service.CreateAsync(options);
 
-            var status = charge.Paid ? OrderStatusState.Payed : OrderStatusState.Unpayed;
+            var status = charge.Paid ? OrderStatusState.Payed : OrderStatusState.Unpaid;
 
             Payment payment = new Payment
             {

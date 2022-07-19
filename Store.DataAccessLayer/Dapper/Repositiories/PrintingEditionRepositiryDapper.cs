@@ -13,12 +13,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling
+namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
 {
-    public class PrintingEditionRepositiryDapper : IPrintingEditionRepositiryDapper //TODO wrong spelling
+    public class PrintingEditionRepositiryDapper : IPrintingEditionRepositiryDapper //TODO wrong spelling---
     {
         private readonly ConnectionStringConfig _options;
-        public PrintingEditionRepositiryDapper(IOptions<ConnectionStringConfig> options) //TODO wrong spelling
+        public PrintingEditionRepositiryDapper(IOptions<ConnectionStringConfig> options) //TODO wrong spelling---
         {
             _options = options.Value;
         }
@@ -52,8 +52,8 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling
                 authorsIdsEditionsIds.Add(authorIdEditionId);
             }
 
-            string queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)";//TODO wrong spelling 'edition'
-            db.Execute(queryAddAuthorEditon, authorsIdsEditionsIds); //TODO please use async method
+            string queryAddAuthorEdition = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)";//TODO wrong spelling 'edition'+++
+            await db.ExecuteAsync(queryAddAuthorEdition, authorsIdsEditionsIds); //TODO please use async method+++
         }
 
         public async Task<(IEnumerable<PrintingEdition>, int, double, double)> GetAsync(EditionFiltrationModelDAL model)
@@ -255,7 +255,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling
                 (await db.QueryAsync<PrintingEdition, Author, PrintingEdition>(queryGetEdition,
                 (edition, author) =>
                 {
-                    PrintingEdition editionEntry;//TODO wrong spelling
+                    PrintingEdition editionEntry;//TODO wrong spelling---
                     if (!editionDictionary.TryGetValue(edition.Id, out editionEntry))
                     {
                         editionEntry = edition;
@@ -372,8 +372,8 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling
                 authorsIdsEditionsIds.Add(authorIdEditionId);
             }
 
-            var queryAddAuthorEditon = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)"; //TODO wrong spelling 
-            db.Execute(queryAddAuthorEditon, authorsIdsEditionsIds); //TODO wrong spelling 
+            var queryAddAuthorEdition = "INSERT INTO AuthorPrintingEdition VALUES (@AuthorId, @EditionId)"; //TODO wrong spelling+++
+            db.Execute(queryAddAuthorEdition, authorsIdsEditionsIds); //TODO wrong spelling+++ 
         }
 
         public async Task<List<PrintingEdition>> GetEditionsListByIdListAsync(List<long> ids)
