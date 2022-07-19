@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
-using Store.DataAccessLayer.FiltrationModels;
+using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.DataAccessLayer.Repositories.Base;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using System.Collections.Generic;

@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.BusinessLogicLayer.Servises.Interfaces;
-using Store.BusinessLogicLayer.Providers;//TODO unused directive
 using AutoMapper;
 using Store.Sharing.Constants;
-using Store.BusinessLogicLayer.Configuration;
 using System;
 using Store.DataAccessLayer;
 using Store.Sharing.Configuration;

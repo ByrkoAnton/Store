@@ -1,8 +1,7 @@
-﻿using Store.DataAccessLayer.Models.FiltrationModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using static Store.DataAccessLayer.Enums.Enums;
 
-namespace Store.DataAccessLayer.FiltrationModels //TODO wrong namespace
+namespace Store.DataAccessLayer.Models.FiltrationModels //TODO wrong namespace+++
 {
     public class EditionFiltrationModelDAL : BaseFiltrationModelDAL
     {

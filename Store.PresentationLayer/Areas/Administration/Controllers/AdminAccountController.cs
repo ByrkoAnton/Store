@@ -4,7 +4,7 @@ using Store.BusinessLogicLayer.Models;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using System.Threading.Tasks;
 using Store.Sharing.Constants;
-
+using Store.BusinessLogicLayer.Models.Users;
 
 namespace Store.PresentationLayer.Areas.Administration.Controllers
 {

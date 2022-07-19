@@ -3,7 +3,7 @@ using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Options;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
-using Store.DataAccessLayer.FiltrationModels;
+using Store.DataAccessLayer.Models.FiltrationModels;
 using Store.DataAccessLayer.Models.AuthorIdEditionIdModel;
 using Store.Sharing.Configuration;
 using Store.Sharing.Constants;

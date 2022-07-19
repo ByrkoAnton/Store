@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Store.BusinessLogicLayer.Models.EditionModel;
-using Store.DataAccessLayer.FiltrationModels;
+using Store.DataAccessLayer.Models.FiltrationModels;
 
 namespace Store.BusinessLogicLayer.Mappings
 {

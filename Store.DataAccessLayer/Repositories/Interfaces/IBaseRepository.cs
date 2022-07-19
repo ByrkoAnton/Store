@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Store.DataAccessLayer.Repositories.Base//TODO wrong namespace
+namespace Store.DataAccessLayer.Repositories.Interfaces//TODO wrong namespace+++
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {

@@ -9,7 +9,7 @@ using System.Linq;
 using Store.Sharing.Constants;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Options;
-using Store.BusinessLogicLayer.Configuration;
+using Store.Sharing.Configuration;
 
 namespace Store.BusinessLogicLayer.Providers
 {

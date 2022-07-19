@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.Sharing.Configuration;
-using System; //TODO unused directive
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;

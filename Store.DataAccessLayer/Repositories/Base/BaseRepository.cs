@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.DataAccessLayer.AppContext;
+using Store.DataAccessLayer.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

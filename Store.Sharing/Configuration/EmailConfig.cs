@@ -1,4 +1,4 @@
-﻿namespace Store.BusinessLogicLayer.Configuration //TODO wrong namespace
+﻿namespace Store.Sharing.Configuration //TODO wrong namespace +++
 {
    public class EmailConfig
     {

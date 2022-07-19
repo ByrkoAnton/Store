@@ -1,11 +1,11 @@
 ﻿using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using Store.BusinessLogicLayer.Configuration;
-using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.Sharing.Configuration;
+using Store.BusinessLogicLayer.Providers.Interfaces;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises //TODO wrong namespace
+namespace Store.BusinessLogicLayer.Providers //TODO wrong namespace++
 {
     public class EmailProvider : IEmailProvider
     {

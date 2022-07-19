@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
+using Store.BusinessLogicLayer.Providers.Interfaces;
 using Store.BusinessLogicLayer.Servises.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Extentions;
@@ -17,7 +18,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;//TODO unused directive
 
 namespace Store.BusinessLogicLayer.Servises// TODO spelling
 {

@@ -1,7 +1,7 @@
 ﻿using Store.Sharing.Constants;
 using System.ComponentModel.DataAnnotations;
 
-namespace Store.BusinessLogicLayer.Models//TODO wrong namespace
+namespace Store.BusinessLogicLayer.Models.Users//TODO wrong namespace+++
 {
     public class UserSignInModel
     {

@@ -10,7 +10,7 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System.Text;
 using Microsoft.Extensions.Options;
-using Store.BusinessLogicLayer.Configuration;
+using Store.Sharing.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Store.DataAccessLayer

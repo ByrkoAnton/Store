@@ -1,4 +1,4 @@
-﻿namespace Store.BusinessLogicLayer.Models.OrderItems //TODO wrong namespace
+﻿namespace Store.BusinessLogicLayer.Models.Stripe //TODO wrong namespace+++
 {
     public class EditionPayModel
     {
