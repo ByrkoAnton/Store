@@ -132,8 +132,8 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO spelling
 
         public async Task<TokenResponseModel> UpdateTokensAsync(string jwtToken, string refreshToken)
         {
-            var jwtTrimed = jwtToken.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
+            var jwtTrimmed = jwtToken.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling+++
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimmed);
 
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 

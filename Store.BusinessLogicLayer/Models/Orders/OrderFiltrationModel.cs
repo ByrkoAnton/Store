@@ -6,7 +6,7 @@ namespace Store.BusinessLogicLayer.Models.Orders
 {
     public class OrderFiltrationModel : BaseFiltrationModel
     {
-        public string Description { get; set; }//TODO wrong spelling
+        public string Description { get; set; }//TODO wrong spelling+++
         public long? UserId { get; set; }
         public OrderStatusState? Status { get; set; }
         public OrderFiltrationModel()

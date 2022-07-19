@@ -12,7 +12,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
+namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling
 {
     public class OrderRepositoryDapper : IOrderRepositoryDapper
     {
@@ -33,7 +33,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
             string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
 
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            string queryGetOrders = //TODO wrong spelling 'description'
+            string queryGetOrders = //TODO wrong spelling 'description'++++
                                     //TODO please check dapper extention and sorting https://riptutorial.com/dapper-with-mvc/learn/100006/sorting
             @"IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
                 SELECT* 

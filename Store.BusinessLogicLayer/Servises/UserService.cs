@@ -77,9 +77,9 @@ namespace Store.BusinessLogicLayer.Serviсes// TODO spelling
             }
 
             user.IsBlocked = !user.IsBlocked;
-            var blockRersult = await _userManager.UpdateAsync(user);//TODO wrong spelling
+            var blockResult = await _userManager.UpdateAsync(user);//TODO wrong spelling+++
 
-            if (!blockRersult.Succeeded)
+            if (!blockResult.Succeeded)
             {
                 throw new Exception($"{Constants.Error.BLOCKING_FAILD_NO_USER}" +
                     $" {HttpStatusCode.InternalServerError}");
@@ -116,8 +116,8 @@ namespace Store.BusinessLogicLayer.Serviсes// TODO spelling
         {
             if (!long.TryParse(authentication, out long id))
             {
-                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
-                var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
+                var jwtTrimmed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling+++
+                var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimmed);
 
                 id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
             }
@@ -220,8 +220,8 @@ namespace Store.BusinessLogicLayer.Serviсes// TODO spelling
         {
             if (!long.TryParse(authentication, out long id))
             {
-                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
-                var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
+                var jwtTrimmed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling+++
+                var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimmed);
 
                 id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
             }
@@ -239,8 +239,8 @@ namespace Store.BusinessLogicLayer.Serviсes// TODO spelling
                      HttpStatusCode.BadRequest);
             }
 
-            var isCurrentPaswordValid = await _userManager.CheckPasswordAsync(user, model.CurrentPassword);//TODO spelling
-            if (!isCurrentPaswordValid)
+            var isCurrentPasswordValid = await _userManager.CheckPasswordAsync(user, model.CurrentPassword);//TODO spelling+++
+            if (!isCurrentPasswordValid)
             {
                 throw new CustomException(Constants.Error.CURRENT_PASSWORD_WRONG, HttpStatusCode.BadRequest);
             }
@@ -257,8 +257,8 @@ namespace Store.BusinessLogicLayer.Serviсes// TODO spelling
         {
             if (!long.TryParse(authentication, out long id))
             {
-                var jwtTrimed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
-                var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
+                var jwtTrimmed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
+                var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimmed);
 
                 id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
             }

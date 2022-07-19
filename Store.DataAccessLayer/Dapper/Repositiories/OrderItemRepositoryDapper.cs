@@ -8,7 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
-namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
+namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling
 {
     public class OrderItemRepositoryDapper : IOrderItemRepositoryDapper
     {

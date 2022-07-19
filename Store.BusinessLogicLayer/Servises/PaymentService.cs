@@ -31,8 +31,8 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO spelling
         }
         public async Task<ResultPayModel> PayAsync(StripePayModel model, string jwt)
         {
-            var jwtTrimed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
-            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimed);
+            var jwtTrimmed = jwt.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling+++
+            var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimmed);
 
             var id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);
 
