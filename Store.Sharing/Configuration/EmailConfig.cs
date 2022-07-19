@@ -1,5 +1,4 @@
-﻿//TODO extra line
-namespace Store.BusinessLogicLayer.Configuration //TODO wrong namespace
+﻿namespace Store.BusinessLogicLayer.Configuration //TODO wrong namespace
 {
    public class EmailConfig
     {

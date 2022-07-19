@@ -1,6 +1,5 @@
 ﻿using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Base;
-//TODO extra line
 using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Repositories.Interfaces

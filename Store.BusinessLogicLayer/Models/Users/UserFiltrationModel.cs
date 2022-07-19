@@ -1,10 +1,5 @@
 ﻿using Store.BusinessLogicLayer.Models.Base;
 using Store.Sharing.Constants;
-using System;//TODO unused directives
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Models.Users
 {

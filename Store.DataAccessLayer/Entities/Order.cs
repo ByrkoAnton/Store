@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using static Store.DataAccessLayer.Enums.Enums;
-using Dapper.Contrib.Extensions;//TODO add new line
+using Dapper.Contrib.Extensions;
+
 namespace Store.DataAccessLayer.Entities
 {
     public class Order : BaseEntity

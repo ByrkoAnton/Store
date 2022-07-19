@@ -1,6 +1,5 @@
 ﻿using Store.BusinessLogicLayer.Models.Authors;
 using System.Collections.Generic;
-//TODO extra line
 
 namespace Store.BusinessLogicLayer.Models.EditionModel
 {

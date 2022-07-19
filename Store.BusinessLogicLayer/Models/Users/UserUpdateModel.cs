@@ -1,5 +1,4 @@
 ﻿using Store.BusinessLogicLayer.Models.Base;
-//TODO extra line
 
 namespace Store.BusinessLogicLayer.Models.Users
 {

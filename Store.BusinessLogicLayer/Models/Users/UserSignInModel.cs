@@ -1,5 +1,6 @@
 ﻿using Store.Sharing.Constants;
-using System.ComponentModel.DataAnnotations;//TODO new line
+using System.ComponentModel.DataAnnotations;
+
 namespace Store.BusinessLogicLayer.Models//TODO wrong namespace
 {
     public class UserSignInModel

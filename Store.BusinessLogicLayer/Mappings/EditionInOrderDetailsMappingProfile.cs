@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Store.BusinessLogicLayer.Models.Orders;
 using Store.DataAccessLayer.Entities;
-//TODO extra line
 
 namespace Store.BusinessLogicLayer.Mappings
 {

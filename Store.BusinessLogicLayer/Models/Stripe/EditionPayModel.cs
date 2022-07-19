@@ -1,5 +1,4 @@
-﻿//TODO extra line
-namespace Store.BusinessLogicLayer.Models.OrderItems //TODO wrong namespace
+﻿namespace Store.BusinessLogicLayer.Models.OrderItems //TODO wrong namespace
 {
     public class EditionPayModel
     {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Store.BusinessLogicLayer.Models.Users;//TODO add new line
+using Store.BusinessLogicLayer.Models.Users;
+
 namespace Store.BusinessLogicLayer.Mappings
 {
     class UserFiltrationMappingProfile: Profile//TODO modifier?

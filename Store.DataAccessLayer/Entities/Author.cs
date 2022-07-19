@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using Dapper.Contrib.Extensions;//TODO add new line
+using Dapper.Contrib.Extensions;
+
 namespace Store.DataAccessLayer.Entities
 {
     public class Author : BaseEntity

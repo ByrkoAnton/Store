@@ -1,6 +1,5 @@
 ﻿using Store.BusinessLogicLayer.Models.Base;
 using System.ComponentModel.DataAnnotations;
-//TODO extra line
 
 namespace Store.BusinessLogicLayer.Models.Payments
 {

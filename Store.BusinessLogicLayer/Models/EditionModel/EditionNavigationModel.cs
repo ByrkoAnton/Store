@@ -1,5 +1,4 @@
-﻿//TODO extra line
-using Store.BusinessLogicLayer.Models.PaginationsModels;
+﻿using Store.BusinessLogicLayer.Models.PaginationsModels;
 
 namespace Store.BusinessLogicLayer.Models.EditionModel
 {

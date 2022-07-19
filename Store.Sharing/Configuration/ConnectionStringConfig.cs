@@ -1,5 +1,4 @@
-﻿//TODO extra line
-namespace Store.Sharing.Configuration
+﻿namespace Store.Sharing.Configuration
 {
   public  class ConnectionStringConfig
     {

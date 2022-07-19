@@ -1,5 +1,4 @@
-﻿//TODO extra line
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Store.BusinessLogicLayer.Models.Users
 {

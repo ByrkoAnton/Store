@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;//TODO new line
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace Store.BusinessLogicLayer.Models.RequestModel
 {
     public class EmailConfirmationModel

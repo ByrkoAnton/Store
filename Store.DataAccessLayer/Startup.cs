@@ -61,9 +61,7 @@ namespace Store.DataAccessLayer
                              ValidateIssuerSigningKey = true,
                              IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenOptions.Key))
                          };
-
-                     });
-            //TODO extra line
+                     });   
 
             services.InitialazerAsync().Wait();
         }

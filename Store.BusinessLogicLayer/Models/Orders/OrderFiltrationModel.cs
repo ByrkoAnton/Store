@@ -1,6 +1,7 @@
 ﻿using Store.BusinessLogicLayer.Models.Base;
 using Store.Sharing.Constants;
-using static Store.DataAccessLayer.Enums.Enums;//TODO new line
+using static Store.DataAccessLayer.Enums.Enums;
+
 namespace Store.BusinessLogicLayer.Models.Orders
 {
     public class OrderFiltrationModel : BaseFiltrationModel
