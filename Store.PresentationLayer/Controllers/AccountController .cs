@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using Store.BusinessLogicLayer.Models;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Models.RequestModel;

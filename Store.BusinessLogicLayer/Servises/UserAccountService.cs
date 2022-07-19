@@ -1,5 +1,5 @@
 ﻿using Store.BusinessLogicLayer.Models;
-using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Store.DataAccessLayer.Entities;
@@ -16,7 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Collections.Generic;
 using System.Net;
 
-namespace Store.BusinessLogicLayer.Servises//TODO spelling
+namespace Store.BusinessLogicLayer.Serviсes//TODO spelling
 {
     public class UserAccountService : IUserAccountService
     {

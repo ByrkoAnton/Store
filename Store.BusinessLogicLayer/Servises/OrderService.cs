@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Store.BusinessLogicLayer.Models.Orders;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
-using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models.FiltrationModels;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises//TODO wrong spelling
+namespace Store.BusinessLogicLayer.Serviсes//TODO wrong spelling
 {
     public class OrderService : IOrderService
     {

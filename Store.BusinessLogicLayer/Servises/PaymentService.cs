@@ -1,6 +1,6 @@
 ﻿using Store.BusinessLogicLayer.Models.Payments;
 using Store.BusinessLogicLayer.Models.Stripe;
-using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.Sharing.Constants;
@@ -14,7 +14,7 @@ using static Store.DataAccessLayer.Enums.Enums;
 using Order = Store.DataAccessLayer.Entities.Order;
 using OrderItem = Store.DataAccessLayer.Entities.OrderItem;
 
-namespace Store.BusinessLogicLayer.Servises//TODO spelling
+namespace Store.BusinessLogicLayer.Serviсes//TODO spelling
 {
     public class PaymentService : IPaymentService
     {

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises//TODO worng spelling
+namespace Store.BusinessLogicLayer.Serviсes//TODO worng spelling
 {
     public class AuthorService : IAuthorService
     {

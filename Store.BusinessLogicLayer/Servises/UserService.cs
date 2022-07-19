@@ -7,7 +7,7 @@ using Store.BusinessLogicLayer.Models.PaginationsModels;
 using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.BusinessLogicLayer.Providers.Interfaces;
-using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Extentions;
 using Store.DataAccessLayer.Repositories.Interfaces;
@@ -19,7 +19,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises// TODO spelling
+namespace Store.BusinessLogicLayer.Serviсes// TODO spelling
 {
     public class UserService : IUserService
     {

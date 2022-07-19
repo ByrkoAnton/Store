@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogicLayer.Models.Users;
-using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using Store.Sharing.Constants;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Servises//TODO spelling
+namespace Store.BusinessLogicLayer.Serviсes//TODO spelling
 {
     public class RoleService : IRoleService
     {

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
-using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using System.Threading.Tasks;
 
 namespace Store.PresentationLayer.Controllers

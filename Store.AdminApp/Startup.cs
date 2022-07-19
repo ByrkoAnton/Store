@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Store.BusinessLogicLayer.Servises;
-using Store.BusinessLogicLayer.Servises.Interfaces;
+using Store.BusinessLogicLayer.Serviñes;
+using Store.BusinessLogicLayer.Serviñes.Interfaces;
 using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
 

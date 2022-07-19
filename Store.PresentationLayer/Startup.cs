@@ -88,7 +88,7 @@ namespace Store.PresentationLayer
 
                 endpoints.MapControllerRoute(
                     name: Constants.MapControllerRoute.NAME,
-                    pattern: Constants.MapControllerRoute.PATERN);
+                    pattern: Constants.MapControllerRoute.PATTERN);
             });
 
         }
