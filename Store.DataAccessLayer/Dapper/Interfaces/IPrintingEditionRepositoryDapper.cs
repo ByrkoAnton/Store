@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Dapper.Interfaces
 {
-    public interface IPrintingEditionRepositiryDapper //TODO base interface?, wrong spelling
+    public interface IPrintingEditionRepositiryDapper //TODO base interface?, wrong spelling (error after rename)----
     {
         public Task<(IEnumerable<PrintingEdition>, int, double, double)> GetAsync(EditionFiltrationModelDAL model);
         public Task<PrintingEdition> GetByIdAsync(long id);

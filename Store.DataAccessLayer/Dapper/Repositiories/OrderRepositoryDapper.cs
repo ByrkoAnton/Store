@@ -39,7 +39,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
                 SELECT* 
                 FROM Orders 
                 WHERE (@userId is null OR Orders.UserId = @userId)
-                AND (@discription is null OR Orders.Discription Like @discription)
+                AND (@description is null OR Orders.Description Like @description)
                 ORDER BY Id ASC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
 
@@ -47,7 +47,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
                 SELECT* 
                 FROM Orders 
                 WHERE (@userId is null OR Orders.UserId = @userId)
-                AND (@discription is null OR Orders.Discription Like @discription)
+                AND (@description is null OR Orders.Description Like @description)
                 ORDER BY Id DESC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
 
@@ -56,7 +56,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
                 SELECT* 
                 FROM Orders 
                 WHERE (@userId is null OR Orders.UserId = @userId)
-                AND (@discription is null OR Orders.Discription Like @discription)
+                AND (@description is null OR Orders.Description Like @description)
                 ORDER BY DateOfCreation ASC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
 
@@ -64,7 +64,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
                 SELECT* 
                 FROM Orders 
                 WHERE (@userId is null OR Orders.UserId = @userId)
-                AND (@discription is null OR Orders.Discription Like @discription)
+                AND (@description is null OR Orders.Description Like @description)
                 ORDER BY DateOfCreation DESC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
 
@@ -73,7 +73,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
                 SELECT* 
                 FROM Orders 
                 WHERE (@userId is null OR Orders.UserId = @userId)
-                AND (@discription is null OR Orders.Discription Like @discription)
+                AND (@description is null OR Orders.Description Like @description)
                 ORDER BY UserId ASC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
 
@@ -81,7 +81,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
                 SELECT* 
                 FROM Orders 
                 WHERE (@userId is null OR Orders.UserId = @userId)
-                AND (@discription is null OR Orders.Discription Like @discription)
+                AND (@description is null OR Orders.Description Like @description)
                 ORDER BY UserId DESC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
 
@@ -90,7 +90,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
                 SELECT* 
                 FROM Orders 
                 WHERE (@userId is null OR Orders.UserId = @userId)
-                AND (@discription is null OR Orders.Discription Like @discription)
+                AND (@description is null OR Orders.Description Like @description)
                 ORDER BY PaymentId ASC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
 
@@ -98,7 +98,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
                 SELECT* 
                 FROM Orders 
                 WHERE (@userId is null OR Orders.UserId = @userId)
-                AND (@discription is null OR Orders.Discription Like @discription)
+                AND (@description is null OR Orders.Description Like @description)
                 ORDER BY PaymentId DESC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
 
@@ -107,7 +107,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
                 SELECT* 
                 FROM Orders 
                 WHERE (@userId is null OR Orders.UserId = @userId)
-                AND (@discription is null OR Orders.Discription Like @discription)
+                AND (@description is null OR Orders.Description Like @description)
                 ORDER BY Status ASC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY
                 
@@ -115,7 +115,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
                 SELECT* 
                 FROM Orders 
                 WHERE (@userId is null OR Orders.UserId = @userId)
-                AND (@discription is null OR Orders.Discription Like @discription)
+                AND (@description is null OR Orders.Description Like @description)
                 ORDER BY Status DESC
                 OFFSET @skip ROWS FETCH NEXT @pageSize ROWS ONLY";
 
@@ -123,7 +123,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
             parameters.Add("@propertyForSort", model.PropertyForSort);
             parameters.Add("@skip", skip);
             parameters.Add("@pageSize", model.PageSize);
-            parameters.Add("@discription", string.IsNullOrWhiteSpace(model.Discription) ? null : $"%{model.Discription}%");
+            parameters.Add("@description", string.IsNullOrWhiteSpace(model.Description) ? null : $"%{model.Description}%");
             parameters.Add("@userId", model.UserId);
             parameters.Add("@sortDirection", sortDirection);
 
@@ -132,7 +132,7 @@ namespace Store.DataAccessLayer.Dapper.Repositiories//TODO wrong selling
             string queryGetCount = @"SELECT COUNT (Orders.Id)
                 FROM Orders
                 WHERE(@Userid is null OR Orders.UserId = @userId)
-                AND(@discription is null OR Orders.Discription Like @discription)";
+                AND(@description is null OR Orders.Description Like @description)";
 
             int count = (await db.QueryAsync<int>(queryGetCount, parameters)).FirstOrDefault();
             var ordersWithCount = (orders: orders, count: count);

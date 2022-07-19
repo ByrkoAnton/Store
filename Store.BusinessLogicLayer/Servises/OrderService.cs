@@ -82,7 +82,7 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO wrong spelling
             {
                 OrderId = order.Id,
                 DateOfCreation = order.DateOfCreation,
-                Description = order.Discription,
+                Description = order.Description,
                 OrderStatus = order.Status.ToString(),
                 PaymentId = order.PaymentId,
                 UserId = order.UserId,

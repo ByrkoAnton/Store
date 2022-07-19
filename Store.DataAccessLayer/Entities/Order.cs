@@ -6,7 +6,7 @@ namespace Store.DataAccessLayer.Entities
 {
     public class Order : BaseEntity
     {
-        public string Discription { get; set; }//TODO wrong spelling 
+        public string Description { get; set; }//TODO wrong spelling 
         public  long UserId { get; set; }
         [Computed]
         public virtual User User { get; set; }

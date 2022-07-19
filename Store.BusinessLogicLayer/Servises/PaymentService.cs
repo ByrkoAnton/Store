@@ -38,7 +38,7 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO spelling
 
             Order order = new Order
             {
-                Discription = model.OrderDescription,
+                Description = model.OrderDescription,
                 UserId = id,
             };
 

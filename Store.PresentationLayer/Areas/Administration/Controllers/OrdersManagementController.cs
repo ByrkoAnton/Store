@@ -27,7 +27,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
                 PropertyForSort = sortBy,
                 IsAscending = isAsc,
                 CurrentPage = page,
-                Discription = HttpContext.Request.Cookies[Constants.AreaConstants.EDITION_DESC_COOKIES]
+                Description = HttpContext.Request.Cookies[Constants.AreaConstants.EDITION_DESC_COOKIES]
             };
             var result = await _orderService.GetAsync(sortModel);
 
