@@ -20,9 +20,9 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO spelling+++
     {
         private readonly IPaymentRepositoryDapper _paymentRepositoryDapper;
         private readonly IOrderRepositoryDapper _orderRepositoryDapper;
-        private readonly IPrintingEditionRepositiryDapper _printingEditionRepositoryDapper;
+        private readonly IPrintingEditionRepositoryDapper _printingEditionRepositoryDapper;
         private readonly IOrderItemRepositoryDapper _orderItemRepositoryDapper;
-        public PaymentService(IPaymentRepositoryDapper paymentRepositoryDapper, IOrderRepositoryDapper orderRepositoryDapper, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IOrderItemRepositoryDapper orderItemRepositoryDapper)//TODO spelling---
+        public PaymentService(IPaymentRepositoryDapper paymentRepositoryDapper, IOrderRepositoryDapper orderRepositoryDapper, IPrintingEditionRepositoryDapper printingEditionRepositiryDapper, IOrderItemRepositoryDapper orderItemRepositoryDapper)//TODO spelling---
         {
             _paymentRepositoryDapper = paymentRepositoryDapper;
             _printingEditionRepositoryDapper = printingEditionRepositiryDapper;

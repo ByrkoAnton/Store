@@ -16,10 +16,10 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO spelling+++
     public class PrintingEditionService : IPrintingEditionService
     {
         private readonly IAuthorRepositoryDapper _authorRepositoryDapper;
-        private readonly IPrintingEditionRepositiryDapper _printingEditionRepositoryDapper;
+        private readonly IPrintingEditionRepositoryDapper _printingEditionRepositoryDapper;
 
         private readonly IMapper _mapper;
-        public PrintingEditionService(IPrintingEditionRepositiryDapper printingEditionRepositoryDapper, IMapper mapper, IAuthorRepositoryDapper authorRepositoryDapper)
+        public PrintingEditionService(IPrintingEditionRepositoryDapper printingEditionRepositoryDapper, IMapper mapper, IAuthorRepositoryDapper authorRepositoryDapper)
         {
             _printingEditionRepositoryDapper = printingEditionRepositoryDapper;
             _mapper = mapper;

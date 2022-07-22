@@ -16,11 +16,11 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO wrong spelling+++
     public class OrderService : IOrderService
     {
         private readonly IOrderRepositoryDapper _orderRepositoryDapper;
-        private readonly IPrintingEditionRepositiryDapper _printingEditionRepositoryDapper;
+        private readonly IPrintingEditionRepositoryDapper _printingEditionRepositoryDapper;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepositoryDapper orderRepositoryDapper, IUserService userService, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IMapper mapper)//TODO spelling+++
+        public OrderService(IOrderRepositoryDapper orderRepositoryDapper, IUserService userService, IPrintingEditionRepositoryDapper printingEditionRepositiryDapper, IMapper mapper)//TODO spelling+++
 
         {
             _orderRepositoryDapper = orderRepositoryDapper;

@@ -15,10 +15,10 @@ using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
 {
-    public class PrintingEditionRepositiryDapper : IPrintingEditionRepositiryDapper //TODO wrong spelling---
+    public class PrintingEditionRepositoryDapper : IPrintingEditionRepositoryDapper //TODO wrong spelling+++
     {
         private readonly ConnectionStringConfig _options;
-        public PrintingEditionRepositiryDapper(IOptions<ConnectionStringConfig> options) //TODO wrong spelling---
+        public PrintingEditionRepositoryDapper(IOptions<ConnectionStringConfig> options) //TODO wrong spelling+++
         {
             _options = options.Value;
         }
