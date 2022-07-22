@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Store.DataAccessLayer.Initialization
 {
-    public static class Initialazer//TODO wrong spelling 'Initializer'
+    public static class Initializer//TODO wrong spelling 'Initializer'+++
     {
-        public static async Task InitialazerAsync(this IServiceCollection services)//TODO wrong spelling 'Initializer'
+        public static async Task InitializerAsync(this IServiceCollection services)//TODO wrong spelling 'Initializer'+++
         {
             var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
             var rolesManager = services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole<long>>>();
@@ -63,7 +63,7 @@ namespace Store.DataAccessLayer.Initialization
                 Description = "FirstEdition",
                 Currency = CurrencyType.USD,
                 Price = 5,
-                Status = "Avalible",//TODO wrong spelling 'Available'
+                Status = "Available",//TODO wrong spelling 'Available'+++
                 EditionType = PrintingEditionType.Book,
             });
 

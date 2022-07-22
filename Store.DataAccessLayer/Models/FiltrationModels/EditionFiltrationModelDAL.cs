@@ -11,7 +11,7 @@ namespace Store.DataAccessLayer.Models.FiltrationModels //TODO wrong namespace++
         public bool? IsRemoved { get; set; }
         public string Status { get; set; }
         public CurrencyType? Currency { get; set; }
-        public int CurrentSliderFlor { get; set; }//TODO wrong spelling 'Floor'
+        public int CurrentSliderFloor { get; set; }//TODO wrong spelling 'Floor'+++
         public int CurrentSliderCeil { get; set; }
         public List<PrintingEditionType> EditionType { get; set; }
         public string AuthorName { get; set; }

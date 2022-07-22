@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Store.BusinessLogicLayer.AdminServises.Interfeces;
+using Store.BusinessLogicLayer.AdminServices.Interfeces;
 using Store.BusinessLogicLayer.Models.EditionModel;
 using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using Store.DataAccessLayer.Repositories.Interfaces;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.AdminServises//TODO wrong spelling
+namespace Store.BusinessLogicLayer.AdminServices//TODO wrong spelling+++
 {
     public class PrintingEditionServiceAdmin : IPrintingEditionServiceAdmin
     {

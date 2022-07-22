@@ -268,7 +268,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
                 parameters)).Distinct().ToList();
 
             int count = default;
-            double minPrice = model.CurrentSliderFlor;
+            double minPrice = model.CurrentSliderFloor;
             double maxPrice = model.CurrentSliderCeil;
             var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice); //TODO redundant explicit name
 

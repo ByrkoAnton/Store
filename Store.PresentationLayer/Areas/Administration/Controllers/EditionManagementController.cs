@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Store.BusinessLogicLayer.AdminServises.Interfeces;
+using Store.BusinessLogicLayer.AdminServices.Interfeces;
 using Store.BusinessLogicLayer.Models.EditionModel;
 using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using Store.DataAccessLayer.Repositories.Interfaces;

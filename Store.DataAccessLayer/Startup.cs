@@ -63,7 +63,7 @@ namespace Store.DataAccessLayer
                          };
                      });   
 
-            services.InitialazerAsync().Wait();
+            services.InitializerAsync().Wait();
         }
     }
 }
