@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;//TODO unused directives
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Models.Orders
 {
@@ -15,19 +12,19 @@ namespace Store.BusinessLogicLayer.Models.Orders
         public string Description { get; set; }
         public long UserId { get; set; }
         public string UserName { get; set; }
-        public List<EditionInOrderDatails> Editions { get; set; }
+        public List<EditionInOrderDetails> Editions { get; set; }
         public double TotalPrice { get; set; }
 
     }
 
-    public class EditionInOrderDatails//TODO wrong spelling
+    public class EditionInOrderDetails//TODO wrong spelling+++
     {
         public long EditionId { get; set; }
         public string EditionTitle { get; set; }
         public double EditionPrice { get; set; }
         public int Count { get; set; }
         public double PriceForAllEditions { get; set; }
-        public EditionInOrderDatails()
+        public EditionInOrderDetails()
         {
             PriceForAllEditions = EditionPrice * Count;
         }

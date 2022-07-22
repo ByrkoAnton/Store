@@ -16,7 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Collections.Generic;
 using System.Net;
 
-namespace Store.BusinessLogicLayer.Serviсes//TODO spelling
+namespace Store.BusinessLogicLayer.Serviсes//TODO spelling+++
 {
     public class UserAccountService : IUserAccountService
     {

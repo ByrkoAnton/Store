@@ -8,7 +8,7 @@ namespace Store.BusinessLogicLayer.Mappings
     {
         public EditionInOrderDetailsMappingProfile()
         {
-            CreateMap<PrintingEdition, EditionInOrderDatails>()
+            CreateMap<PrintingEdition, EditionInOrderDetails>()
                 .ForMember(x => x.EditionId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(x => x.EditionTitle, opt => opt.MapFrom(src => src.Title))
                 .ForMember(x => x.EditionPrice, opt => opt.MapFrom(src => src.Price));

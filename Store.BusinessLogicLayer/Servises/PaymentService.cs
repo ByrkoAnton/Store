@@ -14,7 +14,7 @@ using static Store.DataAccessLayer.Enums.Enums;
 using Order = Store.DataAccessLayer.Entities.Order;
 using OrderItem = Store.DataAccessLayer.Entities.OrderItem;
 
-namespace Store.BusinessLogicLayer.Serviсes//TODO spelling
+namespace Store.BusinessLogicLayer.Serviсes//TODO spelling+++
 {
     public class PaymentService : IPaymentService
     {
@@ -22,7 +22,7 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO spelling
         private readonly IOrderRepositoryDapper _orderRepositoryDapper;
         private readonly IPrintingEditionRepositiryDapper _printingEditionRepositoryDapper;
         private readonly IOrderItemRepositoryDapper _orderItemRepositoryDapper;
-        public PaymentService(IPaymentRepositoryDapper paymentRepositoryDapper, IOrderRepositoryDapper orderRepositoryDapper, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IOrderItemRepositoryDapper orderItemRepositoryDapper)//TODO spelling
+        public PaymentService(IPaymentRepositoryDapper paymentRepositoryDapper, IOrderRepositoryDapper orderRepositoryDapper, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IOrderItemRepositoryDapper orderItemRepositoryDapper)//TODO spelling---
         {
             _paymentRepositoryDapper = paymentRepositoryDapper;
             _printingEditionRepositoryDapper = printingEditionRepositiryDapper;

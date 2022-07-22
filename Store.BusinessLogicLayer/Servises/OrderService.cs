@@ -11,7 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Serviсes//TODO wrong spelling
+namespace Store.BusinessLogicLayer.Serviсes//TODO wrong spelling+++
 {
     public class OrderService : IOrderService
     {
@@ -20,11 +20,11 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO wrong spelling
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepositoryDapper orderRepositoryDapper, IUserService userService, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IMapper maper)//TODO spelling
+        public OrderService(IOrderRepositoryDapper orderRepositoryDapper, IUserService userService, IPrintingEditionRepositiryDapper printingEditionRepositiryDapper, IMapper mapper)//TODO spelling+++
 
         {
             _orderRepositoryDapper = orderRepositoryDapper;
-            _mapper = maper;
+            _mapper = mapper;
             _userService = userService;
             _printingEditionRepositoryDapper = printingEditionRepositiryDapper;
         }
@@ -69,7 +69,7 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO wrong spelling
             var editionsId = order.OrderItems.Select(x => x.PrintingEditionId).ToList();
             var editions = await _printingEditionRepositoryDapper.GetEditionsListByIdListAsync(editionsId);
             var user = await _userService.GetUserByIdAsync(order.UserId.ToString());
-            var editionsOrderDetails = _mapper.Map<IEnumerable<EditionInOrderDatails>>(editions).ToList();
+            var editionsOrderDetails = _mapper.Map<IEnumerable<EditionInOrderDetails>>(editions).ToList();
 
             for (int i = 0; i < editionsOrderDetails.Count; i++)
             {

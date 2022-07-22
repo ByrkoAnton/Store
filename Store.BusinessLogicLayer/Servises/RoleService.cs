@@ -5,7 +5,7 @@ using Store.Sharing.Constants;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Serviсes//TODO spelling
+namespace Store.BusinessLogicLayer.Serviсes//TODO spelling+++
 {
     public class RoleService : IRoleService
     {

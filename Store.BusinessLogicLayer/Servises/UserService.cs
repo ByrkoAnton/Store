@@ -19,7 +19,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Serviсes// TODO spelling
+namespace Store.BusinessLogicLayer.Serviсes// TODO spelling+++
 {
     public class UserService : IUserService
     {
@@ -257,7 +257,7 @@ namespace Store.BusinessLogicLayer.Serviсes// TODO spelling
         {
             if (!long.TryParse(authentication, out long id))
             {
-                var jwtTrimmed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
+                var jwtTrimmed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling+++
                 var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimmed);
 
                 id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);

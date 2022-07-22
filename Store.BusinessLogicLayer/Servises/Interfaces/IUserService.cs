@@ -3,7 +3,7 @@ using Store.BusinessLogicLayer.Models.RequestModel;
 using Store.BusinessLogicLayer.Models.Users;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Serviсes.Interfaces//TODO wrong spelling
+namespace Store.BusinessLogicLayer.Serviсes.Interfaces//TODO wrong spelling+++
 {
     public interface IUserService
     {

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Serviсes//TODO worng spelling
+namespace Store.BusinessLogicLayer.Serviсes//TODO worng spelling+++
 {
     public class AuthorService : IAuthorService
     {
@@ -45,12 +45,12 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO worng spelling
                 throw new CustomException(Constants.Error.WRONG_MODEL, HttpStatusCode.BadRequest);
             }
 
-            var authorDaper = await _authorRepositoryDapper.GetByIdAsync(id);//TODO wrong spelling
-            if (authorDaper is null)
+            var authorDapper = await _authorRepositoryDapper.GetByIdAsync(id);//TODO wrong spelling+++
+            if (authorDapper is null)
             {
                 throw new CustomException(Constants.Error.NO_AUTHOR_ID, HttpStatusCode.BadRequest);
             }
-            var authorModel = _mapper.Map<AuthorModel>(authorDaper);
+            var authorModel = _mapper.Map<AuthorModel>(authorDapper);
             return authorModel;
         }
 
