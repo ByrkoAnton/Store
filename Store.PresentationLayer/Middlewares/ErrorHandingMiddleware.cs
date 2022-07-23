@@ -36,8 +36,8 @@ namespace Store.PresentationLayer.Middlewares
 
             catch (Exception exeption)
             {
-                _loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), Constants.Loger.FILE_NAME));
-                var logger = _loggerFactory.CreateLogger(Constants.Loger.CATEGORY_NAME);
+                _loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), Constants.Loger.FILE_AND_CATEGORY_NAME));
+                var logger = _loggerFactory.CreateLogger(Constants.Loger.FILE_AND_CATEGORY_NAME);
                 string log = $"{DateTime.Now}\n{exeption.Message}\n{exeption.StackTrace}\n{new string (Constants.Loger.LOG_LAYOUT_DELIMITER, Constants.Loger.DELIMITER_COUNT)}";
                 logger.LogError(log);
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

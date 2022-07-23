@@ -115,6 +115,11 @@
 
             var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
             var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
+
+            if (!(sortParametr == "Id" || sortParametr == "Name")) {
+                sortParametr = "Name";
+            }
+
             return window.location.href = '@Url.Action("GetAuthors", "AuthorsManagement")?sortBy=' + sortParametr + '&isAsc=' + sortDirection + '&page=' + page;
         }
 

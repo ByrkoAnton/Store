@@ -156,7 +156,7 @@
             return window.location.href = '@Url.Action("GetUsers", "UsersManagement")?sortBy=' + parametr + '&isAsc=' + isAsc;
         }
 
-        function navigateToPage(page) {
+        function navigateToPage(page) {  
             if (page === "+1" || page === "-1") {
                 page = parseInt(document.getElementById("current").value) + parseInt(page);
             }
@@ -166,6 +166,11 @@
 
             var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
             var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
+            
+            if (!(sortParametr == "Id" || sortParametr == "Email" || sortParametr == "LastName" || sortParametr == "FirstName"
+                || sortParametr == "IsBlocked")) {
+                sortParametr = "LastName";
+            }   
             return window.location.href = '@Url.Action("GetUsers", "UsersManagement")?sortBy=' + sortParametr + '&isAsc=' + sortDirection + '&page=' + page;
         }
 

@@ -21,7 +21,7 @@
             public const string RESET_PASSWORD_MASSAGE = "new password is {0}";
             public const int PASSWORD_LENGHT = 10;
             public const int PASSWORD_DIGETS = 2;
-            public const int PASSWORD_SPECIAL_CHARS = 2; //TODO the same constant
+            public const int PASSWORD_SPECIAL_CHARS = 2; //TODO the same constant (I need a different constant name if I want to use a different value)+++???
             public const string CHECK_MASSAGE = "check your email";
             public const string VALID_PASSWORD = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%_!%&*]).{8,20})";
             public const int PASSWORD_REQUIRED_LENGHT = 8;

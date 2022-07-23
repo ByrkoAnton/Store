@@ -150,6 +150,10 @@
 
             var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
             var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
+            if (!(sortParametr == "Id" || sortParametr == "Title" || sortParametr == "Price" || sortParametr == "Currency"
+                || sortParametr == "Status")) {
+                sortParametr = "Price";
+            }
             return window.location.href = '@Url.Action("GetEditions", "EditionManagement")?sortBy=' + sortParametr + '&isAsc=' + sortDirection + '&page=' + page;
         }
 

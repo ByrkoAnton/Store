@@ -36,10 +36,7 @@
                 </th>
                 <th>
                     Description
-                </th>
-                @*<th>
-                    Order items id
-                </th>*@
+                </th>     
                 <th>
                     Payment Id
                     <span class="sort-button">
@@ -48,7 +45,7 @@
                     </span>
                 </th>
                 <th>
-                    Order sratus
+                    Order status
                     <span class="sort-button">
                         <input type="button" value="1-9" class="btn btn-default button" onclick="sort(`Status`,`asc`);" />
                         <input type="button" value="9-1" class="btn btn-default button" onclick="sort(`Status`,`dsc`);" />
@@ -66,15 +63,6 @@
                     <td>@order.DateOfCreation</td>
                     <td>@order.UserId</td>
                     <td>@order.Description</td>
-                    @*<td>
-                        <select style="font-size: 16px" id="orderItem">
-
-                            @foreach (Store.BusinessLogicLayer.Models.OrderItems.OrderItemModel orderItem in order.OrderItems)
-                            {
-                                <option>@orderItem.Id</option>
-                            }
-                        </select>
-                    </td>*@
                     <td>@order.PaymentId</td>
                     <td>@order.Status</td>
                     <td>
@@ -144,7 +132,6 @@
             var userIdForSearch = document.getElementById("UserId").value;
             var descriptionForSearch = document.getElementById("Description").value;
 
-            debugger
             var isAsc = sortDirection == "asc";
 
             localStorage.setItem("sortParametr", JSON.stringify(parametr));
@@ -169,6 +156,10 @@
 
             var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
             var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
+            if (!(sortParametr == "Id" || sortParametr == "DateOfCreation" || sortParametr == "UserId" || sortParametr == "PaymentId"
+                || sortParametr == "Status")) {
+                sortParametr = "Id";
+            }
             return window.location.href = '@Url.Action("GetOrders", "OrdersManagement")?sortBy=' + sortParametr + '&isAsc=' + sortDirection + '&page=' + page;
         }
 
