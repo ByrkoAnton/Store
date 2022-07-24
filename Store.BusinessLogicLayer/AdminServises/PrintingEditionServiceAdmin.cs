@@ -2,7 +2,6 @@
 using Store.BusinessLogicLayer.AdminServices.Interfeces;
 using Store.BusinessLogicLayer.Models.EditionModel;
 using Store.BusinessLogicLayer.Serviсes.Interfaces;
-using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +15,7 @@ namespace Store.BusinessLogicLayer.AdminServices//TODO wrong spelling+++
         private readonly IPrintingEditionService _editionService;
         private readonly IMapper _mapper;
         private readonly IAuthorService _authorService;
-    
+
         public PrintingEditionServiceAdmin(IPrintingEditionService printingEditionService, IMapper mapper, IAuthorService authorService)
         {
             _editionService = printingEditionService;
@@ -38,10 +37,10 @@ namespace Store.BusinessLogicLayer.AdminServices//TODO wrong spelling+++
                 string wrongAuthors = string.Join(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES, wrongAuthorsList.ToArray());
                 throw new CustomException($"{Constants.AreaConstants.WRONG_AUTHORS_MESSAGE} {wrongAuthors}", HttpStatusCode.BadRequest);
             }
-             
-                var editionModel = _mapper.Map<PrintingEditionModel>(model);//TODO extra indentation  
-                editionModel.AuthorModels = authorsModels;//TODO extra indentation 
-            await _editionService.CreateAsync(editionModel);//TODO right indentation                   
+
+            var editionModel = _mapper.Map<PrintingEditionModel>(model);//TODO extra indentation+++
+            editionModel.AuthorModels = authorsModels;//TODO extra indentation +++
+            await _editionService.CreateAsync(editionModel);//TODO right indentation+++               
         }
 
         public async Task UpdateEditionByAdminAsync(EditionUpdateViewModel model)
@@ -49,20 +48,20 @@ namespace Store.BusinessLogicLayer.AdminServices//TODO wrong spelling+++
             List<string> newAuthorsList = new();
             if (model.NewAuthorsNames is not null)
             {
-                newAuthorsList = model.NewAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES).ToList();//TODO please check comment above
+                newAuthorsList = model.NewAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES).ToList();//TODO please check comment above +++
             }
 
-            List<string> delAuthorsList = new();//TODO wrong naming
+            List<string> deletedAuthorsNames = new();//TODO wrong naming+++
             if (model.DeletedAuthorsNames is not null)
             {
-                delAuthorsList = model.DeletedAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES).ToList();
+                deletedAuthorsNames = model.DeletedAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES).ToList();
             }
 
             var edition = await _editionService.GetByIdAsync(model.PrintingEdition.Id);
             var authorsNames = edition.AuthorModels.Select(x => x.Name).ToList();
             newAuthorsList.RemoveAll(x => authorsNames.Contains(x));
             authorsNames.AddRange(newAuthorsList);
-            authorsNames.RemoveAll(x => delAuthorsList.Contains(x));
+            authorsNames.RemoveAll(x => deletedAuthorsNames.Contains(x));
 
             var authorsModels = await _authorService.GetListOfAuthorsAsync(authorsNames);
 

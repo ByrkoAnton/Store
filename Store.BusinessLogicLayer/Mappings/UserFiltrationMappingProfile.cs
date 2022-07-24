@@ -3,7 +3,7 @@ using Store.BusinessLogicLayer.Models.Users;
 
 namespace Store.BusinessLogicLayer.Mappings
 {
-    class UserFiltrationMappingProfile: Profile//TODO modifier?
+    public class UserFiltrationMappingProfile: Profile//TODO modifier?+++
     {
         public UserFiltrationMappingProfile()
         {

@@ -4,14 +4,14 @@ namespace Store.BusinessLogicLayer
 {
     public class FileLoggerProvider : ILoggerProvider
     {
-        private string path;//TODO wrong code style
-        public FileLoggerProvider(string _path) //TODO wrong code style
+        private string _path;//TODO wrong code style+++
+        public FileLoggerProvider(string path) //TODO wrong code style+++
         {
-            path = _path;
+            _path = path;
         }
         public ILogger CreateLogger(string categoryName)
         {
-            return new FileLogger(path);
+            return new FileLogger(_path);
         }
 
         public void Dispose()

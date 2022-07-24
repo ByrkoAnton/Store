@@ -4,7 +4,7 @@ using Store.DataAccessLayer.Entities;
 
 namespace Store.BusinessLogicLayer.Mappings
 {
-    class EditionInOrderDetailsMappingProfile : Profile//TODO modifier?
+    public class EditionInOrderDetailsMappingProfile : Profile//TODO modifier?+++
     {
         public EditionInOrderDetailsMappingProfile()
         {

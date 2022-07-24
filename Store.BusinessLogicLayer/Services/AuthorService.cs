@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Store.BusinessLogicLayer.Models.Authors;
 using Store.BusinessLogicLayer.Models.PaginationsModels;
+using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models.FiltrationModels;
-using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Sharing.Constants;
 using System.Collections.Generic;
 using System.Linq;

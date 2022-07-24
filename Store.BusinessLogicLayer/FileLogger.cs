@@ -6,11 +6,11 @@ namespace Store.BusinessLogicLayer
 {
     public class FileLogger : ILogger
     {
-        private string filePath;//TODO wrong code style
+        private string _filePath;//TODO wrong code style+++
         private static object _lock = new object();
         public FileLogger(string path)
         {
-            filePath = path;
+            _filePath = path;
         }
         public IDisposable BeginScope<TState>(TState state)
         {
@@ -28,7 +28,7 @@ namespace Store.BusinessLogicLayer
             {
                 lock (_lock)
                 {
-                    File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
+                    File.AppendAllText(_filePath, formatter(state, exception) + Environment.NewLine);
                 }
             }
         }

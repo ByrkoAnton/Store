@@ -3,7 +3,7 @@ using Store.BusinessLogicLayer.Models.PaginationsModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Store.DataAccessLayer.Repositories.Interfaces //TODO wrong namespace
+namespace Store.BusinessLogicLayer.Serviсes.Interfaces //TODO wrong namespace+++
 {
     public interface IAuthorService
     {

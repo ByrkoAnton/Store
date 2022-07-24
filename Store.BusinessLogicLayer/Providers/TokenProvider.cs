@@ -24,11 +24,9 @@ namespace Store.BusinessLogicLayer.Providers
         public string GenerateRefreshToken()
         {
             var randomNumber = new byte[Constants.RefreshToken.BYTES];
-            using (var rng = RandomNumberGenerator.Create())//TODO please just declaration
-            {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
-            }
+            using var randNumberGenerator = RandomNumberGenerator.Create();//TODO please just declaration+++
+            randNumberGenerator.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
         }
         public string GenerateJwt(string name, List<string> roles, string id)
         {

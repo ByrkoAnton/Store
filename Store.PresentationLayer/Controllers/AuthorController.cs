@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.Authors;
-using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using System.Threading.Tasks;
 
 namespace Store.PresentationLayer.Controllers
