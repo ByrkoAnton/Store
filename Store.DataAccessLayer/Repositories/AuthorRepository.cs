@@ -19,14 +19,14 @@ namespace Store.DataAccessLayer.Repositories
         }
         public async Task<Author> GetByIdAsync(long id)
         {
-            var query = _dbSet.Include(author => author.PrintingEditions).AsNoTracking().Where(Authors => Authors.Id == id);//TODO unused variable, wrong naming 'Authors' should start from lowercase
-            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(Authors => Authors.Id == id);//TODO lowercase
-            return result;
+            var query = _dbSet.Include(a => a.PrintingEditions).AsNoTracking().Where(authors => authors.Id == id);//TODO unused variable, wrong naming 'Authors' should start from lowercase ++del++
+            var author = await _dbSet.Include(a => a.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(authors => authors.Id == id);//TODO lowercase+++
+            return author;
         }
 
-        public bool IsAuthorsInDb(List<long> id)//TODO why single? Check it please in other pleases
+        public bool IsAuthorsInDb(List<long> ids)//TODO why single?+++ Check it please in other pleases---
         {
-            var result = id.All(x => _dbSet.Select(d => d.Id).Contains(x));
+            var result = ids.All(x => _dbSet.Select(d => d.Id).Contains(x));
             return result;
         }
 
@@ -55,13 +55,13 @@ namespace Store.DataAccessLayer.Repositories
             || n.PrintingEditions.Any(t => EF.Functions.Like(t.Description, $"%{model.EditionDescription}%")))
             .CountAsync();
 
-            var AuthorsWithCount = (authors: authors, count: count);//TODO wrong naming, redundant explicit name, no need additional variable, you can just return tuple. In return u can check tuple items
+            var authorsWithCount = (authors, count);//TODO wrong naming++++, redundant explicit name+++, no need additional variable, you can just return tuple. In return u can check tuple items ++del++
 
-            return AuthorsWithCount;
+            return (authors, count);
         }
         public async Task<Author> GetByNameAsync(string name)
         {
-            var result = await _dbSet.Include(author => author.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(Authors => Authors.Name == name);//TODO wrong naming lowercase and single
+            var result = await _dbSet.Include(a => a.PrintingEditions).AsNoTracking().FirstOrDefaultAsync(author => author.Name == name);//TODO wrong naming lowercase and single+++
 
             return result;
         }

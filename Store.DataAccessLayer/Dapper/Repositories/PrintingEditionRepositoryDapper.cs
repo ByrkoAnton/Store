@@ -270,7 +270,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
             int count = default;
             double minPrice = model.CurrentSliderFloor;
             double maxPrice = model.CurrentSliderCeil;
-            var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice); //TODO redundant explicit name
+            var result = (editions, count, minPrice, maxPrice); //TODO redundant explicit name++++
 
             if (!editions.Any())
             {
@@ -306,7 +306,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
 
             minPrice = (await db.QueryAsync<int>(queryGetMinPrice, parameters)).FirstOrDefault();
 
-            result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice); //TODO redundant explicit name
+            result = (editions, count, minPrice, maxPrice); //TODO redundant explicit name+++
             return result;
         }
 
@@ -417,7 +417,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
         public async Task DeleteAsync(long id)
         {
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.DeleteAsync<PrintingEdition>(new PrintingEdition { Id = id });//TODO redundant specification
+            await db.DeleteAsync(new PrintingEdition { Id = id });//TODO redundant specification+++
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
-namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling
+namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
 {
     public class OrderItemRepositoryDapper : IOrderItemRepositoryDapper
     {
@@ -20,7 +20,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling
         public async Task CreateAsync(List<OrderItem> orderItems)
         {
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.InsertAsync<List<OrderItem>>(orderItems);//TODO redundant specification
+            await db.InsertAsync(orderItems);//TODO redundant specification+++
         }
     }
 }

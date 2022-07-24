@@ -19,7 +19,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
         public async Task CreateAsync(Payment payment)
         {
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.InsertAsync<Payment>(payment); //TODO redundant specification
+            await db.InsertAsync(payment); //TODO redundant specification+++
         }  
     }
 }

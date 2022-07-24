@@ -20,6 +20,7 @@ namespace Store.DataAccessLayer
         public static void InitDal(this IServiceCollection services, IConfiguration config)
         {
             var tokenOptions = services.BuildServiceProvider().GetRequiredService<IOptions<TokenConfig>>().Value;//TODO please inject IOptions to constructor
+              
 
             services.Scan(scan => scan
             .FromAssemblyOf<IAuthorRepository>()

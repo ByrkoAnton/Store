@@ -25,17 +25,17 @@ namespace Store.BusinessLogicLayer.AdminServices//TODO wrong spelling+++
         }
         public async Task CreateEditionByAdminAsync(EditionCreateViewModel model)
         {
-            if (!model.AuthorsNames.Contains(Constants.AreaConstants.DELIMETR_IN_MODEL))
+            if (!model.AuthorsNames.Contains(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES))
             {
                 throw new CustomException($"{Constants.AreaConstants.WRONG_AUTHORS_DELIMETR_MESSAGE}", HttpStatusCode.BadRequest);
             }
-            var authorsList = model.AuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();//TODO please use .Trim() instead of Space_in_model
+            var authorsList = model.AuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES).ToList();//TODO please use .Trim() instead of Space_in_model
             var authorsModels = await _authorService.GetListOfAuthorsAsync(authorsList);
 
             if (authorsList.Count != authorsModels.Count)
             {
                 var wrongAuthorsList = authorsList.Except(authorsModels.Select(x => x.Name)).ToList();
-                string wrongAuthors = string.Join(Constants.AreaConstants.WRONG_AUTHORS_DELIMETR, wrongAuthorsList.ToArray());
+                string wrongAuthors = string.Join(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES, wrongAuthorsList.ToArray());
                 throw new CustomException($"{Constants.AreaConstants.WRONG_AUTHORS_MESSAGE} {wrongAuthors}", HttpStatusCode.BadRequest);
             }
              
@@ -49,13 +49,13 @@ namespace Store.BusinessLogicLayer.AdminServices//TODO wrong spelling+++
             List<string> newAuthorsList = new();
             if (model.NewAuthorsNames is not null)
             {
-                newAuthorsList = model.NewAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();//TODO please check comment above
+                newAuthorsList = model.NewAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES).ToList();//TODO please check comment above
             }
 
             List<string> delAuthorsList = new();//TODO wrong naming
             if (model.DeletedAuthorsNames is not null)
             {
-                delAuthorsList = model.DeletedAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_IN_MODEL).ToList();
+                delAuthorsList = model.DeletedAuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES).ToList();
             }
 
             var edition = await _editionService.GetByIdAsync(model.PrintingEdition.Id);

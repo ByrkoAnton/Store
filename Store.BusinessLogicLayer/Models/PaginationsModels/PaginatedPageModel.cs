@@ -15,7 +15,7 @@ namespace Store.BusinessLogicLayer.Models.PaginationsModels//TODO wrong spelling
         }
         public bool HasPreviousPage//TODO please simplify HasPreviousPage=>PageNumber > Constants.Variables.ONE_PAGE;
         {
-            get => PageNumber > Constants.Variables.ONE_PAGE;
+            get => PageNumber > Constants.PaginationParams.CURRENT_OR_ONE_PAGE;
         }
         public bool HasNextPage//TODO please simplify 
         {

@@ -13,7 +13,7 @@ namespace Store.BusinessLogicLayer.Models.Base
         public BaseFiltrationModel()
         {
             IsAscending = true;
-            CurrentPage = Constants.PaginationParams.CURRENT_PAGE;
+            CurrentPage = Constants.PaginationParams.CURRENT_OR_ONE_PAGE;
             PageSize = Constants.PaginationParams.PAGE_SIZE;
         }
     }

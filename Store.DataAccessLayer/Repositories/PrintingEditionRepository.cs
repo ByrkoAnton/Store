@@ -64,7 +64,7 @@ namespace Store.DataAccessLayer.Repositories
             int count = default;
             double minPrice = model.CurrentSliderFloor;
             double maxPrice = model.CurrentSliderCeil;
-            var result = (editions: editions, count: count, minPrice: minPrice, maxPrice: maxPrice);//TODO redundant explicit name
+            var result = (editions, count, minPrice, maxPrice);//TODO redundant explicit name+++
 
             if (!editions.Any())
             {

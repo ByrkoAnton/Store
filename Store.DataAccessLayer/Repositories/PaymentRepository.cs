@@ -14,8 +14,8 @@ namespace Store.DataAccessLayer.Repositories
         }
         public async Task<Payment> GetByIdAsync(long id)
         {
-            var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(Payment => Payment.Id == id);//TODO wrong naming
-            return result;
+            var payment = await _dbSet.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);//TODO wrong naming++++
+            return payment;
         }
         public async Task<Payment> GetByTransactionIdAsync(string transactionId)
         {
