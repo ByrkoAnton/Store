@@ -72,12 +72,12 @@ namespace Store.BusinessLogicLayer.Serviсes//TODO worng spelling+++
         {
             var authorFiltrPagingSortModelDAL = _mapper.Map<AuthorFiltrationModelDAL>(model);
 
-            (IEnumerable<Author> authors, int count) authorsWithCount = await _authorRepositoryDapper.GetAsync(authorFiltrPagingSortModelDAL);//TODO u can simplify it var (authors, count) and them use just variable
+            var (authors, count) = await _authorRepositoryDapper.GetAsync(authorFiltrPagingSortModelDAL);//TODO u can simplify it var (authors, count) and them use just variable+???++
 
 
-            var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authorsWithCount.authors);
+            var authorModels = _mapper.Map<IEnumerable<AuthorModel>>(authors);
 
-            PaginatedPageModel paginatedPage = new PaginatedPageModel(authorsWithCount.count, model.CurrentPage, model.PageSize);
+            PaginatedPageModel paginatedPage = new PaginatedPageModel(count, model.CurrentPage, model.PageSize);
             NavigationModelBase<AuthorModel> result = new NavigationModelBase<AuthorModel>
             {
                 PageModel = paginatedPage,

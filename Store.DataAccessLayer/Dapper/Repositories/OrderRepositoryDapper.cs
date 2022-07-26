@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Options;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
@@ -14,19 +13,12 @@ using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
 {
-    public class OrderRepositoryDapper : IOrderRepositoryDapper
+    public class OrderRepositoryDapper : DapperBaseRepository<Order>, IOrderRepositoryDapper
     {
-        private readonly ConnectionStringConfig _options;
-        public OrderRepositoryDapper(IOptions<ConnectionStringConfig> options)
-        {
-            _options = options.Value;
+        public OrderRepositoryDapper(IOptions<ConnectionStringConfig> options):base(options)
+        {  
         }
 
-        public async Task CreateAsync(Order order)
-        {
-            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.InsertAsync(order);//TODO redundant specification++++
-        }
         public async Task<(IEnumerable<Order>, int)> GetAsync(OrderFiltrationModelDAL model)
         {
             var skip = (model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize;
@@ -170,16 +162,10 @@ namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
 
             return result;
         }
-
-        public async Task UpdateAsync(Order order)
-        {
-            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.UpdateAsync<Order>(order);
-        } 
+  
         public async Task DeleteAsync(long id)
         {
-            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.DeleteAsync<Order>(new Order { Id = id });
+            await RemoveAsync(new Order { Id = id });
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Options;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
@@ -14,12 +13,10 @@ using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
 {
-    public class AuthorRepositoryDapper : IAuthorRepositoryDapper
+    public class AuthorRepositoryDapper : DapperBaseRepository<Author>, IAuthorRepositoryDapper
     {
-        private readonly ConnectionStringConfig _options;
-        public AuthorRepositoryDapper(IOptions<ConnectionStringConfig> options)
+        public AuthorRepositoryDapper(IOptions<ConnectionStringConfig> options):base(options)
         {
-            _options = options.Value;
         }
         public async Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrationModelDAL model)
         {
@@ -101,7 +98,6 @@ namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
                 await db.ExecuteAsync(procedureGetAuthors);
             }
 
-
             var authorsParameters = new DynamicParameters();
             authorsParameters.Add("@propertyForSort", model.PropertyForSort);
             authorsParameters.Add("@skip", skip);
@@ -156,12 +152,6 @@ namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
             return author.Distinct().ToList();
         }
 
-        public async Task<List<Author>> GetAllAsync()
-        {
-            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            return (await db.GetAllAsync<Author>()).ToList();
-        }
-
         public async Task<Author> GetByIdAsync(long id)
         {
             var query = @"SELECT*
@@ -203,19 +193,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
 
             return authorsCount == ids.Count;
         }
-        public async Task CreateAsync(Author author)
-        {
-
-            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.InsertAsync<Author>(author); 
-        }
-
-        public async Task UpdateAsync(Author author)
-        {
-            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.UpdateAsync<Author>(author);    
-        }
-
+        
         private async Task<Author> GetAuthorFromDb(string query, DynamicParameters parameters)
         {
             using (IDbConnection db = new SqlConnection(_options.DefaultConnection))
@@ -226,8 +204,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
                     (await db.QueryAsync<Author, PrintingEdition, Author>(query,
                     (author, editions) =>
                     {
-                        Author authorEntry;
-                        if (!authorDictionary.TryGetValue(author.Id, out authorEntry))
+                        if (!authorDictionary.TryGetValue(author.Id, out Author authorEntry))
                         {
                             authorEntry = author;
                             authorEntry.PrintingEditions = new List<PrintingEdition>();
@@ -243,8 +220,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
         }
         public async Task DeleteAsync(long id)
         {
-            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.DeleteAsync<Author>(new Author { Id = id });
+            await RemoveAsync(new Author { Id = id });  
         }
     }
 }

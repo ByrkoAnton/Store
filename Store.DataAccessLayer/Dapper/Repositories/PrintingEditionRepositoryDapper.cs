@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Options;
 using Store.DataAccessLayer.Dapper.Interfaces;
 using Store.DataAccessLayer.Entities;
@@ -15,15 +14,13 @@ using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
 {
-    public class PrintingEditionRepositoryDapper : IPrintingEditionRepositoryDapper //TODO wrong spelling+++
+    public class PrintingEditionRepositoryDapper : DapperBaseRepository<PrintingEdition>, IPrintingEditionRepositoryDapper //TODO wrong spelling+++
     {
-        private readonly ConnectionStringConfig _options;
-        public PrintingEditionRepositoryDapper(IOptions<ConnectionStringConfig> options) //TODO wrong spelling+++
+        public PrintingEditionRepositoryDapper(IOptions<ConnectionStringConfig> options):base(options) //TODO wrong spelling+++
         {
-            _options = options.Value;
         }
 
-        public async Task CreateAsync(PrintingEdition edition)
+        public override async Task CreateAsync(PrintingEdition edition)
         {
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
             var queryAddEdition = @"INSERT INTO PrintingEditions(Title, DateOfCreation, Description, Status, Price, IsRemoved, Currency, EditionType)
@@ -255,8 +252,8 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
                 (await db.QueryAsync<PrintingEdition, Author, PrintingEdition>(queryGetEdition,
                 (edition, author) =>
                 {
-                    PrintingEdition editionEntry;//TODO wrong spelling---
-                    if (!editionDictionary.TryGetValue(edition.Id, out editionEntry))
+                    //TODO wrong spelling---
+                    if (!editionDictionary.TryGetValue(edition.Id, out PrintingEdition editionEntry))
                     {
                         editionEntry = edition;
                         editionEntry.Authors = new List<Author>();
@@ -336,7 +333,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
             return await GetEditionFromDb(query, parameters);
         }
 
-        public async Task UpdateAsync(PrintingEdition edition)
+        public override async Task UpdateAsync(PrintingEdition edition)
         {
 
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
@@ -399,8 +396,8 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
                 (await db.QueryAsync<PrintingEdition, Author, PrintingEdition>(query,
                 (author, editions) =>
                 {
-                    PrintingEdition editionEntry; //TODO declare variable inside condition
-                    if (!editionDictionary.TryGetValue(author.Id, out editionEntry))
+                    //TODO declare variable inside condition+++
+                    if (!editionDictionary.TryGetValue(author.Id, out PrintingEdition editionEntry))
                     {
                         editionEntry = author;
                         editionEntry.Authors = new List<Author>();
@@ -416,8 +413,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
 
         public async Task DeleteAsync(long id)
         {
-            using IDbConnection db = new SqlConnection(_options.DefaultConnection);
-            await db.DeleteAsync(new PrintingEdition { Id = id });//TODO redundant specification+++
+            await RemoveAsync(new PrintingEdition { Id = id });//TODO redundant specification+++
         }
     }
 }

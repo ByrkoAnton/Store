@@ -214,7 +214,7 @@ namespace Store.BusinessLogicLayer.Serviсes// TODO spelling+++
             }
 
             await _emailService.SendEmailAsync(user.Email, Constants.User.RESET_PASSWORD_SUBJ,
-            String.Format(Constants.User.RESET_PASSWORD_MASSAGE, newPassword));  //TODO please use just string
+            string.Format(Constants.User.RESET_PASSWORD_MASSAGE, newPassword));  //TODO please use just string+++
         }
         public async Task ChangePasswordAsync(ChangePasswordModel model, string authentication)
         {
@@ -257,7 +257,7 @@ namespace Store.BusinessLogicLayer.Serviсes// TODO spelling+++
         {
             if (!long.TryParse(authentication, out long id))
             {
-                var jwtTrimmed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling
+                var jwtTrimmed = authentication.Replace(Constants.JwtProvider.BEARER, string.Empty).Trim();//TODO spelling+++
                 var handler = new JwtSecurityTokenHandler().ReadJwtToken(jwtTrimmed);
 
                 id = long.Parse(handler.Claims.Where(a => a.Type == Constants.JwtProvider.ID).FirstOrDefault().Value);

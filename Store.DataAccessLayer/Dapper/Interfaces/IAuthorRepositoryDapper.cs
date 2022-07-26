@@ -5,16 +5,13 @@ using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Dapper.Interfaces
 {
-    public interface IAuthorRepositoryDapper //TODO base interface?
+    public interface IAuthorRepositoryDapper: IDapperBaseRepository<Author> //TODO base interface?
     {
         public Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrationModelDAL model);
         public Task<Author> GetByIdAsync(long id);
         public Task<Author> GetByNameAsync(string name);
         public Task<List<Author>> GetAuthorsListByNamesListAsync(List<string> names);
         public Task<bool> IsAuthorsInDbAsync(List<long> id);
-        public Task CreateAsync(Author author);
-        public Task UpdateAsync(Author author);
-        public Task DeleteAsync(long id);
-        public Task<List<Author>> GetAllAsync();
+        public Task DeleteAsync(long id);   
     }
 }
