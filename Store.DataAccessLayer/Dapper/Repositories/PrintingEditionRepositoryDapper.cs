@@ -11,6 +11,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Linq.Dynamic.Core;
 
 namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
 {
@@ -59,6 +60,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
             string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
 
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
+ 
             string queryGetEdition = //TODO please check comment in payment repository. and check subquery
             @"IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
                 SELECT*

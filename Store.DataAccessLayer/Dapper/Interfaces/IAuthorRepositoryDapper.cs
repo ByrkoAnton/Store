@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Dapper.Interfaces
 {
-    public interface IAuthorRepositoryDapper: IDapperBaseRepository<Author> //TODO base interface?
+    public interface IAuthorRepositoryDapper: IDapperBaseRepository<Author> //TODO base interface?+++
     {
         public Task<(IEnumerable<Author>, int)> GetAsync(AuthorFiltrationModelDAL model);
         public Task<Author> GetByIdAsync(long id);

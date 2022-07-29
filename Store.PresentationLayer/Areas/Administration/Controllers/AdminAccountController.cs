@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Store.BusinessLogicLayer.Models;
 using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using System.Threading.Tasks;
 using Store.Sharing.Constants;

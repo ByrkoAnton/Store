@@ -17,16 +17,9 @@ namespace Store.DataAccessLayer
 {
     public static class Startup
     {
-        static TokenConfig _options;
-        
-        static Startup()
-        {
-            
-        }
-
         public static void InitDal(this IServiceCollection services, IConfiguration config)
         {
-            var tokenOptions = services.BuildServiceProvider().GetRequiredService<IOptions<TokenConfig>>().Value;//TODO please inject IOptions to constructor -if static constructor-????
+            var tokenOptions = services.BuildServiceProvider().GetRequiredService<IOptions<TokenConfig>>().Value;//TODO please inject IOptions to constructor -if static constructor---????---
        
             services.Scan(scan => scan
             .FromAssemblyOf<IAuthorRepository>()

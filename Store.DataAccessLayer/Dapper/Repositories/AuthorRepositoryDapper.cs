@@ -24,6 +24,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
 
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
             string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
+
             string queryIsProcedureExists = @"SELECT[name]
             FROM sys.procedures 
             WHERE name = 'GetAuthors'";
@@ -31,7 +32,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
             var isProcedureExists = (await db.QueryAsync<string>(queryIsProcedureExists)).Any();
 
             if (!isProcedureExists) //TODO u can use CREATE OR ALTER instead condition https://docs.microsoft.com/en-us/sql/t-sql/statements/create-procedure-transact-sql?view=sql-server-ver16
-            //TODO I think u don't need subquery. Left join don't changes data in this case please check it
+            //TODO I think u don't need subquery. Left join don't changes data in this case please check it---???---
             //TODO please don't use '*' in select. It's affects performance. Check why? 
             {
                 var procedureGetAuthors = @"CREATE PROCEDURE GetAuthors 
