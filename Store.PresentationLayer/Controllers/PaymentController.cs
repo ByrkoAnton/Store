@@ -11,9 +11,9 @@ namespace Store.PresentationLayer.Controllers
     public class PaymentController : Controller
     {
 
-        private readonly IPaymentService _paymentServise;
+        private readonly IPaymentService _paymentServise;//TODO spelling
 
-        public PaymentController(IPaymentService paymentServise)
+        public PaymentController(IPaymentService paymentServise)//TODO spelling
         {
             _paymentServise = paymentServise;
         }

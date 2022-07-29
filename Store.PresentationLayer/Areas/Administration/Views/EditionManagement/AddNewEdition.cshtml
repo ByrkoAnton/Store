@@ -28,7 +28,7 @@
                 <label asp-for="AuthorsNames" class="control-label">Authors</label>
                 <input id="authorsAdded" type="text" asp-for="AuthorsNames"/>
                 <select style="font-size: 16px" id="authorFromList">
-                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.AllAuthorModels)
+                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.AllAuthorModels)//TODO redundant
                     {
                         <option value="@author.Name">@author.Name</option>
                     }
@@ -72,6 +72,6 @@
                 document.getElementById("authorsAdded").focus();
             }
         }
-
+        //TODO extra line
     </script>
 }

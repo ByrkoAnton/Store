@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Store.BusinessLogicLayer.Serviñes;
-using Store.BusinessLogicLayer.Serviñes.Interfaces;
+using Store.BusinessLogicLayer.Serviñes;//TODO unused directive
+using Store.BusinessLogicLayer.Serviñes.Interfaces; //TODO unused directive
 using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
 
@@ -25,8 +25,8 @@ namespace AdminApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-           //services.AddTransient<IUserAccountService, UserAccountService>();
-           services.AddTransient<ITokenProvider, TokenProvider>();
+            //services.AddTransient<IUserAccountService, UserAccountService>();//TODO legacy
+            services.AddTransient<ITokenProvider, TokenProvider>();
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
 

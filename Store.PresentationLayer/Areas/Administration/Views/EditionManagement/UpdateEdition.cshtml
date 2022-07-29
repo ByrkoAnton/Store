@@ -56,7 +56,7 @@
                 <input id="newAuthors" hidden="hidden" type="text" value="" asp-for="NewAuthorsNames" />
                 <input id="deletedAuthors" hidden="hidden" type="text" value="" asp-for="DeletedAuthorsNames" />
                 <select style="font-size: 16px" id="authorForDel">
-                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.PrintingEdition.AuthorModels)
+                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.PrintingEdition.AuthorModels)//TODO redundant
                     {
                         <option value="@author.Name">@author.Name</option>
                     }
@@ -64,7 +64,7 @@
                 <input type="button" value="Del Author" class="btn btn-default button" onclick="delAuthor();" />
 
                 <select style="font-size: 16px" id="authorForAdd">
-                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.AllAuthorModels)
+                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.AllAuthorModels)//TODO redundant
                     {
                         <option value="@author.Name">@author.Name</option>
                     }
@@ -111,14 +111,14 @@
                 <label asp-for="PrintingEdition.Status" class="control-label">Status</label>
                 <select style="font-size: 16px" asp-for="PrintingEdition.Status">
                     <option selected="selected" value="@Model.PrintingEdition.Status">@Model.PrintingEdition.Status</option>
-                    @if (@Model.PrintingEdition.Status == "Avaleble")
+                    @if (@Model.PrintingEdition.Status == "Avaleble")//TODO spelling
                     {
-                        <option value="Unavaleble">Unavaleble</option>
+                        <option value="Unavaleble">Unavaleble</option>//TODO spelling
                     }
 
-                    @if (@Model.PrintingEdition.Status == "Unavaleble")
+                    @if (@Model.PrintingEdition.Status == "Unavaleble")//TODO spelling
                     {
-                        <option value="Avaleble">Avaleble</option>
+                        <option value="Avaleble">Avaleble</option>//TODO spelling
                     }
                 </select>
             </div>

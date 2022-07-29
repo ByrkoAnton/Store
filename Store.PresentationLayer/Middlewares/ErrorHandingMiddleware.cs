@@ -8,13 +8,13 @@ using Microsoft.Extensions.Logging;
 using Store.BusinessLogicLayer;
 using Store.Sharing.Constants;
 
-namespace Store.PresentationLayer.Middlewares
+namespace Store.PresentationLayer.Middlewares//TODO spelling
 {
     public class ErrorHandingMiddleware
     {
         private RequestDelegate _next;
 
-        public ILoggerFactory _loggerFactory;
+        public ILoggerFactory _loggerFactory;//TODO code style, modifier
 
         public ErrorHandingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
@@ -27,17 +27,17 @@ namespace Store.PresentationLayer.Middlewares
             {
                 await _next.Invoke(context);
             }
-            catch (CustomException customExeption)
+            catch (CustomException customExeption)//TODO spelling
             {
                 string jsonString = JsonSerializer.Serialize(customExeption.ErrorList);
                 context.Response.StatusCode = (int)customExeption.StatusCode;
                 await context.Response.WriteAsync(jsonString);
             }
 
-            catch (Exception exeption)
+            catch (Exception exeption)//TODO spelling
             {
-                _loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), Constants.Loger.FILE_AND_CATEGORY_NAME));
-                var logger = _loggerFactory.CreateLogger(Constants.Loger.FILE_AND_CATEGORY_NAME);
+                _loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), Constants.Loger.FILE_AND_CATEGORY_NAME));//TODO wrong constant
+                var logger = _loggerFactory.CreateLogger(Constants.Loger.FILE_AND_CATEGORY_NAME);//TODO wrong constant
                 string log = $"{DateTime.Now}\n{exeption.Message}\n{exeption.StackTrace}\n{new string (Constants.Loger.LOG_LAYOUT_DELIMITER, Constants.Loger.DELIMITER_COUNT)}";
                 logger.LogError(log);
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using System.Threading.Tasks;
 using Store.Sharing.Constants;
-using Store.BusinessLogicLayer.Models.Users;
+using Store.BusinessLogicLayer.Models.Users;//TODO unused directive
 
 namespace Store.PresentationLayer.Areas.Administration.Controllers
 {
@@ -25,7 +25,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn(UserSignInModel signInModel)
+        public async Task<IActionResult> SignIn(UserSignInModel signInModel)//TODO missing directive
         {
             if (ModelState.IsValid)
             {

@@ -10,7 +10,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
     [Area("Administration")]
     public class OrdersManagementController : Controller
     {
-        private readonly IOrderService _orderService;
+        private readonly IOrderService _orderService;//TODO add new line
         public OrdersManagementController(IOrderService orderService)
         {
             _orderService = orderService;
@@ -27,7 +27,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
                 PropertyForSort = sortBy,
                 IsAscending = isAsc,
                 CurrentPage = page,
-                Description = HttpContext.Request.Cookies[Constants.AreaConstants.EDITION_DESC_COOKIES]
+                Description = HttpContext.Request.Cookies[Constants.AreaConstants.EDITION_DESC_COOKIES]//TODO wrong field
             };
             var result = await _orderService.GetAsync(sortModel);
 
@@ -50,7 +50,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         public async Task<IActionResult> DeleteOrder(long id)
         {
             await _orderService.RemoveAsync(id);
-            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();
+            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();//TODO wrong spelling
             return Redirect(qwery);
         }
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace Store.BusinessLogicLayer
+namespace Store.BusinessLogicLayer //TODO namespace
 {
     public class CustomException : Exception
     {
