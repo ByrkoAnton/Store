@@ -60,7 +60,52 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
             string sortDirection = model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC;
 
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
- 
+
+            string sql = @"SELECT*
+                FROM(
+                SELECT *
+                FROM PrintingEditions WHERE(@id is null OR PrintingEditions.Id = @id)
+                AND PrintingEditions.Title LIKE @title
+                AND(@currency is null OR PrintingEditions.Currency = @currency)
+                AND(@minPrice is null OR PrintingEditions.Price >= @minPrice)
+                AND(@maxPrice is null OR PrintingEditions.Price <= @maxPrice)
+                AND PrintingEditions.EditionType IN @editionType)   
+                AS edition
+                JOIN AuthorPrintingEdition ON edition.Id = AuthorPrintingEdition.PrintingEditionsId
+                JOIN Authors ON AuthorPrintingEdition.AuthorsId = Authors.Id;";
+
+            var param = new DynamicParameters();
+            param.Add("@propertyForSort", model.PropertyForSort);
+            param.Add("@skip", skip);
+            param.Add("@pageSize", model.PageSize);
+            param.Add("@title", $"%{model.Title}%");
+            param.Add("@id", model.Id);
+            param.Add("@currency", model.Currency);
+            param.Add("@sortDirection", sortDirection);
+            param.Add("@minPrice", model.MinPrice);
+            param.Add("@maxPrice", model.MaxPrice);
+            param.Add("@editionType", model.EditionType);
+
+            var eDictionary = new Dictionary<long, PrintingEdition>();
+
+            var pe =
+                (await db.QueryAsync<PrintingEdition, Author, PrintingEdition>(sql,
+                (edition, author) =>
+                {
+                    if (!eDictionary.TryGetValue(edition.Id, out PrintingEdition editionEntry))
+                    {
+                        editionEntry = edition;
+                        editionEntry.Authors = new List<Author>();
+                        eDictionary.Add(editionEntry.Id, editionEntry);
+                    }
+                    editionEntry.Authors.Add(author);
+                    return editionEntry;
+                },
+                param)).Distinct().AsQueryable().OrderBy($"{model.PropertyForSort} {(model.IsAscending ? Constants.SortingParams.SORT_ASC : Constants.SortingParams.SORT_DESC)}").Skip((model.CurrentPage - Constants.PaginationParams.DEFAULT_OFFSET) * model.PageSize).Take(model.PageSize);
+  
+            var res = pe.ToList();
+
+
             string queryGetEdition = //TODO please check comment in payment repository. and check subquery
             @"IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
                 SELECT*
