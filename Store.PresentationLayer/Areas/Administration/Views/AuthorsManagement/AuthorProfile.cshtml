@@ -32,7 +32,7 @@
             <a>Editions:</a>
             <select style="font-size: 16px" id="edition">
 
-                @foreach (Store.BusinessLogicLayer.Models.EditionModel.PrintingEditionModel edition in Model.PrintingEditionModels)
+                @foreach (Store.BusinessLogicLayer.Models.EditionModel.PrintingEditionModel edition in Model.PrintingEditionModels)//TODO store is redundant
                 {
                     if (edition != null)
                     {

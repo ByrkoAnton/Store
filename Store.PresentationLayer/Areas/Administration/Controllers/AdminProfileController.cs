@@ -15,7 +15,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         public AdminProfileController(IUserService userService)
         {
             _userService = userService;
-        }
+        }//TODO add new line
         [HttpGet]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetProfile()

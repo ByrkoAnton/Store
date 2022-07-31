@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Store.BusinessLogicLayer.AdminServices.Interfeces;
+using Store.BusinessLogicLayer.AdminServices.Interfeces;//TODO unused directive
 using Store.BusinessLogicLayer.Models.EditionModel;
 using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using Store.Sharing.Constants;
@@ -16,10 +16,10 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
     {
 
         private readonly IPrintingEditionService _editionService;
-        private readonly IPrintingEditionServiceAdmin _editionServiceAdmin;
+        private readonly IPrintingEditionServiceAdmin _editionServiceAdmin;//TODO missing directive
         private readonly IAuthorService _authorService;
 
-        public EditionManagementController(IPrintingEditionService editionService, IAuthorService authorService, IMapper mapper, IPrintingEditionServiceAdmin editionServiceAdmin)
+        public EditionManagementController(IPrintingEditionService editionService, IAuthorService authorService, IMapper mapper, IPrintingEditionServiceAdmin editionServiceAdmin)//TODO missing directive
         {
             _editionService = editionService;
             _authorService = authorService;
@@ -28,7 +28,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
 
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> GetEditions(string sortBy = Constants.AreaConstants.EDITION_DEF_SORT_PARAMS, bool isAsc = true, int page = Constants.AreaConstants.FIRST_PAGE)
+        public async Task<IActionResult> GetEditions(string sortBy = Constants.AreaConstants.EDITION_DEF_SORT_PARAMS, bool isAsc = true, int page = Constants.AreaConstants.FIRST_PAGE)//TODO edition_DEF_sort_params. what def mean?
         {
             var sortModel = new EditionFiltrationModel
             {
@@ -36,7 +36,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
                 PropertyForSort = sortBy,
                 IsAscending = isAsc,
                 CurrentPage = page,
-                EditionType = new List<PrintingEditionType>() { PrintingEditionType.Book, PrintingEditionType.Magazine, PrintingEditionType.Newspaper }
+                EditionType = new List<PrintingEditionType>() { PrintingEditionType.Book, PrintingEditionType.Magazine, PrintingEditionType.Newspaper }//TODO would be better create .ctor with default set by edition type. Check this pls
             };
             var result = await _editionService.GetAsync(sortModel);
 

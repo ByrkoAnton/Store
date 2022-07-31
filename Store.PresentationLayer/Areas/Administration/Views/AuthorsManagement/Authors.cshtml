@@ -30,7 +30,7 @@
 
                 <th>Actions</th>
             </tr>
-            @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.Models)
+            @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.Models)//TODO store is redundant
             {
                 <tr>
                     <td>@author.Id</td>
@@ -90,13 +90,13 @@
 
 @section scripts{
     <script>
-        function sort(parametr, sortDirection)
+        function sort(parametr, sortDirection)//TODO spelling
         {
             var authorNameForSearch = document.getElementById("AuthorName").value;
 
             var isAsc = sortDirection == "asc";
 
-            localStorage.setItem("sortParametr", JSON.stringify(parametr));
+            localStorage.setItem("sortParametr", JSON.stringify(parametr));//TODO spelling
             localStorage.setItem("sortDirection", JSON.stringify(isAsc));
 
             localStorage.setItem("authorNameForSearch", JSON.stringify(authorNameForSearch));
@@ -113,7 +113,7 @@
                 page = document.getElementById("current").value;
             }
 
-            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
+            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));//TODO spelling
             var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
 
             if (!(sortParametr == "Id" || sortParametr == "Name")) {

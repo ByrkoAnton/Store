@@ -26,8 +26,8 @@ namespace Store.PresentationLayer.Controllers
             return Ok();
         }
 
-        [HttpPost("UserBlockUnblok")]
-        public async Task<IActionResult> UserBlockUnblok(UserUpdateModel updateModel)
+        [HttpPost("UserBlockUnblok")]//TODO spelling
+        public async Task<IActionResult> UserBlockUnblok(UserUpdateModel updateModel)//TODO spelling
         {
             await _userService.UserBlockStatusChangingAsync(updateModel);
             return Ok();
@@ -62,8 +62,8 @@ namespace Store.PresentationLayer.Controllers
             await _userService.ChangePasswordAsync(changePasswordModel, accessToken);
             return Ok();
         }
+        //TODO extra line
 
-        
 
         [HttpPost("GetUsers")]
         public async Task<IActionResult> GetUsers(UserFiltrationModel model)

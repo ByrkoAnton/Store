@@ -4,7 +4,7 @@
 }
 @{
     <div style="margin-left: 40%">
-        <h2>Order datails:</h2>
+        <h2>Order datails:</h2>/*//TODO spelling*/
         <a>Order Id:</a>
         <a class="from-query">@Model.OrderId</a><br>
         <a>Created at:</a>
@@ -15,14 +15,14 @@
         <a class="from-query">@Model.UserName</a><br>
         <a>Order items:</a>
         <ul>
-            @foreach (Store.BusinessLogicLayer.Models.Orders.EditionInOrderDetails edition in Model.Editions)
+            @foreach (Store.BusinessLogicLayer.Models.Orders.EditionInOrderDetails edition in Model.Editions)//TODO redundant,namespace, wrong field
             {
                 <li>
                     Id:@edition.EditionId
                     <ul>
                         <li>Title: @edition.EditionTitle </li>
                         <li>Price: @edition.EditionPrice</li>
-                        <li> Quantity: @edition.Count</li>                        
+                        <li> Quantity: @edition.Count</li>                
                         <li>Total @edition.PriceForAllEditions</li>
                     </ul>
                 </li>

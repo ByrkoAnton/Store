@@ -9,8 +9,8 @@
 }
 @{
     <div class=mainContent>
-        <h2>Edition profile:</h2>
-        <form class="stardart-font" asp-controller="EditionsManagement" asp-action="UpdateEdition">
+        <h2>Edition profile:</h2>  
+        <form class="stardart-font" asp-controller="EditionsManagement" asp-action="UpdateEdition"> /*TODO check controller*/ 
             <div class="form-group">
                 <label asp-for="Id " class="control-label">ID</label>
                 <input type="text" disabled="disabled" value="@Model.Id" class="form-control stardart-font from-query" />
@@ -55,7 +55,7 @@
             <a>Authors:</a>
             <select style="font-size: 16px" id="author">
 
-                @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.AuthorModels)
+                @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in Model.AuthorModels) //TODO redundant
                 {
                     <option value="@author.Id" class="from-query">@author.Name</option>
                 }

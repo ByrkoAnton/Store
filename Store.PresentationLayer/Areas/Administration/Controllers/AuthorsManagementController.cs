@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Models.Authors;
 using Store.BusinessLogicLayer.Serviсes.Interfaces;
 using Store.Sharing.Constants;
-
+//TODO extra line
 using System.Threading.Tasks;
 
 namespace Store.PresentationLayer.Areas.Administration.Controllers
@@ -47,7 +47,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         public async Task<IActionResult> UpdateAuthor(AuthorModel updateModel)
         {
             await _authorService.UpdateAsync(updateModel);
-            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();
+            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();//TODO spelling
             return Redirect(qwery); 
         }
 

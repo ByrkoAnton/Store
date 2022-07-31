@@ -63,7 +63,7 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateProfile(UserUpdateModel updateModel)
         {
-            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();
+            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();//TODO spelling
            
             await _userService.UserUpdateAsync(updateModel, updateModel.Id.ToString());
             return Redirect(qwery);    

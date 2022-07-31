@@ -53,7 +53,7 @@
                 </th>
                 <th>Actions</th>
             </tr>
-            @foreach (Store.BusinessLogicLayer.Models.EditionModel.PrintingEditionModel edition in Model.Models)
+            @foreach (Store.BusinessLogicLayer.Models.EditionModel.PrintingEditionModel edition in Model.Models) //TODO redundant
             {
         <tr>
             <td>@edition.Id</td>
@@ -61,7 +61,7 @@
             <td>
                 <select style="font-size: 16px" id="edition">
 
-                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in edition.AuthorModels)
+                    @foreach (Store.BusinessLogicLayer.Models.Authors.AuthorModel author in edition.AuthorModels)//TODO redundant
                     {
                         <option>@author.Name</option>
                     }
@@ -126,12 +126,12 @@
 
 @section scripts{
     <script>
-        function sort(parametr, sortDirection)
+        function sort(parametr, sortDirection)//TODO spelling
         {
             var editionTitleForSearch = document.getElementById("Title").value;
             var isAsc = sortDirection == "asc";
 
-            localStorage.setItem("sortParametr", JSON.stringify(parametr));
+            localStorage.setItem("sortParametr", JSON.stringify(parametr));//TODO spelling
             localStorage.setItem("sortDirection", JSON.stringify(isAsc));
 
             localStorage.setItem("editionTitleForSearch", JSON.stringify(editionTitleForSearch));
@@ -148,7 +148,7 @@
                 page = document.getElementById("current").value;
             }
 
-            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
+            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));//TODO spelling
             var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
             if (!(sortParametr == "Id" || sortParametr == "Title" || sortParametr == "Price" || sortParametr == "Currency"
                 || sortParametr == "Status")) {
@@ -167,7 +167,7 @@
             return window.location.href = '@Url.Action("DeleteEdition", "EditionManagement")?id=' + id + '&url=' + currentURL;
             };
         }
-
+        //TODO extra lines
 
     </script>
 }

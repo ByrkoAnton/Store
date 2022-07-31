@@ -10,7 +10,7 @@
 @{
 
 
-    <form id="ordersForm" class="stardart-font" asp-controller="OrdersManagement" asp-action="GetOrderes">
+    <form id="ordersForm" class="stardart-font" asp-controller="OrdersManagement" asp-action="GetOrderes"> /*TODO check is action correct*/
         <table>
             <tr>
                 <th>
@@ -56,7 +56,7 @@
                     Actions
                 </th>
             </tr>
-            @foreach (Store.BusinessLogicLayer.Models.Orders.OrderModel order in Model.Models)
+            @foreach (Store.BusinessLogicLayer.Models.Orders.OrderModel order in Model.Models)//TODO redundant, wrong field
             {
                 <tr>
                     <td>@order.Id</td>
@@ -127,14 +127,14 @@
 }
 @section scripts{
     <script>
-        function sort(parametr, sortDirection)
+        function sort(parametr, sortDirection)//TODO spelling
         {
             var userIdForSearch = document.getElementById("UserId").value;
             var descriptionForSearch = document.getElementById("Description").value;
 
             var isAsc = sortDirection == "asc";
 
-            localStorage.setItem("sortParametr", JSON.stringify(parametr));
+            localStorage.setItem("sortParametr", JSON.stringify(parametr));//TODO spelling
             localStorage.setItem("sortDirection", JSON.stringify(isAsc));
 
             localStorage.setItem("UserIdInOrder", JSON.stringify(userIdForSearch));
@@ -154,7 +154,7 @@
                 page = document.getElementById("current").value;
             }
 
-            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
+            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));//TODO spelling
             var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
             if (!(sortParametr == "Id" || sortParametr == "DateOfCreation" || sortParametr == "UserId" || sortParametr == "PaymentId"
                 || sortParametr == "Status")) {
@@ -171,7 +171,7 @@
             return window.location.href = '@Url.Action("DeleteOrder", "OrdersManagement")?id=' + id;
             };
         }
-
+        //TODO extra lines
 
     </script>
 }

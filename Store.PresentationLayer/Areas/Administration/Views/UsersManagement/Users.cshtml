@@ -8,7 +8,7 @@
     <link href="~/Styles/ManagementStyleSheet.css" rel="stylesheet" type="text/css" />
 }
 @{
-
+    //TODO extra lines
 
     <form id="usersForm" class="stardart-font" asp-controller="UsersManagement" asp-action="GetUsers">
         <table>
@@ -50,7 +50,7 @@
                 </th>
                 <th>Actions</th>
             </tr>
-            @foreach (Store.BusinessLogicLayer.Models.Users.UserModel user in Model.Models)
+            @foreach (Store.BusinessLogicLayer.Models.Users.UserModel user in Model.Models) //TODO  redundant
             {
                 <tr>
                     <td>@user.Id</td>
@@ -135,14 +135,14 @@
 
 @section scripts{
     <script>
-        function sort(parametr, sortDirection)
+        function sort(parametr, sortDirection) //TODO spelling
         {
             var emailForSearch = document.getElementById("Email").value;
             var firstNameForSearch = document.getElementById("FirstName").value;
             var lastNameForSearch = document.getElementById("LastName").value;
             var isAsc = sortDirection == "asc";
 
-            localStorage.setItem("sortParametr", JSON.stringify(parametr));
+            localStorage.setItem("sortParametr", JSON.stringify(parametr));//TODO spelling
             localStorage.setItem("sortDirection", JSON.stringify(isAsc));
 
             localStorage.setItem("emailForSearch", JSON.stringify(emailForSearch));
@@ -164,7 +164,7 @@
                 page = document.getElementById("current").value;
             }
 
-            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
+            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));//TODO spelling
             var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
             
             if (!(sortParametr == "Id" || sortParametr == "Email" || sortParametr == "LastName" || sortParametr == "FirstName"
@@ -179,9 +179,9 @@
             return window.location.href = '@Url.Action("ChangeStatus", "UsersManagement")?id=' + id + '&url=' + currentURL;
         }
 
-        function isSortTypeActive(parametr, direction) {
+        function isSortTypeActive(parametr, direction) {//TODO spelling
             debugger
-            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));
+            var sortParametr = JSON.parse(localStorage.getItem("sortParametr"));//TODO spelling
             var sortDirection = JSON.parse(localStorage.getItem("sortDirection"));
             if (parametr === sortParametr && sortDirection == direction) {
                 return true;
@@ -202,7 +202,7 @@
 
 
         function getCookie(name) {
-            debugger
+            debugger//TODO legacy
             let matches = document.cookie.match(new RegExp(
                 "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
             ));
