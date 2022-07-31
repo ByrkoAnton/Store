@@ -61,7 +61,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
 
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
  
-            string queryGetEdition = //TODO please check comment in payment repository. and check subquery
+            string queryGetEdition = //TODO please check comment in payment repository. and check subquery "need a subquery for pagination and sorting"
             @"IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
                 SELECT*
                 FROM(
@@ -254,7 +254,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories //TODO wrong spelling+++
                 (await db.QueryAsync<PrintingEdition, Author, PrintingEdition>(queryGetEdition,
                 (edition, author) =>
                 {
-                    //TODO wrong spelling---
+                    //TODO wrong spelling+++
                     if (!editionDictionary.TryGetValue(edition.Id, out PrintingEdition editionEntry))
                     {
                         editionEntry = edition;

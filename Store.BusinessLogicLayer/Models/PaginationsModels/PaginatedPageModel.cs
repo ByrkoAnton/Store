@@ -1,7 +1,7 @@
 ﻿using Store.Sharing.Constants;
 using System;
 
-namespace Store.BusinessLogicLayer.Models.PaginationsModels//TODO wrong spelling---
+namespace Store.BusinessLogicLayer.Models.PaginationsModels//TODO wrong spelling+++
 {
     public class PaginatedPageModel
     {

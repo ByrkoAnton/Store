@@ -10,9 +10,9 @@ namespace Store.DataAccessLayer.AppContext
     {
         public DbSet<PrintingEdition> PrintingEditions { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<Payment> Payments { get; set; } //TODO unused property. If u use EF and dapper at the same time remove this one. If no leave a comment. It's need for more clear understanding project's logic---
+        public DbSet<Payment> Payments { get; set; } //TODO unused property. If u use EF and dapper at the same time remove this one. If no leave a comment. It's need for more clear understanding project's logic---"need propertys if use EF"
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; } //TODO unused property. If u use EF and dapper at the same time remove this one. If no leave a comment----
+        public DbSet<OrderItem> OrderItems { get; set; } //TODO unused property. If u use EF and dapper at the same time remove this one. If no leave a comment----"need propertys if use EF"
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)

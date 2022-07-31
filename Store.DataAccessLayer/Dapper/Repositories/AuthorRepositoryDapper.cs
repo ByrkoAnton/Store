@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
+namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling+++
 {
     public class AuthorRepositoryDapper : DapperBaseRepository<Author>, IAuthorRepositoryDapper
     {
@@ -32,7 +32,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
             var isProcedureExists = (await db.QueryAsync<string>(queryIsProcedureExists)).Any();
 
             if (!isProcedureExists) //TODO u can use CREATE OR ALTER instead condition https://docs.microsoft.com/en-us/sql/t-sql/statements/create-procedure-transact-sql?view=sql-server-ver16
-            //TODO I think u don't need subquery. Left join don't changes data in this case please check it---???---
+            //TODO I think u don't need subquery. Left join don't changes data in this case please check it "need a subquery for pagination and sorting"
             //TODO please don't use '*' in select. It's affects performance. Check why? 
             {
                 var procedureGetAuthors = @"CREATE PROCEDURE GetAuthors 

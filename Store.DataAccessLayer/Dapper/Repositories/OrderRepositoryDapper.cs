@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
+namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling+++
 {
     public class OrderRepositoryDapper : DapperBaseRepository<Order>, IOrderRepositoryDapper
     {
@@ -26,7 +26,7 @@ namespace Store.DataAccessLayer.Dapper.Repositories//TODO wrong selling---
 
             using IDbConnection db = new SqlConnection(_options.DefaultConnection);
             string queryGetOrders = //TODO wrong spelling 'description'++++
-                                    //TODO please check dapper extention and sorting https://riptutorial.com/dapper-with-mvc/learn/100006/sorting
+                                    //TODO please check dapper extention and sorting https://riptutorial.com/dapper-with-mvc/learn/100006/sorting "it works after executing the query. Linq extensions applied to query result"
             @"IF @propertyForSort = 'Id' AND @sortDirection = 'ASC'
                 SELECT* 
                 FROM Orders 

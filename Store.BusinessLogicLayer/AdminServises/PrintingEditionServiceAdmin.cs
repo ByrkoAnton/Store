@@ -28,7 +28,7 @@ namespace Store.BusinessLogicLayer.AdminServices//TODO wrong spelling+++
             {
                 throw new CustomException($"{Constants.AreaConstants.WRONG_AUTHORS_DELIMETR_MESSAGE}", HttpStatusCode.BadRequest);
             }
-            var authorsList = model.AuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES).ToList();//TODO please use .Trim() instead of Space_in_model --???--
+            var authorsList = model.AuthorsNames.Replace(Constants.AreaConstants.SPACE_IN_MODEl, string.Empty).Split(Constants.AreaConstants.DELIMETR_FOR_AUTHORS_NAMES).ToList();//TODO please use .Trim() instead of Space_in_model "Remove spaces within a string, not only at the beginning or end"
             var authorsModels = await _authorService.GetListOfAuthorsAsync(authorsList);
 
             if (authorsList.Count != authorsModels.Count)
