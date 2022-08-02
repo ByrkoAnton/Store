@@ -111,14 +111,14 @@
                 <label asp-for="PrintingEdition.Status" class="control-label">Status</label>
                 <select style="font-size: 16px" asp-for="PrintingEdition.Status">
                     <option selected="selected" value="@Model.PrintingEdition.Status">@Model.PrintingEdition.Status</option>
-                    @if (@Model.PrintingEdition.Status == "Avaleble")//TODO spelling
+                    @if (@Model.PrintingEdition.Status == "Available")//TODO spelling+++
                     {
-                        <option value="Unavaleble">Unavaleble</option>//TODO spelling
+                <option value="Unavaleble">Unavailable</option>//TODO spelling+++
                     }
 
-                    @if (@Model.PrintingEdition.Status == "Unavaleble")//TODO spelling
+                    @if (@Model.PrintingEdition.Status == "Unavailable")//TODO spelling+++
                     {
-                        <option value="Avaleble">Avaleble</option>//TODO spelling
+                <option value="Avaleble">Available</option>//TODO spelling+++
                     }
                 </select>
             </div>

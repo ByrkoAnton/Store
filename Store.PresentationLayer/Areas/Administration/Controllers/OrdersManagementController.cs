@@ -50,8 +50,8 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         public async Task<IActionResult> DeleteOrder(long id)
         {
             await _orderService.RemoveAsync(id);
-            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();//TODO wrong spelling
-            return Redirect(qwery);
+            var query = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();//TODO wrong spelling+++
+            return Redirect(query);
         }
     }
 }

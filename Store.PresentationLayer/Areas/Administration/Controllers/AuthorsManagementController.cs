@@ -47,8 +47,8 @@ namespace Store.PresentationLayer.Areas.Administration.Controllers
         public async Task<IActionResult> UpdateAuthor(AuthorModel updateModel)
         {
             await _authorService.UpdateAsync(updateModel);
-            var qwery = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();//TODO spelling
-            return Redirect(qwery); 
+            var query = HttpContext.Request.Headers[Constants.AreaConstants.PATH].ToString();//TODO spelling+++
+            return Redirect(query); 
         }
 
         [HttpGet]

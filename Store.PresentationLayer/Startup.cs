@@ -9,17 +9,23 @@ using Microsoft.OpenApi.Models;
 using Store.BusinessLogicLayer;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
-using Store.DataAccessLayer.Repositories.Base;//TODO unused directive
+//TODO unused directive+++
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.DataAccessLayer.Repositories;
+using Store.Sharing.Configuration;
+using Microsoft.Extensions.Options;
+using Store.BusinessLogicLayer.Serviñes.Interfaces;
 
 namespace Store.PresentationLayer
 {
     public class Startup
     {
+        //private readonly TokenConfig _tokenOptions;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            //IOptions<TokenConfig> tokenOptions
+            //_tokenOptions = tokenOptions.Value;
         }
         public IConfiguration Configuration { get; }
 

@@ -26,8 +26,8 @@ namespace Store.PresentationLayer.Controllers
             return Ok();
         }
 
-        [HttpPost("UserBlockUnblok")]//TODO spelling
-        public async Task<IActionResult> UserBlockUnblok(UserUpdateModel updateModel)//TODO spelling
+        [HttpPost("UserBlockUnblock")]//TODO spelling+++
+        public async Task<IActionResult> UserBlockUnblock(UserUpdateModel updateModel)//TODO spelling+++
         {
             await _userService.UserBlockStatusChangingAsync(updateModel);
             return Ok();

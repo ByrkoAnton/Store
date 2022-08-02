@@ -19,8 +19,8 @@ namespace Store.DataAccessLayer
     {
         public static void InitDal(this IServiceCollection services, IConfiguration config)
         {
-            var tokenOptions = services.BuildServiceProvider().GetRequiredService<IOptions<TokenConfig>>().Value;//TODO please inject IOptions to constructor -if static constructor---????---
-       
+            var tokenOptions = services.BuildServiceProvider().GetRequiredService<IOptions<TokenConfig>>().Value;//TODO please inject IOptions to constructor -if static constructor- Cannot be injected into presentation startup constructor because services must be started before--????---
+
             services.Scan(scan => scan
             .FromAssemblyOf<IAuthorRepository>()
             .AddClasses()
